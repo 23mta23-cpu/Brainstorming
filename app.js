@@ -99,9 +99,7 @@
       "qb.p.oddOneOut.alif": "Welches Zeichen hat als einziges keine Punkte?",
       "qb.p.oddOneOut.ba": "Welches Zeichen hat einen Punkt unten statt oben?",
       "qb.p.oddOneOut.ta": "Welches Zeichen hat zwei Punkte statt einem oder keinem?",
-      "qb.p.matchTrait.alif": "Welches Merkmal passt zu ا؟",
-      "qb.p.matchTrait.ba": "Welches Merkmal passt zu ب؟",
-      "qb.p.matchTrait.ta": "Welches Merkmal passt zu ت؟",
+      "qb.p.matchTrait": "Welches Merkmal passt zu diesem Buchstaben?",
       "qb.p.flash": "Welcher Buchstabe wurde gerade gezeigt?",
       "qb.flash.watch": "Schau genau hin …",
 
@@ -297,9 +295,7 @@
       "qb.p.oddOneOut.alif": "Noktası olmayan tek işaret hangisidir?",
       "qb.p.oddOneOut.ba": "Üstte değil altta noktası olan işaret hangisidir?",
       "qb.p.oddOneOut.ta": "Bir ya da hiç değil, iki noktası olan işaret hangisidir?",
-      "qb.p.matchTrait.alif": "ا işaretine hangi özellik uyuyor?",
-      "qb.p.matchTrait.ba": "ب işaretine hangi özellik uyuyor?",
-      "qb.p.matchTrait.ta": "ت işaretine hangi özellik uyuyor?",
+      "qb.p.matchTrait": "Bu harfin özelliği hangisidir?",
       "qb.p.flash": "Az önce hangi harf gösterildi?",
       "qb.flash.watch": "Dikkatlice bak …",
 
@@ -433,17 +429,17 @@
     { id: "trait-ba", letterId: "ba", promptKey: "qb.p.trait.ba", choiceKind: "char", choices: CHARS, correct: "ب" },
     { id: "trait-ta", letterId: "ta", promptKey: "qb.p.trait.ta", choiceKind: "char", choices: CHARS, correct: "ت" },
 
-    { id: "dotCount-alif", letterId: "alif", promptKey: "qb.p.dotCount.alif", choiceKind: "text", choices: DOT_KEYS, correct: "qb.dotCount.none" },
-    { id: "dotCount-ba", letterId: "ba", promptKey: "qb.p.dotCount.ba", choiceKind: "text", choices: DOT_KEYS, correct: "qb.dotCount.one" },
-    { id: "dotCount-ta", letterId: "ta", promptKey: "qb.p.dotCount.ta", choiceKind: "text", choices: DOT_KEYS, correct: "qb.dotCount.two" },
+    { id: "dotCount-alif", letterId: "alif", promptKey: "qb.p.dotCount.alif", displayChar: "ا", choiceKind: "text", choices: DOT_KEYS, correct: "qb.dotCount.none" },
+    { id: "dotCount-ba", letterId: "ba", promptKey: "qb.p.dotCount.ba", displayChar: "ب", choiceKind: "text", choices: DOT_KEYS, correct: "qb.dotCount.one" },
+    { id: "dotCount-ta", letterId: "ta", promptKey: "qb.p.dotCount.ta", displayChar: "ت", choiceKind: "text", choices: DOT_KEYS, correct: "qb.dotCount.two" },
 
     { id: "oddOneOut-alif", letterId: "alif", promptKey: "qb.p.oddOneOut.alif", choiceKind: "char", choices: CHARS, correct: "ا" },
     { id: "oddOneOut-ba", letterId: "ba", promptKey: "qb.p.oddOneOut.ba", choiceKind: "char", choices: CHARS, correct: "ب" },
     { id: "oddOneOut-ta", letterId: "ta", promptKey: "qb.p.oddOneOut.ta", choiceKind: "char", choices: CHARS, correct: "ت" },
 
-    { id: "matchTrait-alif", letterId: "alif", promptKey: "qb.p.matchTrait.alif", choiceKind: "text", choices: TRAIT_KEYS, correct: "lesson2.trait.alif" },
-    { id: "matchTrait-ba", letterId: "ba", promptKey: "qb.p.matchTrait.ba", choiceKind: "text", choices: TRAIT_KEYS, correct: "lesson2.trait.ba" },
-    { id: "matchTrait-ta", letterId: "ta", promptKey: "qb.p.matchTrait.ta", choiceKind: "text", choices: TRAIT_KEYS, correct: "lesson2.trait.ta" },
+    { id: "matchTrait-alif", letterId: "alif", promptKey: "qb.p.matchTrait", displayChar: "ا", choiceKind: "text", choices: TRAIT_KEYS, correct: "lesson2.trait.alif" },
+    { id: "matchTrait-ba", letterId: "ba", promptKey: "qb.p.matchTrait", displayChar: "ب", choiceKind: "text", choices: TRAIT_KEYS, correct: "lesson2.trait.ba" },
+    { id: "matchTrait-ta", letterId: "ta", promptKey: "qb.p.matchTrait", displayChar: "ت", choiceKind: "text", choices: TRAIT_KEYS, correct: "lesson2.trait.ta" },
 
     { id: "flash-alif", letterId: "alif", flash: true, flashChar: "ا", promptKey: "qb.p.flash", choiceKind: "char", choices: CHARS, correct: "ا" },
     { id: "flash-ba", letterId: "ba", flash: true, flashChar: "ب", promptKey: "qb.p.flash", choiceKind: "char", choices: CHARS, correct: "ب" },
@@ -647,7 +643,7 @@
 
   function renderLesson1() {
     var letter = LETTERS[state.lessonStep];
-    document.getElementById("lesson1-letter").textContent = letter.char;
+    setArabicText(document.getElementById("lesson1-letter"), letter.char);
     document.getElementById("lesson1-letter-name").textContent = t(letter.nameKey);
     document.getElementById("lesson1-letter-hint").textContent = t(letter.hintKey);
     document.getElementById("btn-lesson1-next").textContent = t("common.next");
@@ -666,6 +662,14 @@
   }
 
   /* ---------- quiz engine (data-driven, question bank) ---------- */
+
+  /* Renders an isolated Arabic character: own element, dir=rtl, lang=ar,
+     so it never inherits or mixes bidi context from surrounding DE/TR text. */
+  function setArabicText(el, char) {
+    el.textContent = char;
+    el.setAttribute("dir", "rtl");
+    el.setAttribute("lang", "ar");
+  }
 
   function shuffle(arr) {
     var a = arr.slice();
@@ -793,7 +797,7 @@
     var displayWrap = document.getElementById("exercise-display-char-wrap");
     if (q.displayChar && !q.flash) {
       displayWrap.hidden = false;
-      document.getElementById("exercise-display-char").textContent = q.displayChar;
+      setArabicText(document.getElementById("exercise-display-char"), q.displayChar);
     } else {
       displayWrap.hidden = true;
     }
@@ -810,7 +814,7 @@
     if (q.flash && !isResume) {
       questionBody.hidden = true;
       flashOverlay.hidden = false;
-      document.getElementById("exercise-flash-char").textContent = q.flashChar;
+      setArabicText(document.getElementById("exercise-flash-char"), q.flashChar);
       if (reducedMotion) {
         revealQuestion();
       } else {
@@ -834,6 +838,8 @@
       if (q.choiceKind === "char") {
         btn.className = "letter-choice arabic";
         btn.textContent = choiceValue;
+        btn.setAttribute("dir", "rtl");
+        btn.setAttribute("lang", "ar");
       } else {
         btn.className = "text-choice";
         btn.textContent = t(choiceValue);
@@ -937,7 +943,7 @@
       var chip = document.createElement("button");
       chip.className = "match-chip arabic";
       chip.setAttribute("data-letter-id", letter.id);
-      chip.textContent = letter.char;
+      setArabicText(chip, letter.char);
       chip.addEventListener("click", function (e) {
         onLetterChipClick(e.currentTarget.getAttribute("data-letter-id"));
       });
@@ -1052,7 +1058,7 @@
   function renderSequenceStep() {
     var el = document.getElementById("sequence-letter");
     if (!el) return;
-    el.textContent = LETTERS[sequenceIndex].char;
+    setArabicText(el, LETTERS[sequenceIndex].char);
     var dots = document.querySelectorAll("#sequence-dots .step-dot");
     for (var i = 0; i < dots.length; i++) {
       dots[i].classList.toggle("active", i === sequenceIndex);

@@ -94,6 +94,7 @@ button, .btn, a {
 .arabic {
   font-family: "Geeza Pro", "Damascus", "Al Bayan", "Baghdad", "KacstOne", "Traditional Arabic", serif;
   direction: rtl;
+  unicode-bidi: isolate;
 }
 
 .app-shell {
