@@ -31,3 +31,4 @@ Startsprachen: Deutsch, Türkisch, arabische Originaltexte und Aussprache.
 - [CLAUDE.md](./CLAUDE.md) – dauerhafte Arbeitsregeln
 - [docs/product-foundation.md](./docs/product-foundation.md) – Produktfundament
 - [docs/decision-log.md](./docs/decision-log.md) – Entscheidungsprotokoll
+- [docs/01-audience-and-problem-discovery.md](./docs/01-audience-and-problem-discovery.md) – Zielgruppen-, Problem- und Interview-Discovery

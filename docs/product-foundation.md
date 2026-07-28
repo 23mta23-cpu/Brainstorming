@@ -4,7 +4,7 @@
 
 ## Problemhypothese
 
-Bestehende Angebote zum islamischen Lernen sind entweder auf kurze, unterhaltungsgetriebene Inhalte (Social Media) oder auf einzelne Teilbereiche (z. B. reines Qur'an-Rezitieren) beschränkt. Es fehlt (Annahme) ein zusammenhängendes, alters- und lernstandsadaptives Lernangebot, das Elifba, Qur'anlesen und islamisches Grundwissen strukturiert verbindet und dabei religiös sorgfältig bleibt.
+Bestehende Angebote zum islamischen Lernen umfassen u. a. kurze, unterhaltungsgetriebene Inhalte (Social Media) sowie Angebote zu einzelnen Teilbereichen (z. B. Qur'an-Rezitation, Elifba). Es ist noch zu prüfen, ob bestehende Angebote einen strukturierten, alters- und lernstandsadaptiven Lernweg, der Elifba, Qur'anlesen und islamisches Wissen verbindet, ausreichend abdecken. Es wurde bisher **keine Wettbewerbsanalyse** durchgeführt; diese Aussage ist eine offene Frage, keine bestätigte Marktlücke.
 
 ## Produktvision
 
@@ -33,9 +33,12 @@ Eine islamische Lernplattform, die Nutzer:innen unabhängig von Alter und Vorwis
 4. Regelmäßige Wiederholung/Spaced Repetition zur Festigung.
 5. Perspektivisch: Zugang zu „Islam kennenlernen" für vertiefendes Grundlagenwissen.
 
-## Vorläufiger USP (unvalidiert)
+## Vorläufige Differenzierungshypothese
 
-Kombination aus altersgerechter *und* lernstandsgerechter Adaptivität, hanafitisch fundierten Inhalten mit transparenter Kennzeichnung von Meinungsverschiedenheiten, und Microlearning-Mechaniken ohne Optimierung auf Bildschirmzeit.
+- Ein belastbarer USP existiert noch nicht.
+- Die mögliche Differenzierung liegt derzeit in der Kombination aus erwachsenengerechtem Lernen, aktiven Kurzlektionen, gezielter Wiederholung, diskretem Lernen und transparent geprüften religiösen Inhalten.
+- Ob diese Kombination wirklich differenzierend ist, muss durch Wettbewerbsanalyse und Nutzerinterviews geprüft werden.
+- Siehe [docs/01-audience-and-problem-discovery.md](./01-audience-and-problem-discovery.md) für die aktuelle Zielgruppen- und Interview-Discovery.
 
 ## Abgrenzung (vorläufig, unvalidiert)
 
