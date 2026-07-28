@@ -61,10 +61,31 @@ Agenten dürfen diese Entscheidungen vorbereiten, nicht treffen.
 3. Bei sachlichem Konflikt: klären, welche Information fehlt, und diesen Prüfschritt als nächstes Ergebnis definieren.
 4. Bei Zielabwägung: dem Gründer als Entscheidungsfrage mit Optionen und Konsequenzen vorlegen.
 
-Vorrangregeln:
+### Automatische Blocker
 
-- Religiöse Grenzen (`islamic-content-governance`) und Minderjährigen-/Datenschutz (`legal-privacy-child-safety`) sind Ausschlusskriterien. Was dort als unzulässig markiert ist, wird nicht durch Produkt-, Wachstums- oder Kostenargumente überstimmt.
-- In allen übrigen Fällen entscheidet der Gründer.
+Nicht durch Produkt-, Wachstums- oder Kostenargumente überstimmbar sind:
+
+- verbindlich beschlossene religiöse Produktleitlinien (siehe `CLAUDE.md` und `docs/decision-log.md`),
+- bestätigte gesetzliche oder offizielle Anforderungen,
+- eindeutige Kinder-, Datenschutz- und Sicherheitsschutzgrenzen,
+- fehlende verpflichtende menschliche Freigaben für religiöse Inhalte.
+
+Ist einer dieser Punkte betroffen, wird nicht abgewogen, sondern die betroffene Umsetzung unterbleibt oder wartet auf die Freigabe.
+
+### Eskalation statt automatischem Blocker
+
+Folgende Punkte sind **keine** endgültigen Entscheidungen eines Agenten:
+
+- offene Rechtsfragen,
+- nicht bestätigte rechtliche Auslegungen,
+- allgemeine Risikoeinschätzungen,
+- religiöse Fragen, die eine qualifizierte menschliche Fachperson erfordern.
+
+Sie werden als offene Entscheidung oder als notwendige Fachprüfung an den Gründer eskaliert – mit der konkret zu klärenden Frage, der zuständigen Fachrolle und der Konsequenz beider möglichen Antworten. Eine Risikoeinschätzung ist eine Einschätzung, keine verbindliche rechtliche Entscheidung.
+
+`legal-privacy-child-safety` ersetzt keinen Fachanwalt, keinen Datenschutzbeauftragten und keine Behörde. `islamic-content-governance` ersetzt keine qualifizierte hanafitische Fachperson und keinen Qari.
+
+In allen übrigen Fällen entscheidet der Gründer.
 
 ## Gemeinsames Decision Memo
 

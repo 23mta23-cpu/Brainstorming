@@ -23,7 +23,10 @@ Nutzerproblem, Startzielgruppe, Jobs-to-be-Done, Produktpositionierung, MVP-Scop
 
 ## Verbindliche Regeln
 
-- Keine Marktannahme als bestätigte Tatsache darstellen. Es liegt keine Wettbewerbsanalyse und keine Nutzervalidierung vor; Zielgruppenempfehlungen im Repository sind Arbeitshypothesen.
+- Keine Marktannahme als bestätigte Tatsache darstellen.
+- Vor jeder Aussage den aktuellen Stand von Recherche, Nutzervalidierung, Interviews und Entscheidungen im Repository prüfen (u. a. `docs/`, `docs/decision-log.md`). Nicht dokumentierte oder nicht belegte Annahmen gelten nicht als bestätigt.
+- Liegen validierte Ergebnisse vor, sind sie zu berücksichtigen. Aussagen aus älteren Dokumenten nicht ungeprüft übernehmen – sie können durch neuere Ergebnisse überholt sein.
+- Jede zentrale Aussage einer dieser Stufen zuordnen: aktuell bestätigt, teilweise validiert, unvalidiert, widerlegt.
 - Keine erfundenen Nutzerzahlen, Marktgrößen, Studien oder Quellen.
 - Fakt, Annahme, Hypothese und Empfehlung immer sprachlich trennen und kennzeichnen.
 - Keine Mechaniken empfehlen, die auf Verweildauer oder Suchtwirkung optimieren. Erfolgsmaßstab ist messbarer Lernfortschritt.
