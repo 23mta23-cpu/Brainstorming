@@ -30,6 +30,8 @@ Startsprachen: Deutsch, Türkisch, arabische Originaltexte und Aussprache.
 
 Version 2 ergänzt eine „Entdecken“-Ansicht mit kurzen, unterschiedlichen Lernmedien (vertikales Scroll-Snap-Feed) sowie zwei weitere simulierte Lektionsformate. Da in der Entwicklungsumgebung kein `ffmpeg` verfügbar war, wurden die medienartigen Momente bewusst **nicht** als MP4-Videos, sondern als selbst erstellte, lautlose CSS-/SVG-Animationen umgesetzt (kein Video-Element, keine externen Medien).
 
+**Version 3** ersetzt die früher fest verdrahtete Übungsfrage durch eine echte, datengetriebene Quiz-Engine (21 Fragen, 7 pro Buchstabe, 7 Aufgabentypen) mit Wiederholungsvermeidung, gemischten Antwortreihenfolgen und einer „Fehler wiederholen“-Funktion. Vor der Umsetzung wurde erneut geprüft, ob eine echte H.264-MP4-Erzeugung möglich ist (ffmpeg, imageio_ffmpeg, moviepy, OpenCV VideoWriter, weitere lokale Encoder). Ergebnis: **kein geeigneter H.264/MP4-Encoder vorhanden** (das einzige lokal gefundene ffmpeg-Binary ist eine für Playwright-Bildschirmaufnahmen abgespeckte Build ohne H.264- oder MP4-Unterstützung, nur VP8/WebM). Es wurden daher **keine MP4-Dateien** erzeugt. Die bestehenden CSS-/SVG-Animationen im „Entdecken“-Bereich sind entsprechend eindeutig als **„Animiertes Lernmedium“** gekennzeichnet, nicht als „Video“.
+
 ## Weiterführende Dokumente
 
 - [CLAUDE.md](./CLAUDE.md) – dauerhafte Arbeitsregeln

@@ -71,7 +71,7 @@
 
       <div class="hero-card">
         <p class="hero-label" data-i18n="dashboard.heroLabel">Heute lernen</p>
-        <p class="hero-suggestion" data-i18n="dashboard.today">Heute: 5 Minuten · 3 Buchstaben</p>
+        <p class="hero-suggestion" id="hero-suggestion">Heute: Alif sicher erkennen</p>
         <button class="btn btn-hero" id="btn-hero-cta" data-i18n="dashboard.cta">Heute weiterlernen</button>
       </div>
 
@@ -185,7 +185,10 @@
             <line class="post-alif-path" x1="60" y1="20" x2="60" y2="180" />
           </svg>
         </div>
-        <span class="post-duration" data-i18n="post1.duration">20 Sek.</span>
+        <div class="post-badges">
+          <span class="post-duration" data-i18n="post1.duration">20 Sek.</span>
+          <span class="post-media-tag" data-i18n="media.animatedLabel">Animiertes Lernmedium</span>
+        </div>
         <button class="save-btn" data-save="post1" data-i18n="action.save">Speichern</button>
         <div class="post-body">
           <h3 class="post-title" data-i18n="post1.title">Alif erkennen</h3>
@@ -207,7 +210,10 @@
             <span class="post-dot post-dot-ta-2"></span>
           </div>
         </div>
-        <span class="post-duration" data-i18n="post2.duration">30 Sek.</span>
+        <div class="post-badges">
+          <span class="post-duration" data-i18n="post2.duration">30 Sek.</span>
+          <span class="post-media-tag" data-i18n="media.animatedLabel">Animiertes Lernmedium</span>
+        </div>
         <button class="save-btn" data-save="post2" data-i18n="action.save">Speichern</button>
         <div class="post-body">
           <h3 class="post-title" data-i18n="post2.title">Bā und Tā unterscheiden</h3>
@@ -222,6 +228,9 @@
           <span class="connect-glyph connect-glyph-1 arabic">ا</span>
           <span class="connect-glyph connect-glyph-2 arabic">ب</span>
           <span class="connect-glyph connect-glyph-3 arabic">ت</span>
+        </div>
+        <div class="post-badges">
+          <span class="post-media-tag" data-i18n="media.animatedLabel">Animiertes Lernmedium</span>
         </div>
         <button class="save-btn" data-save="post3" data-i18n="action.save">Speichern</button>
         <div class="post-body">
@@ -238,6 +247,9 @@
           <div class="step-dots" id="sequence-dots">
             <span class="step-dot"></span><span class="step-dot"></span><span class="step-dot"></span>
           </div>
+        </div>
+        <div class="post-badges">
+          <span class="post-media-tag" data-i18n="media.animatedLabel">Animiertes Lernmedium</span>
         </div>
         <button class="save-btn" data-save="post4" data-i18n="action.save">Speichern</button>
         <div class="post-body">
@@ -305,22 +317,38 @@
     <div class="screen screen-center screen-compact">
       <button class="back-btn back-btn-self" data-back><span class="back-arrow">‹</span> <span data-i18n="common.back">Zurück</span></button>
       <p class="eyebrow" data-i18n="exercise.eyebrow">Übung</p>
-      <h2 class="view-title" id="exercise-question">Welcher Buchstabe ist Bā?</h2>
-      <div class="letter-choice-row" id="exercise-choices"></div>
-      <p class="feedback" id="exercise-feedback" hidden></p>
-      <button class="btn btn-primary" id="btn-exercise-next" data-i18n="common.next" hidden>Weiter</button>
+      <div class="round-meta" id="exercise-round-meta" hidden>
+        <span id="exercise-round-progress"></span>
+        <span id="exercise-score"></span>
+      </div>
+
+      <div class="flash-overlay" id="exercise-flash-overlay" hidden>
+        <div class="letter-badge"><div class="letter-display arabic" id="exercise-flash-char"></div></div>
+        <p class="fine-print" data-i18n="qb.flash.watch">Schau genau hin …</p>
+      </div>
+
+      <div id="exercise-question-body">
+        <div class="letter-badge" id="exercise-display-char-wrap" hidden>
+          <div class="letter-display arabic" id="exercise-display-char"></div>
+        </div>
+        <h2 class="view-title" id="exercise-question">Welcher Buchstabe ist Bā?</h2>
+        <div class="letter-choice-row" id="exercise-choices"></div>
+        <p class="feedback" id="exercise-feedback" hidden></p>
+        <button class="btn btn-primary" id="btn-exercise-next" data-i18n="common.next" hidden>Weiter</button>
+      </div>
     </div>
   </section>
 
-  <!-- Ansicht: Lektion abgeschlossen -->
+  <!-- Ansicht: Auswertung der Übungsrunde -->
   <section class="view" id="view-complete">
     <div class="screen screen-center">
-      <h2 class="view-title" data-i18n="complete.title">Lektion abgeschlossen</h2>
-      <p class="subtext" data-i18n="complete.text">Du hast heute drei Buchstaben kennengelernt.</p>
-      <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+      <h2 class="view-title" data-i18n="round.summaryTitle">Auswertung</h2>
+      <p class="subtext" id="round-summary-score"></p>
+      <div class="round-summary-list" id="round-summary-list"></div>
       <p class="fine-print" data-i18n="complete.demoLabel">Demo-Fortschritt</p>
-      <button class="btn btn-secondary" id="btn-complete-repeat" data-i18n="complete.repeat">Kurz wiederholen</button>
-      <button class="btn btn-primary" id="btn-complete-home" data-i18n="complete.home">Zur Startseite</button>
+      <button class="btn btn-primary" id="btn-round-new" data-i18n="round.newRound">Neue Übungsrunde</button>
+      <button class="btn btn-secondary" id="btn-round-retry-wrong" data-i18n="round.retryWrong" hidden>Fehler wiederholen</button>
+      <button class="btn btn-secondary" id="btn-complete-home" data-i18n="complete.home">Zur Startseite</button>
     </div>
   </section>
 

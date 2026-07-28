@@ -33,7 +33,10 @@
 
       "dashboard.greeting": "Willkommen zurück",
       "dashboard.demoNoteShort": "Demo-Inhalte – fachliche Prüfung ausstehend.",
-      "dashboard.today": "Heute: 5 Minuten · 3 Buchstaben",
+      "dashboard.today0": "Heute: Alif sicher erkennen",
+      "dashboard.today1": "Heute: Bā und Tā unterscheiden",
+      "dashboard.today2": "Heute: drei Buchstaben wiederholen",
+      "dashboard.today3": "Heute: Formen den Namen zuordnen",
       "dashboard.heroLabel": "Heute lernen",
       "dashboard.cta": "Heute weiterlernen",
       "dashboard.pathTitle": "Dein Lernweg",
@@ -77,16 +80,44 @@
       "lesson.ta.hint": "Ähnliche Form wie Bā, aber mit zwei Punkten darüber.",
 
       "exercise.eyebrow": "Übung",
-      "exercise.q1": "Welcher Buchstabe ist Bā?",
-      "exercise.q2": "Welcher Buchstabe ist Tā?",
-      "exercise.q3": "Welcher Buchstabe ist Alif?",
       "exercise.correctPrefix": "Richtig – das ist ",
       "exercise.incorrect": "Noch nicht. Schau dir die Form noch einmal an.",
 
-      "complete.title": "Lektion abgeschlossen",
-      "complete.text": "Du hast heute drei Buchstaben kennengelernt.",
+      "qb.p.nameToChar.alif": "Welcher Buchstabe ist Alif?",
+      "qb.p.nameToChar.ba": "Welcher Buchstabe ist Bā?",
+      "qb.p.nameToChar.ta": "Welcher Buchstabe ist Tā?",
+      "qb.p.charToName": "Wie heißt dieser Buchstabe?",
+      "qb.p.trait.alif": "Welcher Buchstabe hat keinen Punkt?",
+      "qb.p.trait.ba": "Welcher Buchstabe hat einen Punkt darunter?",
+      "qb.p.trait.ta": "Welcher Buchstabe hat zwei Punkte darüber?",
+      "qb.p.dotCount.alif": "Wie viele Punkte hat Alif?",
+      "qb.p.dotCount.ba": "Wie viele Punkte hat Bā?",
+      "qb.p.dotCount.ta": "Wie viele Punkte hat Tā?",
+      "qb.dotCount.none": "Kein Punkt",
+      "qb.dotCount.one": "Ein Punkt",
+      "qb.dotCount.two": "Zwei Punkte",
+      "qb.p.oddOneOut.alif": "Welches Zeichen hat als einziges keine Punkte?",
+      "qb.p.oddOneOut.ba": "Welches Zeichen hat einen Punkt unten statt oben?",
+      "qb.p.oddOneOut.ta": "Welches Zeichen hat zwei Punkte statt einem oder keinem?",
+      "qb.p.matchTrait.alif": "Welches Merkmal passt zu ا؟",
+      "qb.p.matchTrait.ba": "Welches Merkmal passt zu ب؟",
+      "qb.p.matchTrait.ta": "Welches Merkmal passt zu ت؟",
+      "qb.p.flash": "Welcher Buchstabe wurde gerade gezeigt?",
+      "qb.flash.watch": "Schau genau hin …",
+
+      "round.questionOf": "Frage {n} von {total}",
+      "round.score": "Punkte: {n}",
+      "round.resultCorrect": "richtig",
+      "round.resultRetry": "noch einmal wiederholen",
+      "round.summaryTitle": "Auswertung",
+      "round.summaryScore": "{score} von {total} richtig",
+      "round.newRound": "Neue Übungsrunde",
+      "round.retryWrong": "Fehler wiederholen",
+
+      "media.videoLabel": "Video",
+      "media.animatedLabel": "Animiertes Lernmedium",
+
       "complete.demoLabel": "Demo-Fortschritt",
-      "complete.repeat": "Kurz wiederholen",
       "complete.home": "Zur Startseite",
 
       "lesson2.title": "Formen unterscheiden",
@@ -200,7 +231,10 @@
 
       "dashboard.greeting": "Tekrar hoş geldin",
       "dashboard.demoNoteShort": "Demo içerikler – uzman incelemesi bekleniyor.",
-      "dashboard.today": "Bugün: 5 dakika · 3 harf",
+      "dashboard.today0": "Bugün: Elif'i güvenle tanı",
+      "dashboard.today1": "Bugün: Bā ve Tā'yı ayırt et",
+      "dashboard.today2": "Bugün: üç harfi tekrar et",
+      "dashboard.today3": "Bugün: şekilleri isimleriyle eşleştir",
       "dashboard.heroLabel": "Bugün öğren",
       "dashboard.cta": "Bugün öğrenmeye devam et",
       "dashboard.pathTitle": "Öğrenme yolun",
@@ -244,16 +278,44 @@
       "lesson.ta.hint": "Bā ile benzer şekil, ancak üzerinde iki nokta.",
 
       "exercise.eyebrow": "Alıştırma",
-      "exercise.q1": "Bā harfi hangisidir?",
-      "exercise.q2": "Tā harfi hangisidir?",
-      "exercise.q3": "Elif harfi hangisidir?",
       "exercise.correctPrefix": "Doğru – bu ",
       "exercise.incorrect": "Henüz değil. Şekle tekrar bak.",
 
-      "complete.title": "Ders tamamlandı",
-      "complete.text": "Bugün üç harf öğrendin.",
+      "qb.p.nameToChar.alif": "Hangi harf Elif'tir?",
+      "qb.p.nameToChar.ba": "Hangi harf Bā'dır?",
+      "qb.p.nameToChar.ta": "Hangi harf Tā'dır?",
+      "qb.p.charToName": "Bu harfin adı nedir?",
+      "qb.p.trait.alif": "Hangi harfin noktası yoktur?",
+      "qb.p.trait.ba": "Hangi harfin altında bir nokta vardır?",
+      "qb.p.trait.ta": "Hangi harfin üzerinde iki nokta vardır?",
+      "qb.p.dotCount.alif": "Elif'in kaç noktası vardır?",
+      "qb.p.dotCount.ba": "Bā'nın kaç noktası vardır?",
+      "qb.p.dotCount.ta": "Tā'nın kaç noktası vardır?",
+      "qb.dotCount.none": "Nokta yok",
+      "qb.dotCount.one": "Bir nokta",
+      "qb.dotCount.two": "İki nokta",
+      "qb.p.oddOneOut.alif": "Noktası olmayan tek işaret hangisidir?",
+      "qb.p.oddOneOut.ba": "Üstte değil altta noktası olan işaret hangisidir?",
+      "qb.p.oddOneOut.ta": "Bir ya da hiç değil, iki noktası olan işaret hangisidir?",
+      "qb.p.matchTrait.alif": "ا işaretine hangi özellik uyuyor?",
+      "qb.p.matchTrait.ba": "ب işaretine hangi özellik uyuyor?",
+      "qb.p.matchTrait.ta": "ت işaretine hangi özellik uyuyor?",
+      "qb.p.flash": "Az önce hangi harf gösterildi?",
+      "qb.flash.watch": "Dikkatlice bak …",
+
+      "round.questionOf": "Soru {n} / {total}",
+      "round.score": "Puan: {n}",
+      "round.resultCorrect": "doğru",
+      "round.resultRetry": "tekrar dene",
+      "round.summaryTitle": "Değerlendirme",
+      "round.summaryScore": "{total} sorudan {score} doğru",
+      "round.newRound": "Yeni alıştırma turu",
+      "round.retryWrong": "Hataları tekrar et",
+
+      "media.videoLabel": "Video",
+      "media.animatedLabel": "Canlandırılmış öğrenme medyası",
+
       "complete.demoLabel": "Demo ilerleme",
-      "complete.repeat": "Kısaca tekrar et",
       "complete.home": "Ana sayfaya dön",
 
       "lesson2.title": "Şekilleri ayırt etme",
@@ -345,6 +407,54 @@
     { id: "ba", char: "ب", nameKey: "lesson.ba.name", hintKey: "lesson.ba.hint", traitKey: "lesson2.trait.ba" },
     { id: "ta", char: "ت", nameKey: "lesson.ta.name", hintKey: "lesson.ta.hint", traitKey: "lesson2.trait.ta" }
   ];
+
+  function letterById(id) {
+    for (var i = 0; i < LETTERS.length; i++) if (LETTERS[i].id === id) return LETTERS[i];
+    return null;
+  }
+
+  var NAME_KEYS = ["lesson.alif.name", "lesson.ba.name", "lesson.ta.name"];
+  var TRAIT_KEYS = ["lesson2.trait.alif", "lesson2.trait.ba", "lesson2.trait.ta"];
+  var CHARS = ["ا", "ب", "ت"];
+  var DOT_KEYS = ["qb.dotCount.none", "qb.dotCount.one", "qb.dotCount.two"];
+
+  /* Question Bank: 21 questions, 7 per letter, 7 distinct task types.
+     choiceKind 'char' renders large Arabic letter buttons; 'text' renders i18n-key text buttons. */
+  var QUESTION_BANK = [
+    { id: "nameToChar-alif", letterId: "alif", promptKey: "qb.p.nameToChar.alif", choiceKind: "char", choices: CHARS, correct: "ا" },
+    { id: "nameToChar-ba", letterId: "ba", promptKey: "qb.p.nameToChar.ba", choiceKind: "char", choices: CHARS, correct: "ب" },
+    { id: "nameToChar-ta", letterId: "ta", promptKey: "qb.p.nameToChar.ta", choiceKind: "char", choices: CHARS, correct: "ت" },
+
+    { id: "charToName-alif", letterId: "alif", promptKey: "qb.p.charToName", displayChar: "ا", choiceKind: "text", choices: NAME_KEYS, correct: "lesson.alif.name" },
+    { id: "charToName-ba", letterId: "ba", promptKey: "qb.p.charToName", displayChar: "ب", choiceKind: "text", choices: NAME_KEYS, correct: "lesson.ba.name" },
+    { id: "charToName-ta", letterId: "ta", promptKey: "qb.p.charToName", displayChar: "ت", choiceKind: "text", choices: NAME_KEYS, correct: "lesson.ta.name" },
+
+    { id: "trait-alif", letterId: "alif", promptKey: "qb.p.trait.alif", choiceKind: "char", choices: CHARS, correct: "ا" },
+    { id: "trait-ba", letterId: "ba", promptKey: "qb.p.trait.ba", choiceKind: "char", choices: CHARS, correct: "ب" },
+    { id: "trait-ta", letterId: "ta", promptKey: "qb.p.trait.ta", choiceKind: "char", choices: CHARS, correct: "ت" },
+
+    { id: "dotCount-alif", letterId: "alif", promptKey: "qb.p.dotCount.alif", choiceKind: "text", choices: DOT_KEYS, correct: "qb.dotCount.none" },
+    { id: "dotCount-ba", letterId: "ba", promptKey: "qb.p.dotCount.ba", choiceKind: "text", choices: DOT_KEYS, correct: "qb.dotCount.one" },
+    { id: "dotCount-ta", letterId: "ta", promptKey: "qb.p.dotCount.ta", choiceKind: "text", choices: DOT_KEYS, correct: "qb.dotCount.two" },
+
+    { id: "oddOneOut-alif", letterId: "alif", promptKey: "qb.p.oddOneOut.alif", choiceKind: "char", choices: CHARS, correct: "ا" },
+    { id: "oddOneOut-ba", letterId: "ba", promptKey: "qb.p.oddOneOut.ba", choiceKind: "char", choices: CHARS, correct: "ب" },
+    { id: "oddOneOut-ta", letterId: "ta", promptKey: "qb.p.oddOneOut.ta", choiceKind: "char", choices: CHARS, correct: "ت" },
+
+    { id: "matchTrait-alif", letterId: "alif", promptKey: "qb.p.matchTrait.alif", choiceKind: "text", choices: TRAIT_KEYS, correct: "lesson2.trait.alif" },
+    { id: "matchTrait-ba", letterId: "ba", promptKey: "qb.p.matchTrait.ba", choiceKind: "text", choices: TRAIT_KEYS, correct: "lesson2.trait.ba" },
+    { id: "matchTrait-ta", letterId: "ta", promptKey: "qb.p.matchTrait.ta", choiceKind: "text", choices: TRAIT_KEYS, correct: "lesson2.trait.ta" },
+
+    { id: "flash-alif", letterId: "alif", flash: true, flashChar: "ا", promptKey: "qb.p.flash", choiceKind: "char", choices: CHARS, correct: "ا" },
+    { id: "flash-ba", letterId: "ba", flash: true, flashChar: "ب", promptKey: "qb.p.flash", choiceKind: "char", choices: CHARS, correct: "ب" },
+    { id: "flash-ta", letterId: "ta", flash: true, flashChar: "ت", promptKey: "qb.p.flash", choiceKind: "char", choices: CHARS, correct: "ت" }
+  ];
+
+  function questionById(id) {
+    for (var i = 0; i < QUESTION_BANK.length; i++) if (QUESTION_BANK[i].id === id) return QUESTION_BANK[i];
+    return null;
+  }
+
   var NAV_VIEWS = ["home", "discover", "progress", "settings"];
   var SETTINGS_KEY = "iqraProtoSettings";
   var STATE_KEY = "iqraProtoState";
@@ -356,17 +466,20 @@
     situation: null,
     goal: null,
     lessonStep: 0,
-    exercise: null,
-    exerciseSolved: false,
     matching: { matched: {}, selectedLetter: null },
     progress: { letters: 0, lessons: 0, minutes: 0 },
     savedMedia: [],
-    backTarget: "home"
+    backTarget: "home",
+    qb: { askedIds: [], wrongIds: [], lastLetterId: null },
+    round: null
   };
 
+  var flashTimer = null;
+  var resumingRound = false;
   var sequenceTimer = null;
   var sequenceIndex = 0;
   var discoverObserver = null;
+  var reducedMotion = false;
 
   /* ---------- persistence ---------- */
 
@@ -386,6 +499,8 @@
         if (typeof d.goal === "string") state.goal = d.goal;
         if (d.progress) state.progress = d.progress;
         if (Array.isArray(d.savedMedia)) state.savedMedia = d.savedMedia;
+        if (d.qb) state.qb = d.qb;
+        if (d.round) state.round = d.round;
       }
     } catch (e) {
       /* localStorage unavailable — fall back to defaults */
@@ -405,7 +520,9 @@
         situation: state.situation,
         goal: state.goal,
         progress: state.progress,
-        savedMedia: state.savedMedia
+        savedMedia: state.savedMedia,
+        qb: state.qb,
+        round: state.round
       }));
     } catch (e) {}
   }
@@ -427,7 +544,8 @@
     if (document.getElementById("view-home").classList.contains("active")) renderHome();
     if (document.getElementById("view-path").classList.contains("active")) renderPath();
     if (document.getElementById("view-lesson1").classList.contains("active")) renderLesson1();
-    if (document.getElementById("view-exercise").classList.contains("active")) renderExercise();
+    if (document.getElementById("view-exercise").classList.contains("active")) showQuestion(false);
+    if (document.getElementById("view-complete").classList.contains("active")) renderRoundSummary();
     if (document.getElementById("view-lesson2").classList.contains("active")) renderLesson2();
     if (document.getElementById("view-progress").classList.contains("active")) renderProgress();
     if (document.getElementById("view-discover").classList.contains("active")) renderDiscoverDynamic();
@@ -474,6 +592,7 @@
     if (name === "exercise") renderExercise();
     if (name === "lesson2") renderLesson2();
     if (name === "progress") renderProgress();
+    if (name === "complete") renderRoundSummary();
 
     document.getElementById("app-shell").scrollTop = 0;
   }
@@ -500,12 +619,21 @@
 
   /* ---------- home ---------- */
 
+  /* Demo-Logik: stabile Tagesempfehlung, wechselt an anderen Kalendertagen. */
+  function getDailyRecommendationKey() {
+    var now = new Date();
+    var dayNumber = now.getFullYear() * 372 + now.getMonth() * 31 + now.getDate();
+    var idx = ((dayNumber % 4) + 4) % 4;
+    return "dashboard.today" + idx;
+  }
+
   function renderHome() {
     var fraction = state.progress.letters / 28;
     document.getElementById("home-repeat-fill").style.width = Math.round(fraction * 100) + "%";
     document.getElementById("home-stat-letters").textContent = state.progress.letters + "/28";
     document.getElementById("home-stat-lessons").textContent = String(state.progress.lessons);
     document.getElementById("home-stat-minutes").textContent = String(state.progress.minutes);
+    document.getElementById("hero-suggestion").textContent = t(getDailyRecommendationKey());
 
     document.getElementById("lesson-card-1").classList.toggle("format-active", true);
   }
@@ -537,32 +665,183 @@
     showView("lesson1");
   }
 
-  /* ---------- exercise (generic engine) ---------- */
+  /* ---------- quiz engine (data-driven, question bank) ---------- */
 
-  function startExercise(config, backTarget) {
-    state.exercise = config;
-    state.exerciseSolved = false;
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  /* Picks one question from candidates, preferring ones not yet asked in the
+     current pool cycle, never repeating the exact last question, and — unless
+     impossible — avoiding the same target letter as the previous pick. */
+  function pickOne(candidates, opts) {
+    opts = opts || {};
+    var pool = candidates.filter(function (q) { return q.id !== opts.avoidId; });
+    if (!pool.length) pool = candidates.slice();
+    var unused = pool.filter(function (q) { return state.qb.askedIds.indexOf(q.id) === -1; });
+    var preferred = unused.length ? unused : pool;
+    if (opts.avoidLetterId) {
+      var noSameLetter = preferred.filter(function (q) { return q.letterId !== opts.avoidLetterId; });
+      if (noSameLetter.length) preferred = noSameLetter;
+    }
+    return preferred[Math.floor(Math.random() * preferred.length)];
+  }
+
+  function markAsked(question) {
+    state.qb.askedIds.push(question.id);
+    if (state.qb.askedIds.length >= QUESTION_BANK.length) {
+      state.qb.askedIds = [question.id];
+    }
+    state.qb.lastLetterId = question.letterId;
+  }
+
+  function lastAskedId() {
+    return state.qb.askedIds.length ? state.qb.askedIds[state.qb.askedIds.length - 1] : null;
+  }
+
+  function buildBalancedRound() {
+    var letterOrder = shuffle(["alif", "ba", "ta"]);
+    var questions = [];
+    letterOrder.forEach(function (letterId, idx) {
+      var candidates = QUESTION_BANK.filter(function (q) { return q.letterId === letterId; });
+      var avoidId = idx === 0 ? lastAskedId() : questions[idx - 1].id;
+      var picked = pickOne(candidates, { avoidId: avoidId });
+      markAsked(picked);
+      questions.push(picked);
+    });
+    return questions;
+  }
+
+  function buildFocusRound(letterFilter) {
+    var candidates = QUESTION_BANK.filter(function (q) { return letterFilter.indexOf(q.letterId) !== -1; });
+    var picked = pickOne(candidates, { avoidId: lastAskedId(), avoidLetterId: state.qb.lastLetterId });
+    markAsked(picked);
+    return [picked];
+  }
+
+  function buildMixedRound(letterFilter, count) {
+    var basePool = QUESTION_BANK.filter(function (q) { return letterFilter.indexOf(q.letterId) !== -1; });
+    var questions = [];
+    for (var i = 0; i < count; i++) {
+      var remaining = basePool.filter(function (q) { return questions.indexOf(q) === -1; });
+      if (!remaining.length) remaining = basePool.slice();
+      var avoidId = i === 0 ? lastAskedId() : questions[i - 1].id;
+      var avoidLetterId = i === 0 ? state.qb.lastLetterId : questions[i - 1].letterId;
+      var picked = pickOne(remaining, { avoidId: avoidId, avoidLetterId: avoidLetterId });
+      markAsked(picked);
+      questions.push(picked);
+    }
+    return questions;
+  }
+
+  function buildWrongRound() {
+    var candidates = QUESTION_BANK.filter(function (q) { return state.qb.wrongIds.indexOf(q.id) !== -1; });
+    return shuffle(candidates);
+  }
+
+  function startRound(questions, mode, backTarget) {
+    if (!questions.length) return;
+    state.round = {
+      active: true,
+      mode: mode,
+      questionIds: questions.map(function (q) { return q.id; }),
+      currentIndex: 0,
+      score: 0,
+      attemptedWrong: {},
+      results: {},
+      backTarget: backTarget || "home"
+    };
     state.backTarget = backTarget || "home";
+    persistState();
     showView("exercise");
   }
 
+  function currentQuestion() {
+    if (!state.round) return null;
+    return questionById(state.round.questionIds[state.round.currentIndex]);
+  }
+
   function renderExercise() {
-    if (!state.exercise) {
-      state.exercise = { questionKey: "exercise.q1", choices: ["ا", "ب", "ت"], correct: "ب", nextView: "complete" };
+    if (!state.round) {
+      startRound(buildBalancedRound(), "balanced3", "home");
+      return;
     }
-    var cfg = state.exercise;
-    document.getElementById("exercise-question").textContent = t(cfg.questionKey);
+    showQuestion(resumingRound);
+    resumingRound = false;
+  }
+
+  function showQuestion(isResume) {
+    var round = state.round;
+    var q = currentQuestion();
+    if (!q) return;
+    clearTimeout(flashTimer);
+
+    var isMultiQuestion = round.questionIds.length > 1;
+    var metaEl = document.getElementById("exercise-round-meta");
+    metaEl.hidden = !isMultiQuestion;
+    if (isMultiQuestion) {
+      document.getElementById("exercise-round-progress").textContent =
+        t("round.questionOf").replace("{n}", round.currentIndex + 1).replace("{total}", round.questionIds.length);
+      document.getElementById("exercise-score").textContent = t("round.score").replace("{n}", round.score);
+    }
+
+    var displayWrap = document.getElementById("exercise-display-char-wrap");
+    if (q.displayChar && !q.flash) {
+      displayWrap.hidden = false;
+      document.getElementById("exercise-display-char").textContent = q.displayChar;
+    } else {
+      displayWrap.hidden = true;
+    }
+
+    var flashOverlay = document.getElementById("exercise-flash-overlay");
+    var questionBody = document.getElementById("exercise-question-body");
+
+    function revealQuestion() {
+      flashOverlay.hidden = true;
+      questionBody.hidden = false;
+      renderQuestionBody(q);
+    }
+
+    if (q.flash && !isResume) {
+      questionBody.hidden = true;
+      flashOverlay.hidden = false;
+      document.getElementById("exercise-flash-char").textContent = q.flashChar;
+      if (reducedMotion) {
+        revealQuestion();
+      } else {
+        flashTimer = setTimeout(revealQuestion, 1100);
+      }
+    } else {
+      flashOverlay.hidden = true;
+      questionBody.hidden = false;
+      renderQuestionBody(q);
+    }
+  }
+
+  function renderQuestionBody(q) {
+    document.getElementById("exercise-question").textContent = t(q.promptKey);
+    var shuffledChoices = shuffle(q.choices);
     var row = document.getElementById("exercise-choices");
     row.innerHTML = "";
-    row.className = "letter-choice-row choices-" + cfg.choices.length;
-    for (var i = 0; i < cfg.choices.length; i++) {
+    row.className = "letter-choice-row choices-" + shuffledChoices.length;
+    shuffledChoices.forEach(function (choiceValue) {
       var btn = document.createElement("button");
-      btn.className = "letter-choice arabic";
-      btn.setAttribute("data-letter", cfg.choices[i]);
-      btn.textContent = cfg.choices[i];
-      btn.addEventListener("click", onExerciseChoice);
+      if (q.choiceKind === "char") {
+        btn.className = "letter-choice arabic";
+        btn.textContent = choiceValue;
+      } else {
+        btn.className = "text-choice";
+        btn.textContent = t(choiceValue);
+      }
+      btn.setAttribute("data-value", choiceValue);
+      btn.addEventListener("click", onChoiceClick);
       row.appendChild(btn);
-    }
+    });
     var feedback = document.getElementById("exercise-feedback");
     feedback.hidden = true;
     feedback.textContent = "";
@@ -570,23 +849,33 @@
     document.getElementById("btn-exercise-next").hidden = true;
   }
 
-  function onExerciseChoice(e) {
-    if (state.exerciseSolved) return;
-    var picked = e.currentTarget.getAttribute("data-letter");
-    var cfg = state.exercise;
+  function onChoiceClick(e) {
+    var round = state.round;
+    var q = currentQuestion();
+    if (!round || !q || round.results[q.id]) return;
+    var picked = e.currentTarget.getAttribute("data-value");
     var feedback = document.getElementById("exercise-feedback");
     feedback.hidden = false;
-    if (picked === cfg.correct) {
-      state.exerciseSolved = true;
+    if (picked === q.correct) {
+      var hadMistake = !!round.attemptedWrong[q.id];
+      round.results[q.id] = hadMistake ? "retry" : "correct";
+      if (!hadMistake) round.score += 1;
+      var wrongIdx = state.qb.wrongIds.indexOf(q.id);
+      if (!hadMistake && wrongIdx !== -1) state.qb.wrongIds.splice(wrongIdx, 1);
       e.currentTarget.classList.add("correct");
-      feedback.textContent = t("exercise.correctPrefix") + cfg.correct + ".";
+      var label = q.choiceKind === "char" ? q.correct : t(q.correct);
+      feedback.textContent = t("exercise.correctPrefix") + label + ".";
       feedback.className = "feedback feedback-correct";
       document.getElementById("btn-exercise-next").hidden = false;
+      persistState();
     } else {
+      round.attemptedWrong[q.id] = true;
+      if (state.qb.wrongIds.indexOf(q.id) === -1) state.qb.wrongIds.push(q.id);
       var wrongBtn = e.currentTarget;
       wrongBtn.classList.add("incorrect");
       feedback.textContent = t("exercise.incorrect");
       feedback.className = "feedback feedback-incorrect";
+      persistState();
       setTimeout(function () {
         wrongBtn.classList.remove("incorrect");
       }, 700);
@@ -594,13 +883,44 @@
   }
 
   function onExerciseNext() {
-    var cfg = state.exercise;
-    if (cfg.nextView === "complete") {
-      markLessonComplete();
-      showView("complete");
-    } else {
-      showView(state.backTarget || "home");
+    var round = state.round;
+    if (!round) return;
+    if (round.currentIndex + 1 < round.questionIds.length) {
+      round.currentIndex += 1;
+      persistState();
+      showQuestion(false);
+      return;
     }
+    round.active = false;
+    if (round.questionIds.length === 1) {
+      persistState();
+      showView(round.backTarget || "home");
+    } else {
+      markLessonComplete();
+      persistState();
+      showView("complete");
+    }
+  }
+
+  function renderRoundSummary() {
+    var round = state.round;
+    if (!round) return;
+    document.getElementById("round-summary-score").textContent =
+      t("round.summaryScore").replace("{score}", round.score).replace("{total}", round.questionIds.length);
+    var list = document.getElementById("round-summary-list");
+    list.innerHTML = "";
+    round.questionIds.forEach(function (qid) {
+      var q = questionById(qid);
+      var letter = letterById(q.letterId);
+      var result = round.results[qid] === "correct" ? t("round.resultCorrect") : t("round.resultRetry");
+      var row = document.createElement("div");
+      row.className = "round-summary-row" + (round.results[qid] === "correct" ? " result-correct" : " result-retry");
+      row.innerHTML = "<span class=\"round-summary-letter\"></span><span class=\"round-summary-result\"></span>";
+      row.querySelector(".round-summary-letter").textContent = t(letter.nameKey);
+      row.querySelector(".round-summary-result").textContent = result;
+      list.appendChild(row);
+    });
+    document.getElementById("btn-round-retry-wrong").hidden = state.qb.wrongIds.length === 0;
   }
 
   /* ---------- lesson 2: matching ---------- */
@@ -720,6 +1040,7 @@
     sequenceIndex = 0;
     renderSequenceStep();
     if (sequenceTimer) clearInterval(sequenceTimer);
+    if (reducedMotion) return;
     sequenceTimer = setInterval(advanceSequence, 1400);
   }
 
@@ -781,6 +1102,8 @@
     state.onboardingDone = false;
     state.progress = { letters: 0, lessons: 0, minutes: 0 };
     state.savedMedia = [];
+    state.qb = { askedIds: [], wrongIds: [], lastLetterId: null };
+    state.round = null;
     showView("welcome");
   }
 
@@ -881,14 +1204,19 @@
         state.lessonStep++;
         renderLesson1();
       } else {
-        startExercise({ questionKey: "exercise.q1", choices: ["ا", "ب", "ت"], correct: "ب", nextView: "complete" }, "home");
+        startRound(buildBalancedRound(), "balanced3", "home");
       }
     });
 
     document.getElementById("btn-exercise-next").addEventListener("click", onExerciseNext);
 
-    document.getElementById("btn-complete-repeat").addEventListener("click", function () {
-      startLesson1("home");
+    document.getElementById("btn-round-new").addEventListener("click", function () {
+      startRound(buildBalancedRound(), "balanced3", "home");
+    });
+    document.getElementById("btn-round-retry-wrong").addEventListener("click", function () {
+      var backTarget = state.round ? state.round.backTarget : "home";
+      var qs = buildWrongRound();
+      if (qs.length) startRound(qs, "wrongOnly", backTarget);
     });
     document.getElementById("btn-complete-home").addEventListener("click", function () {
       showView("home");
@@ -907,17 +1235,17 @@
 
     /* discover post CTAs */
     document.getElementById("post1-cta").addEventListener("click", function () {
-      startExercise({ questionKey: "exercise.q3", choices: ["ا", "ب", "ت"], correct: "ا", nextView: "discover" }, "discover");
+      startRound(buildFocusRound(["alif"]), "letterFocus", "discover");
     });
     document.getElementById("post2-cta").addEventListener("click", function () {
-      startExercise({ questionKey: "exercise.q2", choices: ["ب", "ت"], correct: "ت", nextView: "discover" }, "discover");
+      startRound(buildFocusRound(["ba", "ta"]), "compareFocus", "discover");
     });
     document.getElementById("post3-cta").addEventListener("click", function () {
       state.backTarget = "discover";
       showView("path");
     });
     document.getElementById("post4-cta").addEventListener("click", function () {
-      restartSequence();
+      startRound(buildMixedRound(["alif", "ba", "ta"], 3), "mixedKnown", "discover");
     });
     document.getElementById("discover-end-cta").addEventListener("click", function () {
       showView("home");
@@ -970,6 +1298,7 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
+    reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     loadPersisted();
     applyI18n();
     applyTheme();
@@ -977,6 +1306,11 @@
     wireEvents();
     wireGoalConfirmTarget();
     setupDiscoverObserver();
-    showView(state.onboardingDone ? "home" : "welcome");
+    if (state.round && state.round.active) {
+      resumingRound = true;
+      showView("exercise");
+    } else {
+      showView(state.onboardingDone ? "home" : "welcome");
+    }
   });
 })();
