@@ -80,7 +80,7 @@
       "lesson.ta.hint": "Ähnliche Form wie Bā, aber mit zwei Punkten darüber.",
 
       "exercise.eyebrow": "Übung",
-      "exercise.correctPrefix": "Richtig – das ist ",
+      "exercise.correctSentence": "Richtig: {answer}.",
       "exercise.incorrect": "Noch nicht. Schau dir die Form noch einmal an.",
 
       "qb.p.nameToChar.alif": "Welcher Buchstabe ist Alif?",
@@ -276,7 +276,7 @@
       "lesson.ta.hint": "Bā ile benzer şekil, ancak üzerinde iki nokta.",
 
       "exercise.eyebrow": "Alıştırma",
-      "exercise.correctPrefix": "Doğru – bu ",
+      "exercise.correctSentence": "Doğru: {answer}.",
       "exercise.incorrect": "Henüz değil. Şekle tekrar bak.",
 
       "qb.p.nameToChar.alif": "Hangi harf Elif'tir?",
@@ -441,9 +441,11 @@
     { id: "matchTrait-ba", letterId: "ba", promptKey: "qb.p.matchTrait", displayChar: "ب", choiceKind: "text", choices: TRAIT_KEYS, correct: "lesson2.trait.ba" },
     { id: "matchTrait-ta", letterId: "ta", promptKey: "qb.p.matchTrait", displayChar: "ت", choiceKind: "text", choices: TRAIT_KEYS, correct: "lesson2.trait.ta" },
 
-    { id: "flash-alif", letterId: "alif", flash: true, flashChar: "ا", promptKey: "qb.p.flash", choiceKind: "char", choices: CHARS, correct: "ا" },
-    { id: "flash-ba", letterId: "ba", flash: true, flashChar: "ب", promptKey: "qb.p.flash", choiceKind: "char", choices: CHARS, correct: "ب" },
-    { id: "flash-ta", letterId: "ta", flash: true, flashChar: "ت", promptKey: "qb.p.flash", choiceKind: "char", choices: CHARS, correct: "ت" }
+    /* Blitzfragen tragen ihr Zielzeichen im selben Feld displayChar; flash steuert
+       nur, WANN das Zeichen erscheint (vorab statt neben der Frage). */
+    { id: "flash-alif", letterId: "alif", flash: true, displayChar: "ا", promptKey: "qb.p.flash", choiceKind: "char", choices: CHARS, correct: "ا" },
+    { id: "flash-ba", letterId: "ba", flash: true, displayChar: "ب", promptKey: "qb.p.flash", choiceKind: "char", choices: CHARS, correct: "ب" },
+    { id: "flash-ta", letterId: "ta", flash: true, displayChar: "ت", promptKey: "qb.p.flash", choiceKind: "char", choices: CHARS, correct: "ت" }
   ];
 
   function questionById(id) {
@@ -471,7 +473,6 @@
   };
 
   var flashTimer = null;
-  var resumingRound = false;
   var sequenceTimer = null;
   var sequenceIndex = 0;
   var discoverObserver = null;
@@ -540,7 +541,7 @@
     if (document.getElementById("view-home").classList.contains("active")) renderHome();
     if (document.getElementById("view-path").classList.contains("active")) renderPath();
     if (document.getElementById("view-lesson1").classList.contains("active")) renderLesson1();
-    if (document.getElementById("view-exercise").classList.contains("active")) showQuestion(false);
+    if (document.getElementById("view-exercise").classList.contains("active")) showQuestion();
     if (document.getElementById("view-complete").classList.contains("active")) renderRoundSummary();
     if (document.getElementById("view-lesson2").classList.contains("active")) renderLesson2();
     if (document.getElementById("view-progress").classList.contains("active")) renderProgress();
@@ -669,6 +670,8 @@
     el.textContent = char;
     el.setAttribute("dir", "rtl");
     el.setAttribute("lang", "ar");
+    /* Automatische Seitenuebersetzung darf arabische Zeichen nicht ersetzen. */
+    el.setAttribute("translate", "no");
   }
 
   function shuffle(arr) {
@@ -775,11 +778,10 @@
       startRound(buildBalancedRound(), "balanced3", "home");
       return;
     }
-    showQuestion(resumingRound);
-    resumingRound = false;
+    showQuestion();
   }
 
-  function showQuestion(isResume) {
+  function showQuestion() {
     var round = state.round;
     var q = currentQuestion();
     if (!q) return;
@@ -803,6 +805,7 @@
     }
 
     var flashOverlay = document.getElementById("exercise-flash-overlay");
+    var flashNext = document.getElementById("btn-flash-next");
     var questionBody = document.getElementById("exercise-question-body");
 
     function revealQuestion() {
@@ -811,13 +814,19 @@
       renderQuestionBody(q);
     }
 
-    if (q.flash && !isResume) {
+    if (q.flash) {
+      /* Auch nach einem Reload mitten in der Runde: ohne gezeigtes Zielzeichen
+         waere die Blitzfrage nicht loesbar, deshalb kein Ueberspringen. */
       questionBody.hidden = true;
       flashOverlay.hidden = false;
-      setArabicText(document.getElementById("exercise-flash-char"), q.flashChar);
+      setArabicText(document.getElementById("exercise-flash-char"), q.displayChar);
       if (reducedMotion) {
-        revealQuestion();
+        /* Kein Timer bei reduzierter Bewegung: selbst gesteuert weiterschalten,
+           damit das Zeichen nicht ungesehen verschwindet. */
+        flashNext.hidden = false;
+        flashNext.onclick = revealQuestion;
       } else {
+        flashNext.hidden = true;
         flashTimer = setTimeout(revealQuestion, 1100);
       }
     } else {
@@ -833,17 +842,20 @@
     var row = document.getElementById("exercise-choices");
     row.innerHTML = "";
     row.className = "letter-choice-row choices-" + shuffledChoices.length;
+    /* Frage war bereits beantwortet (Reload oder Sprachwechsel, bevor "Weiter"
+       gedrueckt wurde): geloesten Zustand wiederherstellen, sonst ist die Runde
+       blockiert – onChoiceClick ignoriert beantwortete Fragen. */
+    var alreadySolved = !!(state.round && state.round.results[q.id]);
     shuffledChoices.forEach(function (choiceValue) {
       var btn = document.createElement("button");
       if (q.choiceKind === "char") {
         btn.className = "letter-choice arabic";
-        btn.textContent = choiceValue;
-        btn.setAttribute("dir", "rtl");
-        btn.setAttribute("lang", "ar");
+        setArabicText(btn, choiceValue);
       } else {
         btn.className = "text-choice";
         btn.textContent = t(choiceValue);
       }
+      if (alreadySolved && choiceValue === q.correct) btn.classList.add("correct");
       btn.setAttribute("data-value", choiceValue);
       btn.addEventListener("click", onChoiceClick);
       row.appendChild(btn);
@@ -853,6 +865,29 @@
     feedback.textContent = "";
     feedback.className = "feedback";
     document.getElementById("btn-exercise-next").hidden = true;
+    if (alreadySolved) showCorrectFeedback(q);
+  }
+
+  /* Baut den Richtig-Satz aus Sprachtext und Antwort. Die Antwort steht immer in
+     einem eigenen <bdi>; arabische Zeichen zusaetzlich mit dir/lang, damit der
+     deutsche bzw. tuerkische Satz durchgehend LTR dargestellt wird. */
+  function showCorrectFeedback(q) {
+    var feedback = document.getElementById("exercise-feedback");
+    var parts = t("exercise.correctSentence").split("{answer}");
+    feedback.hidden = false;
+    feedback.className = "feedback feedback-correct";
+    feedback.textContent = "";
+    feedback.appendChild(document.createTextNode(parts[0]));
+    var answer = document.createElement("bdi");
+    if (q.choiceKind === "char") {
+      answer.className = "arabic feedback-char";
+      setArabicText(answer, q.correct);
+    } else {
+      answer.textContent = t(q.correct);
+    }
+    feedback.appendChild(answer);
+    feedback.appendChild(document.createTextNode(parts[1] || ""));
+    document.getElementById("btn-exercise-next").hidden = false;
   }
 
   function onChoiceClick(e) {
@@ -869,10 +904,7 @@
       var wrongIdx = state.qb.wrongIds.indexOf(q.id);
       if (!hadMistake && wrongIdx !== -1) state.qb.wrongIds.splice(wrongIdx, 1);
       e.currentTarget.classList.add("correct");
-      var label = q.choiceKind === "char" ? q.correct : t(q.correct);
-      feedback.textContent = t("exercise.correctPrefix") + label + ".";
-      feedback.className = "feedback feedback-correct";
-      document.getElementById("btn-exercise-next").hidden = false;
+      showCorrectFeedback(q);
       persistState();
     } else {
       round.attemptedWrong[q.id] = true;
@@ -894,7 +926,7 @@
     if (round.currentIndex + 1 < round.questionIds.length) {
       round.currentIndex += 1;
       persistState();
-      showQuestion(false);
+      showQuestion();
       return;
     }
     round.active = false;
@@ -1313,7 +1345,6 @@
     wireGoalConfirmTarget();
     setupDiscoverObserver();
     if (state.round && state.round.active) {
-      resumingRound = true;
       showView("exercise");
     } else {
       showView(state.onboardingDone ? "home" : "welcome");

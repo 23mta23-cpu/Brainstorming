@@ -323,17 +323,21 @@
       </div>
 
       <div class="flash-overlay" id="exercise-flash-overlay" hidden>
-        <div class="letter-badge"><div class="letter-display arabic" id="exercise-flash-char" dir="rtl" lang="ar"></div></div>
+        <div class="letter-badge"><div class="letter-display arabic" id="exercise-flash-char" dir="rtl" lang="ar" translate="no"></div></div>
         <p class="fine-print" data-i18n="qb.flash.watch">Schau genau hin …</p>
+        <!-- Nur bei prefers-reduced-motion: selbst gesteuert weiterschalten. -->
+        <button class="btn btn-primary" id="btn-flash-next" data-i18n="common.next" hidden>Weiter</button>
       </div>
 
       <div id="exercise-question-body">
-        <div class="letter-badge" id="exercise-display-char-wrap" hidden>
-          <div class="letter-display arabic" id="exercise-display-char" dir="rtl" lang="ar"></div>
-        </div>
         <h2 class="view-title" id="exercise-question">Welcher Buchstabe ist Bā?</h2>
+        <!-- Zeichenfeld: steht bewusst als eigenes Element unter dem Fragetext und
+             wird nur gerendert, wenn die Frage ein displayChar besitzt. -->
+        <div class="letter-badge letter-badge-compact" id="exercise-display-char-wrap" hidden>
+          <div class="letter-display arabic" id="exercise-display-char" dir="rtl" lang="ar" translate="no"></div>
+        </div>
         <div class="letter-choice-row" id="exercise-choices"></div>
-        <p class="feedback" id="exercise-feedback" hidden></p>
+        <p class="feedback" id="exercise-feedback" aria-live="polite" hidden></p>
         <button class="btn btn-primary" id="btn-exercise-next" data-i18n="common.next" hidden>Weiter</button>
       </div>
     </div>

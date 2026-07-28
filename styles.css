@@ -91,8 +91,13 @@ button, .btn, a {
   background-color: transparent;
 }
 
+/* Arabische Ausgabe: Naskh-Systemschriften zuerst (iOS/Android/Windows/Linux),
+   damit die Buchstabenformen und die Punkte bei ب und ت geraetegleich lesbar
+   bleiben. Keine Kufi- oder Dekorschrift. Offener Punkt: verbindliche, selbst
+   gehostete Naskh-Schrift mit geklaerter Lizenz. */
 .arabic {
-  font-family: "Geeza Pro", "Damascus", "Al Bayan", "Baghdad", "KacstOne", "Traditional Arabic", serif;
+  font-family: "Geeza Pro", "Noto Naskh Arabic", "Noto Sans Arabic", "Segoe UI Arabic",
+    "Damascus", "Al Bayan", "Baghdad", "KacstOne", "Traditional Arabic", serif;
   direction: rtl;
   unicode-bidi: isolate;
 }
@@ -127,7 +132,7 @@ button, .btn, a {
 }
 
 .screen {
-  padding: calc(20px + var(--safe-top)) 20px 28px;
+  padding: calc(20px + var(--safe-top)) 20px calc(28px + var(--safe-bottom));
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
@@ -140,6 +145,9 @@ button, .btn, a {
 
 .screen-center {
   justify-content: center;
+  /* Bei zu hohem Inhalt (kleine Geraete, grosse Systemschrift) darf zentrierter
+     Inhalt nicht oben aus dem Scrollbereich herauslaufen. */
+  justify-content: safe center;
   align-items: center;
   text-align: center;
   background-image: radial-gradient(circle at 50% 38%, var(--accent-soft) 0%, transparent 62%);
@@ -721,8 +729,25 @@ button, .btn, a {
 
 .letter-display {
   font-size: 118px;
-  line-height: 1;
+  /* Zeilenhoehe > 1: Raum fuer Punkte und Diakritika ober- und unterhalb der
+     Grundlinie, damit bei ب und ت nichts abgeschnitten wird. */
+  line-height: 1.2;
   color: var(--accent-strong);
+}
+
+/* Zeichenfeld der Uebung: kleiner als das Lektions-Medaillon, damit Fragetext,
+   Zeichen und Antworten auf ~390 px breiten Geraeten zusammen sichtbar bleiben.
+   Vorgabe eingehalten: Feld >= 120x120 px, Zeichen >= 96 px. */
+.letter-badge-compact {
+  width: 132px;
+  height: 132px;
+  /* auto-Seitenraender: der Fragekoerper ist ein Blockcontainer, ohne sie
+     stuende das Zeichenfeld linksbuendig statt unter dem Fragetext. */
+  margin: 0 auto;
+}
+
+.letter-badge-compact .letter-display {
+  font-size: 100px;
 }
 
 .letter-name {
@@ -753,8 +778,11 @@ button, .btn, a {
 }
 
 .letter-choice {
-  font-size: clamp(40px, 13vw, 56px);
-  padding: 26px 0;
+  /* Groesser als zuvor (40-56 px): bei ب und ت muessen die Punkte auch in der
+     Antwortreihe eindeutig zu zaehlen sein. */
+  font-size: clamp(48px, 15vw, 64px);
+  line-height: 1.2;
+  padding: 20px 0;
   min-height: 96px;
   background: var(--surface);
   border: 2px solid var(--border);
@@ -796,6 +824,14 @@ button, .btn, a {
 
 .feedback-correct {
   color: var(--accent-strong);
+}
+
+/* Arabisches Zeichen im Rueckmeldesatz: etwas groesser, damit die Punkte auch
+   in Fliesstextgroesse erkennbar bleiben. */
+.feedback-char {
+  font-size: 1.5em;
+  line-height: 1.2;
+  vertical-align: -0.15em;
 }
 
 .feedback-incorrect {
