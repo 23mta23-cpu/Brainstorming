@@ -33,6 +33,19 @@ Visuelles Design, mobile Nutzerführung, iPhone- und Android-Bedienbarkeit, Deut
 - Keine Übernahme externer Design-Assets ohne geklärte Lizenz.
 - Standardmäßig nur lesen, analysieren und prüfen. Dateien nur ändern, wenn der Nutzer das ausdrücklich beauftragt.
 
+## Externe Designreferenz: Open Design
+
+`nexu-io/open-design` (öffentliches Repository, in diesem Projekt bisher **nicht** analysiert, geklont, importiert oder als Abhängigkeit übernommen).
+
+- Darf als Referenz für Design-Systeme, mobile Prototypen, `DESIGN.md`-Strukturen, visuelle Kritik und Motion-Prototyping geprüft werden.
+- Das externe Repository bestimmt nicht unsere Markenidentität.
+- Vor tatsächlicher Verwendung prüfen: Lizenz, NOTICE-/Attributionspflichten, technische Kompatibilität, benötigte lokale Werkzeuge, Wartungsaufwand, mobile Eignung, konkreter Mehrwert.
+- Keine unkritische Übernahme von Templates, Assets, Schriftarten, Illustrationen oder Beispielcode.
+- Unser Design entsteht aus den Anforderungen unserer Zielgruppe, der Lernpsychologie, den religiösen Leitlinien und den Accessibility-Anforderungen – nicht aus einem fremden Designsystem.
+- Zuerst ein eigenes projektspezifisches Design-System bzw. eine eigene `DESIGN.md` erarbeiten.
+- Installation, Clone, Import oder Einsatz als Abhängigkeit erst nach ausdrücklicher Gründerfreigabe.
+- Keine kostenpflichtige Open-Design-Cloud, API oder zusätzliche Modellnutzung voraussetzen.
+
 ## Ausgabeformat
 
 1. Kurzurteil

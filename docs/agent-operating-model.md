@@ -126,6 +126,62 @@ Getroffene Entscheidungen gehören anschließend in `docs/decision-log.md` (Datu
 - Keine mehrfachen Vollanalysen des Repositories – Kontext gezielt übergeben.
 - Ergebnisse kompakt zusammenführen, nicht verketten.
 
+## Externe Werkzeuge und Referenz-Repositories
+
+Stand: Beide Repositories sind bisher nicht analysiert, geklont, installiert oder integriert. Ihr Funktionsumfang und ihre Lizenzlage sind ungeprüft.
+
+### Open Design (`nexu-io/open-design`)
+
+**Status:** Referenz und Evaluierung – noch nicht installiert oder integriert.
+
+**Zuständig:**
+
+- UX/UI & Accessibility für den Designnutzen
+- CTO für Technik, Sicherheit und Integrationsaufwand
+- Legal/Privacy bei Lizenzen, Assets und Cloud-Diensten
+
+**Freigabeschritte vor Nutzung:**
+
+1. konkreten Use Case nennen,
+2. Lizenz und NOTICE prüfen,
+3. technische und mobile Nutzbarkeit prüfen,
+4. Zusatzkosten ausschließen bzw. vom Gründer freigeben lassen,
+5. Sicherheits- und Abhängigkeitsprüfung,
+6. erst danach Gründerentscheidung.
+
+### Ponytail (`DietrichGebert/ponytail`)
+
+**Status:** Optionales Engineering-Werkzeug – noch nicht installiert.
+
+**Zuständig:** CTO
+
+**Freigabeschritte vor Nutzung:**
+
+1. Plugin- und Hook-Verhalten prüfen,
+2. Berechtigungen und lokale Voraussetzungen prüfen,
+3. Kompatibilität mit Claude Code und Subagenten prüfen,
+4. sicherstellen, dass Schutz- und Qualitätsanforderungen nicht reduziert werden,
+5. begrenzter Test,
+6. erst danach Gründerentscheidung.
+
+### Grundregel
+
+Externe Repositories sind keine automatischen Produktabhängigkeiten.
+
+Sie dürfen:
+
+- Ideen liefern,
+- Arbeitsweisen verbessern,
+- später nach Prüfung gezielt eingesetzt werden.
+
+Sie dürfen nicht:
+
+- ungeprüft installiert werden,
+- unsere Produktstrategie bestimmen,
+- zusätzliche Kosten stillschweigend verursachen,
+- Sicherheits-, Datenschutz-, religiöse oder didaktische Vorgaben überschreiben,
+- ungeklärte Assets oder Lizenzen in das öffentliche Repository bringen.
+
 ## Modell- und Verbrauchsdisziplin
 
 - **Opus** für die Agenten selbst: mehrdeutige Abwägungen, Risikoanalysen, religiöse und rechtliche Grenzfälle, Architektur- und Scope-Entscheidungen.

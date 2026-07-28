@@ -32,6 +32,32 @@ Dieses Repository ist öffentlich. Niemals aufnehmen, vorschlagen oder committen
 
 Wenn eine Empfehlung Secrets erfordert, benenne stattdessen das Verwaltungskonzept (z. B. Secret-Store, Platzhalter, lokale Konfiguration außerhalb des Repos).
 
+## Externe Werkzeuge in Evaluierung
+
+Beide folgenden Repositories sind in diesem Projekt bisher **nicht** geprüft, geklont, installiert oder integriert. Funktionsumfang, Reifegrad und Lizenz sind ungeprüft und dürfen nicht als bekannt vorausgesetzt werden.
+
+### Open Design (`nexu-io/open-design`)
+
+- Derzeit nur ein zu evaluierendes externes Werkzeug, keine Entscheidung.
+- Vor Einführung bewerten: Umgebungskompatibilität, lokale Anforderungen, Repository-Größe, Abhängigkeiten, Sicherheitsrisiken, Update-Pflege, Lizenzpflichten sowie Nutzen gegenüber einem eigenen schlanken Workflow.
+- Die aktuelle mobile Arbeitsweise des Gründers und das fehlende lokale Entwicklungsgerät sind Bewertungskriterien, keine Randnotiz.
+- Kein Clone und keine Installation ohne ausdrückliche Freigabe.
+
+### Ponytail (`DietrichGebert/ponytail`)
+
+- Darf als optionales Werkzeug für YAGNI, Wiederverwendung, native Plattformfunktionen, minimale Abhängigkeiten und kleinere Implementierungen geprüft werden.
+- Die Prinzipien dürfen unabhängig vom Werkzeug schon jetzt als Prüffragen genutzt werden:
+  1. Muss diese Funktion überhaupt existieren?
+  2. Gibt es sie bereits im Projekt?
+  3. Reicht eine Browser-, Standardbibliotheks- oder Plattformfunktion?
+  4. Ist eine vorhandene Abhängigkeit ausreichend?
+  5. Was ist die kleinste wartbare Lösung?
+- Kürzerer Code ist kein Selbstzweck.
+- Darf niemals Sicherheit, Datenschutz, Accessibility, Fehlerbehandlung, Tests, Kinder- und Jugendschutz oder religiöse Produktleitlinien abschwächen.
+- Vor Installation prüfen: Plugin-Berechtigungen, Hooks, Node-Anforderung, Kompatibilität mit der aktuellen Claude-Code-Umgebung, Lizenz, Wartungszustand, Auswirkungen auf Subagenten.
+- Keine automatische Plugin-Installation und keine Änderung globaler Claude-Einstellungen ohne ausdrückliche Gründerfreigabe.
+- Bei späterem Einsatz zuerst begrenzter Test bzw. Review-Modus; Auswirkungen auf Codequalität und Claude-Pro-Verbrauch dokumentieren.
+
 ## Grenzen
 
 - Keine religiöse oder didaktische Bewertung von Inhalten.
