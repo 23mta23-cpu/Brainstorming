@@ -1026,3 +1026,27 @@ button {
 
 /* Im Ergebnis ist das Zeichen mit seinen Punkten der eigentliche Gegenstand. */
 .result-char { font-size: 2.75rem; }
+
+/* Zusammenfassung ueber der Zeichenliste: eine Aussage fuer die Lektion
+   statt sechs gleichrangiger Einzelempfehlungen. */
+.result-summary {
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-inline-start: 4px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: var(--s3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+}
+
+/* Planmaessig leeres Sortierfach – erst nach der Aufloesung sichtbar, damit
+   es nicht als eigener Fehler gelesen wird. */
+.sort-bin.is-decoy { border-style: dotted; opacity: 0.75; }
+
+.sort-bin-note {
+  font-size: var(--fs-1);
+  font-weight: 600;
+  color: var(--text-muted);
+  line-height: 1.3;
+}

@@ -816,6 +816,7 @@
       "task.sortPos": "Sortiere die Zeichen nach der Lage ihrer Punkte.",
       "task.sort.pick": "Wähle zuerst ein Zeichen, dann die passende Ablage.",
       "task.sort.mayStayEmpty": "Nicht jede Ablage wird gebraucht – manche bleiben leer.",
+      "task.sort.decoy": "Ablenker – bleibt leer",
       "task.construct.byName": "Baue {name}.",
       "task.construct.byRule": "Baue ein Zeichen mit {rule}.",
       "task.construct.hint": "Tippe die Ablage an – jeder Tipp setzt einen weiteren Punkt.",
@@ -883,6 +884,8 @@
       "result.strong": "Stärkstes Merkmal: {dim}.",
       "result.confusion": "Häufigste Verwechslung: {char} ({n}×).",
       "result.recommend": "Als Nächstes: {form}.",
+      "result.weakest": "Daran wird morgen zuerst gearbeitet: {list}.",
+      "result.allSecure": "Heute saßen alle sechs Zeichen.",
       "result.nextday": "Am {date} steht ein kurzer Block bereit – er beginnt mit den Zeichen, die heute am wenigsten saßen.",
       "result.nextdayNoStorage": "Auf diesem Gerät kann gerade nichts gespeichert werden. Ein Block für morgen kann deshalb nicht zugesagt werden.",
       "result.nextdayDone": "Die Folgeprüfung ist abgeschlossen.",
@@ -998,6 +1001,7 @@
       "task.sortPos": "İşaretleri noktalarının konumuna göre ayır.",
       "task.sort.pick": "Önce bir işaret, sonra uygun bölmeyi seç.",
       "task.sort.mayStayEmpty": "Her bölme gerekli değildir – bazıları boş kalır.",
+      "task.sort.decoy": "Çeldirici – boş kalır",
       "task.construct.byName": "{name} oluştur.",
       "task.construct.byRule": "{rule} olan bir işaret oluştur.",
       "task.construct.hint": "Bölmeye dokun – her dokunuş bir nokta daha ekler.",
@@ -1065,6 +1069,8 @@
       "result.strong": "En güçlü özellik: {dim}.",
       "result.confusion": "En sık karıştırma: {char} ({n}×).",
       "result.recommend": "Sırada: {form}.",
+      "result.weakest": "Yarın önce bunlarla çalışılacak: {list}.",
+      "result.allSecure": "Bugün altı işaretin hepsi oturdu.",
       "result.nextday": "{date} tarihinde kısa bir blok hazır olacak – bugün en az oturan işaretlerle başlayacak.",
       "result.nextdayNoStorage": "Bu cihazda şu anda hiçbir şey kaydedilemiyor. Bu yüzden yarın için bir blok söz verilemez.",
       "result.nextdayDone": "Takip kontrolü tamamlandı.",
@@ -2216,12 +2222,19 @@
     }
   }
 
+  /* Ablenkfaecher werden ERST hier gekennzeichnet, nicht vorher: eine
+     Markierung waehrend der Aufgabe wuerde verraten, welche Faecher
+     irrelevant sind. Nach der Aufloesung verhindert sie dagegen, dass ein
+     planmaessig leeres Fach als eigener Fehler gelesen wird. */
   function markSortResult(binsWrap, item, extra) {
     var byCount = extra.byCount;
     var bins = binsWrap.querySelectorAll(".sort-bin");
     for (var i = 0; i < bins.length; i++) {
       var key = bins[i].getAttribute("data-bin");
       var slot = bins[i].querySelector(".sort-bin-slot");
+      var belongsHere = item.chars.filter(function (gid) {
+        return (byCount ? String(GLYPHS[gid].dots) : GLYPHS[gid].pos) === key;
+      });
       var wrongHere = item.chars.filter(function (gid) {
         var want = byCount ? String(GLYPHS[gid].dots) : GLYPHS[gid].pos;
         return extra.placed[gid] === key && want !== key;
@@ -2232,6 +2245,13 @@
       });
       if (wrongHere.length) bins[i].classList.add("is-wrong");
       else if (rightHere.length) bins[i].classList.add("is-correct");
+      else if (!belongsHere.length) {
+        bins[i].classList.add("is-decoy");
+        var note = document.createElement("span");
+        note.className = "sort-bin-note";
+        note.textContent = t("task.sort.decoy");
+        bins[i].appendChild(note);
+      }
       if (slot && (wrongHere.length || rightHere.length)) {
         var sr = document.createElement("span");
         sr.className = "sr-only";
@@ -2396,6 +2416,8 @@
     $("result-lead").textContent = isNextday ? "" : (passed ? t("result.leadPassed") : t("result.leadNotPassed"));
 
     var errs = errorsByLetter(scope);
+    renderResultSummary(scope, errs);
+
     var list = $("result-list");
     clear(list);
     /* Der ausfuehrliche Erklaersatz steht nur einmal je Zustand. Sechsmal
@@ -2437,6 +2459,46 @@
 
   var commonDimension = false;
 
+  /* Eine Zusammenfassung statt sechs gleichrangiger Empfehlungen: die zwei
+     Zeichen, an denen morgen gearbeitet wird, und EINE naechste Uebungsform
+     fuer die ganze Lektion. */
+  function renderResultSummary(scope, errs) {
+    var box = $("result-summary");
+    var rank = { not_yet: 0, wobbly: 1, today_secure: 2, overnight_secure: 3 };
+    var weak = TARGETS.filter(function (id) {
+      return letters[id].status === "not_yet" || letters[id].status === "wobbly";
+    }).sort(function (a, b) {
+      return (rank[letters[a].status] || 0) - (rank[letters[b].status] || 0);
+    }).slice(0, 2);
+
+    var weakEl = $("result-weakest");
+    var nextEl = $("result-next");
+    clear(weakEl);
+    nextEl.hidden = true;
+
+    if (!weak.length) {
+      box.hidden = false;
+      weakEl.textContent = t("result.allSecure");
+      return;
+    }
+    box.hidden = false;
+    weakEl.textContent = "";
+    var tpl = t("result.weakest");
+    var parts = tpl.split("{list}");
+    weakEl.appendChild(document.createTextNode(parts[0]));
+    weak.forEach(function (id, i) {
+      if (i) weakEl.appendChild(document.createTextNode(" · "));
+      weakEl.appendChild(arabicSpan(GLYPHS[id].char));
+    });
+    if (parts[1]) weakEl.appendChild(document.createTextNode(parts[1]));
+
+    /* Eine Empfehlung fuer die Lektion, abgeleitet aus dem schwaechsten
+       Zeichen – nicht sechs gleichlautende Zeilen. */
+    nextEl.hidden = false;
+    nextEl.textContent = fill(t("result.recommend"),
+      { form: t("form." + recommendedForm(letters[weak[0]], errs)) });
+  }
+
   function resultCard(ls, scope, errs, withText) {
     var card = document.createElement("div");
     card.className = "result-item";
@@ -2474,13 +2536,6 @@
       renderSentence(li, t("result.confusion"),
         { char: GLYPHS[ls.topConfusion].char, n: ls.topConfusionCount });
       facts.appendChild(li);
-    }
-    /* Die Empfehlung steht dort, wo sie etwas beitraegt. Bei einem sicheren
-       Zeichen ohne Fehler waere sie sechsmal derselbe Satz ohne Aussage. */
-    var hasErrors = errs && errs[ls.letterId];
-    var secure = ls.status === "today_secure" || ls.status === "overnight_secure";
-    if (hasErrors || !secure) {
-      facts.appendChild(fact(fill(t("result.recommend"), { form: t("form." + recommendedForm(ls, errs)) })));
     }
     card.appendChild(facts);
     return card;
