@@ -3,457 +3,142 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Iqra – Interaktiver Prototyp</title>
+<title>Iqra – Demolektion: Alif, Bā und Tā</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <div class="app-shell" id="app-shell">
 
-  <!-- Ansicht: Willkommen -->
-  <section class="view active" id="view-welcome">
-    <div class="screen screen-center">
-      <p class="eyebrow" data-i18n="welcome.badge">Interaktiver Prototyp</p>
-      <h1 class="app-title">Iqra</h1>
-      <p class="headline" data-i18n="welcome.headline">Lerne Qur'an lesen – Schritt für Schritt und in deinem Tempo.</p>
-      <p class="subtext" data-i18n="welcome.subtext">Ein strukturierter Lernweg für Erwachsene – ohne Druck, ohne kindliche Gestaltung und ohne endloses Scrollen.</p>
-      <button class="btn btn-primary" id="btn-start" data-i18n="welcome.cta">Lernweg starten</button>
+  <header class="topbar">
+    <p class="topbar-brand">Iqra</p>
+    <div class="seg" id="seg-lang" role="group" aria-label="Sprache / Dil">
+      <button class="seg-btn" data-lang="de" aria-pressed="true">DE</button>
+      <button class="seg-btn" data-lang="tr" aria-pressed="false">TR</button>
     </div>
-  </section>
+    <div class="seg" id="seg-theme" role="group" aria-label="Theme">
+      <button class="seg-btn" data-theme-choice="light" aria-pressed="false" data-i18n="theme.light" data-i18n-attr="aria-label" aria-label="Hell">☀</button>
+      <button class="seg-btn" data-theme-choice="dark" aria-pressed="false" data-i18n="theme.dark" data-i18n-attr="aria-label" aria-label="Dunkel">☾</button>
+      <button class="seg-btn" data-theme-choice="system" aria-pressed="true" data-i18n="theme.system" data-i18n-attr="aria-label" aria-label="System">Auto</button>
+    </div>
+  </header>
 
-  <!-- Ansicht: Sprache auswählen -->
-  <section class="view" id="view-language">
+  <!-- ================= 1) Vorcheck ================= -->
+  <section class="view active" id="view-precheck">
     <div class="screen">
-      <h2 class="view-title" data-i18n="language.title">Sprache auswählen</h2>
-      <div class="card-list">
-        <button class="select-card" data-lang="de"><span class="select-card-title">Deutsch</span></button>
-        <button class="select-card" data-lang="tr"><span class="select-card-title">Türkçe</span></button>
+
+      <!-- Folgetagsblock: nur sichtbar, wenn faellig -->
+      <div class="banner" id="nextday-offer" hidden>
+        <p class="section-title" data-i18n="nextday.offerTitle">Deine Folgeprüfung ist bereit.</p>
+        <p class="muted-text" data-i18n="nextday.offerText">Kurzer Block mit den Zeichen, die zuletzt am wenigsten saßen. Kein Streak, keine Strafe.</p>
+        <button class="btn btn-primary" id="btn-open-nextday" data-i18n="nextday.offerCta">Folgeprüfung starten</button>
       </div>
+
+      <div id="precheck-intro">
+        <p class="eyebrow" data-i18n="precheck.eyebrow">Demolektion</p>
+        <h1 class="view-title" data-i18n="precheck.title">Alif, Bā und Tā</h1>
+        <p class="body-text" id="precheck-introtext">Zuerst ein kurzer Vorcheck. Du bekommst dabei keine Rückmeldung, ob eine Antwort richtig war – er hält nur fest, wo du startest.</p>
+        <p class="fine-print" id="precheck-introhint" data-i18n="precheck.introHint">Wenn du ein Zeichen nicht kennst, wähle „Kenne ich nicht“. Das ist keine falsche Antwort.</p>
+      </div>
+
+      <div id="precheck-task" hidden>
+        <div class="meter">
+          <div class="meter-track"><div class="meter-fill" id="precheck-fill"></div></div>
+          <span class="meter-label" id="precheck-count"></span>
+        </div>
+        <div class="stage">
+          <div class="glyph-xl arabic" id="precheck-char" dir="rtl" lang="ar" translate="no"></div>
+        </div>
+        <div class="act">
+          <p class="act-label" data-i18n="precheck.actLabel">Deine Einschätzung</p>
+          <h2 class="section-title" data-i18n="precheck.question">Wie heißt dieses Zeichen?</h2>
+          <div class="choices choices-text" id="precheck-choices"></div>
+          <button class="btn btn-secondary" id="btn-precheck-unknown" data-i18n="precheck.unknown">Kenne ich nicht</button>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="btn-precheck-start" data-i18n="precheck.cta">Vorcheck starten</button>
+      <button class="btn btn-secondary" id="btn-restart-lesson" hidden data-i18n="precheck.restart">Lektion neu beginnen</button>
+
+      <p class="notice" id="review-notice" data-i18n="notice.review">Interner Prototyp. Die arabischen Buchstabenformen, die Punkte und die Ablenkzeichen sind noch nicht durch eine qualifizierte Arabisch-/Elifba- bzw. Schriftprüfung freigegeben. Es ist keine geprüfte Schriftdatei eingebunden.</p>
+      <p class="fine-print" id="storage-warning" hidden data-i18n="notice.noStorage">Dieses Gerät speichert gerade nichts lokal. Ein Ergebnis für morgen kann deshalb nicht zugesagt werden.</p>
+      <p class="fine-print" data-i18n="notice.privacy">Dieser Prototyp speichert ausschließlich lokal auf diesem Gerät. Keine Konten, kein Server, kein Tracking.</p>
+      <button class="btn btn-secondary" id="btn-clear-data" data-i18n="notice.clear">Alle lokalen Daten löschen</button>
     </div>
   </section>
 
-  <!-- Ansicht: Ausgangssituation -->
-  <section class="view" id="view-situation">
+  <!-- ================= 2) Lernbühne ================= -->
+  <section class="view" id="view-stage">
     <div class="screen">
-      <h2 class="view-title" data-i18n="situation.title">Wie ist deine Ausgangssituation?</h2>
-      <div class="card-list" id="situation-list">
-        <button class="select-card" data-situation="new"><span class="select-card-title" data-i18n="situation.new">Ich beginne ganz neu</span></button>
-        <button class="select-card" data-situation="some"><span class="select-card-title" data-i18n="situation.some">Ich kenne einige Buchstaben</span></button>
-        <button class="select-card" data-situation="refresh"><span class="select-card-title" data-i18n="situation.refresh">Ich habe früher gelernt und möchte wiederholen</span></button>
-        <button class="select-card" data-situation="convert"><span class="select-card-title" data-i18n="situation.convert">Ich bin konvertiert und suche Orientierung</span></button>
+      <div class="meter">
+        <div class="meter-track"><div class="meter-fill" id="stage-fill"></div></div>
+        <span class="meter-label" id="stage-count"></span>
       </div>
-      <p class="hint" id="situation-hint" hidden data-i18n="situation.convertHint">Dieser Lernweg wird aktuell separat validiert.</p>
-      <button class="btn btn-primary" id="btn-situation-next" data-i18n="common.next" disabled>Weiter</button>
+
+      <!-- Bühne: getönt, randlos, keine Bedienelemente -->
+      <div class="stage" id="stage-area">
+        <div class="glyph-xl arabic" id="stage-char" dir="rtl" lang="ar" translate="no"></div>
+        <p class="stage-caption" id="stage-caption"></p>
+      </div>
+
+      <!-- Aktionskarte: Oberflächenfarbe und Rahmen -->
+      <div class="act">
+        <p class="act-label" id="stage-act-label" data-i18n="stage.actLabel">Jetzt du</p>
+        <h2 class="section-title" id="stage-prompt"></h2>
+        <div id="stage-action"></div>
+        <p class="feedback" id="stage-feedback" role="status" aria-live="polite" hidden></p>
+      </div>
+
+      <button class="btn btn-primary" id="btn-stage-next" data-i18n="common.next">Weiter</button>
     </div>
   </section>
 
-  <!-- Ansicht: Lernziel -->
-  <section class="view" id="view-goal">
+  <!-- ================= 3) Übung ================= -->
+  <section class="view" id="view-practice">
     <div class="screen">
-      <h2 class="view-title" data-i18n="goal.title">Was möchtest du erreichen?</h2>
-      <div class="card-list" id="goal-list">
-        <button class="select-card" data-goal="letters"><span class="select-card-title" data-i18n="goal.letters">Arabische Buchstaben sicher erkennen</span></button>
-        <button class="select-card" data-goal="connect"><span class="select-card-title" data-i18n="goal.connect">Buchstaben miteinander verbinden</span></button>
-        <button class="select-card" data-goal="words"><span class="select-card-title" data-i18n="goal.words">Erste Wörter lesen</span></button>
-        <button class="select-card" data-goal="refresh"><span class="select-card-title" data-i18n="goal.refresh">Meine Kenntnisse auffrischen</span></button>
-        <button class="select-card" data-goal="quran"><span class="select-card-title" data-i18n="goal.quran">Später Qur'anpassagen lesen</span></button>
+      <p class="eyebrow" id="practice-mode-label"></p>
+      <div class="meter">
+        <div class="meter-track"><div class="meter-fill" id="practice-fill"></div></div>
+        <span class="meter-label" id="practice-count"></span>
       </div>
-      <button class="btn btn-primary" id="btn-goal-next" data-i18n="goal.cta" disabled>Meinen Lernweg erstellen</button>
+      <div class="act">
+        <h2 class="section-title" id="practice-prompt"></h2>
+        <div id="practice-task"></div>
+        <p class="feedback" id="practice-feedback" role="status" aria-live="polite" hidden></p>
+      </div>
+      <button class="btn btn-primary" id="btn-practice-action"></button>
     </div>
   </section>
 
-  <!-- Ansicht: Lernen (Startseite) -->
-  <section class="view" id="view-home">
-    <div class="screen screen-with-nav">
-      <div class="home-header">
-        <p class="greeting" data-i18n="dashboard.greeting">Willkommen zurück</p>
-        <p class="fine-print demo-inline" data-i18n="dashboard.demoNoteShort">Demo-Inhalte – fachliche Prüfung ausstehend.</p>
-      </div>
-
-      <div class="hero-card">
-        <p class="hero-label" data-i18n="dashboard.heroLabel">Heute lernen</p>
-        <p class="hero-suggestion" id="hero-suggestion">Heute: Alif sicher erkennen</p>
-        <button class="btn btn-hero" id="btn-hero-cta" data-i18n="dashboard.cta">Heute weiterlernen</button>
-      </div>
-
-      <div class="section-head">
-        <h3 class="section-title" data-i18n="dashboard.pathTitle">Dein Lernweg</h3>
-        <button class="link-btn" id="btn-path-link" data-i18n="dashboard.pathLinkAll">Gesamten Lernweg ansehen</button>
-      </div>
-      <p class="fine-print" data-i18n="dashboard.pathSubtitle">Modul 1 · Arabische Buchstaben</p>
-      <div class="lesson-list">
-        <button class="lesson-item lesson-item-active" id="lesson-card-1">
-          <span class="lesson-item-icon icon-format-lesson" aria-hidden="true"></span>
-          <span class="lesson-item-body">
-            <span class="lesson-item-name" data-i18n="lesson.title">Alif, Bā und Tā</span>
-            <span class="lesson-item-tag" data-i18n="lesson.formatLesson">Lernlektion</span>
-          </span>
-          <span class="lesson-item-status lesson-item-status-active" data-i18n="module.statusActive">Aktiv</span>
-        </button>
-        <button class="lesson-item lesson-item-partial" id="lesson-card-2">
-          <span class="lesson-item-icon icon-format-matching" aria-hidden="true"></span>
-          <span class="lesson-item-body">
-            <span class="lesson-item-name" data-i18n="lesson2.title">Formen unterscheiden</span>
-            <span class="lesson-item-tag" data-i18n="lesson.formatMatching">Visuelle Zuordnung</span>
-          </span>
-          <span class="lesson-item-status" data-i18n="lesson.statusPartial">Teilweise verfügbar</span>
-        </button>
-        <button class="lesson-item lesson-item-locked" id="lesson-card-3">
-          <span class="lesson-item-icon icon-format-preview" aria-hidden="true"></span>
-          <span class="lesson-item-body">
-            <span class="lesson-item-name" data-i18n="module.connect">Buchstaben verbinden</span>
-            <span class="lesson-item-tag" data-i18n="lesson.formatPreview">Vorschau</span>
-          </span>
-          <span class="lesson-item-status" data-i18n="lesson.statusLocked">Noch nicht freigeschaltet</span>
-        </button>
-      </div>
-
-      <h3 class="section-title" data-i18n="dashboard.forYouTitle">Für dich ausgewählt</h3>
-      <div class="recommend-card">
-        <p class="recommend-text" data-i18n="dashboard.forYouText">Weiter mit „Formen unterscheiden“</p>
-        <button class="btn btn-secondary btn-compact" id="btn-for-you" data-i18n="dashboard.forYouCta">Ansehen</button>
-      </div>
-
-      <h3 class="section-title" data-i18n="dashboard.mediaPreviewTitle">Kurze Lernmedien entdecken</h3>
-      <div class="media-tile-grid">
-        <button class="media-tile media-tile-1" id="media-tile-1">
-          <span class="media-tile-play" aria-hidden="true">▶</span>
-          <span class="media-tile-duration" data-i18n="post1.duration">20 Sek.</span>
-          <span class="media-tile-title" data-i18n="post1.title">Alif erkennen</span>
-        </button>
-        <button class="media-tile media-tile-2" id="media-tile-2">
-          <span class="media-tile-play" aria-hidden="true">▶</span>
-          <span class="media-tile-duration" data-i18n="post2.duration">30 Sek.</span>
-          <span class="media-tile-title" data-i18n="post2.title">Bā und Tā unterscheiden</span>
-        </button>
-      </div>
-
-      <h3 class="section-title" data-i18n="dashboard.repeatTitle">Wiederholen</h3>
-      <div class="repeat-card">
-        <div class="progress-bar"><div class="progress-fill" id="home-repeat-fill"></div></div>
-        <button class="btn btn-secondary btn-compact" id="btn-repeat-home" data-i18n="dashboard.repeatCta">Jetzt wiederholen</button>
-      </div>
-
-      <div class="stat-strip">
-        <div class="stat-pill">
-          <span class="stat-value" id="home-stat-letters">0/28</span>
-          <span class="stat-label" data-i18n="dashboard.statLetters">Buchstaben</span>
-        </div>
-        <div class="stat-pill">
-          <span class="stat-value" id="home-stat-lessons">0</span>
-          <span class="stat-label" data-i18n="dashboard.statLessons">Lektionen</span>
-        </div>
-        <div class="stat-pill">
-          <span class="stat-value" id="home-stat-minutes">0</span>
-          <span class="stat-label" data-i18n="dashboard.statMinutes">Minuten</span>
-        </div>
-        <span class="fine-print demo-tag stat-demo-tag" data-i18n="progress.demoTag">Demo-Daten</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- Ansicht: Lernweg (aus "Lernen" erreichbar) -->
-  <section class="view" id="view-path">
+  <!-- ================= 4) Ergebnis ================= -->
+  <section class="view" id="view-result">
     <div class="screen">
-      <button class="back-btn" data-back><span class="back-arrow">‹</span> <span data-i18n="common.back">Zurück</span></button>
-      <h2 class="view-title" data-i18n="path.title">Dein Lernweg</h2>
-      <p class="subtext" id="path-goal-text"></p>
-      <div class="module-list">
-        <div class="module-card module-active">
-          <span class="module-name" data-i18n="module.letters">Arabische Buchstaben</span>
-          <span class="module-status module-status-active" data-i18n="module.statusActive">Aktiv</span>
-        </div>
-        <div class="module-card module-locked" aria-disabled="true">
-          <span class="module-name" data-i18n="module.connect">Buchstaben verbinden</span>
-          <span class="module-status" data-i18n="module.statusLocked">Bald verfügbar</span>
-        </div>
-        <div class="module-card module-locked" aria-disabled="true">
-          <span class="module-name" data-i18n="module.words">Erste Wörter lesen</span>
-          <span class="module-status" data-i18n="module.statusLocked">Bald verfügbar</span>
-        </div>
-      </div>
-      <p class="fine-print" data-i18n="path.more">Weitere Module folgen.</p>
+      <p class="eyebrow" data-i18n="result.eyebrow">Ergebnis</p>
+      <h2 class="view-title" id="result-title" tabindex="-1"></h2>
+      <p class="body-text" id="result-lead"></p>
+      <div class="result-list" id="result-list"></div>
+      <p class="muted-text" id="result-errors"></p>
+      <p class="fine-print" id="result-precheck"></p>
+      <p class="notice" id="result-nextday"></p>
+      <button class="btn btn-primary" id="btn-result-home" data-i18n="result.cta">Zur Übersicht</button>
     </div>
   </section>
 
-  <!-- Ansicht: Entdecken -->
-  <section class="view" id="view-discover">
-    <div class="discover-feed screen-with-nav" id="discover-feed">
-
-      <article class="discover-post discover-post-1" data-post="1">
-        <div class="post-media">
-          <svg class="post-alif-svg" viewBox="0 0 120 200" aria-hidden="true">
-            <line class="post-alif-path" x1="60" y1="20" x2="60" y2="180" />
-          </svg>
-        </div>
-        <div class="post-badges">
-          <span class="post-duration" data-i18n="post1.duration">20 Sek.</span>
-          <span class="post-media-tag" data-i18n="media.animatedLabel">Animiertes Lernmedium</span>
-        </div>
-        <button class="save-btn" data-save="post1" data-i18n="action.save">Speichern</button>
-        <div class="post-body">
-          <h3 class="post-title" data-i18n="post1.title">Alif erkennen</h3>
-          <p class="post-desc" data-i18n="post1.desc">Ein senkrechter Strich – der einfachste Buchstabe.</p>
-          <p class="post-goal" data-i18n="post1.goal">Lernziel: Alif sicher erkennen</p>
-          <button class="btn btn-primary" id="post1-cta" data-i18n="post1.cta">Jetzt üben</button>
-        </div>
-      </article>
-
-      <article class="discover-post discover-post-2" data-post="2">
-        <div class="post-media post-media-split">
-          <div class="post-split-half">
-            <span class="post-split-letter arabic" dir="rtl" lang="ar">ب</span>
-            <span class="post-dot post-dot-ba"></span>
-          </div>
-          <div class="post-split-half">
-            <span class="post-split-letter arabic" dir="rtl" lang="ar">ت</span>
-            <span class="post-dot post-dot-ta-1"></span>
-            <span class="post-dot post-dot-ta-2"></span>
-          </div>
-        </div>
-        <div class="post-badges">
-          <span class="post-duration" data-i18n="post2.duration">30 Sek.</span>
-          <span class="post-media-tag" data-i18n="media.animatedLabel">Animiertes Lernmedium</span>
-        </div>
-        <button class="save-btn" data-save="post2" data-i18n="action.save">Speichern</button>
-        <div class="post-body">
-          <h3 class="post-title" data-i18n="post2.title">Bā und Tā unterscheiden</h3>
-          <p class="post-desc" data-i18n="post2.desc">Gleiche Grundform, unterschiedliche Punkte.</p>
-          <p class="post-goal" data-i18n="post2.goal">Lernziel: Punkte sicher unterscheiden</p>
-          <button class="btn btn-primary" id="post2-cta" data-i18n="post2.cta">Mini-Quiz starten</button>
-        </div>
-      </article>
-
-      <article class="discover-post discover-post-3" data-post="3">
-        <div class="post-media post-media-connect">
-          <span class="connect-glyph connect-glyph-1 arabic" dir="rtl" lang="ar">ا</span>
-          <span class="connect-glyph connect-glyph-2 arabic" dir="rtl" lang="ar">ب</span>
-          <span class="connect-glyph connect-glyph-3 arabic" dir="rtl" lang="ar">ت</span>
-        </div>
-        <div class="post-badges">
-          <span class="post-media-tag" data-i18n="media.animatedLabel">Animiertes Lernmedium</span>
-        </div>
-        <button class="save-btn" data-save="post3" data-i18n="action.save">Speichern</button>
-        <div class="post-body">
-          <p class="fine-print demo-tag" data-i18n="post3.demo">Demo – fachlich noch nicht freigegeben</p>
-          <h3 class="post-title" data-i18n="post3.title">Buchstaben verbinden</h3>
-          <p class="post-desc" data-i18n="post3.desc">Vorschau, wie einzelne Buchstaben später zu einer verbundenen Form werden.</p>
-          <button class="btn btn-secondary" id="post3-cta" data-i18n="post3.cta">Lernweg ansehen</button>
-        </div>
-      </article>
-
-      <article class="discover-post discover-post-4" data-post="4">
-        <div class="post-media post-media-sequence">
-          <div class="letter-badge"><span class="post-sequence-letter arabic" id="sequence-letter" dir="rtl" lang="ar">ا</span></div>
-          <div class="step-dots" id="sequence-dots">
-            <span class="step-dot"></span><span class="step-dot"></span><span class="step-dot"></span>
-          </div>
-        </div>
-        <div class="post-badges">
-          <span class="post-media-tag" data-i18n="media.animatedLabel">Animiertes Lernmedium</span>
-        </div>
-        <button class="save-btn" data-save="post4" data-i18n="action.save">Speichern</button>
-        <div class="post-body">
-          <h3 class="post-title" data-i18n="post4.title">Schnelle Wiederholung</h3>
-          <p class="post-desc" data-i18n="post4.desc">Alif, Bā und Tā im schnellen Wechsel.</p>
-          <button class="btn btn-secondary" id="post4-cta" data-i18n="post4.cta">Wiederholen</button>
-        </div>
-      </article>
-
-      <article class="discover-post discover-post-5" data-post="5">
-        <div class="post-body post-body-preview">
-          <h3 class="post-title" data-i18n="post5.title">Weitere Lernbereiche</h3>
-          <p class="post-desc" data-i18n="post5.desc">Ein Ausblick auf kommende Themen – nur eine Produktvorschau.</p>
-          <div class="preview-grid">
-            <div class="preview-tile preview-tile-1">
-              <span class="preview-tile-label" data-i18n="post5.quran">Qur'anlesen &amp; Tajwid</span>
-              <span class="preview-tile-tag" data-i18n="post5.comingSoon">Folgt später</span>
-            </div>
-            <div class="preview-tile preview-tile-2">
-              <span class="preview-tile-label" data-i18n="post5.knowledge">Islamisches Wissen</span>
-              <span class="preview-tile-tag" data-i18n="post5.comingSoon">Folgt später</span>
-            </div>
-            <div class="preview-tile preview-tile-3">
-              <span class="preview-tile-label" data-i18n="post5.prophets">Prophetengeschichten</span>
-              <span class="preview-tile-tag" data-i18n="post5.comingSoon">Folgt später</span>
-            </div>
-            <div class="preview-tile preview-tile-4">
-              <span class="preview-tile-label" data-i18n="post5.discoverIslam">Islam kennenlernen</span>
-              <span class="preview-tile-tag" data-i18n="post5.comingSoon">Folgt später</span>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <article class="discover-post discover-post-end" data-post="end">
-        <div class="post-body post-body-end">
-          <p class="post-end-title" data-i18n="discover.endTitle">Für heute bist du am Ende der Auswahl.</p>
-          <button class="btn btn-primary" id="discover-end-cta" data-i18n="discover.endCta">Zurück zum Lernweg</button>
-        </div>
-      </article>
-
+  <!-- ================= 5) Folgetagsprüfung ================= -->
+  <section class="view" id="view-nextday">
+    <div class="screen">
+      <p class="eyebrow" data-i18n="nextday.eyebrow">Folgeprüfung</p>
+      <div class="meter">
+        <div class="meter-track"><div class="meter-fill" id="nextday-fill"></div></div>
+        <span class="meter-label" id="nextday-count"></span>
+      </div>
+      <div class="act">
+        <h2 class="section-title" id="nextday-prompt"></h2>
+        <div id="nextday-task"></div>
+        <p class="feedback" id="nextday-feedback" role="status" aria-live="polite" hidden></p>
+      </div>
+      <button class="btn btn-primary" id="btn-nextday-action"></button>
     </div>
   </section>
-
-  <!-- Ansicht: Lernlektion 1 -->
-  <section class="view" id="view-lesson1">
-    <div class="screen screen-center screen-compact">
-      <button class="back-btn back-btn-self" data-back><span class="back-arrow">‹</span> <span data-i18n="common.back">Zurück</span></button>
-      <p class="eyebrow" data-i18n="lesson.title">Alif, Bā und Tā</p>
-      <div class="step-dots" id="lesson1-dots">
-        <span class="step-dot"></span><span class="step-dot"></span><span class="step-dot"></span>
-      </div>
-      <p class="fine-print" id="lesson1-progress">1 von 3</p>
-      <div class="letter-badge"><div class="letter-display arabic" id="lesson1-letter" dir="rtl" lang="ar">ا</div></div>
-      <p class="letter-name" id="lesson1-letter-name">Alif</p>
-      <p class="letter-hint" id="lesson1-letter-hint"></p>
-      <p class="fine-print" data-i18n="lesson.audioNote">Geprüfte Audio-Aussprache folgt in einer späteren Phase.</p>
-      <p class="fine-print demo-tag" data-i18n="lesson.demoHint">Demo-Inhalt – fachliche Prüfung ausstehend.</p>
-      <button class="btn btn-primary" id="btn-lesson1-next" data-i18n="common.next">Weiter</button>
-    </div>
-  </section>
-
-  <!-- Ansicht: Aktive Übung -->
-  <section class="view" id="view-exercise">
-    <div class="screen screen-center screen-compact">
-      <button class="back-btn back-btn-self" data-back><span class="back-arrow">‹</span> <span data-i18n="common.back">Zurück</span></button>
-      <p class="eyebrow" data-i18n="exercise.eyebrow">Übung</p>
-      <div class="round-meta" id="exercise-round-meta" hidden>
-        <span id="exercise-round-progress"></span>
-        <span id="exercise-score"></span>
-      </div>
-
-      <div class="flash-overlay" id="exercise-flash-overlay" hidden>
-        <div class="letter-badge"><div class="letter-display arabic" id="exercise-flash-char" dir="rtl" lang="ar" translate="no"></div></div>
-        <p class="fine-print" data-i18n="qb.flash.watch">Schau genau hin …</p>
-        <!-- Nur bei prefers-reduced-motion: selbst gesteuert weiterschalten. -->
-        <button class="btn btn-primary" id="btn-flash-next" data-i18n="common.next" hidden>Weiter</button>
-      </div>
-
-      <div id="exercise-question-body">
-        <h2 class="view-title" id="exercise-question">Welcher Buchstabe ist Bā?</h2>
-        <!-- Zeichenfeld: steht bewusst als eigenes Element unter dem Fragetext und
-             wird nur gerendert, wenn die Frage ein displayChar besitzt. -->
-        <div class="letter-badge letter-badge-compact" id="exercise-display-char-wrap" hidden>
-          <div class="letter-display arabic" id="exercise-display-char" dir="rtl" lang="ar" translate="no"></div>
-        </div>
-        <div class="letter-choice-row" id="exercise-choices"></div>
-        <p class="feedback" id="exercise-feedback" aria-live="polite" hidden></p>
-        <button class="btn btn-primary" id="btn-exercise-next" data-i18n="common.next" hidden>Weiter</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Ansicht: Auswertung der Übungsrunde -->
-  <section class="view" id="view-complete">
-    <div class="screen screen-center">
-      <h2 class="view-title" data-i18n="round.summaryTitle">Auswertung</h2>
-      <p class="subtext" id="round-summary-score"></p>
-      <div class="round-summary-list" id="round-summary-list"></div>
-      <p class="fine-print" data-i18n="complete.demoLabel">Demo-Fortschritt</p>
-      <button class="btn btn-primary" id="btn-round-new" data-i18n="round.newRound">Neue Übungsrunde</button>
-      <button class="btn btn-secondary" id="btn-round-retry-wrong" data-i18n="round.retryWrong" hidden>Fehler wiederholen</button>
-      <button class="btn btn-secondary" id="btn-complete-home" data-i18n="complete.home">Zur Startseite</button>
-    </div>
-  </section>
-
-  <!-- Ansicht: Lektion 2 – Formen unterscheiden (Visuelle Zuordnung) -->
-  <section class="view" id="view-lesson2">
-    <div class="screen screen-compact">
-      <button class="back-btn" data-back><span class="back-arrow">‹</span> <span data-i18n="common.back">Zurück</span></button>
-      <h2 class="view-title" data-i18n="lesson2.title">Formen unterscheiden</h2>
-      <p class="subtext" data-i18n="lesson2.instructions">Ordne jeden Buchstaben seinem Merkmal zu.</p>
-      <p class="fine-print demo-tag" data-i18n="lesson2.demoNote">Demo – teilweise verfügbar, fachliche Prüfung ausstehend.</p>
-      <div class="match-columns">
-        <div class="match-column" id="lesson2-letters"></div>
-        <div class="match-column" id="lesson2-traits"></div>
-      </div>
-      <p class="feedback feedback-incorrect" id="lesson2-feedback" hidden></p>
-      <p class="feedback feedback-correct" id="lesson2-complete-note" hidden data-i18n="lesson2.complete">Alle Paare gefunden.</p>
-    </div>
-  </section>
-
-  <!-- Ansicht: Lektion 3 – Buchstaben verbinden (Vorschau) -->
-  <section class="view" id="view-lesson3">
-    <div class="screen screen-center">
-      <button class="back-btn back-btn-self" data-back><span class="back-arrow">‹</span> <span data-i18n="common.back">Zurück</span></button>
-      <p class="fine-print demo-tag" data-i18n="lesson3.locked">Noch nicht freigeschaltet</p>
-      <h2 class="view-title" data-i18n="lesson3.title">Buchstaben verbinden</h2>
-      <div class="post-media post-media-connect post-media-static">
-        <span class="connect-glyph connect-glyph-1 arabic" dir="rtl" lang="ar">ا</span>
-        <span class="connect-glyph connect-glyph-2 arabic" dir="rtl" lang="ar">ب</span>
-        <span class="connect-glyph connect-glyph-3 arabic" dir="rtl" lang="ar">ت</span>
-      </div>
-      <p class="subtext" data-i18n="lesson3.text">Vorschau: So werden Buchstaben später miteinander verbunden. Diese Lektion ist noch nicht vollständig freigeschaltet.</p>
-      <button class="btn btn-primary" id="lesson3-back-home" data-i18n="complete.home">Zur Startseite</button>
-    </div>
-  </section>
-
-  <!-- Ansicht: Fortschritt -->
-  <section class="view" id="view-progress">
-    <div class="screen screen-with-nav">
-      <h2 class="view-title" data-i18n="progress.title">Fortschritt</h2>
-      <p class="fine-print demo-tag" data-i18n="progress.demoTag">Demo-Daten</p>
-      <div class="card"><p class="card-label" data-i18n="progress.lettersLabel">Erkannte Buchstaben</p><p class="card-value" id="progress-letters">0 von 28</p></div>
-      <div class="card"><p class="card-label" data-i18n="progress.lessonsLabel">Absolvierte Lektionen</p><p class="card-value" id="progress-lessons">0</p></div>
-      <div class="card"><p class="card-label" data-i18n="progress.timeLabel">Lernzeit</p><p class="card-value" id="progress-time">0 Minuten</p></div>
-      <div class="card"><p class="card-label" data-i18n="progress.nextLabel">Nächstes Ziel</p><p class="card-value" data-i18n="progress.nextValue">Buchstabenformen unterscheiden</p></div>
-    </div>
-  </section>
-
-  <!-- Ansicht: Einstellungen -->
-  <section class="view" id="view-settings">
-    <div class="screen screen-with-nav">
-      <h2 class="view-title" data-i18n="settings.title">Einstellungen</h2>
-
-      <h3 class="section-title" data-i18n="settings.language">Sprache ändern</h3>
-      <div class="segmented" id="settings-lang">
-        <button class="segmented-btn" data-lang="de">Deutsch</button>
-        <button class="segmented-btn" data-lang="tr">Türkçe</button>
-      </div>
-
-      <h3 class="section-title" data-i18n="settings.appearance">Erscheinungsbild</h3>
-      <div class="segmented" id="settings-theme">
-        <button class="segmented-btn" data-theme-choice="light" data-i18n="settings.light">Hell</button>
-        <button class="segmented-btn" data-theme-choice="dark" data-i18n="settings.dark">Dunkel</button>
-        <button class="segmented-btn" data-theme-choice="system" data-i18n="settings.system">System</button>
-      </div>
-
-      <h3 class="section-title" data-i18n="settings.goalTitle">Lernziel</h3>
-      <button class="btn btn-secondary" id="btn-change-goal" data-i18n="settings.changeGoal">Lernziel ändern</button>
-
-      <h3 class="section-title" data-i18n="settings.progressTitle">Demo-Fortschritt</h3>
-      <button class="btn btn-secondary" id="btn-reset-progress" data-i18n="settings.resetProgress">Demo-Fortschritt zurücksetzen</button>
-
-      <h3 class="section-title" data-i18n="settings.onboardingTitle">Onboarding</h3>
-      <button class="btn btn-secondary" id="btn-replay-onboarding" data-i18n="settings.replayOnboarding">Onboarding erneut anzeigen</button>
-
-      <h3 class="section-title" data-i18n="settings.dataTitle">Lokale Daten</h3>
-      <button class="btn btn-secondary" id="btn-clear-all" data-i18n="settings.clearAll">Alle lokalen Demo-Daten löschen</button>
-
-      <p class="fine-print" data-i18n="settings.privacyNote">Dieser Prototyp speichert Einstellungen ausschließlich lokal auf diesem Gerät.</p>
-      <p class="fine-print prototype-note" data-i18n="footer.note">Prototyp – Lerninhalte und religiöse Einordnungen sind noch nicht fachlich freigegeben.</p>
-    </div>
-  </section>
-
-  <!-- Bottom-Navigation -->
-  <nav class="bottom-nav" id="bottom-nav">
-    <button class="nav-btn" data-nav="home">
-      <span class="nav-icon icon-learn"></span>
-      <span data-i18n="nav.learn">Lernen</span>
-    </button>
-    <button class="nav-btn" data-nav="discover">
-      <span class="nav-icon icon-discover"></span>
-      <span data-i18n="nav.discover">Entdecken</span>
-    </button>
-    <button class="nav-btn" data-nav="progress">
-      <span class="nav-icon icon-progress"></span>
-      <span data-i18n="nav.progress">Fortschritt</span>
-    </button>
-    <button class="nav-btn" data-nav="settings">
-      <span class="nav-icon icon-settings"></span>
-      <span data-i18n="nav.settings">Einstellungen</span>
-    </button>
-  </nav>
 
 </div>
 <script src="app.js"></script>

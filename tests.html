@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Iqra – Tests der reinen Funktionen</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+         margin: 0; padding: 16px; background: #faf8f4; color: #24291f; }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  #summary { font-size: 16px; font-weight: 700; padding: 12px; border-radius: 10px; margin: 12px 0; }
+  .pass { background: #e3f1ea; color: #0b5e46; }
+  .fail { background: #f6ebe4; color: #9a3412; }
+  h2 { font-size: 15px; margin: 20px 0 6px; }
+  ol { margin: 0; padding-left: 20px; }
+  li { font-size: 13px; line-height: 1.5; margin: 2px 0; }
+  li.ok::marker { color: #0b5e46; }
+  li.no { color: #9a3412; font-weight: 700; }
+  code { background: #f2efe8; padding: 0 4px; border-radius: 4px; }
+  p.note { font-size: 12px; color: #676c5e; line-height: 1.5; }
+</style>
+</head>
+<body>
+<h1>Iqra – Tests der reinen Funktionen</h1>
+<p class="note">Kein Framework, kein Build. <code>app.js</code> wird geladen; die App startet nicht, weil
+diese Seite kein <code>#view-precheck</code> enthält. Getestet wird ausschließlich <code>window.IqraPure</code>.</p>
+<div id="summary">läuft …</div>
+<div id="results"></div>
+
+<script src="app.js"></script>
+<script>
+(function () {
+  "use strict";
+  var P = window.IqraPure;
+  var groups = [];
+  var current = null;
+  var total = 0, failed = 0;
+
+  function group(name) { current = { name: name, items: [] }; groups.push(current); }
+  function ok(cond, label) {
+    total++;
+    if (!cond) failed++;
+    current.items.push({ ok: !!cond, label: label });
+  }
+  function eq(a, b, label) { ok(JSON.stringify(a) === JSON.stringify(b), label + "  → " + JSON.stringify(a)); }
+
+  function answer(o) {
+    return {
+      letterId: o.letterId, taskType: o.taskType || "flash", pickKind: o.pickKind || "glyph",
+      picked: o.picked, correct: !!o.correct
+    };
+  }
+  function cat(o) { return P.classifyError(answer(o)).category; }
+  function diag(o) { return P.classifyError(answer(o)).needsDiagnosis; }
+
+  /* ---------------------------------------------------------------- 1 */
+  group("Fehlerkategorien – genau drei");
+
+  ok(cat({ letterId: "ba", picked: "ا" }) === "shape_confusion",
+     "Ziel ب, gewählt ا → shape_confusion");
+  ok(cat({ letterId: "alif", picked: "ب" }) === "shape_confusion",
+     "Ziel ا, gewählt ب → shape_confusion");
+  ok(cat({ letterId: "alif", picked: "ل" }) === "shape_confusion",
+     "Ziel ا, gewählt ل (Stufe 3) → shape_confusion, keine leere Kategorie");
+  ok(cat({ letterId: "ba", picked: "ي" }) === "dot_count_confusion",
+     "Ziel ب (1 unten), gewählt ي (2 unten) → dot_count_confusion");
+  ok(cat({ letterId: "ta", picked: "ث" }) === "dot_count_confusion",
+     "Ziel ت (2 oben), gewählt ث (3 oben) → dot_count_confusion");
+  ok(cat({ letterId: "ba", picked: "ن" }) === "dot_position_confusion",
+     "Ziel ب (1 unten), gewählt ن (1 oben) → dot_position_confusion");
+  ok(cat({ letterId: "ta", picked: "ن" }) === "dot_count_confusion",
+     "Ziel ت (2 oben), gewählt ن (1 oben) → dot_count_confusion");
+  ok(cat({ letterId: "ba", picked: "ب", correct: true }) === null,
+     "Richtige Antwort erzeugt keine Kategorie");
+
+  var cats = ["shape_confusion", "dot_count_confusion", "dot_position_confusion"];
+  var seen = [];
+  ["ا", "ت", "ث", "ن", "ي", "ل", "د"].forEach(function (ch) {
+    var c = P.classifyError(answer({ letterId: "ba", picked: ch })).category;
+    if (c && seen.indexOf(c) === -1) seen.push(c);
+  });
+  ok(seen.every(function (c) { return cats.indexOf(c) !== -1; }),
+     "Es entsteht nie eine vierte Kategorie: " + JSON.stringify(seen));
+
+  /* ---------------------------------------------------------------- 2 */
+  group("Direkte ب/ت-Verwechslung und Diagnose");
+
+  ok(cat({ letterId: "ba", picked: "ت" }) === null && diag({ letterId: "ba", picked: "ت" }) === true,
+     "Ziel ب, gewählt ت → keine Kategorie, needsDiagnosis");
+  ok(cat({ letterId: "ta", picked: "ب" }) === null && diag({ letterId: "ta", picked: "ب" }) === true,
+     "Ziel ت, gewählt ب → keine Kategorie, needsDiagnosis");
+  ok(P.resolveDiagnosis(false) === "dot_count_confusion",
+     "Anzahlfrage falsch → dot_count_confusion");
+  ok(P.resolveDiagnosis(true) === "dot_position_confusion",
+     "Anzahlfrage richtig → dot_position_confusion");
+  ok(["dot_count_confusion", "dot_position_confusion"].indexOf(P.resolveDiagnosis(true)) !== -1 &&
+     ["dot_count_confusion", "dot_position_confusion"].indexOf(P.resolveDiagnosis(false)) !== -1,
+     "Diagnose endet immer in Anzahl ODER Position, nie in einer vierten Kategorie");
+
+  group("Namensfehler und Merkmalscodes");
+  var nm = P.classifyError(answer({ letterId: "ba", taskType: "name", pickKind: "name", picked: "ta" }));
+  ok(nm.category === null && nm.nameMiss === true,
+     "Namensfehler → nameMiss, keine Kategorie");
+  ok(cat({ letterId: "ba", taskType: "trait", pickKind: "trait", picked: "1-above" }) === "dot_position_confusion",
+     "Merkmalscode 1-above bei Ziel ب → dot_position_confusion");
+  ok(cat({ letterId: "ba", taskType: "trait", pickKind: "trait", picked: "2-below" }) === "dot_count_confusion",
+     "Merkmalscode 2-below bei Ziel ب → dot_count_confusion");
+  ok(cat({ letterId: "ba", taskType: "trait", pickKind: "trait", picked: "0-none" }) === "dot_count_confusion",
+     "Merkmalscode 0-none behauptet keine Position → dot_count_confusion");
+  ok(cat({ letterId: "ba", taskType: "dots", pickKind: "trait", picked: "2-above" }) === null &&
+     diag({ letterId: "ba", taskType: "dots", pickKind: "trait", picked: "2-above" }) === true,
+     "Punktplatzierung 2-above bei Ziel ب → Diagnose statt vierter Kategorie");
+
+  group("Rasterfund – Mehrfachauswahl");
+  ok(cat({ letterId: "ta", taskType: "grid", picked: ["ت", "ت", "ث", "ث"] }) === "dot_count_confusion",
+     "Zwei Fehlmarkierungen ث bei Ziel ت → dot_count_confusion (häufigste Kategorie)");
+  ok(diag({ letterId: "ta", taskType: "grid", picked: ["ت", "ت", "ت"], correct: true }) === false,
+     "Vollständig richtige Markierung erzeugt weder Kategorie noch Diagnose");
+  ok(diag({ letterId: "ta", taskType: "grid", picked: ["ت", "ت"] }) === true,
+     "Nur Auslassung, keine Fehlmarkierung → Diagnose statt fehlender Kategorie");
+
+  /* ---------------------------------------------------------------- 3 */
+  group("Lernstatus today_secure / wobbly / not_yet");
+
+  function A(letterId, taskType, correct, firstTry, qid, scope) {
+    return { qid: qid, letterId: letterId, taskType: taskType, correct: correct,
+             firstTry: firstTry, scope: scope || "today", level: 1, picked: "x",
+             attemptNo: firstTry ? 1 : 2, ts: 0 };
+  }
+
+  ok(P.isTodaySecure({ scope: "today", firstTryForms: ["grid", "dots", "trait"], itemsBetween: 5 }) === false,
+     "3 Formen aber ohne flash → nicht sicher");
+  ok(P.isTodaySecure({ scope: "today", firstTryForms: ["flash", "trait", "name"], itemsBetween: 5 }) === false,
+     "3 Formen ohne produktive Aufgabe → nicht sicher");
+  ok(P.isTodaySecure({ scope: "today", firstTryForms: ["flash", "grid", "trait"], itemsBetween: 1 }) === false,
+     "3 Formen, aber nur 1 Item dazwischen → nicht sicher");
+  ok(P.isTodaySecure({ scope: "today", firstTryForms: ["flash", "grid"], itemsBetween: 9 }) === false,
+     "nur 2 Formen → nicht sicher");
+  ok(P.isTodaySecure({ scope: "today", firstTryForms: ["flash", "grid", "trait"], itemsBetween: 2 }) === true,
+     "alle vier Bedingungen erfüllt → today_secure");
+
+  var secureLog = [
+    A("ba", "flash", true, true, "q1"), A("ta", "trait", true, true, "q2"),
+    A("alif", "flash", true, true, "q3"), A("ta", "flash", true, true, "q4"),
+    A("ba", "dots", true, true, "q5"), A("ba", "trait", true, true, "q6")
+  ];
+  var lsBa = P.computeLetterState(secureLog, "ba", "today");
+  eq(lsBa.status, "today_secure", "Protokoll mit flash+dots+trait und 3 Items dazwischen → ب today_secure");
+  ok(lsBa.itemsBetween >= 2, "itemsBetween aus Einfügereihenfolge = " + lsBa.itemsBetween);
+
+  var wobblyLog = [
+    A("ba", "flash", true, true, "q1"), A("ta", "trait", false, true, "q2"),
+    A("ba", "dots", true, false, "q3"), A("ba", "trait", true, false, "q4")
+  ];
+  eq(P.computeLetterState(wobblyLog, "ba", "today").status, "wobbly",
+     "1 Ersttreffer + Nachtreffer, Kriterium verfehlt → wobbly");
+
+  var notYetLog = [
+    A("ta", "flash", false, true, "q1"), A("ta", "grid", false, true, "q2"),
+    A("ta", "trait", false, true, "q3")
+  ];
+  eq(P.computeLetterState(notYetLog, "ta", "today").status, "not_yet",
+     "kein Ersttreffer → not_yet");
+  eq(P.computeLetterState([], "ta", "today").status, "not_yet",
+     "keine Antworten → not_yet, nie 'sicher'");
+
+  var majorityWrong = [
+    A("ta", "flash", true, true, "q1"), A("ta", "grid", false, true, "q2"),
+    A("ta", "trait", false, true, "q3"), A("ta", "dots", false, true, "q4")
+  ];
+  eq(P.computeLetterState(majorityWrong, "ta", "today").status, "not_yet",
+     "überwiegend falsch trotz eines Ersttreffers → not_yet");
+
+  var nameOnly = [A("ba", "name", true, true, "q1"), A("ba", "name", true, true, "q2"), A("ba", "name", true, true, "q3")];
+  eq(P.computeLetterState(nameOnly, "ba", "today").status, "not_yet",
+     "Namensitems allein ändern den Lernstatus nicht");
+
+  /* ---------------------------------------------------------------- 4 */
+  group("overnight_secure");
+
+  ok(P.isOvernightSecure({ scope: "nextday", firstTryForms: ["flash", "dots"] }) === true,
+     "2 verschiedene Formen im ersten Versuch → overnight_secure");
+  ok(P.isOvernightSecure({ scope: "nextday", firstTryForms: ["flash"] }) === false,
+     "2 Treffer derselben Form → nicht sicher");
+  ok(P.isOvernightSecure({ scope: "today", firstTryForms: ["flash", "dots", "grid"] }) === false,
+     "Vergabe nur im scope 'nextday', nie am Lektionstag");
+  var ndLog = [A("ba", "flash", true, true, "n1", "nextday"), A("ta", "flash", true, true, "n2", "nextday"),
+               A("ba", "dots", true, true, "n3", "nextday")];
+  eq(P.computeLetterState(ndLog, "ba", "nextday").status, "overnight_secure",
+     "Folgetagsprotokoll mit 2 Formen → overnight_secure");
+  eq(P.computeLetterState(ndLog, "ta", "nextday").status, "wobbly",
+     "nur 1 Form am Folgetag → wobbly, nicht overnight_secure");
+  eq(P.computeLetterState(ndLog, "ba", "today").status, "not_yet",
+     "Folgetagsantworten zählen nicht in den Tagesstatus hinein");
+
+  /* ---------------------------------------------------------------- 5 */
+  group("Distraktoren");
+
+  var prev = null, sets = [], i, j;
+  for (i = 0; i < 200; i++) {
+    var letter = ["alif", "ba", "ta"][i % 3];
+    var level = (i % 3) + 1;
+    var d = P.buildDistractors(letter, level, prev);
+    sets.push({ letter: letter, level: level, d: d, prev: prev });
+    prev = d.join(",");
+  }
+  ok(sets.every(function (s) { return s.d.length === 4; }), "Immer genau 4 Optionen (200 Läufe)");
+  ok(sets.every(function (s) {
+    var n = 0;
+    for (var k = 0; k < s.d.length; k++) if (s.d[k] === s.letter) n++;
+    return n === 1;
+  }), "Zielzeichen genau einmal enthalten, nie doppelt");
+  ok(sets.every(function (s) {
+    return s.d.filter(function (x) { return x !== s.letter; }).length === 3;
+  }), "Genau drei Distraktoren, Zielzeichen nie als Distraktor");
+  ok(sets.every(function (s) {
+    return !s.prev || s.d.join(",") !== s.prev;
+  }), "Zwei aufeinanderfolgende Items zeigen nie dasselbe Set in derselben Reihenfolge");
+  ok(sets.every(function (s) {
+    var uniq = [];
+    for (var k = 0; k < s.d.length; k++) if (uniq.indexOf(s.d[k]) === -1) uniq.push(s.d[k]);
+    return uniq.length === 4;
+  }), "Keine Option kommt doppelt vor");
+  ok(sets.every(function (s) { return s.d.every(function (g) { return !!P.GLYPHS[g]; }); }),
+     "Nur echte Unicode-Zeichen aus der Glyphentabelle, keine erfundenen Glyphen");
+
+  /* gleiche Antwort zweimal hintereinander mit identischem prev erzwingen */
+  var forced = P.buildDistractors("ba", 1, ["alif", "ta", "nun", "ba"].join(","));
+  ok(forced.join(",") !== ["alif", "ta", "nun", "ba"].join(","),
+     "Erzwungene Kollision wird aufgelöst");
+
+  group("Merkmalsoptionen kreuzen Anzahl und Position");
+  for (i = 0; i < 100; i++) {
+    var lid = ["ba", "ta"][i % 2];
+    var opts = P.buildTraitOptions(lid);
+    var correct = P.traitCodeOf(lid);
+    if (opts.length !== 4) { ok(false, "buildTraitOptions liefert 4 Optionen"); break; }
+    if (opts.indexOf(correct) === -1) { ok(false, "richtige Option enthalten"); break; }
+  }
+  ok(true, "buildTraitOptions: 100 Läufe, immer 4 Optionen inkl. der richtigen");
+  var tb = P.buildTraitOptions("ba");
+  var tParts = tb.map(function (c) { return c.split("-"); });
+  ok(tParts.some(function (p) { return p[1] === "below" && p[0] !== "1"; }),
+     "mindestens ein Anzahl-Ablenker bei gleicher Position");
+  ok(tParts.some(function (p) { return p[0] === "1" && p[1] !== "below"; }),
+     "mindestens ein Positions-Ablenker bei gleicher Anzahl");
+
+  group("Rasterfund-Aufbau");
+  var g9 = P.buildGrid("ta", 2);
+  ok(g9.length === 9, "Raster hat 9 Zellen");
+  ok(g9.filter(function (x) { return x === "ta"; }).length === 3, "genau 3 Zielzeichen im Raster");
+  ok(g9.every(function (x) { return !!P.GLYPHS[x]; }), "nur echte Zeichen im Raster");
+
+  /* ---------------------------------------------------------------- 6 */
+  group("Fälligkeit – nur der nächste lokale Kalendertag");
+
+  eq(P.nextDueDate("2026-07-29"), "2026-07-30", "einfacher Tageswechsel");
+  eq(P.nextDueDate("2026-07-31"), "2026-08-01", "Monatswechsel");
+  eq(P.nextDueDate("2026-12-31"), "2027-01-01", "Jahreswechsel");
+  eq(P.nextDueDate("2028-02-28"), "2028-02-29", "Schaltjahr");
+  eq(P.nextDueDate("2026-02-28"), "2026-03-01", "kein Schaltjahr");
+  ok(P.nextDueDate("2026-07-29") !== "2026-07-31" && P.nextDueDate("2026-07-29") !== "2026-08-02",
+     "kein 2- oder 4-Tage-Ergebnis");
+
+  var spanOk = true;
+  var probe = new Date(2026, 0, 1);
+  for (i = 0; i < 800; i++) {
+    var from = (function (d) {
+      var m = d.getMonth() + 1, dd = d.getDate();
+      return d.getFullYear() + "-" + (m < 10 ? "0" + m : m) + "-" + (dd < 10 ? "0" + dd : dd);
+    })(probe);
+    var to = P.nextDueDate(from);
+    var t1 = new Date(from.slice(0, 4), +from.slice(5, 7) - 1, +from.slice(8, 10));
+    var t2 = new Date(to.slice(0, 4), +to.slice(5, 7) - 1, +to.slice(8, 10));
+    if (Math.round((t2 - t1) / 86400000) !== 1) { spanOk = false; break; }
+    probe.setDate(probe.getDate() + 1);
+  }
+  ok(spanOk, "800 aufeinanderfolgende Tage: Abstand ist immer exakt 1 Kalendertag");
+
+  /* Lokaler Tag, nicht UTC: 23:30 Ortszeit muss noch derselbe Tag sein. */
+  var late = new Date(2026, 6, 29, 23, 30, 0);
+  eq(P.todayLocal(late), "2026-07-29", "23:30 Ortszeit liefert den lokalen Tag, nicht den UTC-Tag");
+  var early = new Date(2026, 6, 29, 0, 30, 0);
+  eq(P.todayLocal(early), "2026-07-29", "00:30 Ortszeit liefert den lokalen Tag");
+
+  ok(P.isDue("2026-07-30", "2026-07-29") === false, "vor dem Fälligkeitstag nicht fällig");
+  ok(P.isDue("2026-07-30", "2026-07-30") === true, "am Fälligkeitstag fällig");
+  ok(P.isDue("2026-07-30", "2026-08-05") === true, "später geöffnet: weiterhin fällig, kein Reset, keine Strafe");
+  ok(P.isDue(null, "2026-07-30") === false, "ohne dueDate nichts fällig");
+
+  /* ---------------------------------------------------------------- 7 */
+  group("Fortschrittssätze");
+
+  var forbidden = ["beherrsch", "von 28", "Minuten", "dakika", "Prozent", "%"];
+  var statuses = ["today_secure", "wobbly", "not_yet", "overnight_secure"];
+  ["de", "tr"].forEach(function (lang) {
+    statuses.forEach(function (st) {
+      var s = P.progressSentence({ status: st, firstTryForms: [], itemsBetween: 0 }, lang);
+      var bad = forbidden.filter(function (w) { return s.toLowerCase().indexOf(w.toLowerCase()) !== -1; });
+      ok(bad.length === 0, lang + "/" + st + ": kein verbotener Begriff (" + s.slice(0, 40) + "…)");
+    });
+  });
+
+  var oneCorrect = [A("ba", "flash", true, true, "q1")];
+  var lsOne = P.computeLetterState(oneCorrect, "ba", "today");
+  ok(lsOne.status !== "today_secure", "eine einzige richtige Antwort ergibt nicht today_secure");
+  ok(P.progressSentence(lsOne, "de").toLowerCase().indexOf("beherrsch") === -1,
+     "Satz nach einer einzigen richtigen Antwort enthält nicht „beherrscht“");
+  ok(P.progressSentence(lsOne, "de").indexOf("über Nacht") === -1 &&
+     P.progressSentence(lsOne, "de").indexOf("nach einer Nacht") === -1,
+     "overnight_secure erscheint nie vor der Folgetagsprüfung");
+
+  var allText = [];
+  ["de", "tr"].forEach(function (l) {
+    for (var k in P.I18N[l]) if (Object.prototype.hasOwnProperty.call(P.I18N[l], k)) allText.push(P.I18N[l][k]);
+  });
+  ok(allText.every(function (s) { return s.indexOf("28") === -1; }),
+     "Nirgends im gesamten Textbestand erscheint „28“ (kein „x von 28“)");
+  ok(allText.every(function (s) { return !/\b\d+\s*(Minuten|Minute|dakika)\b/i.test(s); }),
+     "Keine fest verdrahtete Minutenangabe im Textbestand");
+
+  /* ---------------------------------------------------------------- 8 */
+  group("Reload und Migration alter Prototypdaten");
+
+  var legacy = {
+    onboardingDone: true, situation: "convert", goal: "letters",
+    progress: { letters: 3, lessons: 1, minutes: 5 },
+    savedMedia: ["post1", "post2"],
+    qb: { askedIds: ["flash-ba"], wrongIds: ["nameToChar-ta"], lastLetterId: "ta" },
+    round: { questionIds: ["flash-ba"], currentIndex: 0, score: 1, results: {} }
+  };
+  var m = P.migrateState(legacy);
+  ok(m.schemaVersion === P.SCHEMA_VERSION, "Migration setzt die aktuelle Schemaversion");
+  ok(m.progress === undefined && m.savedMedia === undefined && m.qb === undefined && m.round === undefined,
+     "progress / savedMedia / qb / round werden ersatzlos verworfen");
+  eq(m.answers, [], "keine Antworten aus alten Daten übernommen");
+  eq(m.dueDate, null, "keine Fälligkeit aus alten Daten übernommen");
+  eq(m.session.stage, "intro", "alte Runde blockiert nichts, Start bei intro");
+
+  eq(P.migrateState(null).answers, [], "null → leerer Zustand");
+  eq(P.migrateState("kaputt").session.stage, "intro", "unbrauchbare Daten → leerer Zustand");
+  eq(P.migrateState({ schemaVersion: 99, answers: [1, 2] }).answers, [],
+     "unbekannte Schemaversion wird nicht teilweise übernommen");
+
+  var keep = {
+    schemaVersion: P.SCHEMA_VERSION,
+    precheck: [{ letterId: "ba", answered: true, picked: "ba" }],
+    answers: [A("ba", "flash", true, true, "q1")],
+    errors: [], dueDate: "2026-08-01", nextdayDoneDate: null,
+    session: { stage: "practice", index: 3, queue: [1, 2, 3, 4, 5], stageStep: 9, pending: null, diagnosisDone: [] }
+  };
+  var k = P.migrateState(keep);
+  eq(k.answers.length, 1, "gültige Antworten überleben einen Reload");
+  eq(k.session.index, 3, "Position in der Runde überlebt einen Reload");
+  eq(k.dueDate, "2026-08-01", "Fälligkeit überlebt einen Reload");
+
+  group("Wächter gegen blockierte Runden");
+  eq(P.normalizeSession({ stage: "practice", index: 9, queue: [1, 2] }).index, 1,
+     "Index hinter dem Queue-Ende wird begrenzt");
+  eq(P.normalizeSession({ stage: "practice", index: 0, queue: [] }).stage, "intro",
+     "leere Queue führt zurück auf intro statt auf einen leeren Screen");
+  eq(P.normalizeSession({ stage: "diagnosis", index: 0, queue: [] }).stage, "intro",
+     "Diagnosemodus ohne Items blockiert nicht");
+  eq(P.normalizeSession({ stage: "stage", stageStep: 999 }).stageStep, P.STAGE_STEPS.length - 1,
+     "Bühnenschritt hinter dem Ende wird begrenzt");
+  eq(P.normalizeSession({}).stage, "intro", "leere Session ist gültig");
+
+  /* ---------------------------------------------------------------- 9 */
+  group("Struktur- und Ausschlusskriterien");
+
+  var passive = P.STAGE_STEPS.filter(function (s) { return s.kind === "passive"; });
+  var totalMs = passive.reduce(function (a, s) { return a + s.ms; }, 0);
+  ok(totalMs <= 20000, "Passive Betrachtungszeit gesamt ≤ 20 s (" + (totalMs / 1000) + " s)");
+  ok(passive.every(function (s) { return s.ms <= 5000; }),
+     "längste ununterbrochene Passivstrecke ≤ 5 s");
+  var firstActionAt = 0, found = false;
+  for (i = 0; i < P.STAGE_STEPS.length; i++) {
+    if (P.STAGE_STEPS[i].kind === "action") { found = true; break; }
+    firstActionAt += P.STAGE_STEPS[i].ms || 0;
+  }
+  ok(found && firstActionAt <= 5000, "erste Nutzerhandlung nach ≤ 5 s (" + (firstActionAt / 1000) + " s)");
+
+  var all = P.PRACTICE_PLAN.concat(P.FINAL_PLAN);
+  var alifShare = all.filter(function (x) { return x.letterId === "alif"; }).length / all.length;
+  ok(alifShare >= 0.12 && alifShare <= 0.28,
+     "Übungsbudget ca. 20 % ا / 80 % ب ت (ist " + Math.round(alifShare * 100) + " %)");
+
+  var forms = {};
+  all.forEach(function (x) {
+    if (!forms[x.letterId]) forms[x.letterId] = [];
+    if (forms[x.letterId].indexOf(x.taskType) === -1) forms[x.letterId].push(x.taskType);
+  });
+  ["alif", "ba", "ta"].forEach(function (l) {
+    ok(forms[l].length >= 3, l + " kann ≥ 3 verschiedene Aufgabenformen erreichen: " + forms[l].join(", "));
+    ok(forms[l].indexOf("flash") !== -1, l + " enthält einen verdeckten Abruf");
+    ok(forms[l].indexOf("grid") !== -1 || forms[l].indexOf("dots") !== -1,
+       l + " enthält eine produktive Aufgabe");
+  });
+
+  var adjacent = true;
+  for (i = 1; i < P.PRACTICE_PLAN.length; i++) {
+    if (P.PRACTICE_PLAN[i].letterId === P.PRACTICE_PLAN[i - 1].letterId) adjacent = false;
+  }
+  ok(adjacent, "kein Zeichen zweimal unmittelbar hintereinander (keine Sofortwiederholung)");
+
+  var taskTypes = [];
+  all.forEach(function (x) { if (taskTypes.indexOf(x.taskType) === -1) taskTypes.push(x.taskType); });
+  ok(taskTypes.length === 4 && ["flash", "grid", "dots", "trait"].every(function (x) { return taskTypes.indexOf(x) !== -1; }),
+     "genau vier echte Aufgabenformen: " + taskTypes.join(", "));
+
+  ok(P.FINAL_PLAN.every(function (x) { return x.level === 3; }),
+     "Abschlussdurchgang nutzt durchgehend die höchste Distraktorstufe");
+
+  /* ---------------------------------------------------------------- Ausgabe */
+  var res = document.getElementById("results");
+  groups.forEach(function (g) {
+    var h = document.createElement("h2");
+    h.textContent = g.name + " (" + g.items.filter(function (x) { return x.ok; }).length + "/" + g.items.length + ")";
+    res.appendChild(h);
+    var ol = document.createElement("ol");
+    g.items.forEach(function (it) {
+      var li = document.createElement("li");
+      li.className = it.ok ? "ok" : "no";
+      li.textContent = (it.ok ? "OK – " : "FEHLGESCHLAGEN – ") + it.label;
+      ol.appendChild(li);
+    });
+    res.appendChild(ol);
+  });
+
+  var sum = document.getElementById("summary");
+  sum.className = failed === 0 ? "pass" : "fail";
+  sum.textContent = failed === 0
+    ? ("Alle " + total + " Prüfungen bestanden.")
+    : (failed + " von " + total + " Prüfungen fehlgeschlagen.");
+  window.__iqraTestResult = { total: total, failed: failed };
+})();
+</script>
+</body>
+</html>
