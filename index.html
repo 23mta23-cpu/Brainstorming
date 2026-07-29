@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Iqra – Demolektion: Alif, Bā und Tā</title>
+<title>Iqra – Mikrokurs: Punkte unterscheiden</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -11,6 +11,7 @@
 
   <header class="topbar">
     <p class="topbar-brand">Iqra</p>
+    <button class="link-btn" id="btn-to-overview" hidden data-i18n="common.overview">Übersicht</button>
     <div class="seg" id="seg-lang" role="group" aria-label="Sprache / Dil">
       <button class="seg-btn" data-lang="de" aria-pressed="true">DE</button>
       <button class="seg-btn" data-lang="tr" aria-pressed="false">TR</button>
@@ -22,67 +23,67 @@
     </div>
   </header>
 
-  <!-- ================= 1) Vorcheck ================= -->
-  <section class="view active" id="view-precheck">
+  <!-- ================= 1) Start und Lernziel ================= -->
+  <section class="view active" id="view-start">
     <div class="screen">
 
-      <!-- Folgetagsblock: nur sichtbar, wenn faellig -->
       <div class="banner" id="nextday-offer" hidden>
         <p class="section-title" data-i18n="nextday.offerTitle">Deine Folgeprüfung ist bereit.</p>
         <p class="muted-text" data-i18n="nextday.offerText">Kurzer Block mit den Zeichen, die zuletzt am wenigsten saßen. Kein Streak, keine Strafe.</p>
         <button class="btn btn-primary" id="btn-open-nextday" data-i18n="nextday.offerCta">Folgeprüfung starten</button>
       </div>
 
-      <div id="precheck-intro">
-        <p class="eyebrow" data-i18n="precheck.eyebrow">Demolektion</p>
-        <h1 class="view-title" data-i18n="precheck.title">Alif, Bā und Tā</h1>
-        <p class="body-text" id="precheck-introtext">Zuerst ein kurzer Vorcheck. Du bekommst dabei keine Rückmeldung, ob eine Antwort richtig war – er hält nur fest, wo du startest.</p>
-        <p class="fine-print" id="precheck-introhint" data-i18n="precheck.introHint">Wenn du ein Zeichen nicht kennst, wähle „Kenne ich nicht“. Das ist keine falsche Antwort.</p>
-      </div>
+      <p class="eyebrow" data-i18n="start.eyebrow">Mikrokurs · Lektion 1</p>
+      <h1 class="view-title" data-i18n="start.title">Punkte lesen</h1>
+      <p class="body-text" data-i18n="start.goal">Ziel: sechs ähnliche Buchstaben anhand ihrer Grundform sowie Anzahl und Position der Punkte unterscheiden.</p>
+      <p class="notice" data-i18n="start.method">Du lernst nicht durch bloßes Anschauen. Nach jeder Erklärung folgt eine Aufgabe.</p>
 
-      <div id="precheck-task" hidden>
-        <div class="meter">
-          <div class="meter-track"><div class="meter-fill" id="precheck-fill"></div></div>
-          <span class="meter-label" id="precheck-count"></span>
-        </div>
-        <div class="stage">
-          <div class="glyph-xl arabic" id="precheck-char" dir="rtl" lang="ar" translate="no"></div>
-        </div>
-        <div class="act">
-          <p class="act-label" data-i18n="precheck.actLabel">Deine Einschätzung</p>
-          <h2 class="section-title" data-i18n="precheck.question">Wie heißt dieses Zeichen?</h2>
-          <div class="choices choices-text" id="precheck-choices"></div>
-          <button class="btn btn-secondary" id="btn-precheck-unknown" data-i18n="precheck.unknown">Kenne ich nicht</button>
-        </div>
-      </div>
+      <h2 class="section-title" data-i18n="start.setTitle">Die sechs Zeichen</h2>
+      <div class="letter-cards" id="start-cards"></div>
 
-      <button class="btn btn-primary" id="btn-precheck-start" data-i18n="precheck.cta">Vorcheck starten</button>
-      <button class="btn btn-secondary" id="btn-restart-lesson" hidden data-i18n="precheck.restart">Lektion neu beginnen</button>
+      <button class="btn btn-primary" id="btn-start-lesson" data-i18n="start.cta">Lektion beginnen</button>
+      <button class="btn btn-secondary" id="btn-restart-lesson" hidden data-i18n="start.restart">Lektion neu beginnen</button>
 
-      <p class="notice" id="review-notice" data-i18n="notice.review">Interner Prototyp. Die arabischen Buchstabenformen, die Punkte und die Ablenkzeichen sind noch nicht durch eine qualifizierte Arabisch-/Elifba- bzw. Schriftprüfung freigegeben. Es ist keine geprüfte Schriftdatei eingebunden.</p>
+      <p class="notice" id="review-notice" data-i18n="notice.review">Interner Prototyp. Die arabischen Buchstabenformen, die Punkte, die Ablenkzeichen und die Zuordnung der sechs Zeichen zu einer gemeinsamen Formfamilie sind noch nicht durch eine qualifizierte Arabisch-/Elifba- bzw. Schriftprüfung freigegeben. Ob sich ن und ي in der isolierten Form wirklich nur durch die Punkte von ب, ت und ث unterscheiden, ist Teil dieser offenen Prüfung. Es ist keine geprüfte Schriftdatei eingebunden.</p>
       <p class="fine-print" id="storage-warning" hidden data-i18n="notice.noStorage">Dieses Gerät speichert gerade nichts lokal. Ein Ergebnis für morgen kann deshalb nicht zugesagt werden.</p>
       <p class="fine-print" data-i18n="notice.privacy">Dieser Prototyp speichert ausschließlich lokal auf diesem Gerät. Keine Konten, kein Server, kein Tracking.</p>
-      <button class="btn btn-secondary" id="btn-clear-data" data-i18n="notice.clear">Alle lokalen Daten löschen</button>
+      <button class="link-btn link-btn-danger" id="btn-clear-data" data-i18n="notice.clear">Alle lokalen Daten löschen</button>
     </div>
   </section>
 
-  <!-- ================= 2) Lernbühne ================= -->
+  <!-- ================= 2) Vorcheck ================= -->
+  <section class="view" id="view-precheck">
+    <div class="screen">
+      <p class="eyebrow" data-i18n="precheck.eyebrow">Vorcheck</p>
+      <div class="meter">
+        <div class="meter-track"><div class="meter-fill" id="precheck-fill"></div></div>
+        <span class="meter-label" id="precheck-count"></span>
+      </div>
+      <p class="fine-print" data-i18n="precheck.note">Ohne Rückmeldung – der Vorcheck passt nur den Einstieg an.</p>
+      <div class="act">
+        <h2 class="section-title" id="precheck-prompt"></h2>
+        <div id="precheck-task"></div>
+      </div>
+      <button class="btn btn-secondary" id="btn-precheck-unknown" data-i18n="precheck.unknown">Weiß ich nicht</button>
+    </div>
+  </section>
+
+  <!-- ================= 3) Interaktive Lernbühne ================= -->
   <section class="view" id="view-stage">
     <div class="screen">
+      <p class="eyebrow" id="stage-section-label"></p>
       <div class="meter">
         <div class="meter-track"><div class="meter-fill" id="stage-fill"></div></div>
         <span class="meter-label" id="stage-count"></span>
       </div>
 
-      <!-- Bühne: getönt, randlos, keine Bedienelemente -->
       <div class="stage" id="stage-area">
-        <div class="glyph-xl arabic" id="stage-char" dir="rtl" lang="ar" translate="no"></div>
+        <div class="glyph-row arabic" id="stage-char" dir="rtl" lang="ar" translate="no"></div>
         <p class="stage-caption" id="stage-caption"></p>
       </div>
 
-      <!-- Aktionskarte: Oberflächenfarbe und Rahmen -->
-      <div class="act">
-        <p class="act-label" id="stage-act-label" data-i18n="stage.actLabel">Jetzt du</p>
+      <div class="act" id="stage-act">
+        <p class="act-label" data-i18n="stage.actLabel">Jetzt du</p>
         <h2 class="section-title" id="stage-prompt"></h2>
         <div id="stage-action"></div>
         <p class="feedback" id="stage-feedback" role="status" aria-live="polite" hidden></p>
@@ -92,7 +93,7 @@
     </div>
   </section>
 
-  <!-- ================= 3) Übung ================= -->
+  <!-- ================= 4) Adaptive Übung / Challenge / Auflösung ================= -->
   <section class="view" id="view-practice">
     <div class="screen">
       <p class="eyebrow" id="practice-mode-label"></p>
@@ -100,6 +101,7 @@
         <div class="meter-track"><div class="meter-fill" id="practice-fill"></div></div>
         <span class="meter-label" id="practice-count"></span>
       </div>
+      <p class="levelbar" id="practice-levels"></p>
       <div class="act">
         <h2 class="section-title" id="practice-prompt"></h2>
         <div id="practice-task"></div>
@@ -109,7 +111,7 @@
     </div>
   </section>
 
-  <!-- ================= 4) Ergebnis ================= -->
+  <!-- ================= 5) Ergebnis ================= -->
   <section class="view" id="view-result">
     <div class="screen">
       <p class="eyebrow" data-i18n="result.eyebrow">Ergebnis</p>
@@ -123,7 +125,7 @@
     </div>
   </section>
 
-  <!-- ================= 5) Folgetagsprüfung ================= -->
+  <!-- ================= 6) Folgetagsprüfung ================= -->
   <section class="view" id="view-nextday">
     <div class="screen">
       <p class="eyebrow" data-i18n="nextday.eyebrow">Folgeprüfung</p>

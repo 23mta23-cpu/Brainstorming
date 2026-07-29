@@ -1,16 +1,19 @@
 /* =========================================================================
-   Iqra – Vertical Slice: eine vollstaendige Demolektion zu Alif, Ba und Ta.
+   Iqra – Adaptiver Mikrokurs: Grundform, Punktanzahl und Punktposition
+   an sechs Zeichen (ا ب ت ث ن ي) unterscheiden.
 
-   Aufbau der Datei:
-     1. Daten (Glyphen, Distraktoren, Aufgabenplaene)
-     2. Reine Funktionen  -> exportiert als window.IqraPure, von tests.html geprueft
+   Aufbau:
+     1. Daten (Glyphen, Minimalpaare, Distraktoren, Plaene)
+     2. Reine Funktionen -> window.IqraPure, von tests.html geprueft
      3. Zustand und Persistenz
-     4. i18n
-     5. Rendering der fuenf Hauptviews
-     6. Verdrahtung
+     4. i18n (DE/TR)
+     5. DOM-Helfer
+     6. Items, Antworten, adaptive Nachuebung
+     7. Rendering der sechs Hauptviews
+     8. Verdrahtung
 
    Vanilla JS, kein Build, kein Paketmanager, keine externe Abhaengigkeit.
-   Antwortzeit wird bewusst NICHT erfasst und nicht ausgewertet.
+   Antwortzeit wird bewusst NICHT erfasst und NICHT ausgewertet.
    ========================================================================= */
 (function () {
   "use strict";
@@ -19,89 +22,155 @@
      1. DATEN
      ====================================================================== */
 
-  /* rasm = Grundformklasse fuer die Fehlerlogik.
-     [S] Produktsetzung fuer diesen Prototyp: ن und ي werden der Schalenklasse
-     zugeordnet, damit "gleiche Seite, andere Anzahl" bzw. "gleiche Anzahl,
-     andere Position" ueberhaupt unterscheidbar sind. Diese Zuordnung ist
-     didaktisch gesetzt und fachlich NICHT geprueft -> Blocker B-3.
-     ل und د haben eigene Klassen, damit ا -> ل korrekt als Formfehler faellt. */
+  /* Merkmalsmatrix der sechs Arbeitszeichen plus zwei ungelehrter Ablenker.
+     rasm = Grundformklasse fuer die Fehlerlogik.
+
+     [S] ARBEITSHYPOTHESE, FACHLICH UNGEPRUEFT (Blocker B-3):
+     ن und ي werden hier derselben Schalenklasse zugeordnet wie ب, ت und ث.
+     Trifft das in der Zielschrift nicht zu, unterscheiden sich die Paare
+     ب/ن und ت/ي in der isolierten Form nicht nur durch die Punktposition,
+     sondern zusaetzlich durch die Kontur. Deshalb traegt jedes Minimalpaar
+     unten ein Feld `soleDiff`, und die Rueckmeldung behauptet bei
+     ungepruesften Paaren NICHT, die genannte Dimension sei der einzige
+     Unterschied. ل und د haben eigene Klassen, damit ا -> ل als Formfehler
+     faellt. */
   var GLYPHS = {
     alif: { char: "ا", dots: 0, pos: "none", rasm: "stroke", taught: true },
     ba: { char: "ب", dots: 1, pos: "below", rasm: "bowl", taught: true },
     ta: { char: "ت", dots: 2, pos: "above", rasm: "bowl", taught: true },
-    tha: { char: "ث", dots: 3, pos: "above", rasm: "bowl", taught: false },
-    nun: { char: "ن", dots: 1, pos: "above", rasm: "bowl", taught: false },
-    ya: { char: "ي", dots: 2, pos: "below", rasm: "bowl", taught: false },
+    tha: { char: "ث", dots: 3, pos: "above", rasm: "bowl", taught: true },
+    nun: { char: "ن", dots: 1, pos: "above", rasm: "bowl", taught: true },
+    ya: { char: "ي", dots: 2, pos: "below", rasm: "bowl", taught: true },
     lam: { char: "ل", dots: 0, pos: "none", rasm: "lam", taught: false },
     dal: { char: "د", dots: 0, pos: "none", rasm: "dal", taught: false }
   };
 
-  /* U+066E ARABIC LETTER DOTLESS BEH: echtes Unicode-Zeichen fuer die
-     gemeinsame, punktlose Grundform. Bewusst keine selbst gezeichnete
-     SVG-Glyphe – Glyphengeometrie wird nicht erfunden. */
-  var BOWL_BASE = "ٮ";
+  var TARGETS = ["alif", "ba", "ta", "tha", "nun", "ya"];
 
-  var TARGETS = ["alif", "ba", "ta"];
+  /* Minimalpaare. `dim` ist die Dimension, die die Aufgabe prueft.
+     `soleDiff` sagt, ob diese Dimension nach heutigem Stand der EINZIGE
+     Unterschied ist. Bei false formuliert die Rueckmeldung nur die
+     Punktaussage und behauptet keine Alleinstellung. */
+  var MINIMAL_PAIRS = [
+    { a: "alif", b: "ba", dim: "shape", soleDiff: true },
+    { a: "ba", b: "ta", dim: "both", soleDiff: true },
+    { a: "ta", b: "tha", dim: "count", soleDiff: true },
+    { a: "ba", b: "nun", dim: "position", soleDiff: false },
+    { a: "ta", b: "ya", dim: "position", soleDiff: false },
+    { a: "nun", b: "ya", dim: "both", soleDiff: false }
+  ];
 
-  /* Distraktorstufen nach docs/02-vertical-slice-spec.md §6. Je Stufe genau
-     drei Ablenker; zusammen mit dem Zielzeichen ergeben sich vier Optionen. */
+  /* Distraktorstufen. Laenge steuert zugleich die Optionszahl:
+     Stufe 1 -> 4 Optionen, Stufe 2 -> 5, Stufe 3 -> 6.
+     Stufe 1 deutliche Unterschiede, Stufe 2 gleiche Anzahl/andere Position,
+     Stufe 3 gleiche Grundform mit sehr aehnlichen Punktmustern. */
   var DISTRACTORS = {
-    alif: { 1: ["ba", "ta", "nun"], 2: ["ba", "ta", "ya"], 3: ["lam", "ba", "ta"] },
-    ba: { 1: ["alif", "ta", "nun"], 2: ["ta", "tha", "nun"], 3: ["ta", "tha", "ya"] },
-    ta: { 1: ["alif", "ba", "ya"], 2: ["ba", "tha", "nun"], 3: ["ba", "tha", "nun"] }
+    alif: { 1: ["ba", "ta", "tha"], 2: ["ba", "nun", "ya", "ta"], 3: ["lam", "ba", "ta", "nun", "ya"] },
+    ba: { 1: ["alif", "tha", "ta"], 2: ["nun", "ta", "alif", "tha"], 3: ["nun", "ta", "tha", "ya", "alif"] },
+    ta: { 1: ["alif", "ba", "nun"], 2: ["ya", "ba", "alif", "tha"], 3: ["tha", "ya", "nun", "ba", "alif"] },
+    tha: { 1: ["alif", "ba", "ya"], 2: ["ta", "nun", "ba", "alif"], 3: ["ta", "nun", "ya", "ba", "alif"] },
+    nun: { 1: ["alif", "ta", "tha"], 2: ["ba", "ya", "alif", "ta"], 3: ["ba", "ta", "ya", "tha", "alif"] },
+    ya: { 1: ["alif", "nun", "tha"], 2: ["ta", "ba", "alif", "nun"], 3: ["ta", "tha", "nun", "ba", "alif"] }
   };
 
-  var TRAIT_CODES = ["0-none", "1-below", "1-above", "2-below", "2-above", "3-above"];
+  var COUNT_BUCKETS = [0, 1, 2, 3];
+  var POS_BUCKETS = ["above", "below", "none"];
 
-  /* Uebungsplan. Die Reihenfolge stellt sicher, dass zwischen dem ersten und
-     dem letzten wertenden Item eines Zeichens mindestens zwei andere Items
-     liegen, und dass kein Zeichen zweimal hintereinander drankommt.
-     Anteil ا: 3 von 16 wertenden Items (~19 %), ب/ت zusammen ~81 %. */
+  /* Die sechs Aufgabenformen. Sortieren nach Anzahl und nach Position ist
+     dieselbe Geste mit anderem Schluessel – fuer die Statusberechnung zaehlen
+     beide zusammen als HOECHSTENS eine Form (siehe formGroup). */
+  var TASK_TYPES = ["flash", "grid", "sortCount", "sortPos", "construct", "pair"];
+  var PRODUCTIVE_GROUPS = ["grid", "sort", "construct"];
+
+  /* Uebungsplan, 19 Items in drei sichtbaren Bloecken.
+     Die Zeichen werden gestaffelt eingefuehrt (Block 1: ا ب ت, Block 2: + ن ي,
+     Block 3: + ث und gemischt), damit nicht fuenf neue Zeichen in fuenf
+     Aufgabenformen unmittelbar aufeinanderfolgen. ث erscheint erst NACH dem
+     ت/ث-Minimalpaar, nie als isoliertes Erstkontakt-Item. */
   var PRACTICE_PLAN = [
+    { block: 1, letterId: "ba", taskType: "flash" },
+    { block: 1, letterId: "ta", taskType: "sortCount" },
+    { block: 1, letterId: "alif", taskType: "grid" },
+    { block: 1, letterId: "ta", taskType: "flash" },
+    { block: 1, letterId: "ba", taskType: "construct" },
+    { block: 1, letterId: "alif", taskType: "pair", pair: "alif-ba" },
+
+    { block: 2, letterId: "nun", taskType: "flash" },
+    { block: 2, letterId: "ta", taskType: "pair", pair: "ta-ya" },
+    { block: 2, letterId: "ya", taskType: "flash" },
+    { block: 2, letterId: "nun", taskType: "pair", pair: "ba-nun" },
+    { block: 2, letterId: "ya", taskType: "construct" },
+    { block: 2, letterId: "ba", taskType: "grid" },
+    { block: 2, letterId: "nun", taskType: "sortPos" },
+
+    { block: 3, letterId: "ta", taskType: "pair", pair: "ta-tha" },
+    { block: 3, letterId: "tha", taskType: "sortCount" },
+    { block: 3, letterId: "ya", taskType: "sortPos" },
+    { block: 3, letterId: "tha", taskType: "flash" },
+    { block: 3, letterId: "ba", taskType: "flash" },
+    { block: 3, letterId: "ta", taskType: "grid" }
+  ];
+
+  /* Abschluss-Challenge: 14 Items, alle sechs Zeichen, alle drei Stufen,
+     fuenf Aufgabenformen, kein Zeichen oefter als dreimal (Frequenzdeckel),
+     keine unmittelbare Wiederholung, kein Feedback pro Item. */
+  var CHALLENGE_PLAN = [
     { letterId: "ba", taskType: "flash", level: 1 },
-    { letterId: "ta", taskType: "trait", level: 1 },
-    { letterId: "alif", taskType: "flash", level: 1 },
-    { letterId: "ta", taskType: "flash", level: 1 },
-    { letterId: "ba", taskType: "dots", level: 1 },
-    { letterId: "ta", taskType: "grid", level: 2 },
-    { letterId: "ba", taskType: "trait", level: 2 },
-    { letterId: "alif", taskType: "grid", level: 2 },
-    { letterId: "ta", taskType: "dots", level: 2 },
-    { letterId: "ba", taskType: "grid", level: 2 }
-  ];
-
-  /* Abschlussdurchgang: hoechste Distraktorstufe, kein Retry. */
-  var FINAL_PLAN = [
-    { letterId: "ba", taskType: "flash", level: 3 },
-    { letterId: "alif", taskType: "trait", level: 3 },
-    { letterId: "ta", taskType: "flash", level: 3 },
+    { letterId: "tha", taskType: "grid", level: 2 },
+    { letterId: "ta", taskType: "construct", level: 2 },
+    { letterId: "alif", taskType: "sortPos", level: 1 },
+    { letterId: "ba", taskType: "pair", pair: "ba-ta", level: 3 },
+    { letterId: "nun", taskType: "construct", level: 2 },
+    { letterId: "ta", taskType: "flash", level: 2 },
+    { letterId: "ya", taskType: "grid", level: 3 },
+    { letterId: "tha", taskType: "construct", level: 3 },
     { letterId: "ba", taskType: "grid", level: 3 },
-    { letterId: "ta", taskType: "dots", level: 3 },
-    { letterId: "ba", taskType: "trait", level: 3 }
+    { letterId: "alif", taskType: "flash", level: 2 },
+    { letterId: "ya", taskType: "pair", pair: "nun-ya", level: 3 },
+    { letterId: "nun", taskType: "flash", level: 3 },
+    { letterId: "ta", taskType: "grid", level: 3 }
   ];
 
-  /* Lernbuehne. Passivzeit gesamt 20 s, laengste Einzelstrecke 5 s,
-     erste Nutzerhandlung nach 4 s. Bei prefers-reduced-motion entfaellt
-     jeder Timer und der Weiter-Button ist sofort bedienbar. */
+  /* Vorcheck: sechs Aufgaben – eine zur Grundform, zwei zur Anzahl, zwei zur
+     Position, eine verdeckte Erinnerung. Reihenfolge wird gemischt. */
+  var PRECHECK_PLAN = [
+    { letterId: "alif", kind: "shape" },
+    { letterId: "ta", kind: "count" },
+    { letterId: "tha", kind: "count" },
+    { letterId: "ba", kind: "position" },
+    { letterId: "nun", kind: "position" },
+    { letterId: "ta", kind: "recall" }
+  ];
+
+  /* Lernbuehne: drei Abschnitte, jede Erklaerung endet sofort in einer
+     Handlung. Passivinhalt ist selbstgesteuert und nie laenger als eine
+     kurze Szene; es gibt keinen Timerzwang. */
   var STAGE_STEPS = [
-    { kind: "passive", chars: ["ا"], caption: "stage.s1", ms: 4000 },
-    { kind: "action", action: "observe", chars: ["ا"], caption: "stage.s1" },
-    { kind: "passive", chars: [BOWL_BASE], caption: "stage.s2", ms: 5000 },
-    { kind: "passive", chars: ["ب"], caption: "stage.s3", ms: 4000 },
-    { kind: "action", action: "dots", letterId: "ba", caption: "stage.s3" },
-    { kind: "passive", chars: ["ت"], caption: "stage.s4", ms: 4000 },
-    { kind: "action", action: "dots", letterId: "ta", caption: "stage.s4" },
-    { kind: "passive", chars: ["ب", "ت"], caption: "stage.s5", ms: 3000 },
-    { kind: "static", chars: ["ب"], caption: "stage.s6" }
+    { section: "A", kind: "explain", chars: ["ا", "ب", "ت"], caption: "stage.a.explain" },
+    { section: "A", kind: "pickSet", caption: "stage.a.explain", prompt: "stage.a.prompt",
+      options: ["alif", "ba", "ta", "nun"], correct: ["ba", "ta", "nun"] },
+
+    { section: "B", kind: "explain", chars: ["ب", "ت", "ث"], caption: "stage.b.explain" },
+    { section: "B", kind: "sortCount", caption: "stage.b.explain", prompt: "stage.b.prompt",
+      pool: ["alif", "ba", "ta", "tha"] },
+    /* Bewusst kein bestaetigender Abschluss: ب und ن landen in derselben
+       Anzahlschale. Die Frage "dieselben Zeichen?" erzeugt den Bedarf fuer
+       die Positionsachse, statt sie als weitere Regel nachzureichen. */
+    { section: "B", kind: "confront", chars: ["ب", "ن"], caption: "stage.b.confront",
+      prompt: "stage.b.confrontPrompt" },
+
+    { section: "C", kind: "explain", chars: ["ب", "ن"], caption: "stage.c.explain" },
+    { section: "C", kind: "sortPos", caption: "stage.c.explain", prompt: "stage.c.prompt",
+      pool: ["alif", "ba", "ta", "nun", "ya"] },
+    { section: "C", kind: "note", chars: ["ب"], caption: "stage.c.note" }
   ];
 
   var SETTINGS_KEY = "iqraProtoSettings";
   var STATE_KEY = "iqraProtoState";
-  var SCHEMA_VERSION = 2;
+  var SCHEMA_VERSION = 3;
 
   /* ======================================================================
      2. REINE FUNKTIONEN
-        Keine DOM-Zugriffe, kein Zustand. Direkt aus tests.html testbar.
      ====================================================================== */
 
   function glyphOf(idOrChar) {
@@ -125,16 +194,36 @@
     return g.dots + "-" + g.pos;
   }
 
+  function letterByTrait(dots, pos) {
+    for (var i = 0; i < TARGETS.length; i++) {
+      var g = GLYPHS[TARGETS[i]];
+      if (g.dots === dots && g.pos === pos) return TARGETS[i];
+    }
+    return null;
+  }
+
   function parseTraitCode(code) {
-    var m = /^(\d+)-(above|below|none)$/.exec(String(code));
+    var m = /^(\d+)-(above|below|none|mixed)$/.exec(String(code));
     if (!m) return null;
     return { dots: parseInt(m[1], 10), pos: m[2] };
   }
 
-  /* Vergleicht Anzahl und Position gegen das Ziel.
-     Weichen BEIDE Dimensionen ab (z. B. Ziel ب, gewaehlt ت oder ث), ist die
-     Ursache unbestimmt -> keine Kategorie, sondern eine kurze Diagnose.
-     Es entsteht dadurch ausdruecklich keine vierte Fehlerkategorie. */
+  function pairKey(a, b) { return a < b ? a + "-" + b : b + "-" + a; }
+
+  function findPair(a, b) {
+    var key = pairKey(a, b);
+    for (var i = 0; i < MINIMAL_PAIRS.length; i++) {
+      if (pairKey(MINIMAL_PAIRS[i].a, MINIMAL_PAIRS[i].b) === key) return MINIMAL_PAIRS[i];
+    }
+    return null;
+  }
+
+  /* Sortieren nach Anzahl und nach Position ist dieselbe Geste – fuer die
+     Statusberechnung zaehlen beide zusammen als hoechstens eine Form. */
+  function formGroup(taskType) {
+    return (taskType === "sortCount" || taskType === "sortPos") ? "sort" : taskType;
+  }
+
   function compareTraits(target, picked) {
     var countDiff = picked.dots !== target.dots;
     var posDiff = picked.pos !== target.pos;
@@ -149,8 +238,9 @@
     if (pickKind === "trait") {
       var pt = parseTraitCode(picked);
       if (!pt) return { category: null, needsDiagnosis: true };
-      /* Merkmalscode ohne Punkte behauptet keine Position -> reiner Anzahlfehler.
-         Bei einer GLYPHENwahl ohne Punkte gilt dagegen weiter der Formfehler. */
+      /* Punkte auf beiden Seiten konstruiert: die Anzahl mag stimmen, die
+         Verortung nicht -> Positionsfehler. */
+      if (pt.pos === "mixed") return { category: "dot_position_confusion", needsDiagnosis: false };
       if (pt.dots === 0 && target.dots !== 0) {
         return { category: "dot_count_confusion", needsDiagnosis: false };
       }
@@ -162,16 +252,14 @@
     return compareTraits(target, g);
   }
 
-  /* classifyError(answer) -> { category, needsDiagnosis, nameMiss }
-     answer: { letterId, taskType, pickKind, picked, correct }
-     picked ist bei 'grid' ein Array markierter Zeichen/IDs. */
+  /* classifyError(answer) -> { category, needsDiagnosis, nameMiss, confusedWith }
+     confusedWith haelt das konkret verwechselte Zeichen fest, damit die
+     Rueckmeldung das Paar benennen kann. */
   function classifyError(answer) {
-    var none = { category: null, needsDiagnosis: false, nameMiss: false };
+    var none = { category: null, needsDiagnosis: false, nameMiss: false, confusedWith: null };
     if (!answer) return none;
     if (answer.taskType === "name") {
-      /* Namensfehler: separat notiert, ohne Kategorie und ohne Statuseinfluss,
-         solange kein freigegebenes Aussprache-Audio existiert (A-1). */
-      return { category: null, needsDiagnosis: false, nameMiss: !answer.correct };
+      return { category: null, needsDiagnosis: false, nameMiss: !answer.correct, confusedWith: null };
     }
     if (answer.correct) return none;
 
@@ -179,45 +267,68 @@
       var tally = {};
       var wrongMarks = 0;
       var ambiguous = 0;
+      var firstWrong = null;
       for (var i = 0; i < answer.picked.length; i++) {
         var gid = glyphIdOf(answer.picked[i]);
-        if (gid === answer.letterId) continue;
+        if (answer.targetSet && answer.targetSet.indexOf(gid) !== -1) continue;
+        if (!answer.targetSet && gid === answer.letterId) continue;
         wrongMarks++;
+        if (!firstWrong) firstWrong = gid;
         var r = classifySinglePick(answer.letterId, "glyph", answer.picked[i]);
         if (r.category) tally[r.category] = (tally[r.category] || 0) + 1;
         else ambiguous++;
       }
-      /* Nur Auslassungen, keine Fehlmarkierung: es gibt keine gewaehlte
-         Falschantwort, aus der eine Kategorie ableitbar waere -> Diagnose. */
-      if (wrongMarks === 0) return { category: null, needsDiagnosis: true, nameMiss: false };
-      var best = null;
-      var bestN = 0;
-      var tie = false;
+      if (wrongMarks === 0) return { category: null, needsDiagnosis: true, nameMiss: false, confusedWith: null };
+      var best = null, bestN = 0, tie = false;
       for (var c in tally) {
         if (!Object.prototype.hasOwnProperty.call(tally, c)) continue;
         if (tally[c] > bestN) { best = c; bestN = tally[c]; tie = false; }
         else if (tally[c] === bestN) tie = true;
       }
       if (!best || tie || ambiguous > bestN) {
-        return { category: null, needsDiagnosis: true, nameMiss: false };
+        return { category: null, needsDiagnosis: true, nameMiss: false, confusedWith: firstWrong };
       }
-      return { category: best, needsDiagnosis: false, nameMiss: false };
+      return { category: best, needsDiagnosis: false, nameMiss: false, confusedWith: firstWrong };
     }
 
     var res = classifySinglePick(answer.letterId, answer.pickKind, answer.picked);
-    return { category: res.category, needsDiagnosis: res.needsDiagnosis, nameMiss: false };
+    var confused = null;
+    if (answer.pickKind === "glyph") confused = glyphIdOf(answer.picked);
+    else {
+      var p = parseTraitCode(answer.picked);
+      if (p) confused = letterByTrait(p.dots, p.pos);
+    }
+    return {
+      category: res.category, needsDiagnosis: res.needsDiagnosis,
+      nameMiss: false, confusedWith: confused
+    };
   }
 
-  /* Loest eine offene Diagnose auf. Ist die Anzahlfrage falsch, war die
-     Anzahl das Problem; sonst die Position. */
   function resolveDiagnosis(countAnswerCorrect) {
     return countAnswerCorrect ? "dot_position_confusion" : "dot_count_confusion";
   }
 
-  /* Reihenfolge kommt aus der Einfuegereihenfolge des Arrays, niemals aus ts. */
+  /* Welche Merkmalsachse eine Aufgabenform prueft – Grundlage fuer
+     "staerkstes Merkmal" in der Ergebnisansicht. */
+  function dimensionOf(item) {
+    if (item.taskType === "sortCount") return "count";
+    if (item.taskType === "sortPos") return "position";
+    if (item.taskType === "construct") return "both";
+    if (item.taskType === "grid") return item.rule ? item.rule.dim : "both";
+    if (item.taskType === "pair") {
+      var p = item.pairRef || (item.pair ? findPairByKey(item.pair) : null);
+      return p ? p.dim : "both";
+    }
+    return "shape";
+  }
+
+  function findPairByKey(key) {
+    var parts = String(key).split("-");
+    return parts.length === 2 ? findPair(parts[0], parts[1]) : null;
+  }
+
   function computeLetterState(answers, letterId, scope, dueDate) {
-    var scoped = [];
-    var i;
+    var scoped = [], i;
     for (i = 0; i < answers.length; i++) {
       if (answers[i].scope === scope && answers[i].taskType !== "name") scoped.push(answers[i]);
     }
@@ -229,76 +340,95 @@
     var mine = [];
     for (i = 0; i < scoped.length; i++) if (scoped[i].letterId === letterId) mine.push(scoped[i]);
 
-    var forms = [];
-    var firstPos = -1;
-    var lastPos = -1;
-    var correctCount = 0;
+    var groups = [], firstPos = -1, lastPos = -1, correctCount = 0;
+    var dimHits = { shape: 0, count: 0, position: 0, both: 0 };
+    var confusions = {};
+
     for (i = 0; i < mine.length; i++) {
-      if (mine[i].correct) correctCount++;
-      if (mine[i].firstTry && mine[i].correct) {
-        if (forms.indexOf(mine[i].taskType) === -1) forms.push(mine[i].taskType);
-        var pos = order.indexOf(mine[i].qid);
+      var a = mine[i];
+      if (a.correct) correctCount++;
+      if (!a.correct && a.confusedWith) {
+        confusions[a.confusedWith] = (confusions[a.confusedWith] || 0) + 1;
+      }
+      if (a.firstTry && a.correct) {
+        var g = formGroup(a.taskType);
+        if (groups.indexOf(g) === -1) groups.push(g);
+        if (a.dimension) dimHits[a.dimension] = (dimHits[a.dimension] || 0) + 1;
+        var pos = order.indexOf(a.qid);
         if (firstPos === -1 || pos < firstPos) firstPos = pos;
         if (pos > lastPos) lastPos = pos;
       }
     }
 
-    var itemsBetween = (firstPos === -1 || lastPos === firstPos) ? 0 : (lastPos - firstPos - 1);
+    var topConfusion = null, topN = 0;
+    for (var c in confusions) {
+      if (Object.prototype.hasOwnProperty.call(confusions, c) && confusions[c] > topN) {
+        topConfusion = c; topN = confusions[c];
+      }
+    }
+    var bestDim = null, bestDimN = 0;
+    for (var d in dimHits) {
+      if (Object.prototype.hasOwnProperty.call(dimHits, d) && dimHits[d] > bestDimN) {
+        bestDim = d; bestDimN = dimHits[d];
+      }
+    }
 
     var ls = {
       letterId: letterId,
       scope: scope,
-      firstTryForms: forms,
-      itemsBetween: itemsBetween,
+      firstTryForms: groups,
+      itemsBetween: (firstPos === -1 || lastPos === firstPos) ? 0 : (lastPos - firstPos - 1),
       answerCount: mine.length,
       correctCount: correctCount,
+      topConfusion: topConfusion,
+      topConfusionCount: topN,
+      strongestDimension: bestDim,
       dueDate: dueDate || null,
       status: "not_yet"
     };
 
     if (scope === "nextday") {
-      ls.status = isOvernightSecure(ls) ? "overnight_secure"
-        : (forms.length ? "wobbly" : "not_yet");
+      ls.status = isOvernightSecure(ls) ? "overnight_secure" : (groups.length ? "wobbly" : "not_yet");
       return ls;
     }
-
     if (isTodaySecure(ls)) ls.status = "today_secure";
-    else if (forms.length === 0) ls.status = "not_yet";
+    else if (groups.length === 0) ls.status = "not_yet";
     else if (mine.length && correctCount * 2 < mine.length) ls.status = "not_yet";
     else ls.status = "wobbly";
     return ls;
   }
 
-  /* [S] Produktsetzung fuer diesen Test, keine wissenschaftliche Norm. */
+  /* [S] Produktsetzung fuer diesen Test, keine wissenschaftliche Norm.
+     Sortieren zaehlt nur als EINE Form (formGroup), damit das Kriterium
+     nicht rein rezeptiv erreichbar ist. */
   function isTodaySecure(ls) {
     if (!ls || !ls.firstTryForms) return false;
     if (ls.scope && ls.scope !== "today") return false;
     var f = ls.firstTryForms;
     if (f.length < 3) return false;
     if (f.indexOf("flash") === -1) return false;
-    if (f.indexOf("grid") === -1 && f.indexOf("dots") === -1) return false;
+    var productive = false;
+    for (var i = 0; i < PRODUCTIVE_GROUPS.length; i++) {
+      if (f.indexOf(PRODUCTIVE_GROUPS[i]) !== -1) productive = true;
+    }
+    if (!productive) return false;
     return ls.itemsBetween >= 2;
   }
 
-  /* Wird ausschliesslich in der Folgetagspruefung vergeben. */
   function isOvernightSecure(ls) {
     if (!ls || !ls.firstTryForms) return false;
     if (ls.scope !== "nextday") return false;
     return ls.firstTryForms.length >= 2;
   }
 
-  /* Lokaler Kalendertag. Bewusst NICHT ueber toISOString – das liefert UTC und
-     damit abends in Mitteleuropa den Vortag. */
-  function todayLocal(d) {
-    var x = d ? new Date(d.getTime()) : new Date();
-    return fmtLocal(x);
-  }
-
   function fmtLocal(x) {
-    var m = x.getMonth() + 1;
-    var day = x.getDate();
+    var m = x.getMonth() + 1, day = x.getDate();
     return x.getFullYear() + "-" + (m < 10 ? "0" + m : m) + "-" + (day < 10 ? "0" + day : day);
   }
+
+  /* Lokaler Kalendertag, bewusst nicht ueber toISOString (das liefert UTC
+     und abends in Mitteleuropa den Vortag). */
+  function todayLocal(d) { return fmtLocal(d ? new Date(d.getTime()) : new Date()); }
 
   function parseLocalDate(value) {
     if (value instanceof Date) return new Date(value.getTime());
@@ -307,7 +437,6 @@
     return new Date(parseInt(m[1], 10), parseInt(m[2], 10) - 1, parseInt(m[3], 10));
   }
 
-  /* Immer genau der naechste lokale Kalendertag. Keine 1-/2-/4-Tage-Logik. */
   function nextDueDate(today) {
     var d = parseLocalDate(today);
     if (!d) return null;
@@ -321,15 +450,13 @@
   }
 
   function daysBetween(fromDate, toDate) {
-    var a = parseLocalDate(fromDate);
-    var b = parseLocalDate(toDate);
+    var a = parseLocalDate(fromDate), b = parseLocalDate(toDate);
     if (!a || !b) return null;
     return Math.round((b.getTime() - a.getTime()) / 86400000);
   }
 
   function shuffle(arr, rnd) {
-    var r = rnd || Math.random;
-    var a = arr.slice();
+    var r = rnd || Math.random, a = arr.slice();
     for (var i = a.length - 1; i > 0; i--) {
       var j = Math.floor(r() * (i + 1));
       var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
@@ -337,76 +464,166 @@
     return a;
   }
 
-  /* Genau vier Optionen, Zielzeichen genau einmal, pro Item neu gemischt.
-     prevKey verhindert, dass zwei aufeinanderfolgende Items dasselbe Set in
-     derselben Reihenfolge zeigen. */
+  /* Optionszahl folgt der Stufe: 4 / 5 / 6. Zielzeichen genau einmal,
+     pro Item neu gemischt, nie dasselbe Set zweimal hintereinander. */
   function buildDistractors(letterId, level, prevKey, rnd) {
-    var lvl = DISTRACTORS[letterId] ? (DISTRACTORS[letterId][level] ? level : 1) : 1;
-    var pool = DISTRACTORS[letterId] ? DISTRACTORS[letterId][lvl].slice() : [];
+    var table = DISTRACTORS[letterId] || DISTRACTORS.ba;
+    var lvl = table[level] ? level : 1;
+    var pool = table[lvl];
     var ids = [];
     for (var i = 0; i < pool.length; i++) {
       if (pool[i] !== letterId && ids.indexOf(pool[i]) === -1) ids.push(pool[i]);
     }
-    ids = ids.slice(0, 3);
     ids.push(letterId);
     var out = shuffle(ids, rnd);
     for (var guard = 0; guard < 12 && prevKey && out.join(",") === prevKey; guard++) {
       out = shuffle(ids, rnd);
     }
-    if (prevKey && out.join(",") === prevKey) {
-      out = out.slice(1).concat(out.slice(0, 1));
-    }
+    if (prevKey && out.join(",") === prevKey) out = out.slice(1).concat(out.slice(0, 1));
     return out;
   }
 
-  function buildTraitOptions(letterId, rnd) {
-    var correct = traitCodeOf(letterId);
-    var t = parseTraitCode(correct);
-    var sameCountOtherPos = [];
-    var samePosOtherCount = [];
-    var rest = [];
-    for (var i = 0; i < TRAIT_CODES.length; i++) {
-      var c = TRAIT_CODES[i];
-      if (c === correct) continue;
-      var p = parseTraitCode(c);
-      if (p.dots === t.dots) sameCountOtherPos.push(c);
-      else if (p.pos === t.pos) samePosOtherCount.push(c);
-      else rest.push(c);
-    }
-    var picked = [correct];
-    if (samePosOtherCount.length) picked.push(shuffle(samePosOtherCount, rnd)[0]);
-    if (sameCountOtherPos.length) picked.push(shuffle(sameCountOtherPos, rnd)[0]);
-    var pool = shuffle(rest.concat(samePosOtherCount).concat(sameCountOtherPos), rnd);
-    for (var j = 0; j < pool.length && picked.length < 4; j++) {
-      if (picked.indexOf(pool[j]) === -1) picked.push(pool[j]);
-    }
-    return shuffle(picked, rnd);
+  /* Rasterfund arbeitet mit einer MERKMALSREGEL, nicht mit einem Einzelzeichen:
+     "alle mit zwei Punkten oben" trifft mehrere Zielzeichen. */
+  function gridRuleFor(letterId) {
+    var g = GLYPHS[letterId];
+    if (g.dots === 0) return { dim: "count", dots: 0, pos: null, key: "rule.none" };
+    return { dim: "both", dots: g.dots, pos: g.pos, key: "rule." + g.dots + "-" + g.pos };
   }
 
+  function matchesRule(letterId, rule) {
+    var g = GLYPHS[letterId];
+    if (rule.dots === 0) return g.dots === 0;
+    if (rule.pos === null) return g.dots === rule.dots;
+    return g.dots === rule.dots && g.pos === rule.pos;
+  }
+
+  /* Mindestens zwoelf Zellen, mehrere Zielzeichen, echte Unicode-Zeichen. */
   function buildGrid(letterId, level, rnd) {
-    var pool = DISTRACTORS[letterId][DISTRACTORS[letterId][level] ? level : 1];
-    var cells = [letterId, letterId, letterId];
-    var k = 0;
-    while (cells.length < 9) {
-      cells.push(pool[k % pool.length]);
-      k++;
+    var rule = gridRuleFor(letterId);
+    var hits = [], misses = [], i;
+    for (i = 0; i < TARGETS.length; i++) {
+      (matchesRule(TARGETS[i], rule) ? hits : misses).push(TARGETS[i]);
     }
-    return shuffle(cells, rnd);
+    if (!hits.length) hits = [letterId];
+    var cells = [];
+    var targetCount = level >= 3 ? 4 : 3;
+    for (i = 0; i < targetCount; i++) cells.push(hits[i % hits.length]);
+    var k = 0;
+    while (cells.length < 12) { cells.push(misses[k % misses.length]); k++; }
+    return { cells: shuffle(cells, rnd), rule: rule };
   }
 
-  /* Ehrliche Fortschrittssprache. Enthaelt nie "beherrschst", nie "von 28",
-     nie eine Dauer und vergibt overnight_secure nie vor der Folgepruefung. */
+  function buildSortItem(taskType, level, rnd) {
+    var pool = level === 1 ? ["alif", "ba", "ta"] :
+      level === 2 ? ["alif", "ba", "ta", "nun", "ya"] : TARGETS.slice();
+    var n = level === 1 ? 3 : level === 2 ? 4 : 5;
+    return shuffle(pool, rnd).slice(0, n);
+  }
+
+  /* Adaptive Nachuebung: keine sofortige identische Wiederholung.
+     (1) eine leichtere Kontrastaufgabe in ANDERER Form, mindestens zwei
+     Items spaeter; (2) eine erneute Pruefung in einer DRITTEN Form, noch
+     spaeter. Hoechstens zwei Einschuebe je Zeichen und Sitzung. */
+  function planRemediation(queue, index, item, usedCounts) {
+    var counts = usedCounts || {};
+    if ((counts[item.letterId] || 0) >= 2) return { queue: queue, added: [] };
+
+    var failedGroup = formGroup(item.taskType);
+    var easier = Math.max(1, (item.level || 1) - 1);
+
+    /* Mehrdeutiger Fehler (Anzahl UND Position weichen ab): erst eine
+       Anzahlfrage, dann eine Positionsfrage. Das Ergebnis ordnet den
+       urspruenglichen Fehler genau einer der drei Kategorien zu – es
+       entsteht keine vierte Kategorie. */
+    if (item.needsDiagnosis) {
+      return {
+        queue: queue,
+        added: [
+          { at: Math.min(queue.length, index + 3),
+            spec: { letterId: item.letterId, taskType: "sortCount", level: easier, remedial: true, diagnose: "count" } },
+          { at: Math.min(queue.length + 1, index + 6),
+            spec: { letterId: item.letterId, taskType: "sortPos", level: easier, remedial: true, diagnose: "position" } }
+        ]
+      };
+    }
+
+    var order = ["pair", "sortPos", "sortCount", "construct", "grid", "flash"];
+    if (item.letterId === "alif") order = ["pair", "sortPos", "sortCount", "grid", "flash"];
+
+    var firstForm = null, secondForm = null, i;
+    for (i = 0; i < order.length; i++) {
+      var g = formGroup(order[i]);
+      if (g === failedGroup) continue;
+      if (!firstForm) { firstForm = order[i]; continue; }
+      if (formGroup(order[i]) === formGroup(firstForm)) continue;
+      secondForm = order[i];
+      break;
+    }
+    if (!firstForm) return { queue: queue, added: [] };
+
+    var added = [];
+    var contrast = { letterId: item.letterId, taskType: firstForm, level: easier, remedial: true };
+    if (firstForm === "pair") contrast.pair = pickPairFor(item.letterId, item.confusedWith);
+    added.push({ at: Math.min(queue.length, index + 3), spec: contrast });
+
+    if (secondForm) {
+      var recheck = { letterId: item.letterId, taskType: secondForm, level: item.level || 1, remedial: true };
+      if (secondForm === "pair") recheck.pair = pickPairFor(item.letterId, item.confusedWith);
+      added.push({ at: Math.min(queue.length + 1, index + 6), spec: recheck });
+    }
+    return { queue: queue, added: added };
+  }
+
+  function pickPairFor(letterId, confusedWith) {
+    var p = confusedWith ? findPair(letterId, confusedWith) : null;
+    if (p) return pairKey(p.a, p.b);
+    for (var i = 0; i < MINIMAL_PAIRS.length; i++) {
+      if (MINIMAL_PAIRS[i].a === letterId || MINIMAL_PAIRS[i].b === letterId) {
+        return pairKey(MINIMAL_PAIRS[i].a, MINIMAL_PAIRS[i].b);
+      }
+    }
+    return "ba-ta";
+  }
+
+  /* Einstiegsstufe aus dem Vorcheck. Nie Stufe 3 – die ist dem letzten
+     Block und der Challenge vorbehalten. */
+  function startLevelFrom(precheck) {
+    var correct = 0;
+    for (var i = 0; i < precheck.length; i++) if (precheck[i].correct) correct++;
+    return correct >= 4 ? 2 : 1;
+  }
+
+  function levelForBlock(block, startLevel) {
+    if (block === 1) return startLevel;
+    if (block === 2) return Math.min(3, startLevel + 1);
+    return 3;
+  }
+
   function progressSentence(ls, lang, dict) {
     var d = dict || I18N[lang] || I18N.de;
-    var key = "progress." + (ls && ls.status ? ls.status : "not_yet");
-    var s = d[key] || key;
-    return s;
+    return d["progress." + (ls && ls.status ? ls.status : "not_yet")] || "progress.not_yet";
   }
 
-  /* Verwirft alte Prototypfelder ersatzlos (progress, savedMedia, qb, round). */
+  /* Empfohlene naechste Uebungsform aus der dominanten Fehlerachse. */
+  function recommendedForm(ls, errorsByLetter) {
+    var e = (errorsByLetter && errorsByLetter[ls.letterId]) || {};
+    var top = null, n = 0;
+    for (var k in e) {
+      if (Object.prototype.hasOwnProperty.call(e, k) && e[k] > n) { top = k; n = e[k]; }
+    }
+    if (top === "dot_count_confusion") return "sortCount";
+    if (top === "dot_position_confusion") return "sortPos";
+    if (top === "shape_confusion") return "grid";
+    return ls.status === "today_secure" ? "flash" : "construct";
+  }
+
   function migrateState(raw) {
     var fresh = emptyState();
     if (!raw || typeof raw !== "object") return fresh;
+    /* Aeltere Prototypstaende (Schema 1 und 2) werden ersatzlos verworfen:
+       ihr Antwortprotokoll bezieht sich auf drei Zeichen und andere
+       Aufgabenformen und waere im Sechs-Zeichen-Kurs nicht auswertbar. */
     if (raw.schemaVersion !== SCHEMA_VERSION) return fresh;
     if (Array.isArray(raw.precheck)) fresh.precheck = raw.precheck;
     if (Array.isArray(raw.answers)) fresh.answers = raw.answers;
@@ -414,14 +631,11 @@
     if (typeof raw.dueDate === "string") fresh.dueDate = raw.dueDate;
     if (typeof raw.nextdayDoneDate === "string") fresh.nextdayDoneDate = raw.nextdayDoneDate;
     if (typeof raw.nextdayGapDays === "number") fresh.nextdayGapDays = raw.nextdayGapDays;
-    if (raw.session && typeof raw.session === "object") {
-      fresh.session = normalizeSession(raw.session);
-    }
+    if (typeof raw.startLevel === "number") fresh.startLevel = raw.startLevel;
+    if (raw.session && typeof raw.session === "object") fresh.session = normalizeSession(raw.session);
     return fresh;
   }
 
-  /* Waechter: eine kaputte oder abgelaufene Session darf nie einen leeren
-     Screen erzeugen oder eine Runde blockieren. */
   function normalizeSession(s) {
     var out = {
       stage: typeof s.stage === "string" ? s.stage : "intro",
@@ -429,12 +643,12 @@
       queue: Array.isArray(s.queue) ? s.queue : [],
       stageStep: typeof s.stageStep === "number" && s.stageStep >= 0 ? s.stageStep : 0,
       pending: s.pending && typeof s.pending === "object" ? s.pending : null,
-      diagnosisDone: Array.isArray(s.diagnosisDone) ? s.diagnosisDone : []
+      remediated: s.remediated && typeof s.remediated === "object" ? s.remediated : {}
     };
-    var itemStages = ["precheck", "practice", "diagnosis", "final", "nextday"];
+    var itemStages = ["precheck", "practice", "challenge", "review", "nextday"];
     if (itemStages.indexOf(out.stage) !== -1) {
       if (!out.queue.length) { out.stage = "intro"; out.index = 0; out.pending = null; }
-      else if (out.index >= out.queue.length) { out.index = out.queue.length - 1; }
+      else if (out.index >= out.queue.length) out.index = out.queue.length - 1;
     }
     if (out.stage === "stage" && out.stageStep >= STAGE_STEPS.length) out.stageStep = STAGE_STEPS.length - 1;
     return out;
@@ -449,7 +663,8 @@
       dueDate: null,
       nextdayDoneDate: null,
       nextdayGapDays: null,
-      session: { stage: "intro", index: 0, queue: [], stageStep: 0, pending: null, diagnosisDone: [] }
+      startLevel: 1,
+      session: { stage: "intro", index: 0, queue: [], stageStep: 0, pending: null, remediated: {} }
     };
   }
 
@@ -458,8 +673,11 @@
      ====================================================================== */
 
   var state = emptyState();
+  /* Der Buehnen-Knopf ist je nach Schritt "Fertig" (bestaetigen) oder
+     "Weiter" (naechster Schritt). Ein einziger Listener, ein Zustand. */
+  var stageConfirm = null;
   var settings = { lang: "de", theme: "system" };
-  var letters = { alif: null, ba: null, ta: null };  /* abgeleitet, nie persistiert */
+  var letters = {};
   var storageOk = true;
   var reducedMotion = false;
   var flashTimer = null;
@@ -469,9 +687,7 @@
       localStorage.setItem("__iqraProbe", "1");
       localStorage.removeItem("__iqraProbe");
       return true;
-    } catch (e) {
-      return false;
-    }
+    } catch (e) { return false; }
   }
 
   function loadPersisted() {
@@ -484,9 +700,7 @@
       }
       var rawState = localStorage.getItem(STATE_KEY);
       if (rawState) state = migrateState(JSON.parse(rawState));
-    } catch (e) {
-      state = emptyState();
-    }
+    } catch (e) { state = emptyState(); }
   }
 
   function persistSettings() {
@@ -497,18 +711,12 @@
     try {
       localStorage.setItem(STATE_KEY, JSON.stringify({
         schemaVersion: SCHEMA_VERSION,
-        precheck: state.precheck,
-        answers: state.answers,
-        errors: state.errors,
-        dueDate: state.dueDate,
-        nextdayDoneDate: state.nextdayDoneDate,
-        nextdayGapDays: state.nextdayGapDays,
+        precheck: state.precheck, answers: state.answers, errors: state.errors,
+        dueDate: state.dueDate, nextdayDoneDate: state.nextdayDoneDate,
+        nextdayGapDays: state.nextdayGapDays, startLevel: state.startLevel,
         session: state.session
       }));
-    } catch (e) {
-      storageOk = false;
-      renderStorageWarning();
-    }
+    } catch (e) { storageOk = false; renderStorageWarning(); }
   }
 
   function refreshLetterStates(scope) {
@@ -518,6 +726,17 @@
     return letters;
   }
 
+  function errorsByLetter(scope) {
+    var out = {};
+    for (var i = 0; i < state.answers.length; i++) {
+      var a = state.answers[i];
+      if (a.scope !== scope || !a.category) continue;
+      if (!out[a.letterId]) out[a.letterId] = {};
+      out[a.letterId][a.category] = (out[a.letterId][a.category] || 0) + 1;
+    }
+    return out;
+  }
+
   /* ======================================================================
      4. i18n
      ====================================================================== */
@@ -525,70 +744,107 @@
   var I18N = {
     de: {
       "common.next": "Weiter",
+      "common.done": "Fertig",
+      "common.overview": "Übersicht",
+      "common.reset": "Zurücksetzen",
       "theme.light": "Helles Erscheinungsbild",
       "theme.dark": "Dunkles Erscheinungsbild",
       "theme.system": "Systemeinstellung",
       "meter.of": "{n} von {total}",
+      "level.short": "Stufe {n}",
+      "level.aria": "Stufe {n} von 3",
 
-      "precheck.eyebrow": "Demolektion",
-      "precheck.title": "Alif, Bā und Tā",
-      "precheck.introText": "Zuerst ein kurzer Vorcheck. Du bekommst dabei keine Rückmeldung, ob eine Antwort richtig war – er hält nur fest, wo du startest.",
-      "precheck.introHint": "Wenn du ein Zeichen nicht kennst, wähle „Kenne ich nicht“. Das ist keine falsche Antwort.",
-      "precheck.cta": "Vorcheck starten",
-      "precheck.restart": "Lektion neu beginnen",
-      "precheck.actLabel": "Deine Einschätzung",
-      "precheck.question": "Wie heißt dieses Zeichen?",
-      "precheck.unknown": "Kenne ich nicht",
-      "precheck.other": "Ein anderer Buchstabe",
-      "precheck.compare": "Im Vorcheck hast du {n} von {total} Zeichen benannt. Das ist ein Anhaltspunkt für das Gespräch, keine geprüfte Vorher-/Nachher-Messung.",
+      "start.eyebrow": "Mikrokurs · Lektion 1",
+      "start.title": "Punkte lesen",
+      "start.goal": "Ziel: sechs ähnliche Buchstaben anhand ihrer Grundform sowie Anzahl und Position der Punkte unterscheiden.",
+      "start.method": "Du lernst nicht durch bloßes Anschauen. Nach jeder Erklärung folgt eine Aufgabe.",
+      "start.setTitle": "Die sechs Zeichen",
+      "start.cta": "Lektion beginnen",
+      "start.restart": "Lektion neu beginnen",
+      "start.cardNeutral": "noch offen",
+
+      "precheck.eyebrow": "Vorcheck",
+      "precheck.note": "Ohne Rückmeldung – der Vorcheck passt nur den Einstieg an.",
+      "precheck.unknown": "Weiß ich nicht",
+      "precheck.shape": "Welches Zeichen hat keine Schalenform?",
+      "precheck.count": "Wie viele Punkte hat dieses Zeichen?",
+      "precheck.position": "Wo stehen die Punkte dieses Zeichens?",
+      "precheck.recall": "Welches Zeichen war das?",
+      "precheck.compare": "Im Vorcheck hattest du {n} von {total} Aufgaben richtig. Das ist ein Anhaltspunkt für das Gespräch, keine geprüfte Vorher-/Nachher-Messung.",
       "precheck.doneText": "Die Lektion ist abgeschlossen. Du kannst sie jederzeit neu beginnen – dabei wird der bisherige Stand ersetzt.",
+
+      "count.0": "keine Punkte",
+      "count.1": "ein Punkt",
+      "count.2": "zwei Punkte",
+      "count.3": "drei Punkte",
+      "pos.above": "oben",
+      "pos.below": "unten",
+      "pos.none": "keine Punkte",
+
+      "stage.actLabel": "Jetzt du",
+      "stage.section.A": "Abschnitt A · Grundform",
+      "stage.section.B": "Abschnitt B · Punktanzahl",
+      "stage.section.C": "Abschnitt C · Punktposition",
+      "stage.a.explain": "Alif ist ein gerader Strich ohne Punkt. Die anderen Zeichen dieser Lektion liegen auf einer Schalenform.",
+      "stage.a.prompt": "Markiere alle Zeichen mit der Schalenform.",
+      "stage.a.ok": "Richtig. Alif steht allein – ein gerader Strich, keine Schale, keine Punkte.",
+      "stage.a.wrong": "Noch nicht. Alif ist der gerade Strich ohne Punkt, die übrigen liegen auf der Schalenform.",
+      "stage.b.explain": "Die Zeichen unterscheiden sich zuerst in der Anzahl der Punkte: keine, ein, zwei oder drei.",
+      "stage.b.prompt": "Ordne jedes Zeichen seiner Punktanzahl zu.",
+      "stage.b.confront": "Beide haben genau einen Punkt – und sind trotzdem nicht dasselbe Zeichen.",
+      "stage.b.confrontPrompt": "Sind das dieselben Zeichen?",
+      "stage.b.confrontYes": "Ja, dasselbe Zeichen",
+      "stage.b.confrontNo": "Nein, verschiedene Zeichen",
+      "stage.b.confrontOk": "Genau. Die Anzahl allein reicht nicht. Es kommt auch darauf an, wo der Punkt steht.",
+      "stage.b.confrontWrong": "Sieh genauer hin: die Anzahl ist gleich, die Punkte stehen aber an verschiedenen Stellen.",
+      "stage.c.explain": "Punkte stehen entweder über oder unter der Form. Dieselbe Anzahl an verschiedenen Stellen ergibt verschiedene Zeichen.",
+      "stage.c.prompt": "Sortiere die Zeichen nach der Lage ihrer Punkte.",
+      "stage.c.note": "So sehen die Zeichen allein stehend aus. Im Wort verändern sie ihre Form. Das lernst du später.",
+
+      "practice.mode.practice": "Übung",
+      "practice.mode.challenge": "Abschluss-Challenge",
+      "practice.mode.review": "Auflösung",
+      "practice.mode.nextday": "Folgeprüfung",
+      "practice.remedialTag": "Nachübung",
+
+      "task.flash.watch": "Schau genau hin.",
+      "task.flash.ask": "Welches Zeichen war das?",
+      "task.grid": "Markiere alle Zeichen {rule}.",
+      "task.grid.confirm": "Auswahl bestätigen",
+      "task.grid.none": "Du hast noch nichts markiert.",
+      "task.sortCount": "Ordne jedes Zeichen seiner Punktanzahl zu.",
+      "task.sortPos": "Sortiere die Zeichen nach der Lage ihrer Punkte.",
+      "task.sort.pick": "Wähle zuerst ein Zeichen, dann die passende Ablage.",
+      "task.sort.mayStayEmpty": "Nicht jede Ablage wird gebraucht – manche bleiben leer.",
+      "task.construct.byName": "Baue {name}.",
+      "task.construct.byRule": "Baue ein Zeichen mit {rule}.",
+      "task.construct.hint": "Tippe die Ablage an – jeder Tipp setzt einen weiteren Punkt.",
+      "task.construct.above": "Punkte oben",
+      "task.construct.below": "Punkte unten",
+      "task.construct.formLabel": "Übungsform – Platzhalter für die Grundform",
+      "task.construct.empty": "Setze zuerst mindestens einen Punkt.",
+      "task.pair": "Welches der beiden Zeichen ist {name}?",
+
+      "rule.none": "ohne Punkte",
+      "rule.1-below": "mit einem Punkt unten",
+      "rule.1-above": "mit einem Punkt oben",
+      "rule.2-below": "mit zwei Punkten unten",
+      "rule.2-above": "mit zwei Punkten oben",
+      "rule.3-above": "mit drei Punkten oben",
 
       "name.alif": "Alif",
       "name.ba": "Bā",
       "name.ta": "Tā",
+      "name.tha": "Thā",
+      "name.nun": "Nūn",
+      "name.ya": "Yā",
 
-      "stage.actLabel": "Jetzt du",
-      "stage.s1": "Alif. Ein senkrechter Strich. Kein Punkt.",
-      "stage.s2": "Bā und Tā teilen diese Form. Noch ohne Punkt.",
-      "stage.s3": "Ein Punkt unten → Bā.",
-      "stage.s4": "Zwei Punkte oben → Tā.",
-      "stage.s5": "Gleiche Form. Der Unterschied sind die Punkte.",
-      "stage.s6": "So sieht der Buchstabe allein stehend aus. Im Wort verändert er seine Form. Das lernst du später.",
-      "stage.a1prompt": "Was stimmt für dieses Zeichen?",
-      "stage.a1none": "Kein Punkt",
-      "stage.a1one": "Ein Punkt unten",
-      "stage.a1two": "Zwei Punkte oben",
-      "stage.a2prompt": "Setze den Punkt für Bā.",
-      "stage.a3prompt": "Setze die Punkte für Tā.",
-      "stage.observeOk": "Genau. Alif hat keinen Punkt. Das ist der Unterschied zu den nächsten beiden Zeichen.",
-      "stage.observeWrong": "Noch nicht. Alif hat gar keinen Punkt – weder oben noch unten.",
-
-      "practice.mode.practice": "Übung",
-      "practice.mode.diagnosis": "Kurze Nachfrage",
-      "practice.mode.final": "Abschlussdurchgang – nur der erste Versuch zählt",
-      "practice.prompt.flash": "Welches Zeichen war das?",
-      "practice.prompt.flashWatch": "Schau genau hin.",
-      "practice.prompt.grid": "Markiere alle {char}.",
-      "practice.prompt.dots": "Setze die Punkte für {name}.",
-      "practice.prompt.trait": "Wie viele Punkte hat {char} und wo?",
-      "practice.gridConfirm": "Auswahl bestätigen",
-      "practice.dotsOne": "1 Punkt",
-      "practice.dotsTwo": "2 Punkte",
-      "practice.slotAbove": "oben setzen",
-      "practice.slotBelow": "unten setzen",
-      "practice.pickCountFirst": "Wähle zuerst die Anzahl der Punkte.",
-      "practice.markNone": "Du hast noch nichts markiert.",
-
-      "trait.0-none": "keine Punkte",
-      "trait.1-below": "ein Punkt unten",
-      "trait.1-above": "ein Punkt oben",
-      "trait.2-below": "zwei Punkte unten",
-      "trait.2-above": "zwei Punkte oben",
-      "trait.3-above": "drei Punkte oben",
-
-      "desc.alif": "hat keinen Punkt",
+      "desc.alif": "hat keine Schalenform und keine Punkte",
       "desc.ba": "hat einen Punkt unten",
       "desc.ta": "hat zwei Punkte oben",
+      "desc.tha": "hat drei Punkte oben",
+      "desc.nun": "hat einen Punkt oben",
+      "desc.ya": "hat zwei Punkte unten",
 
       "mark.correct": "richtig",
       "mark.wrong": "deine Wahl – falsch",
@@ -600,17 +856,23 @@
       "fb.position": "Die Anzahl stimmt. Die Punkte gehören an die andere Stelle: {char} {desc}.",
       "fb.mixed": "Hier stimmen Anzahl und Position nicht. {char} {desc}.",
       "fb.untrained": "Das ist ein anderer Buchstabe, den du später lernst. {char} {desc}.",
-      "fb.gridOk": "Richtig. Alle {char} markiert – {desc}.",
-      "fb.gridWrong": "Markiert, gehört aber nicht dazu: {list}. {char} {desc}.",
-      "fb.gridMissed": "Nicht markiert, gehört aber dazu: {n}×. {char} {desc}.",
-      "fb.dotsOk": "Richtig. {char} {desc}.",
-      "fb.diagnosisIntro": "Kurze Nachfrage, um Anzahl und Position auseinanderzuhalten.",
+      "fb.pair.position": "Beide haben {count}. Bei {charA} steht {posA}, bei {charB} {posB}.",
+      "fb.pair.count": "{charA} {descA}, {charB} {descB}. Die Position ist gleich, die Anzahl nicht.",
+      "fb.pair.both": "{charA} {descA}, {charB} {descB}. Hier unterscheiden sich Anzahl und Position.",
+      "fb.pair.shape": "{charA} {descA}. {charB} {descB}.",
+      "fb.gridOk": "Richtig. Alle Zeichen {rule} markiert.",
+      "fb.gridWrong": "Markiert, gehört aber nicht dazu: {list}. Gesucht waren Zeichen {rule}.",
+      "fb.gridMissed": "Nicht markiert, gehört aber dazu: {n}×. Gesucht waren Zeichen {rule}.",
+      "fb.sortOk": "Richtig sortiert.",
+      "fb.sortWrong": "Falsch abgelegt: {list}.",
+      "fb.constructOk": "Richtig. So entsteht {char} – {desc}.",
+      "fb.constructWrong": "Damit entsteht nicht {name}. {char} {desc}.",
 
       "result.eyebrow": "Ergebnis",
       "result.passed": "Lektion bestanden.",
       "result.notPassed": "Noch nicht bestanden – und das ist in Ordnung.",
-      "result.leadPassed": "ب und ت erkennst du heute sicher, ا war dein Vergleichspunkt. Morgen bekommst du sie noch einmal – ohne dass du etwas einstellen musst.",
-      "result.leadNotPassed": "Du fängst nicht von vorn an. Morgen wird genau daran weitergearbeitet, mit anderen Aufgabenformen.",
+      "result.leadPassed": "Du unterscheidest die Zeichen dieser Lektion an Anzahl und Position der Punkte. Morgen wird kurz geprüft, ob es geblieben ist.",
+      "result.leadNotPassed": "Du fängst nicht von vorn an. Morgen wird genau an den schwächsten Zeichen weitergearbeitet, mit anderen Aufgabenformen.",
       "result.cta": "Zur Übersicht",
       "result.errorsTitle": "Deine Fehler lagen hier:",
       "result.errNone": "Heute ist dir kein Fehler unterlaufen, den wir dir erklären müssten.",
@@ -618,9 +880,23 @@
       "result.err.dot_count_confusion": "Punktanzahl ({n}×)",
       "result.err.dot_position_confusion": "Punktposition ({n}×)",
       "result.err.unresolved": "noch nicht eindeutig zuzuordnen ({n}×)",
-      "result.nextday": "Am {date} steht ein kurzer Block bereit – er beginnt mit dem Zeichen, das heute am wenigsten saß.",
+      "result.strong": "Stärkstes Merkmal: {dim}.",
+      "result.confusion": "Häufigste Verwechslung: {char} ({n}×).",
+      "result.recommend": "Als Nächstes: {form}.",
+      "result.nextday": "Am {date} steht ein kurzer Block bereit – er beginnt mit den Zeichen, die heute am wenigsten saßen.",
       "result.nextdayNoStorage": "Auf diesem Gerät kann gerade nichts gespeichert werden. Ein Block für morgen kann deshalb nicht zugesagt werden.",
       "result.nextdayDone": "Die Folgeprüfung ist abgeschlossen.",
+
+      "dim.shape": "Grundform",
+      "dim.count": "Punktanzahl",
+      "dim.position": "Punktposition",
+      "dim.both": "Anzahl und Position zusammen",
+      "form.flash": "verdeckter Abruf",
+      "form.grid": "Rasterfund",
+      "form.sortCount": "Sortieren nach Punktanzahl",
+      "form.sortPos": "Sortieren nach Punktposition",
+      "form.construct": "Punktkonstruktion",
+      "form.pair": "Minimalpaar-Vergleich",
 
       "progress.today_secure": "Du hast es in drei verschiedenen Aufgabenformen im ersten Versuch richtig erkannt. Morgen wird kurz geprüft, ob es geblieben ist.",
       "progress.wobbly": "Einiges saß sofort, anderes erst nach einem Fehler. Das ist ein normaler Zwischenstand.",
@@ -638,7 +914,10 @@
       "nextday.offerCta": "Folgeprüfung starten",
       "nextday.resultTitle": "Stand nach der Folgeprüfung",
 
-      "notice.review": "Interner Prototyp. Die arabischen Buchstabenformen, die Punkte und die Ablenkzeichen sind noch nicht durch eine qualifizierte Arabisch-/Elifba- bzw. Schriftprüfung freigegeben. Es ist keine geprüfte Schriftdatei eingebunden.",
+      "review.intro": "Jetzt die Auflösung. Zu jedem Fehlermuster kommt eine kurze Korrekturaufgabe.",
+      "review.none": "In der Challenge ist dir kein Fehler unterlaufen.",
+
+      "notice.review": "Interner Prototyp. Die arabischen Buchstabenformen, die Punkte, die Ablenkzeichen und die Zuordnung der sechs Zeichen zu einer gemeinsamen Formfamilie sind noch nicht durch eine qualifizierte Arabisch-/Elifba- bzw. Schriftprüfung freigegeben. Ob sich ن und ي in der isolierten Form wirklich nur durch die Punkte von ب, ت und ث unterscheiden, ist Teil dieser offenen Prüfung. Es ist keine geprüfte Schriftdatei eingebunden.",
       "notice.noStorage": "Dieses Gerät speichert gerade nichts lokal. Ein Ergebnis für morgen kann deshalb nicht zugesagt werden.",
       "notice.privacy": "Dieser Prototyp speichert ausschließlich lokal auf diesem Gerät. Keine Konten, kein Server, kein Tracking.",
       "notice.clear": "Alle lokalen Daten löschen",
@@ -647,70 +926,107 @@
 
     tr: {
       "common.next": "Devam",
+      "common.done": "Bitti",
+      "common.overview": "Genel görünüm",
+      "common.reset": "Sıfırla",
       "theme.light": "Açık görünüm",
       "theme.dark": "Koyu görünüm",
       "theme.system": "Sistem ayarı",
       "meter.of": "{total} içinden {n}",
+      "level.short": "Aşama {n}",
+      "level.aria": "3 aşamadan {n}",
 
-      "precheck.eyebrow": "Demo dersi",
-      "precheck.title": "Elif, Bā ve Tā",
-      "precheck.introText": "Önce kısa bir ön kontrol. Bu sırada doğru mu yanlış mı yaptığın söylenmez – yalnızca nereden başladığın kaydedilir.",
-      "precheck.introHint": "Bir işareti tanımıyorsan „Bilmiyorum“ seçeneğini kullan. Bu yanlış bir cevap değildir.",
-      "precheck.cta": "Ön kontrolü başlat",
-      "precheck.restart": "Dersi yeniden başlat",
-      "precheck.actLabel": "Senin değerlendirmen",
-      "precheck.question": "Bu işaretin adı nedir?",
+      "start.eyebrow": "Mikro kurs · Ders 1",
+      "start.title": "Noktaları okumak",
+      "start.goal": "Hedef: birbirine benzeyen altı harfi temel formlarına ve noktalarının sayısı ile konumuna göre ayırt etmek.",
+      "start.method": "Yalnızca bakarak öğrenmezsin. Her açıklamadan sonra bir alıştırma gelir.",
+      "start.setTitle": "Altı işaret",
+      "start.cta": "Derse başla",
+      "start.restart": "Dersi yeniden başlat",
+      "start.cardNeutral": "henüz açık",
+
+      "precheck.eyebrow": "Ön kontrol",
+      "precheck.note": "Geri bildirim yok – ön kontrol yalnızca başlangıcı ayarlar.",
       "precheck.unknown": "Bilmiyorum",
-      "precheck.other": "Başka bir harf",
-      "precheck.compare": "Ön kontrolde {total} işaretten {n} tanesini adlandırdın. Bu, görüşme için bir ipucudur; doğrulanmış bir önce/sonra ölçümü değildir.",
+      "precheck.shape": "Hangi işaretin çanak formu yok?",
+      "precheck.count": "Bu işaretin kaç noktası var?",
+      "precheck.position": "Bu işaretin noktaları nerede?",
+      "precheck.recall": "Bu hangi işaretti?",
+      "precheck.compare": "Ön kontrolde {total} sorudan {n} tanesi doğruydu. Bu, görüşme için bir ipucudur; doğrulanmış bir önce/sonra ölçümü değildir.",
       "precheck.doneText": "Ders tamamlandı. İstediğin zaman yeniden başlayabilirsin – bu durumda mevcut durum değiştirilir.",
+
+      "count.0": "nokta yok",
+      "count.1": "bir nokta",
+      "count.2": "iki nokta",
+      "count.3": "üç nokta",
+      "pos.above": "üstte",
+      "pos.below": "altta",
+      "pos.none": "nokta yok",
+
+      "stage.actLabel": "Şimdi sen",
+      "stage.section.A": "Bölüm A · Temel form",
+      "stage.section.B": "Bölüm B · Nokta sayısı",
+      "stage.section.C": "Bölüm C · Nokta konumu",
+      "stage.a.explain": "Elif noktasız, düz bir çizgidir. Bu dersteki diğer işaretler bir çanak formu üzerinde durur.",
+      "stage.a.prompt": "Çanak formu olan bütün işaretleri işaretle.",
+      "stage.a.ok": "Doğru. Elif tek başınadır – düz bir çizgi, çanak yok, nokta yok.",
+      "stage.a.wrong": "Henüz değil. Elif noktasız düz çizgidir, diğerleri çanak formu üzerinde durur.",
+      "stage.b.explain": "İşaretler önce nokta sayısıyla ayrılır: sıfır, bir, iki veya üç.",
+      "stage.b.prompt": "Her işareti nokta sayısına göre yerleştir.",
+      "stage.b.confront": "İkisinin de tam bir noktası var – yine de aynı işaret değiller.",
+      "stage.b.confrontPrompt": "Bunlar aynı işaretler mi?",
+      "stage.b.confrontYes": "Evet, aynı işaret",
+      "stage.b.confrontNo": "Hayır, farklı işaretler",
+      "stage.b.confrontOk": "Aynen. Yalnızca sayı yetmez. Noktanın nerede durduğu da önemlidir.",
+      "stage.b.confrontWrong": "Daha dikkatli bak: sayı aynı, ama noktalar farklı yerlerde duruyor.",
+      "stage.c.explain": "Noktalar ya formun üstünde ya da altında durur. Aynı sayı farklı yerlerde farklı işaretler verir.",
+      "stage.c.prompt": "İşaretleri noktalarının konumuna göre ayır.",
+      "stage.c.note": "İşaretler tek başlarınayken böyle görünür. Kelime içinde biçimleri değişir. Bunu daha sonra öğreneceksin.",
+
+      "practice.mode.practice": "Alıştırma",
+      "practice.mode.challenge": "Kapanış turu",
+      "practice.mode.review": "Çözüm",
+      "practice.mode.nextday": "Takip kontrolü",
+      "practice.remedialTag": "Ek alıştırma",
+
+      "task.flash.watch": "Dikkatle bak.",
+      "task.flash.ask": "Bu hangi işaretti?",
+      "task.grid": "{rule} bütün işaretleri işaretle.",
+      "task.grid.confirm": "Seçimi onayla",
+      "task.grid.none": "Henüz hiçbir şey işaretlemedin.",
+      "task.sortCount": "Her işareti nokta sayısına göre yerleştir.",
+      "task.sortPos": "İşaretleri noktalarının konumuna göre ayır.",
+      "task.sort.pick": "Önce bir işaret, sonra uygun bölmeyi seç.",
+      "task.sort.mayStayEmpty": "Her bölme gerekli değildir – bazıları boş kalır.",
+      "task.construct.byName": "{name} oluştur.",
+      "task.construct.byRule": "{rule} olan bir işaret oluştur.",
+      "task.construct.hint": "Bölmeye dokun – her dokunuş bir nokta daha ekler.",
+      "task.construct.above": "Üstteki noktalar",
+      "task.construct.below": "Alttaki noktalar",
+      "task.construct.formLabel": "Alıştırma formu – temel form için yer tutucu",
+      "task.construct.empty": "Önce en az bir nokta koy.",
+      "task.pair": "İki işaretten hangisi {name}?",
+
+      "rule.none": "noktasız",
+      "rule.1-below": "altta bir nokta olan",
+      "rule.1-above": "üstte bir nokta olan",
+      "rule.2-below": "altta iki nokta olan",
+      "rule.2-above": "üstte iki nokta olan",
+      "rule.3-above": "üstte üç nokta olan",
 
       "name.alif": "Elif",
       "name.ba": "Bā",
       "name.ta": "Tā",
+      "name.tha": "Thā",
+      "name.nun": "Nūn",
+      "name.ya": "Yā",
 
-      "stage.actLabel": "Şimdi sen",
-      "stage.s1": "Elif. Dik bir çizgi. Nokta yok.",
-      "stage.s2": "Bā ve Tā bu formu paylaşır. Henüz noktasız.",
-      "stage.s3": "Altta bir nokta → Bā.",
-      "stage.s4": "Üstte iki nokta → Tā.",
-      "stage.s5": "Aynı form. Fark noktalarda.",
-      "stage.s6": "Harf tek başınayken böyle görünür. Kelime içinde biçimi değişir. Bunu daha sonra öğreneceksin.",
-      "stage.a1prompt": "Bu işaret için hangisi doğru?",
-      "stage.a1none": "Nokta yok",
-      "stage.a1one": "Altta bir nokta",
-      "stage.a1two": "Üstte iki nokta",
-      "stage.a2prompt": "Bā için noktayı yerleştir.",
-      "stage.a3prompt": "Tā için noktaları yerleştir.",
-      "stage.observeOk": "Aynen. Elif’in noktası yoktur. Sonraki iki işaretten farkı budur.",
-      "stage.observeWrong": "Henüz değil. Elif’in hiç noktası yoktur – ne üstte ne altta.",
-
-      "practice.mode.practice": "Alıştırma",
-      "practice.mode.diagnosis": "Kısa ara soru",
-      "practice.mode.final": "Kapanış turu – yalnızca ilk deneme sayılır",
-      "practice.prompt.flash": "Bu hangi işaretti?",
-      "practice.prompt.flashWatch": "Dikkatle bak.",
-      "practice.prompt.grid": "Bütün {char} işaretlerini işaretle.",
-      "practice.prompt.dots": "{name} için noktaları yerleştir.",
-      "practice.prompt.trait": "{char} kaç noktalıdır ve noktalar nerede?",
-      "practice.gridConfirm": "Seçimi onayla",
-      "practice.dotsOne": "1 nokta",
-      "practice.dotsTwo": "2 nokta",
-      "practice.slotAbove": "üste koy",
-      "practice.slotBelow": "alta koy",
-      "practice.pickCountFirst": "Önce nokta sayısını seç.",
-      "practice.markNone": "Henüz hiçbir şey işaretlemedin.",
-
-      "trait.0-none": "nokta yok",
-      "trait.1-below": "altta bir nokta",
-      "trait.1-above": "üstte bir nokta",
-      "trait.2-below": "altta iki nokta",
-      "trait.2-above": "üstte iki nokta",
-      "trait.3-above": "üstte üç nokta",
-
-      "desc.alif": "noktasızdır",
+      "desc.alif": "çanak formu ve noktası yoktur",
       "desc.ba": "altta bir noktalıdır",
       "desc.ta": "üstte iki noktalıdır",
+      "desc.tha": "üstte üç noktalıdır",
+      "desc.nun": "üstte bir noktalıdır",
+      "desc.ya": "altta iki noktalıdır",
 
       "mark.correct": "doğru",
       "mark.wrong": "senin seçimin – yanlış",
@@ -722,17 +1038,23 @@
       "fb.position": "Sayı doğru. Noktaların yeri farklı: {char} {desc}.",
       "fb.mixed": "Burada hem sayı hem konum uymuyor. {char} {desc}.",
       "fb.untrained": "Bu, daha sonra öğreneceğin başka bir harf. {char} {desc}.",
-      "fb.gridOk": "Doğru. Bütün {char} işaretlendi – {desc}.",
-      "fb.gridWrong": "İşaretlendi ama buraya ait değil: {list}. {char} {desc}.",
-      "fb.gridMissed": "İşaretlenmedi ama buraya ait: {n}×. {char} {desc}.",
-      "fb.dotsOk": "Doğru. {char} {desc}.",
-      "fb.diagnosisIntro": "Sayı ile konumu ayırmak için kısa bir ara soru.",
+      "fb.pair.position": "İkisinde de {count} var. {charA} işaretinde {posA}, {charB} işaretinde {posB}.",
+      "fb.pair.count": "{charA} {descA}, {charB} {descB}. Konum aynı, sayı değil.",
+      "fb.pair.both": "{charA} {descA}, {charB} {descB}. Burada hem sayı hem konum farklı.",
+      "fb.pair.shape": "{charA} {descA}. {charB} {descB}.",
+      "fb.gridOk": "Doğru. {rule} bütün işaretler seçildi.",
+      "fb.gridWrong": "İşaretlendi ama buraya ait değil: {list}. Aranan: {rule} işaretler.",
+      "fb.gridMissed": "İşaretlenmedi ama buraya ait: {n}×. Aranan: {rule} işaretler.",
+      "fb.sortOk": "Doğru yerleştirdin.",
+      "fb.sortWrong": "Yanlış yerleştirilen: {list}.",
+      "fb.constructOk": "Doğru. Böylece {char} oluşur – {desc}.",
+      "fb.constructWrong": "Bu şekilde {name} oluşmaz. {char} {desc}.",
 
       "result.eyebrow": "Sonuç",
       "result.passed": "Ders tamamlandı.",
       "result.notPassed": "Henüz tamamlanmadı – bu da sorun değil.",
-      "result.leadPassed": "ب ve ت bugün güvenle tanıyorsun, ا karşılaştırma noktandı. Yarın hiçbir ayar yapmadan tekrar karşına gelecekler.",
-      "result.leadNotPassed": "Baştan başlamıyorsun. Yarın tam bu noktadan, başka alıştırma biçimleriyle devam edilecek.",
+      "result.leadPassed": "Bu dersteki işaretleri noktaların sayısına ve konumuna göre ayırt ediyorsun. Yarın kısaca kalıcı olup olmadığına bakılacak.",
+      "result.leadNotPassed": "Baştan başlamıyorsun. Yarın en zayıf işaretlerden, başka alıştırma biçimleriyle devam edilecek.",
       "result.cta": "Genel görünüme",
       "result.errorsTitle": "Hataların şuralardaydı:",
       "result.errNone": "Bugün sana açıklamamız gereken bir hata yapmadın.",
@@ -740,9 +1062,23 @@
       "result.err.dot_count_confusion": "Nokta sayısı ({n}×)",
       "result.err.dot_position_confusion": "Nokta konumu ({n}×)",
       "result.err.unresolved": "henüz kesin olarak sınıflandırılamadı ({n}×)",
-      "result.nextday": "{date} tarihinde kısa bir blok hazır olacak – bugün en az oturan işaretle başlayacak.",
+      "result.strong": "En güçlü özellik: {dim}.",
+      "result.confusion": "En sık karıştırma: {char} ({n}×).",
+      "result.recommend": "Sırada: {form}.",
+      "result.nextday": "{date} tarihinde kısa bir blok hazır olacak – bugün en az oturan işaretlerle başlayacak.",
       "result.nextdayNoStorage": "Bu cihazda şu anda hiçbir şey kaydedilemiyor. Bu yüzden yarın için bir blok söz verilemez.",
       "result.nextdayDone": "Takip kontrolü tamamlandı.",
+
+      "dim.shape": "Temel form",
+      "dim.count": "Nokta sayısı",
+      "dim.position": "Nokta konumu",
+      "dim.both": "Sayı ve konum birlikte",
+      "form.flash": "kapalı hatırlama",
+      "form.grid": "ızgarada bulma",
+      "form.sortCount": "Nokta sayısına göre ayırma",
+      "form.sortPos": "Nokta konumuna göre ayırma",
+      "form.construct": "Nokta oluşturma",
+      "form.pair": "En küçük fark karşılaştırması",
 
       "progress.today_secure": "Üç farklı alıştırma biçiminde ilk denemede doğru tanıdın. Yarın kısaca kalıcı olup olmadığına bakılacak.",
       "progress.wobbly": "Bazıları hemen doğruydu, bazıları ancak bir hatadan sonra. Bu normal bir ara durum.",
@@ -760,7 +1096,10 @@
       "nextday.offerCta": "Takip kontrolünü başlat",
       "nextday.resultTitle": "Takip kontrolünden sonraki durum",
 
-      "notice.review": "Dahili prototip. Arapça harf formları, noktalar ve çeldirici işaretler henüz nitelikli bir Arapça/Elifba veya yazı incelemesinden geçmedi. Denetlenmiş bir yazı tipi dosyası eklenmemiştir.",
+      "review.intro": "Şimdi çözüm. Her hata örüntüsü için kısa bir düzeltme alıştırması geliyor.",
+      "review.none": "Kapanış turunda hata yapmadın.",
+
+      "notice.review": "Dahili prototip. Arapça harf formları, noktalar, çeldirici işaretler ve altı işaretin ortak bir form ailesine atanması henüz nitelikli bir Arapça/Elifba veya yazı incelemesinden geçmedi. ن ve ي işaretlerinin izole biçimde ب, ت ve ث işaretlerinden gerçekten yalnızca noktalarla ayrılıp ayrılmadığı bu açık incelemenin parçasıdır. Denetlenmiş bir yazı tipi dosyası eklenmemiştir.",
       "notice.noStorage": "Bu cihaz şu anda yerel olarak hiçbir şey kaydetmiyor. Bu yüzden yarın için bir sonuç söz verilemez.",
       "notice.privacy": "Bu prototip verileri yalnızca bu cihazda yerel olarak saklar. Hesap yok, sunucu yok, takip yok.",
       "notice.clear": "Tüm yerel verileri sil",
@@ -776,9 +1115,7 @@
   function fill(str, params) {
     var out = str;
     for (var k in params) {
-      if (Object.prototype.hasOwnProperty.call(params, k)) {
-        out = out.split("{" + k + "}").join(params[k]);
-      }
+      if (Object.prototype.hasOwnProperty.call(params, k)) out = out.split("{" + k + "}").join(params[k]);
     }
     return out;
   }
@@ -788,12 +1125,8 @@
      ====================================================================== */
 
   function $(id) { return document.getElementById(id); }
-
   function clear(el) { while (el.firstChild) el.removeChild(el.firstChild); }
 
-  /* Arabisches Zeichen immer in eigenem Element mit dir/lang/translate,
-     damit es nie in den Bidi-Kontext des deutschen bzw. tuerkischen Satzes
-     gerissen wird. */
   function arabicSpan(char, extraClass) {
     var span = document.createElement("span");
     span.className = "arabic " + (extraClass || "glyph-inline");
@@ -811,24 +1144,45 @@
     el.setAttribute("translate", "no");
   }
 
-  /* Setzt einen Satz aus Text und isolierten arabischen Zeichen zusammen.
-     {char} im Template wird durch ein eigenes Element ersetzt. */
+  /* Neutrale Uebungsform fuer die Punktkonstruktion. Bewusst KEINE arabische
+     Glyphe und kein Unicode-Buchstabe: U+066E waere ein eigenstaendiges
+     Zeichen und damit die Behauptung, die Uebungsform sei ein Buchstabe;
+     zudem ist seine Verfuegbarkeit auf Endgeraeten ungeprueft. Diese Flaeche
+     ist eine abstrakte Struktur und wird sichtbar so benannt. */
+  function practiceForm() {
+    var wrap = document.createElement("div");
+    wrap.className = "practice-form";
+    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", "0 0 120 44");
+    svg.setAttribute("aria-hidden", "true");
+    svg.setAttribute("class", "practice-form-svg");
+    var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", "M14 6 C14 30, 34 38, 60 38 C86 38, 106 30, 106 6");
+    path.setAttribute("fill", "none");
+    path.setAttribute("stroke", "currentColor");
+    path.setAttribute("stroke-width", "7");
+    path.setAttribute("stroke-linecap", "round");
+    svg.appendChild(path);
+    wrap.appendChild(svg);
+    var label = document.createElement("span");
+    label.className = "practice-form-label";
+    label.textContent = t("task.construct.formLabel");
+    wrap.appendChild(label);
+    return wrap;
+  }
+
   function renderSentence(el, template, params) {
     clear(el);
-    var parts = template.split(/(\{char\})/);
+    var parts = template.split(/(\{char[AB]?\})/);
     for (var i = 0; i < parts.length; i++) {
-      if (parts[i] === "{char}") {
-        /* Glyphe und Folgewort bleiben zusammen, damit das Zeichen nicht
-           allein am Zeilenende steht und vom Satz getrennt wirkt. */
+      var m = /^\{(char[AB]?)\}$/.exec(parts[i]);
+      if (m) {
         var group = document.createElement("span");
         group.className = "nowrap-group";
-        group.appendChild(arabicSpan(params.char));
+        group.appendChild(arabicSpan(params[m[1]]));
         var rest = parts[i + 1] ? fill(parts[i + 1], params) : "";
-        var m = /^(\s*\S+)([\s\S]*)$/.exec(rest);
-        if (m) {
-          group.appendChild(document.createTextNode(m[1]));
-          parts[i + 1] = m[2];
-        }
+        var w = /^(\s*\S+)([\s\S]*)$/.exec(rest);
+        if (w) { group.appendChild(document.createTextNode(w[1])); parts[i + 1] = w[2]; }
         el.appendChild(group);
       } else if (parts[i]) {
         el.appendChild(document.createTextNode(fill(parts[i], params)));
@@ -844,20 +1198,16 @@
 
   function hideFeedback(el) { el.hidden = true; clear(el); }
 
-  /* DE und TR schreiben beide Tag.Monat.Jahr – bewusst kein toLocaleDateString,
-     das je nach Geraetegebietsschema von der App-Sprache abweichen wuerde. */
-  function formatDate(iso) {
-    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso || ""));
-    return m ? m[3] + "." + m[2] + "." + m[1] : String(iso || "");
-  }
-
   function setMeter(fillEl, labelEl, n, total) {
     fillEl.style.width = total ? Math.round((n / total) * 100) + "%" : "0%";
     labelEl.textContent = fill(t("meter.of"), { n: n, total: total });
   }
 
-  /* Fokus nach jedem View- und Zustandswechsel auf die neue Aufgabenstellung,
-     damit Screenreader- und Tastaturnutzung dem Ablauf folgen kann. */
+  function formatDate(iso) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso || ""));
+    return m ? m[3] + "." + m[2] + "." + m[1] : String(iso || "");
+  }
+
   function focusEl(el) {
     if (!el || el.hidden || el.offsetParent === null) return false;
     el.setAttribute("tabindex", "-1");
@@ -865,21 +1215,17 @@
     return true;
   }
 
-  function focusFirst(view) {
-    var candidates = view.querySelectorAll("h1, h2");
-    for (var i = 0; i < candidates.length; i++) {
-      if (focusEl(candidates[i])) return;
-    }
-  }
-
-  var VIEWS = ["precheck", "stage", "practice", "result", "nextday"];
+  var VIEWS = ["start", "precheck", "stage", "practice", "result", "nextday"];
 
   function showView(name) {
     for (var i = 0; i < VIEWS.length; i++) {
       $("view-" + VIEWS[i]).classList.toggle("active", VIEWS[i] === name);
     }
+    $("btn-to-overview").hidden = name === "start";
     window.scrollTo(0, 0);
-    focusFirst($("view-" + name));
+    var view = $("view-" + name);
+    var heads = view.querySelectorAll("h1, h2");
+    for (var j = 0; j < heads.length; j++) if (focusEl(heads[j])) return;
   }
 
   /* ======================================================================
@@ -893,97 +1239,59 @@
       qid: scope + "-" + spec.taskType + "-" + spec.letterId + "-" + seq,
       letterId: spec.letterId,
       taskType: spec.taskType,
-      level: spec.level,
+      level: spec.level || 1,
+      block: spec.block || null,
+      remedial: !!spec.remedial,
+      diagnose: spec.diagnose || null,
       scope: scope
     };
     if (spec.taskType === "flash") {
-      item.options = buildDistractors(spec.letterId, spec.level, lastOptionKey);
+      item.options = buildDistractors(spec.letterId, item.level, lastOptionKey);
       lastOptionKey = item.options.join(",");
       item.pickKind = "glyph";
     } else if (spec.taskType === "grid") {
-      item.cells = buildGrid(spec.letterId, spec.level);
+      var g = buildGrid(spec.letterId, item.level);
+      item.cells = g.cells;
+      item.rule = g.rule;
+      item.targetSet = [];
+      for (var i = 0; i < TARGETS.length; i++) {
+        if (matchesRule(TARGETS[i], g.rule)) item.targetSet.push(TARGETS[i]);
+      }
       item.pickKind = "glyph";
-    } else if (spec.taskType === "dots") {
+    } else if (spec.taskType === "sortCount" || spec.taskType === "sortPos") {
+      item.chars = buildSortItem(spec.taskType, item.level);
+      item.pickKind = "sort";
+    } else if (spec.taskType === "construct") {
+      /* Ab Stufe 3 merkmalsbasiert formuliert: geprueft wird die Regel,
+         nicht die Zeichenidentitaet. */
+      item.byRule = item.level >= 3;
       item.pickKind = "trait";
-    } else if (spec.taskType === "trait") {
-      item.options = buildTraitOptions(spec.letterId);
-      item.pickKind = "trait";
+    } else if (spec.taskType === "pair") {
+      var key = spec.pair || pickPairFor(spec.letterId, null);
+      item.pair = key;
+      item.pairRef = findPairByKey(key);
+      item.pickKind = "glyph";
+      var parts = key.split("-");
+      item.options = shuffle([parts[0], parts[1]]);
+      if (item.options.indexOf(spec.letterId) === -1) item.letterId = parts[0];
     }
+    item.dimension = dimensionOf(item);
     return item;
   }
 
-  function buildQueue(plan, scope) {
+  function buildQueue(plan, scope, startLevel) {
     lastOptionKey = null;
     var out = [];
-    for (var i = 0; i < plan.length; i++) out.push(makeItem(plan[i], scope, i + 1));
+    for (var i = 0; i < plan.length; i++) {
+      var spec = plan[i];
+      var lvl = spec.level || (spec.block ? levelForBlock(spec.block, startLevel || 1) : 1);
+      var merged = {
+        letterId: spec.letterId, taskType: spec.taskType, pair: spec.pair,
+        level: lvl, block: spec.block, remedial: spec.remedial
+      };
+      out.push(makeItem(merged, scope, i + 1));
+    }
     return out;
-  }
-
-  /* Diagnose: 2–4 Items, hoechstens eine Diagnose pro Zeichen und Sitzung,
-     und immer eine ANDERE Aufgabenform als die, in der der Fehler auftrat. */
-  function buildDiagnosisQueue() {
-    var done = state.session.diagnosisDone || [];
-    var open = {};
-    var i;
-    for (i = 0; i < state.answers.length; i++) {
-      var a = state.answers[i];
-      if (a.scope !== "today" || a.correct) continue;
-      /* Namensitems loesen ohne freigegebenes Audio keine Nachuebung aus. */
-      if (a.taskType === "name") continue;
-      if (done.indexOf(a.letterId) !== -1) continue;
-      if (!open[a.letterId]) open[a.letterId] = { needsDiagnosis: false, category: null, forms: [] };
-      if (a.needsDiagnosis) open[a.letterId].needsDiagnosis = true;
-      if (a.category) open[a.letterId].category = a.category;
-      if (open[a.letterId].forms.indexOf(a.taskType) === -1) open[a.letterId].forms.push(a.taskType);
-    }
-
-    var order = ["ba", "ta", "alif"];
-    var plan = [];
-    for (i = 0; i < order.length && plan.length < 4; i++) {
-      var lid = order[i];
-      if (!open[lid]) continue;
-      if (open[lid].needsDiagnosis) {
-        /* Anzahlfrage zuerst, danach die Positionsfrage. */
-        plan.push({ letterId: lid, taskType: "trait", level: 1, diagnose: "count" });
-        if (lid !== "alif" && plan.length < 4) {
-          plan.push({ letterId: lid, taskType: "dots", level: 1, diagnose: "position" });
-        }
-      } else if (open[lid].category === "shape_confusion") {
-        plan.push({ letterId: lid, taskType: "grid", level: 1 });
-      } else if (open[lid].category === "dot_count_confusion") {
-        plan.push({ letterId: lid, taskType: "trait", level: 1 });
-      } else if (open[lid].category === "dot_position_confusion") {
-        plan.push({ letterId: lid, taskType: lid === "alif" ? "grid" : "dots", level: 1 });
-      }
-    }
-    plan = plan.slice(0, 4);
-    var q = buildQueue(plan, "today");
-    for (i = 0; i < q.length; i++) q[i].diagnose = plan[i].diagnose || null;
-    return q;
-  }
-
-  function buildNextdayQueue() {
-    var rank = { not_yet: 0, wobbly: 1, today_secure: 2, overnight_secure: 3 };
-    refreshLetterStates("today");
-    var order = TARGETS.slice().sort(function (a, b) {
-      return (rank[letters[a].status] || 0) - (rank[letters[b].status] || 0);
-    });
-    /* Zwei unterschiedliche Aufgabenformen pro Zeichen, verschraenkt, damit
-       kein Zeichen zweimal hintereinander drankommt. Maximal 8 Items. */
-    var flashes = [];
-    var productive = [];
-    for (var i = 0; i < order.length; i++) {
-      var lid = order[i];
-      flashes.push({ letterId: lid, taskType: "flash", level: 2 });
-      productive.push({ letterId: lid, taskType: lid === "alif" ? "grid" : "dots", level: 2 });
-    }
-    var plan = [];
-    for (var j = 0; j < order.length; j++) {
-      plan.push(flashes[j]);
-      if (j > 0) plan.push(productive[j - 1]);
-    }
-    plan.push(productive[order.length - 1]);
-    return buildQueue(plan.slice(0, 8), "nextday");
   }
 
   /* ======================================================================
@@ -994,7 +1302,8 @@
     var n = 0;
     for (var i = 0; i < state.answers.length; i++) {
       var a = state.answers[i];
-      if (a.scope === item.scope && a.letterId === item.letterId && a.taskType === item.taskType) n++;
+      if (a.scope === item.scope && a.letterId === item.letterId &&
+          formGroup(a.taskType) === formGroup(item.taskType)) n++;
     }
     return n + 1;
   }
@@ -1002,45 +1311,38 @@
   function recordAnswer(item, picked, correct) {
     var attemptNo = attemptNoFor(item);
     var answer = {
-      qid: item.qid,
-      letterId: item.letterId,
-      taskType: item.taskType,
-      level: item.level,
-      picked: picked,
-      correct: !!correct,
-      firstTry: attemptNo === 1,
-      attemptNo: attemptNo,
-      ts: Date.now(),
-      scope: item.scope,
-      pickKind: item.pickKind
+      qid: item.qid, letterId: item.letterId, taskType: item.taskType, level: item.level,
+      picked: picked, correct: !!correct, firstTry: attemptNo === 1, attemptNo: attemptNo,
+      ts: Date.now(), scope: item.scope, pickKind: item.pickKind, dimension: item.dimension
     };
     var cls = classifyError({
-      letterId: item.letterId,
-      taskType: item.taskType,
-      pickKind: item.pickKind,
-      picked: picked,
-      correct: !!correct
+      letterId: item.letterId, taskType: item.taskType, pickKind: item.pickKind,
+      picked: picked, correct: !!correct, targetSet: item.targetSet
     });
     answer.category = cls.category;
     answer.needsDiagnosis = cls.needsDiagnosis;
+    answer.confusedWith = cls.confusedWith;
     if (cls.nameMiss) answer.nameMiss = true;
+    if (item.diagnose === "count") answer.diagnoseRole = "count";
     state.answers.push(answer);
-    if (cls.category) state.errors.push({ qid: item.qid, letterId: item.letterId, category: cls.category });
-
-    /* Diagnose aufloesen: die Positionsfrage schliesst das Anzahl-/Positions-
-       Paar ab und ordnet den urspruenglich unbestimmten Fehler zu. */
+    if (cls.category) {
+      state.errors.push({
+        qid: item.qid, letterId: item.letterId,
+        category: cls.category, confusedWith: cls.confusedWith
+      });
+    }
+    /* Die Positionsfrage schliesst das Diagnosepaar ab und ordnet die zuvor
+       unbestimmten Fehler dieses Zeichens zu. */
     if (item.diagnose === "position") {
       var countOk = true;
-      for (var i = state.answers.length - 1; i >= 0; i--) {
-        if (state.answers[i].letterId === item.letterId && state.answers[i].diagnoseRole === "count") {
-          countOk = state.answers[i].correct;
+      for (var j = state.answers.length - 1; j >= 0; j--) {
+        if (state.answers[j].letterId === item.letterId && state.answers[j].diagnoseRole === "count") {
+          countOk = state.answers[j].correct;
           break;
         }
       }
-      var resolved = resolveDiagnosis(countOk);
-      assignDiagnosis(item.letterId, resolved);
+      assignDiagnosis(item.letterId, resolveDiagnosis(countOk));
     }
-    if (item.diagnose === "count") answer.diagnoseRole = "count";
     return answer;
   }
 
@@ -1050,220 +1352,13 @@
       if (a.letterId === letterId && a.needsDiagnosis && !a.category) {
         a.category = category;
         a.needsDiagnosis = false;
-        state.errors.push({ qid: a.qid, letterId: letterId, category: category });
+        state.errors.push({ qid: a.qid, letterId: letterId, category: category, confusedWith: a.confusedWith });
       }
     }
-    if (state.session.diagnosisDone.indexOf(letterId) === -1) state.session.diagnosisDone.push(letterId);
   }
 
   /* ======================================================================
-     8. VIEW: VORCHECK
-     ====================================================================== */
-
-  var PRECHECK_PLAN = ["ba", "alif", "ta"];
-
-  function renderPrecheck() {
-    var s = state.session;
-    var running = s.stage === "precheck";
-    $("precheck-intro").hidden = running;
-    $("precheck-task").hidden = !running;
-    $("btn-precheck-start").hidden = running || s.stage !== "intro";
-    $("btn-restart-lesson").hidden = s.stage === "intro" || running;
-
-    var offerVisible = renderNextdayOffer();
-    renderStorageWarning();
-    /* Genau ein primaerer CTA pro Zustand: liegt ein Folgetagsblock an, ist er
-       die Hauptaktion und der Lektionsstart tritt zurueck. */
-    var startBtn = $("btn-precheck-start");
-    startBtn.className = "btn " + (offerVisible ? "btn-secondary" : "btn-primary");
-
-    /* Nach abgeschlossener Lektion beschreibt der Einstiegstext nicht mehr
-       einen Vorcheck, der bereits stattgefunden hat. */
-    var lessonDone = s.stage !== "intro" && s.stage !== "precheck";
-    $("precheck-introtext").textContent = t(lessonDone ? "precheck.doneText" : "precheck.introText");
-    $("precheck-introhint").hidden = lessonDone;
-
-    if (!running) return;
-
-    var item = s.queue[s.index];
-    if (!item) { finishPrecheck(); return; }
-    setMeter($("precheck-fill"), $("precheck-count"), s.index + 1, s.queue.length);
-    setArabicText($("precheck-char"), GLYPHS[item.letterId].char);
-
-    var row = $("precheck-choices");
-    clear(row);
-    var opts = item.options;
-    for (var i = 0; i < opts.length; i++) {
-      row.appendChild(precheckButton(item, opts[i]));
-    }
-    focusEl($("precheck-task").querySelector("h2"));
-  }
-
-  function precheckButton(item, value) {
-    var btn = document.createElement("button");
-    btn.className = "choice choice-text";
-    btn.type = "button";
-    btn.textContent = value === "other" ? t("precheck.other") : t("name." + value);
-    btn.addEventListener("click", function () { answerPrecheck(item, value); });
-    return btn;
-  }
-
-  function startPrecheck() {
-    var plan = [];
-    for (var i = 0; i < PRECHECK_PLAN.length; i++) {
-      plan.push({ letterId: PRECHECK_PLAN[i], taskType: "name", level: 1 });
-    }
-    var q = buildQueue(plan, "today");
-    for (var j = 0; j < q.length; j++) {
-      q[j].options = shuffle(["alif", "ba", "ta", "other"]);
-      q[j].pickKind = "name";
-    }
-    state.session = { stage: "precheck", index: 0, queue: q, stageStep: 0, pending: null, diagnosisDone: [] };
-    state.precheck = [];
-    state.answers = [];
-    state.errors = [];
-    persistState();
-    renderPrecheck();
-  }
-
-  /* Kein Richtig-/Falsch-Feedback im Vorcheck. Die Antwort wird gespeichert. */
-  function answerPrecheck(item, value) {
-    state.precheck.push({ letterId: item.letterId, answered: value !== "unknown", picked: value });
-    state.answers.push({
-      qid: item.qid, letterId: item.letterId, taskType: "name", level: item.level,
-      picked: value, correct: value === item.letterId, firstTry: true, attemptNo: 1,
-      ts: Date.now(), scope: "today", pickKind: "name",
-      category: null, needsDiagnosis: false, nameMiss: value !== item.letterId
-    });
-    state.session.index++;
-    persistState();
-    if (state.session.index >= state.session.queue.length) finishPrecheck();
-    else renderPrecheck();
-  }
-
-  function finishPrecheck() {
-    state.session = { stage: "stage", index: 0, queue: [], stageStep: 0, pending: null, diagnosisDone: [] };
-    persistState();
-    showView("stage");
-    renderStage();
-  }
-
-  /* ======================================================================
-     9. VIEW: LERNBUEHNE
-     ====================================================================== */
-
-  function renderStage() {
-    var step = STAGE_STEPS[state.session.stageStep];
-    if (!step) { startPractice(); return; }
-
-    setMeter($("stage-fill"), $("stage-count"), state.session.stageStep + 1, STAGE_STEPS.length);
-
-    var charEl = $("stage-char");
-    clear(charEl);
-    charEl.removeAttribute("dir");
-    /* Punktplatzierung zeigt das Zielzeichen bewusst NICHT – sonst waere die
-       Aufgabe Abschreiben statt Erzeugen. Die Buehne schrumpft dann auf den
-       Regeltext. */
-    charEl.hidden = !step.chars;
-    $("stage-area").classList.toggle("stage-compact", !step.chars);
-    if (step.chars && step.chars.length === 1) {
-      setArabicText(charEl, step.chars[0]);
-    } else if (step.chars) {
-      for (var i = 0; i < step.chars.length; i++) {
-        charEl.appendChild(arabicSpan(step.chars[i], "glyph-pair"));
-        if (i < step.chars.length - 1) charEl.appendChild(document.createTextNode(" "));
-      }
-    }
-    $("stage-caption").textContent = t(step.caption);
-
-    var act = $("view-stage").querySelector(".act");
-    var next = $("btn-stage-next");
-    hideFeedback($("stage-feedback"));
-    clear($("stage-action"));
-
-    if (step.kind === "action") {
-      act.hidden = false;
-      $("stage-act-label").textContent = t("stage.actLabel");
-      next.hidden = true;
-      if (step.action === "observe") renderStageObserve();
-      else renderStageDots(step);
-      focusEl($("stage-prompt"));
-      return;
-    }
-
-    act.hidden = true;
-    next.hidden = false;
-    next.textContent = t("common.next");
-    next.disabled = false;
-    focusEl($("stage-caption"));
-    /* Die ms-Werte der Passivszenen sind eine OBERGRENZE fuer die
-       Betrachtungszeit, kein erzwungenes Warten: der Weiter-Button bleibt
-       jederzeit bedienbar. Ein fuer Sekunden deaktivierter primaerer CTA
-       waere eine Sackgasse, und ein Zwang zum Zuschauen widerspraeche der
-       Vorgabe frueher Interaktion. Damit gilt derselbe Ablauf mit und ohne
-       prefers-reduced-motion. */
-  }
-
-  function renderStageObserve() {
-    $("stage-prompt").textContent = t("stage.a1prompt");
-    var wrap = $("stage-action");
-    var row = document.createElement("div");
-    row.className = "choices choices-text";
-    var opts = shuffle(["none", "one", "two"]);
-    opts.forEach(function (key) {
-      var b = document.createElement("button");
-      b.className = "choice choice-text";
-      b.type = "button";
-      b.textContent = t("stage.a1" + key);
-      b.addEventListener("click", function () {
-        var ok = key === "none";
-        b.classList.add(ok ? "is-correct" : "is-wrong");
-        setFeedback($("stage-feedback"), ok ? "ok" : "attn",
-          t(ok ? "stage.observeOk" : "stage.observeWrong"), {});
-        var next = $("btn-stage-next");
-        next.hidden = false;
-        next.disabled = false;
-        next.textContent = t("common.next");
-      });
-      row.appendChild(b);
-    });
-    wrap.appendChild(row);
-  }
-
-  function renderStageDots(step) {
-    $("stage-prompt").textContent = t(step.letterId === "ba" ? "stage.a2prompt" : "stage.a3prompt");
-    var item = { letterId: step.letterId, taskType: "dots", pickKind: "trait", scope: "stage", level: 1 };
-    /* Buehnenhandlungen zaehlen ausdruecklich nicht ins Ergebnis. */
-    var cb = function (code, ok) {
-      var g = GLYPHS[step.letterId];
-      if (ok) {
-        setFeedback($("stage-feedback"), "ok", t("fb.dotsOk"), { char: g.char, desc: t("desc." + step.letterId) });
-      } else {
-        var cls = classifySinglePick(step.letterId, "trait", code);
-        setFeedback($("stage-feedback"), "attn", feedbackTemplate(cls), {
-          char: g.char, desc: t("desc." + step.letterId)
-        });
-      }
-      var next = $("btn-stage-next");
-      next.hidden = false;
-      next.disabled = false;
-      next.textContent = t("common.next");
-    };
-    cb.hint = function () {
-      setFeedback($("stage-feedback"), "", t("practice.pickCountFirst"), {});
-    };
-    $("stage-action").appendChild(buildDotsBoard(item, cb));
-  }
-
-  function advanceStage() {
-    state.session.stageStep++;
-    persistState();
-    if (state.session.stageStep >= STAGE_STEPS.length) startPractice();
-    else renderStage();
-  }
-
-  /* ======================================================================
-     10. AUFGABENFORMEN (gemeinsame Komponenten)
+     8. AUFGABENFORMEN
      ====================================================================== */
 
   function feedbackTemplate(cls) {
@@ -1273,33 +1368,47 @@
     return t("fb.mixed");
   }
 
+  /* Rueckmeldung, die das konkret verwechselte Paar benennt. Bei Paaren, deren
+     Alleinstellung fachlich ungeprueft ist (soleDiff false), wird nur die
+     Punktaussage getroffen, nie "der einzige Unterschied". */
+  function pairFeedback(el, targetId, pickedId) {
+    var pair = findPair(targetId, pickedId);
+    var A = GLYPHS[targetId], B = GLYPHS[pickedId];
+    var params = {
+      charA: A.char, charB: B.char,
+      descA: t("desc." + targetId), descB: t("desc." + pickedId),
+      count: t("count." + A.dots),
+      posA: t("pos." + A.pos), posB: t("pos." + B.pos)
+    };
+    var tpl;
+    if (!pair) tpl = t("fb.pair.both");
+    else if (pair.dim === "position") tpl = t("fb.pair.position");
+    else if (pair.dim === "count") tpl = t("fb.pair.count");
+    else if (pair.dim === "shape") tpl = t("fb.pair.shape");
+    else tpl = t("fb.pair.both");
+    setFeedback(el, "attn", tpl, params);
+  }
+
   /* A. Verdeckter Abruf */
   function renderFlash(item, ui, onAnswer, revealNow) {
     clearTimeout(flashTimer);
-
     function reveal() {
-      ui.prompt.textContent = t("practice.prompt.flash");
+      ui.prompt.textContent = t("task.flash.ask");
       clear(ui.task);
-      ui.task.appendChild(buildChoiceRow(item, onAnswer));
+      ui.task.appendChild(buildGlyphChoices(item, onAnswer));
       ui.action.hidden = true;
     }
-
-    /* Nach einem Reload direkt nach der Antwort darf das Zeichen nicht erneut
-       gezeigt werden – der Abruf hat bereits stattgefunden. */
     if (revealNow) { reveal(); return; }
-
-    ui.prompt.textContent = t("practice.prompt.flashWatch");
+    ui.prompt.textContent = t("task.flash.watch");
     clear(ui.task);
     var stage = document.createElement("div");
-    stage.className = "stage";
+    stage.className = "stage stage-inline";
     var glyph = document.createElement("div");
     glyph.className = "glyph-xl arabic";
     setArabicText(glyph, GLYPHS[item.letterId].char);
     stage.appendChild(glyph);
     ui.task.appendChild(stage);
-
     if (reducedMotion) {
-      /* Kein Timerzwang: das Zeichen darf nicht ungesehen verschwinden. */
       ui.action.hidden = false;
       ui.action.disabled = false;
       ui.action.textContent = t("common.next");
@@ -1310,31 +1419,27 @@
     }
   }
 
-  function buildChoiceRow(item, onAnswer) {
+  function buildGlyphChoices(item, onAnswer) {
     var row = document.createElement("div");
-    row.className = "choices";
+    row.className = "choices choices-" + item.options.length;
     item.options.forEach(function (gid) {
       var b = document.createElement("button");
       b.className = "choice";
       b.type = "button";
       b.setAttribute("data-glyph", gid);
-      var span = arabicSpan(GLYPHS[gid].char, "choice-char");
-      b.appendChild(span);
-      b.addEventListener("click", function () {
-        onAnswer(gid, gid === item.letterId, row);
-      });
+      b.appendChild(arabicSpan(GLYPHS[gid].char, "choice-char"));
+      b.addEventListener("click", function () { onAnswer(gid, gid === item.letterId, row); });
       row.appendChild(b);
     });
     return row;
   }
 
-  /* B. Rasterfund */
+  /* B. Rasterfund mit Merkmalsregel */
   function renderGrid(item, ui, onAnswer) {
-    ui.prompt.textContent = "";
-    renderSentence(ui.prompt, t("practice.prompt.grid"), { char: GLYPHS[item.letterId].char });
+    renderSentence(ui.prompt, t("task.grid"), { rule: t(item.rule.key) });
     clear(ui.task);
     var grid = document.createElement("div");
-    grid.className = "grid9";
+    grid.className = "grid-find";
     var marked = [];
     item.cells.forEach(function (gid, idx) {
       var b = document.createElement("button");
@@ -1356,143 +1461,192 @@
 
     ui.action.hidden = false;
     ui.action.disabled = false;
-    ui.action.textContent = t("practice.gridConfirm");
+    ui.action.textContent = t("task.grid.confirm");
     ui.action.onclick = function () {
-      if (!marked.length) {
-        setFeedback(ui.feedback, "", t("practice.markNone"), {});
-        return;
-      }
-      var pickedChars = marked.slice().sort(function (a, b) { return a - b; })
-        .map(function (i) { return item.cells[i]; });
+      if (!marked.length) { setFeedback(ui.feedback, "", t("task.grid.none"), {}); return; }
       var targetIdx = [];
-      item.cells.forEach(function (gid, i) { if (gid === item.letterId) targetIdx.push(i); });
+      item.cells.forEach(function (gid, i) { if (matchesRule(gid, item.rule)) targetIdx.push(i); });
       var ok = marked.length === targetIdx.length &&
         targetIdx.every(function (i) { return marked.indexOf(i) !== -1; });
+      var pickedChars = marked.slice().sort(function (a, b) { return a - b; })
+        .map(function (i) { return item.cells[i]; });
       onAnswer(pickedChars, ok, grid, { marked: marked, targetIdx: targetIdx });
     };
   }
 
-  /* C. Punktplatzierung – ohne Drag-and-Drop, feste Positionen. */
-  function buildDotsBoard(item, onAnswer) {
-    var wrap = document.createElement("div");
-    var count = null;
+  /* C/D. Sortieren – erst Zeichen waehlen, dann Ablage antippen. Kein Drag. */
+  function renderSort(item, ui, onAnswer) {
+    var byCount = item.taskType === "sortCount";
+    ui.prompt.textContent = t(byCount ? "task.sortCount" : "task.sortPos");
+    clear(ui.task);
 
-    var tokenRow = document.createElement("div");
-    tokenRow.className = "token-row";
-    [1, 2].forEach(function (n) {
+    var placed = {};
+    var selected = null;
+
+    var pool = document.createElement("div");
+    pool.className = "sort-pool";
+    item.chars.forEach(function (gid) {
       var b = document.createElement("button");
-      b.className = "token";
+      b.className = "sort-chip arabic";
       b.type = "button";
+      b.setAttribute("data-glyph", gid);
       b.setAttribute("aria-pressed", "false");
-      b.appendChild(document.createTextNode(t(n === 1 ? "practice.dotsOne" : "practice.dotsTwo")));
-      b.appendChild(dotMark(n));
+      setArabicText(b, GLYPHS[gid].char);
       b.addEventListener("click", function () {
-        count = n;
-        var all = tokenRow.querySelectorAll(".token");
-        for (var i = 0; i < all.length; i++) all[i].setAttribute("aria-pressed", "false");
-        b.setAttribute("aria-pressed", "true");
-      });
-      tokenRow.appendChild(b);
-    });
-    wrap.appendChild(tokenRow);
-
-    var board = document.createElement("div");
-    board.className = "dots-board";
-    /* Die gesetzten Punkte erscheinen unmittelbar an der Grundform, nicht nur
-       im Slot-Button: die Lernende soll das Zeichen sehen, das sie erzeugt
-       hat, nicht nur ihre Regelauswahl bestaetigt bekommen. */
-    var markAbove = document.createElement("div");
-    markAbove.className = "dots-applied";
-    var markBelow = document.createElement("div");
-    markBelow.className = "dots-applied";
-    var above = slotButton("above");
-    var base = document.createElement("div");
-    base.className = "dots-base arabic";
-    setArabicText(base, BOWL_BASE);
-    var below = slotButton("below");
-    board.appendChild(above);
-    board.appendChild(markAbove);
-    board.appendChild(base);
-    board.appendChild(markBelow);
-    board.appendChild(below);
-    wrap.appendChild(board);
-
-    function slotButton(pos) {
-      var b = document.createElement("button");
-      b.className = "dot-slot";
-      b.type = "button";
-      b.setAttribute("aria-pressed", "false");
-      b.setAttribute("data-pos", pos);
-      b.textContent = t(pos === "above" ? "practice.slotAbove" : "practice.slotBelow");
-      b.addEventListener("click", function () {
-        if (!count) {
-          b.setAttribute("aria-pressed", "false");
-          if (typeof onAnswer.hint === "function") onAnswer.hint();
-          else wrap.dispatchEvent(new CustomEvent("needcount", { bubbles: true }));
-          return;
+        if (placed[gid]) return;
+        selected = selected === gid ? null : gid;
+        var chips = pool.querySelectorAll(".sort-chip");
+        for (var i = 0; i < chips.length; i++) {
+          chips[i].setAttribute("aria-pressed",
+            chips[i].getAttribute("data-glyph") === selected ? "true" : "false");
         }
-        var code = count + "-" + pos;
-        b.setAttribute("aria-pressed", "true");
-        clear(b);
-        b.appendChild(document.createTextNode(t(pos === "above" ? "practice.slotAbove" : "practice.slotBelow") + " "));
-        b.appendChild(dotMark(count));
-        (pos === "above" ? markAbove : markBelow).appendChild(dotMark(count));
-        var ok = code === traitCodeOf(item.letterId);
-        b.classList.add(ok ? "is-correct" : "is-wrong");
-        var slots = board.querySelectorAll(".dot-slot");
-        for (var i = 0; i < slots.length; i++) slots[i].disabled = true;
-        var tokens = tokenRow.querySelectorAll(".token");
-        for (var j = 0; j < tokens.length; j++) tokens[j].disabled = true;
-        onAnswer(code, ok, board);
       });
+      pool.appendChild(b);
+    });
+    ui.task.appendChild(pool);
+
+    var binsWrap = document.createElement("div");
+    /* Positionsfaecher untereinander: "oben" und "unten" bilden damit raeumlich
+       ab, was sie meinen, und die Form ist von der Anzahl-Sortierung
+       unterscheidbar. */
+    binsWrap.className = "sort-bins" + (byCount ? "" : " sort-bins-pos");
+    var buckets = byCount ? COUNT_BUCKETS : POS_BUCKETS;
+    buckets.forEach(function (key) {
+      var bin = document.createElement("button");
+      bin.className = "sort-bin";
+      bin.type = "button";
+      bin.setAttribute("data-bin", String(key));
+      var label = document.createElement("span");
+      label.className = "sort-bin-label";
+      label.textContent = byCount ? t("count." + key) : t("pos." + key);
+      bin.appendChild(label);
+      var slot = document.createElement("span");
+      slot.className = "sort-bin-slot";
+      bin.appendChild(slot);
+      bin.addEventListener("click", function () {
+        if (!selected) { setFeedback(ui.feedback, "", t("task.sort.pick"), {}); return; }
+        placed[selected] = String(key);
+        var chip = pool.querySelector('.sort-chip[data-glyph="' + selected + '"]');
+        if (chip) { chip.disabled = true; chip.setAttribute("aria-pressed", "false"); chip.classList.add("is-placed"); }
+        slot.appendChild(arabicSpan(GLYPHS[selected].char, "sort-placed"));
+        selected = null;
+        hideFeedback(ui.feedback);
+      });
+      binsWrap.appendChild(bin);
+    });
+    ui.task.appendChild(binsWrap);
+    var emptyNote = document.createElement("p");
+    emptyNote.className = "fine-print";
+    emptyNote.textContent = t("task.sort.mayStayEmpty");
+    ui.task.appendChild(emptyNote);
+
+    /* Der Knopf bleibt bedienbar: ein grauer, nicht antippbarer Primaerknopf
+       erklaert seine eigene Bedingung nicht. */
+    ui.action.hidden = false;
+    ui.action.disabled = false;
+    ui.action.textContent = t("common.done");
+    ui.action.onclick = function () {
+      if (Object.keys(placed).length !== item.chars.length) {
+        setFeedback(ui.feedback, "", t("task.sort.pick"), {});
+        return;
+      }
+      var wrong = [];
+      item.chars.forEach(function (gid) {
+        var want = byCount ? String(GLYPHS[gid].dots) : GLYPHS[gid].pos;
+        if (placed[gid] !== want) wrong.push(gid);
+      });
+      onAnswer(item.chars.map(function (g) { return g + ":" + placed[g]; }), wrong.length === 0,
+        binsWrap, { wrong: wrong, placed: placed, byCount: byCount });
+    };
+  }
+
+  /* E. Punktkonstruktion – die Anzahl entsteht aus wiederholtem Antippen,
+     nicht aus einer Liste. Auswertung erst nach "Fertig". */
+  function renderConstruct(item, ui, onAnswer) {
+    var target = GLYPHS[item.letterId];
+    if (item.byRule) {
+      renderSentence(ui.prompt, t("task.construct.byRule"),
+        { rule: t("rule." + target.dots + "-" + target.pos) });
+    } else {
+      ui.prompt.textContent = fill(t("task.construct.byName"), { name: t("name." + item.letterId) });
+    }
+    clear(ui.task);
+
+    var counts = { above: 0, below: 0 };
+    var board = document.createElement("div");
+    board.className = "construct-board";
+
+    var hint = document.createElement("p");
+    hint.className = "fine-print";
+    hint.textContent = t("task.construct.hint");
+
+    function zone(pos) {
+      var b = document.createElement("button");
+      b.className = "construct-zone";
+      b.type = "button";
+      b.setAttribute("data-pos", pos);
+      var lab = document.createElement("span");
+      lab.className = "construct-zone-label";
+      lab.textContent = t(pos === "above" ? "task.construct.above" : "task.construct.below");
+      var dots = document.createElement("span");
+      dots.className = "dot-mark";
+      b.appendChild(lab);
+      b.appendChild(dots);
+      function sync() {
+        clear(dots);
+        for (var i = 0; i < counts[pos]; i++) dots.appendChild(document.createElement("span"));
+        b.setAttribute("aria-label", lab.textContent + ": " + t("count." + Math.min(3, counts[pos])));
+      }
+      b.addEventListener("click", function () {
+        counts[pos] = counts[pos] >= 3 ? 0 : counts[pos] + 1;
+        sync();
+        hideFeedback(ui.feedback);
+      });
+      sync();
       return b;
     }
 
-    return wrap;
+    board.appendChild(zone("above"));
+    board.appendChild(practiceForm());
+    board.appendChild(zone("below"));
+    ui.task.appendChild(board);
+    ui.task.appendChild(hint);
+
+    var reset = document.createElement("button");
+    reset.className = "btn btn-secondary";
+    reset.type = "button";
+    reset.textContent = t("common.reset");
+    reset.addEventListener("click", function () {
+      counts.above = 0; counts.below = 0;
+      renderConstruct(item, ui, onAnswer);
+    });
+    ui.task.appendChild(reset);
+
+    ui.action.hidden = false;
+    ui.action.disabled = false;
+    ui.action.textContent = t("common.done");
+    ui.action.onclick = function () {
+      var total = counts.above + counts.below;
+      if (!total) { setFeedback(ui.feedback, "", t("task.construct.empty"), {}); return; }
+      var pos = counts.above && counts.below ? "mixed" : (counts.above ? "above" : "below");
+      var code = total + "-" + pos;
+      onAnswer(code, code === traitCodeOf(item.letterId), board);
+    };
   }
 
-  function dotMark(n) {
-    var m = document.createElement("span");
-    m.className = "dot-mark";
-    for (var i = 0; i < n; i++) m.appendChild(document.createElement("span"));
-    return m;
-  }
-
-  function renderDots(item, ui, onAnswer) {
-    /* Bewusst der Name statt der Glyphe: das Zielzeichen zeigt seine Punkte,
-       waere in der Frage also die Antwort. Die Punktplatzierung soll erzeugen,
-       nicht abschreiben lassen. */
-    ui.prompt.textContent = fill(t("practice.prompt.dots"), { name: t("name." + item.letterId) });
+  /* F. Minimalpaar */
+  function renderPair(item, ui, onAnswer) {
+    ui.prompt.textContent = fill(t("task.pair"), { name: t("name." + item.letterId) });
     clear(ui.task);
-    var cb = function (code, ok, board) { onAnswer(code, ok, board); };
-    cb.hint = function () { setFeedback(ui.feedback, "", t("practice.pickCountFirst"), {}); };
-    ui.task.appendChild(buildDotsBoard(item, cb));
-    ui.action.hidden = true;
-  }
-
-  /* D. Merkmalsfrage */
-  function renderTrait(item, ui, onAnswer) {
-    ui.prompt.textContent = "";
-    renderSentence(ui.prompt, t("practice.prompt.trait"), { char: GLYPHS[item.letterId].char });
-    clear(ui.task);
-    var stage = document.createElement("div");
-    stage.className = "stage";
-    var glyph = document.createElement("div");
-    glyph.className = "glyph-xl arabic";
-    setArabicText(glyph, GLYPHS[item.letterId].char);
-    stage.appendChild(glyph);
-    ui.task.appendChild(stage);
-
     var row = document.createElement("div");
-    row.className = "choices choices-text";
-    var correct = traitCodeOf(item.letterId);
-    item.options.forEach(function (code) {
+    row.className = "choices choices-2";
+    item.options.forEach(function (gid) {
       var b = document.createElement("button");
-      b.className = "choice choice-text";
+      b.className = "choice";
       b.type = "button";
-      b.setAttribute("data-code", code);
-      b.textContent = t("trait." + code);
-      b.addEventListener("click", function () { onAnswer(code, code === correct, row); });
+      b.setAttribute("data-glyph", gid);
+      b.appendChild(arabicSpan(GLYPHS[gid].char, "choice-char"));
+      b.addEventListener("click", function () { onAnswer(gid, gid === item.letterId, row); });
       row.appendChild(b);
     });
     ui.task.appendChild(row);
@@ -1500,64 +1654,403 @@
   }
 
   /* ======================================================================
-     11. VIEW: UEBUNG (Modi practice / diagnosis / final) und FOLGETAG
+     9. VIEW: START
      ====================================================================== */
 
-  function practiceUi() {
-    return {
-      prompt: $("practice-prompt"), task: $("practice-task"),
-      feedback: $("practice-feedback"), action: $("btn-practice-action"),
-      fill: $("practice-fill"), count: $("practice-count")
-    };
+  function renderStart() {
+    var s = state.session;
+    var offerVisible = renderNextdayOffer();
+    renderStorageWarning();
+    var lessonDone = s.stage !== "intro";
+    $("btn-start-lesson").hidden = lessonDone;
+    $("btn-restart-lesson").hidden = !lessonDone;
+    $("btn-start-lesson").className = "btn " + (offerVisible ? "btn-secondary" : "btn-primary");
+    $("btn-restart-lesson").className = "btn " + (offerVisible ? "btn-secondary" : "btn-primary");
+
+    var scope = s.stage === "resultNextday" ? "nextday" : "today";
+    var haveResult = s.stage === "result" || s.stage === "resultNextday" || s.stage === "done";
+    if (haveResult) refreshLetterStates(scope);
+
+    var wrap = $("start-cards");
+    clear(wrap);
+    TARGETS.forEach(function (id) {
+      var card = document.createElement("div");
+      card.className = "letter-card";
+      var ls = haveResult ? letters[id] : null;
+      card.setAttribute("data-status", ls ? ls.status : "neutral");
+      card.appendChild(arabicSpan(GLYPHS[id].char, "letter-card-char"));
+      /* Vor dem ersten Durchlauf gibt es keinen Status – dann steht dort auch
+         nichts, statt sechsmal derselben Platzhalterzeile. */
+      if (ls) {
+        var st = document.createElement("span");
+        st.className = "letter-card-status";
+        st.textContent = t("status." + ls.status);
+        card.appendChild(st);
+      }
+      wrap.appendChild(card);
+    });
   }
 
-  function nextdayUi() {
+  /* ======================================================================
+     10. VIEW: VORCHECK
+     ====================================================================== */
+
+  function startPrecheck() {
+    var plan = shuffle(PRECHECK_PLAN);
+    var q = [];
+    for (var i = 0; i < plan.length; i++) {
+      q.push(buildPrecheckItem(plan[i], i + 1));
+    }
+    state.precheck = [];
+    state.answers = [];
+    state.errors = [];
+    state.startLevel = 1;
+    state.session = { stage: "precheck", index: 0, queue: q, stageStep: 0, pending: null, remediated: {} };
+    persistState();
+    showView("precheck");
+    renderPrecheck();
+  }
+
+  function buildPrecheckItem(spec, seq) {
+    var g = GLYPHS[spec.letterId];
+    var item = { qid: "pre-" + seq, letterId: spec.letterId, kind: spec.kind, taskType: "name" };
+    if (spec.kind === "shape") {
+      item.options = shuffle(["alif", "ba", "ta", "nun"]);
+      item.correct = "alif";
+      item.optionKind = "glyph";
+      item.promptKey = "precheck.shape";
+    } else if (spec.kind === "count") {
+      item.options = shuffle(["0", "1", "2", "3"]);
+      item.correct = String(g.dots);
+      item.optionKind = "count";
+      item.promptKey = "precheck.count";
+      item.showChar = true;
+    } else if (spec.kind === "position") {
+      item.options = shuffle(["above", "below", "none"]);
+      item.correct = g.pos;
+      item.optionKind = "pos";
+      item.promptKey = "precheck.position";
+      item.showChar = true;
+    } else {
+      item.options = buildDistractors(spec.letterId, 2, null);
+      item.correct = spec.letterId;
+      item.optionKind = "glyph";
+      item.promptKey = "precheck.recall";
+      item.flash = true;
+    }
+    return item;
+  }
+
+  function renderPrecheck() {
+    var s = state.session;
+    var item = s.queue[s.index];
+    if (!item) { finishPrecheck(); return; }
+    setMeter($("precheck-fill"), $("precheck-count"), s.index + 1, s.queue.length);
+    var promptEl = $("precheck-prompt");
+    var taskEl = $("precheck-task");
+    clear(taskEl);
+
+    function showOptions() {
+      promptEl.textContent = t(item.promptKey);
+      clear(taskEl);
+      if (item.showChar) {
+        var st = document.createElement("div");
+        st.className = "stage stage-inline";
+        var gl = document.createElement("div");
+        gl.className = "glyph-xl arabic";
+        setArabicText(gl, GLYPHS[item.letterId].char);
+        st.appendChild(gl);
+        taskEl.appendChild(st);
+      }
+      var row = document.createElement("div");
+      row.className = item.optionKind === "glyph"
+        ? "choices choices-" + item.options.length : "choices choices-text";
+      item.options.forEach(function (opt) {
+        var b = document.createElement("button");
+        b.type = "button";
+        if (item.optionKind === "glyph") {
+          b.className = "choice";
+          b.appendChild(arabicSpan(GLYPHS[opt].char, "choice-char"));
+        } else {
+          b.className = "choice choice-text";
+          b.textContent = item.optionKind === "count" ? t("count." + opt) : t("pos." + opt);
+        }
+        b.addEventListener("click", function () { answerPrecheck(item, opt); });
+        row.appendChild(b);
+      });
+      taskEl.appendChild(row);
+      focusEl(promptEl);
+    }
+
+    if (item.flash) {
+      promptEl.textContent = t("task.flash.watch");
+      var stage = document.createElement("div");
+      stage.className = "stage stage-inline";
+      var glyph = document.createElement("div");
+      glyph.className = "glyph-xl arabic";
+      setArabicText(glyph, GLYPHS[item.letterId].char);
+      stage.appendChild(glyph);
+      taskEl.appendChild(stage);
+      if (reducedMotion) {
+        var next = document.createElement("button");
+        next.className = "btn btn-primary";
+        next.type = "button";
+        next.textContent = t("common.next");
+        next.addEventListener("click", showOptions);
+        taskEl.appendChild(next);
+      } else {
+        clearTimeout(flashTimer);
+        flashTimer = setTimeout(showOptions, 1100);
+      }
+      return;
+    }
+    showOptions();
+  }
+
+  /* Kein Richtig-/Falsch-Feedback. Die Antwort wird gespeichert und steuert
+     nur die Einstiegsstufe. */
+  function answerPrecheck(item, value) {
+    state.precheck.push({
+      letterId: item.letterId, kind: item.kind, answered: value !== "unknown",
+      picked: value, correct: value === item.correct
+    });
+    state.session.index++;
+    persistState();
+    if (state.session.index >= state.session.queue.length) finishPrecheck();
+    else renderPrecheck();
+  }
+
+  function finishPrecheck() {
+    state.startLevel = startLevelFrom(state.precheck);
+    state.session = { stage: "stage", index: 0, queue: [], stageStep: 0, pending: null, remediated: {} };
+    persistState();
+    showView("stage");
+    renderStage();
+  }
+
+  /* ======================================================================
+     11. VIEW: LERNBUEHNE
+     ====================================================================== */
+
+  function renderStage() {
+    var step = STAGE_STEPS[state.session.stageStep];
+    if (!step) { startPractice(); return; }
+
+    $("stage-section-label").textContent = t("stage.section." + step.section);
+    setMeter($("stage-fill"), $("stage-count"), state.session.stageStep + 1, STAGE_STEPS.length);
+
+    var charEl = $("stage-char");
+    clear(charEl);
+    charEl.hidden = !step.chars;
+    $("stage-area").classList.toggle("stage-compact", !step.chars);
+    if (step.chars) {
+      step.chars.forEach(function (c) { charEl.appendChild(arabicSpan(c, "glyph-lg")); });
+    }
+    $("stage-caption").textContent = t(step.caption);
+
+    var act = $("stage-act");
+    var next = $("btn-stage-next");
+    hideFeedback($("stage-feedback"));
+    clear($("stage-action"));
+    next.textContent = t("common.next");
+    next.disabled = false;
+    next.onclick = null;
+    stageConfirm = null;
+
+    if (step.kind === "explain" || step.kind === "note") {
+      act.hidden = true;
+      next.hidden = false;
+      focusEl($("stage-caption"));
+      return;
+    }
+
+    act.hidden = false;
+    next.hidden = true;
+    $("stage-prompt").textContent = t(step.prompt);
+
+    if (step.kind === "pickSet") renderStagePickSet(step);
+    else if (step.kind === "sortCount") renderStageSort(step, true);
+    else if (step.kind === "sortPos") renderStageSort(step, false);
+    else if (step.kind === "confront") renderStageConfront(step);
+    focusEl($("stage-prompt"));
+  }
+
+  function stageDone(tone, key) {
+    setFeedback($("stage-feedback"), tone, t(key), {});
+    var next = $("btn-stage-next");
+    next.hidden = false;
+    next.disabled = false;
+    next.textContent = t("common.next");
+    next.onclick = null;
+    stageConfirm = null;
+  }
+
+  function renderStagePickSet(step) {
+    var wrap = $("stage-action");
+    var grid = document.createElement("div");
+    grid.className = "grid-find grid-find-small";
+    var marked = [];
+    step.options.forEach(function (gid) {
+      var b = document.createElement("button");
+      b.className = "grid-cell arabic";
+      b.type = "button";
+      b.setAttribute("aria-pressed", "false");
+      setArabicText(b, GLYPHS[gid].char);
+      b.addEventListener("click", function () {
+        var on = b.getAttribute("aria-pressed") === "true";
+        b.setAttribute("aria-pressed", on ? "false" : "true");
+        var p = marked.indexOf(gid);
+        if (on && p !== -1) marked.splice(p, 1);
+        if (!on && p === -1) marked.push(gid);
+      });
+      grid.appendChild(b);
+    });
+    wrap.appendChild(grid);
+    /* Die Hauptaktion sitzt in allen Views auf derselben Ebene unter der Karte,
+       nie einmal innerhalb und einmal ausserhalb. */
+    var done = $("btn-stage-next");
+    done.hidden = false;
+    done.disabled = false;
+    done.textContent = t("common.done");
+    stageConfirm = (function () {
+      var ok = marked.length === step.correct.length &&
+        step.correct.every(function (g) { return marked.indexOf(g) !== -1; });
+      var cells = grid.querySelectorAll(".grid-cell");
+      for (var i = 0; i < cells.length; i++) {
+        cells[i].disabled = true;
+        var gid = step.options[i];
+        var isT = step.correct.indexOf(gid) !== -1;
+        var isM = marked.indexOf(gid) !== -1;
+        if (isM && isT) cells[i].classList.add("is-correct");
+        else if (isM && !isT) cells[i].classList.add("is-wrong");
+        else if (!isM && isT) cells[i].classList.add("is-missed");
+      }
+      stageDone(ok ? "ok" : "attn", ok ? "stage.a.ok" : "stage.a.wrong");
+    });
+  }
+
+  function renderStageSort(step, byCount) {
+    var wrap = $("stage-action");
+    var item = { taskType: byCount ? "sortCount" : "sortPos", chars: step.pool };
+    var ui = {
+      prompt: $("stage-prompt"), task: wrap, feedback: $("stage-feedback"),
+      action: $("btn-stage-next")
+    };
+    ui.action.hidden = false;
+    /* renderSort setzt ui.action.onclick; auf der Buehne wird daraus der
+       Bestaetigungsschritt des geteilten Knopfes. */
+    renderSort(item, ui, function (picked, ok, container, extra) {
+      markSortResult(container, item, extra);
+      disableTask(wrap);
+      stageDone(ok ? "ok" : "attn", ok ? "fb.sortOk" : (byCount ? "stage.b.explain" : "stage.c.explain"));
+    });
+    /* renderSort haengt seine Auswertung an onclick; auf der Buehne laeuft der
+       Knopf ueber stageConfirm, damit er nicht zusaetzlich weiterschaltet. */
+    stageConfirm = ui.action.onclick;
+    ui.action.onclick = null;
+  }
+
+  function renderStageConfront(step) {
+    var wrap = $("stage-action");
+    var row = document.createElement("div");
+    row.className = "choices choices-text";
+    [["stage.b.confrontNo", true], ["stage.b.confrontYes", false]].forEach(function (o) {
+      var b = document.createElement("button");
+      b.className = "choice choice-text";
+      b.type = "button";
+      b.textContent = t(o[0]);
+      b.addEventListener("click", function () {
+        var btns = row.querySelectorAll("button");
+        for (var i = 0; i < btns.length; i++) btns[i].disabled = true;
+        b.classList.add(o[1] ? "is-correct" : "is-wrong");
+        stageDone(o[1] ? "ok" : "attn", o[1] ? "stage.b.confrontOk" : "stage.b.confrontWrong");
+      });
+      row.appendChild(b);
+    });
+    wrap.appendChild(row);
+  }
+
+  function advanceStage() {
+    state.session.stageStep++;
+    persistState();
+    if (state.session.stageStep >= STAGE_STEPS.length) startPractice();
+    else renderStage();
+  }
+
+  /* ======================================================================
+     12. VIEW: UEBUNG / CHALLENGE / AUFLOESUNG / FOLGETAG
+     ====================================================================== */
+
+  function uiFor(stage) {
+    var p = stage === "nextday" ? "nextday" : "practice";
     return {
-      prompt: $("nextday-prompt"), task: $("nextday-task"),
-      feedback: $("nextday-feedback"), action: $("btn-nextday-action"),
-      fill: $("nextday-fill"), count: $("nextday-count")
+      prompt: $(p + "-prompt"), task: $(p + "-task"), feedback: $(p + "-feedback"),
+      action: $("btn-" + p + "-action"), fill: $(p + "-fill"), count: $(p + "-count")
     };
   }
 
   function startPractice() {
     state.session = {
-      stage: "practice", index: 0, queue: buildQueue(PRACTICE_PLAN, "today"),
-      stageStep: STAGE_STEPS.length, pending: null,
-      diagnosisDone: state.session.diagnosisDone || []
+      stage: "practice", index: 0,
+      queue: buildQueue(PRACTICE_PLAN, "today", state.startLevel),
+      stageStep: STAGE_STEPS.length, pending: null, remediated: {}
     };
     persistState();
     showView("practice");
     renderItemView();
   }
 
+  /* Reine Anzeige, bewusst ohne Pillenform: die Segmentknoepfe der Kopfzeile
+     sehen tippbar aus, die Stufenanzeige darf das nicht. */
+  function renderLevelBar(level, mode) {
+    var bar = $("practice-levels");
+    clear(bar);
+    if (mode === "review") { bar.hidden = true; return; }
+    bar.hidden = false;
+    for (var i = 1; i <= 3; i++) {
+      var seg = document.createElement("span");
+      seg.className = "level-seg" + (i === level ? " is-active" : (i < level ? " is-done" : ""));
+      seg.setAttribute("aria-hidden", "true");
+      bar.appendChild(seg);
+    }
+    var label = document.createElement("span");
+    label.className = "level-text";
+    label.textContent = fill(t("level.aria"), { n: level });
+    bar.appendChild(label);
+  }
+
   function renderItemView() {
     var s = state.session;
     var isNextday = s.stage === "nextday";
-    var ui = isNextday ? nextdayUi() : practiceUi();
-    if (!isNextday) $("practice-mode-label").textContent = t("practice.mode." + (s.stage === "final" ? "final" : s.stage === "diagnosis" ? "diagnosis" : "practice"));
-
+    var ui = uiFor(s.stage);
     var item = s.queue[s.index];
     if (!item) { advanceStageFlow(); return; }
+
+    if (!isNextday) {
+      var label = t("practice.mode." + (s.stage === "challenge" ? "challenge" : s.stage === "review" ? "review" : "practice"));
+      if (item.remedial) label += " · " + t("practice.remedialTag");
+      $("practice-mode-label").textContent = label;
+      renderLevelBar(item.level, s.stage);
+    }
+
     setMeter(ui.fill, ui.count, s.index + 1, s.queue.length);
     hideFeedback(ui.feedback);
     ui.action.onclick = null;
+    ui.action.disabled = false;
 
-    if (s.stage === "diagnosis" && s.index === 0) {
-      setFeedback(ui.feedback, "", t("fb.diagnosisIntro"), {});
-    }
+    if (s.stage === "review" && s.index === 0) setFeedback(ui.feedback, "", t("review.intro"), {});
 
+    var answered = !!(s.pending && s.pending.qid === item.qid);
     var handler = function (picked, ok, container, extra) {
       onItemAnswer(item, picked, ok, container, ui, extra);
     };
-    var answered = !!(s.pending && s.pending.qid === item.qid);
 
     if (item.taskType === "flash") renderFlash(item, ui, handler, answered);
     else if (item.taskType === "grid") renderGrid(item, ui, handler);
-    else if (item.taskType === "dots") renderDots(item, ui, handler);
-    else renderTrait(item, ui, handler);
+    else if (item.taskType === "sortCount" || item.taskType === "sortPos") renderSort(item, ui, handler);
+    else if (item.taskType === "construct") renderConstruct(item, ui, handler);
+    else renderPair(item, ui, handler);
 
-    /* Nach einem Reload direkt nach dem Antworten: beantworteten Zustand
-       wiederherstellen, damit die Runde nicht blockiert. */
     if (answered) restorePending(item, ui);
     else focusEl(ui.prompt);
   }
@@ -1565,7 +2058,8 @@
   function restorePending(item, ui) {
     var p = state.session.pending;
     disableTask(ui.task);
-    setFeedback(ui.feedback, p.correct ? "ok" : "attn", p.template, p.params || {});
+    if (p.template) setFeedback(ui.feedback, p.correct ? "ok" : "attn", p.template, p.params || {});
+    else hideFeedback(ui.feedback);
     ui.action.hidden = false;
     ui.action.disabled = false;
     ui.action.textContent = t("common.next");
@@ -1579,41 +2073,70 @@
 
   function onItemAnswer(item, picked, ok, container, ui, extra) {
     if (state.session.pending && state.session.pending.qid === item.qid) return;
-    recordAnswer(item, picked, ok);
+    var answer = recordAnswer(item, picked, ok);
+    disableTask(ui.task);
 
-    var g = GLYPHS[item.letterId];
-    var desc = t("desc." + item.letterId);
-    var template;
-    var params = { char: g.char, desc: desc };
+    var silent = state.session.stage === "challenge";
+    var template = null, params = null;
 
-    if (item.taskType === "grid") {
-      markGridResult(container, item, extra);
-      if (ok) {
-        template = t("fb.gridOk");
+    if (!silent) {
+      var g = GLYPHS[item.letterId];
+      params = { char: g.char, desc: t("desc." + item.letterId) };
+
+      if (item.taskType === "grid") {
+        markGridResult(container, item, extra);
+        params.rule = t(item.rule.key);
+        if (ok) template = t("fb.gridOk");
+        else {
+          var wrongMarks = extra.marked.filter(function (i) { return !matchesRule(item.cells[i], item.rule); });
+          if (wrongMarks.length) {
+            template = t("fb.gridWrong");
+            params.list = wrongMarks.map(function (i) { return t("name." + item.cells[i]); }).join(", ");
+          } else {
+            template = t("fb.gridMissed");
+            params.n = extra.targetIdx.length - extra.marked.length;
+          }
+        }
+      } else if (item.taskType === "sortCount" || item.taskType === "sortPos") {
+        markSortResult(container, item, extra);
+        if (ok) template = t("fb.sortOk");
+        else {
+          template = t("fb.sortWrong");
+          params.list = extra.wrong.map(function (gid) { return t("name." + gid); }).join(", ");
+        }
+      } else if (item.taskType === "construct") {
+        if (ok) template = t("fb.constructOk");
+        else {
+          template = t("fb.constructWrong");
+          params.name = t("name." + item.letterId);
+        }
+      } else if (ok) {
+        template = t("fb.correct");
+        markChoice(container, item, picked, true);
       } else {
-        var wrongMarks = extra.marked.filter(function (i) { return item.cells[i] !== item.letterId; });
-        if (wrongMarks.length) {
-          template = t("fb.gridWrong");
-          params.list = wrongMarks.map(function (i) { return t("trait." + traitCodeOf(item.cells[i])); }).join(", ");
+        markChoice(container, item, picked, false);
+        var pickedId = answer.confusedWith;
+        if (pickedId && findPair(item.letterId, pickedId)) {
+          pairFeedback(ui.feedback, item.letterId, pickedId);
+          template = null;
         } else {
-          template = t("fb.gridMissed");
-          params.n = extra.targetIdx.length - extra.marked.length;
+          var pg = item.pickKind === "glyph" ? glyphOf(picked) : null;
+          if (pg && !pg.taught) template = t("fb.untrained");
+          else template = feedbackTemplate(classifySinglePick(item.letterId, item.pickKind, picked));
         }
       }
-    } else if (ok) {
-      template = item.taskType === "dots" ? t("fb.dotsOk") : t("fb.correct");
-      markChoice(container, item, picked, true);
+      if (template) setFeedback(ui.feedback, ok ? "ok" : "attn", template, params);
+      if (!ok && !reducedMotion && container) container.classList.add("shake");
     } else {
-      var cls = classifySinglePick(item.letterId, item.pickKind, picked);
-      var pickedGlyph = item.pickKind === "glyph" ? glyphOf(picked) : null;
-      if (pickedGlyph && !pickedGlyph.taught) template = t("fb.untrained");
-      else template = feedbackTemplate(cls);
-      markChoice(container, item, picked, false);
+      hideFeedback(ui.feedback);
+      if (item.taskType === "grid") markGridResultNeutral(container, extra);
     }
 
-    setFeedback(ui.feedback, ok ? "ok" : "attn", template, params);
-    disableTask(ui.task);
-    if (!ok && !reducedMotion && container) container.classList.add("shake");
+    /* Adaptive Nachuebung nur im Uebungsmodus: keine sofortige identische
+       Wiederholung, sondern eine leichtere Aufgabe in anderer Form spaeter. */
+    if (!ok && state.session.stage === "practice") {
+      applyRemediation(item, answer);
+    }
 
     state.session.pending = { qid: item.qid, correct: ok, template: template, params: params };
     persistState();
@@ -1624,15 +2147,37 @@
     ui.action.onclick = nextItem;
   }
 
+  function applyRemediation(item, answer) {
+    var s = state.session;
+    var plan = planRemediation(s.queue, s.index, {
+      letterId: item.letterId, taskType: item.taskType, level: item.level,
+      confusedWith: answer.confusedWith, needsDiagnosis: answer.needsDiagnosis
+    }, s.remediated);
+    if (!plan.added.length) return;
+    s.remediated[item.letterId] = (s.remediated[item.letterId] || 0) + 1;
+    /* Von hinten einfuegen, damit die frueheren Indizes gueltig bleiben. */
+    plan.added.sort(function (a, b) { return b.at - a.at; });
+    plan.added.forEach(function (ins) {
+      var seq = s.queue.length + 1;
+      var newItem = makeItem({
+        letterId: ins.spec.letterId, taskType: ins.spec.taskType, pair: ins.spec.pair,
+        level: ins.spec.level, remedial: true, diagnose: ins.spec.diagnose
+      }, "today", "r" + seq);
+      var at = Math.min(ins.at, s.queue.length);
+      /* Nie unmittelbar nach demselben Zeichen einsortieren. */
+      while (at < s.queue.length && s.queue[at - 1] && s.queue[at - 1].letterId === newItem.letterId) at++;
+      s.queue.splice(at, 0, newItem);
+    });
+  }
+
   function markChoice(container, item, picked, ok) {
     if (!container) return;
     var btns = container.querySelectorAll("button");
     for (var i = 0; i < btns.length; i++) {
       var b = btns[i];
-      var val = b.getAttribute("data-glyph") || b.getAttribute("data-code");
+      var val = b.getAttribute("data-glyph");
       if (!val) continue;
-      var isCorrectOption = item.pickKind === "glyph" ? val === item.letterId : val === traitCodeOf(item.letterId);
-      if (isCorrectOption) { b.classList.add("is-correct"); appendMark(b, t("mark.correct")); }
+      if (val === item.letterId) { b.classList.add("is-correct"); appendMark(b, t("mark.correct")); }
       else if (val === picked && !ok) { b.classList.add("is-wrong"); appendMark(b, t("mark.wrong")); }
     }
   }
@@ -1644,13 +2189,10 @@
     btn.appendChild(s);
   }
 
-  /* Jede Fehlmarkierung wird einzeln gezeigt, nicht nur eine Gesamtzahl.
-     Der Zustand steht zusaetzlich als Text im Element – CSS-content ist fuer
-     Screenreader nicht verlaesslich, und Farbe allein reicht ohnehin nicht. */
   function markGridResult(grid, item, extra) {
     var cells = grid.querySelectorAll(".grid-cell");
     for (var i = 0; i < cells.length; i++) {
-      var isTarget = item.cells[i] === item.letterId;
+      var isTarget = matchesRule(item.cells[i], item.rule);
       var isMarked = extra.marked.indexOf(i) !== -1;
       var label = null;
       if (isMarked && isTarget) { cells[i].classList.add("is-correct"); label = "mark.correct"; }
@@ -1661,6 +2203,40 @@
         sr.className = "sr-only";
         sr.textContent = " " + t(label);
         cells[i].appendChild(sr);
+      }
+    }
+  }
+
+  /* In der Challenge wird nichts aufgeloest – nur die eigene Auswahl bleibt
+     sichtbar, ohne Bewertung. */
+  function markGridResultNeutral(grid, extra) {
+    var cells = grid.querySelectorAll(".grid-cell");
+    for (var i = 0; i < cells.length; i++) {
+      if (extra && extra.marked.indexOf(i) !== -1) cells[i].setAttribute("aria-pressed", "true");
+    }
+  }
+
+  function markSortResult(binsWrap, item, extra) {
+    var byCount = extra.byCount;
+    var bins = binsWrap.querySelectorAll(".sort-bin");
+    for (var i = 0; i < bins.length; i++) {
+      var key = bins[i].getAttribute("data-bin");
+      var slot = bins[i].querySelector(".sort-bin-slot");
+      var wrongHere = item.chars.filter(function (gid) {
+        var want = byCount ? String(GLYPHS[gid].dots) : GLYPHS[gid].pos;
+        return extra.placed[gid] === key && want !== key;
+      });
+      var rightHere = item.chars.filter(function (gid) {
+        var want = byCount ? String(GLYPHS[gid].dots) : GLYPHS[gid].pos;
+        return extra.placed[gid] === key && want === key;
+      });
+      if (wrongHere.length) bins[i].classList.add("is-wrong");
+      else if (rightHere.length) bins[i].classList.add("is-correct");
+      if (slot && (wrongHere.length || rightHere.length)) {
+        var sr = document.createElement("span");
+        sr.className = "sr-only";
+        sr.textContent = " " + t(wrongHere.length ? "mark.wrong" : "mark.correct");
+        slot.appendChild(sr);
       }
     }
   }
@@ -1676,34 +2252,65 @@
   function advanceStageFlow() {
     var s = state.session;
     if (s.stage === "practice") {
-      var dq = buildDiagnosisQueue();
-      if (dq.length) {
-        state.session = { stage: "diagnosis", index: 0, queue: dq, stageStep: s.stageStep, pending: null, diagnosisDone: s.diagnosisDone };
+      state.session = {
+        stage: "challenge", index: 0,
+        queue: buildQueue(CHALLENGE_PLAN, "today", state.startLevel),
+        stageStep: s.stageStep, pending: null, remediated: s.remediated
+      };
+      persistState();
+      renderItemView();
+      return;
+    }
+    if (s.stage === "challenge") {
+      var rq = buildReviewQueue();
+      if (rq.length) {
+        state.session = { stage: "review", index: 0, queue: rq, stageStep: s.stageStep, pending: null, remediated: s.remediated };
+        persistState();
+        renderItemView();
       } else {
-        state.session = { stage: "final", index: 0, queue: buildQueue(FINAL_PLAN, "today"), stageStep: s.stageStep, pending: null, diagnosisDone: s.diagnosisDone };
+        finishLesson();
       }
-      persistState();
-      renderItemView();
       return;
     }
-    if (s.stage === "diagnosis") {
-      state.session = { stage: "final", index: 0, queue: buildQueue(FINAL_PLAN, "today"), stageStep: s.stageStep, pending: null, diagnosisDone: s.diagnosisDone };
-      persistState();
-      renderItemView();
-      return;
+    if (s.stage === "review") { finishLesson(); return; }
+    if (s.stage === "nextday") { finishNextday(); return; }
+    showView("start");
+    renderStart();
+  }
+
+  /* Auflösung der Challenge: je Fehlermuster hoechstens eine kurze
+     Korrekturaufgabe – eine Liste allein korrigiert nichts. */
+  function buildReviewQueue() {
+    var i, a;
+    /* Zuerst das Zeichen mit den meisten noch unbestimmten Fehlern: es bekommt
+       das Diagnosepaar (Anzahl, dann Position) und wird dadurch einer der drei
+       Kategorien zugeordnet, statt als "nicht zuzuordnen" stehen zu bleiben. */
+    var openCounts = {}, worst = null, worstN = 0;
+    for (i = 0; i < state.answers.length; i++) {
+      a = state.answers[i];
+      if (a.scope !== "today" || a.correct || a.taskType === "name" || a.category) continue;
+      openCounts[a.letterId] = (openCounts[a.letterId] || 0) + 1;
+      if (openCounts[a.letterId] > worstN) { worst = a.letterId; worstN = openCounts[a.letterId]; }
     }
-    if (s.stage === "final") {
-      finishLesson();
-      return;
+
+    var plan = [];
+    if (worst) {
+      plan.push({ letterId: worst, taskType: "sortCount", level: 1, remedial: true, diagnose: "count" });
+      plan.push({ letterId: worst, taskType: "sortPos", level: 1, remedial: true, diagnose: "position" });
     }
-    if (s.stage === "nextday") {
-      finishNextday();
-      return;
+
+    var seen = {};
+    for (i = 0; i < state.answers.length && plan.length < 4; i++) {
+      a = state.answers[i];
+      if (a.scope !== "today" || a.correct || a.taskType === "name" || !a.category) continue;
+      var key = a.letterId + "|" + a.category;
+      if (seen[key]) continue;
+      seen[key] = true;
+      var form = a.category === "dot_count_confusion" ? "sortCount"
+        : a.category === "dot_position_confusion" ? "sortPos" : "grid";
+      plan.push({ letterId: a.letterId, taskType: form, level: 1, remedial: true });
     }
-    /* Waechter: kein gueltiger Aufgabenzustand -> zurueck auf die Einstiegsview
-       statt eines leeren Screens. */
-    showView("precheck");
-    renderPrecheck();
+    return buildQueue(plan.slice(0, 4), "today", 1);
   }
 
   function finishLesson() {
@@ -1718,12 +2325,42 @@
   }
 
   function startNextday() {
+    refreshLetterStates("today");
+    var rank = { not_yet: 0, wobbly: 1, today_secure: 2, overnight_secure: 3 };
+    var order = TARGETS.slice().sort(function (a, b) {
+      return (rank[letters[a].status] || 0) - (rank[letters[b].status] || 0);
+    });
+    /* Die schwaechsten zwei bis drei Zeichen zuerst, je zwei verschiedene
+       Aufgabenformen, hoechstens acht Items – keine vollstaendige Lektion. */
+    var focus = order.slice(0, 3);
+    var plan = [];
+    focus.forEach(function (lid) { plan.push({ letterId: lid, taskType: "flash", level: 2 }); });
+    focus.forEach(function (lid) {
+      plan.push({
+        letterId: lid,
+        taskType: lid === "alif" ? "sortPos" : "construct",
+        level: 2
+      });
+    });
+    plan.push({ letterId: order[3], taskType: "flash", level: 2 });
+    plan.push({ letterId: order[4], taskType: "grid", level: 2 });
+
+    /* Verschraenken, damit kein Zeichen zweimal hintereinander drankommt. */
+    var woven = [];
+    for (var i = 0; i < plan.length; i++) {
+      if (woven.length && woven[woven.length - 1].letterId === plan[i].letterId) {
+        var moved = plan.splice(i, 1)[0];
+        plan.push(moved);
+        i--;
+        if (plan.length > 20) break;
+        continue;
+      }
+      woven.push(plan[i]);
+    }
     state.session = {
-      stage: "nextday", index: 0, queue: buildNextdayQueue(),
-      stageStep: STAGE_STEPS.length, pending: null, diagnosisDone: []
+      stage: "nextday", index: 0, queue: buildQueue(woven.slice(0, 8), "nextday", 2),
+      stageStep: STAGE_STEPS.length, pending: null, remediated: {}
     };
-    /* Antworten der Folgepruefung werden im scope 'nextday' gefuehrt und
-       vermischen sich nie mit dem Tagesergebnis. */
     persistState();
     showView("nextday");
     renderItemView();
@@ -1731,10 +2368,8 @@
 
   function finishNextday() {
     state.nextdayDoneDate = todayLocal();
-    /* Abstand festhalten, bevor dueDate entfaellt: nur bei genau einem Tag
-       Abstand ist die Formulierung "nach einer Nacht" ehrlich. */
     state.nextdayGapDays = state.dueDate ? daysBetween(state.dueDate, state.nextdayDoneDate) : null;
-    state.dueDate = null;               /* genau ein Wiederholungsblock */
+    state.dueDate = null;
     state.session.stage = "resultNextday";
     state.session.queue = [];
     state.session.index = 0;
@@ -1745,57 +2380,64 @@
   }
 
   /* ======================================================================
-     12. VIEW: ERGEBNIS
+     13. VIEW: ERGEBNIS
      ====================================================================== */
 
   function renderResult(scope) {
     refreshLetterStates(scope);
     var isNextday = scope === "nextday";
+    var secure = 0;
+    TARGETS.forEach(function (id) { if (letters[id].status === "today_secure") secure++; });
     var passed = !isNextday && letters.ba.status === "today_secure" && letters.ta.status === "today_secure";
 
-    $("result-title").textContent = isNextday ? t("nextday.resultTitle") : (passed ? t("result.passed") : t("result.notPassed"));
-    $("result-lead").textContent = isNextday ? "" : (passed ? t("result.leadPassed") : t("result.leadNotPassed"));
+    $("result-title").textContent = isNextday ? t("nextday.resultTitle")
+      : (passed ? t("result.passed") : t("result.notPassed"));
     $("result-lead").hidden = isNextday;
+    $("result-lead").textContent = isNextday ? "" : (passed ? t("result.leadPassed") : t("result.leadNotPassed"));
 
+    var errs = errorsByLetter(scope);
     var list = $("result-list");
     clear(list);
-    /* Der Erklaersatz steht nur einmal je Zustand. Dreimal wortgleich
-       untereinander liest sich wie eine unbefuellte Vorlage. */
+    /* Der ausfuehrliche Erklaersatz steht nur einmal je Zustand. Sechsmal
+       wortgleich untereinander liest sich wie eine unbefuellte Vorlage. */
+    var dimCount = {};
+    TARGETS.forEach(function (id) {
+      var d = letters[id].strongestDimension;
+      if (d) dimCount[d] = (dimCount[d] || 0) + 1;
+    });
+    commonDimension = false;
+    for (var dk in dimCount) {
+      if (Object.prototype.hasOwnProperty.call(dimCount, dk) && dimCount[dk] > 2) commonDimension = true;
+    }
+
     var explained = [];
-    for (var i = 0; i < TARGETS.length; i++) {
-      var ls = letters[TARGETS[i]];
+    TARGETS.forEach(function (id) {
+      var ls = letters[id];
       var withText = explained.indexOf(ls.status) === -1;
       if (withText) explained.push(ls.status);
-      list.appendChild(resultCard(ls, scope, withText));
-    }
+      list.appendChild(resultCard(ls, scope, errs, withText));
+    });
 
     renderErrorSummary(scope);
 
-    /* Ausgangsstand aus dem Vorcheck als Anhaltspunkt – ausdruecklich nicht
-       als validierte Vorher-/Nachher-Messung dargestellt. */
     var pc = $("result-precheck");
-    if (isNextday || !state.precheck.length) {
-      pc.hidden = true;
-    } else {
-      var named = 0;
-      for (var p = 0; p < state.precheck.length; p++) {
-        if (state.precheck[p].picked === state.precheck[p].letterId) named++;
-      }
+    if (isNextday || !state.precheck.length) pc.hidden = true;
+    else {
+      var n = 0;
+      state.precheck.forEach(function (p) { if (p.correct) n++; });
       pc.hidden = false;
-      pc.textContent = fill(t("precheck.compare"), { n: named, total: state.precheck.length });
+      pc.textContent = fill(t("precheck.compare"), { n: n, total: state.precheck.length });
     }
 
     var nd = $("result-nextday");
-    if (isNextday) {
-      nd.textContent = t("result.nextdayDone");
-    } else if (!storageOk) {
-      nd.textContent = t("result.nextdayNoStorage");
-    } else {
-      nd.textContent = fill(t("result.nextday"), { date: formatDate(state.dueDate) });
-    }
+    if (isNextday) nd.textContent = t("result.nextdayDone");
+    else if (!storageOk) nd.textContent = t("result.nextdayNoStorage");
+    else nd.textContent = fill(t("result.nextday"), { date: formatDate(state.dueDate) });
   }
 
-  function resultCard(ls, scope, withText) {
+  var commonDimension = false;
+
+  function resultCard(ls, scope, errs, withText) {
     var card = document.createElement("div");
     card.className = "result-item";
     card.setAttribute("data-status", ls.status);
@@ -1805,23 +2447,49 @@
     head.appendChild(arabicSpan(GLYPHS[ls.letterId].char, "result-char"));
     var st = document.createElement("span");
     st.className = "result-status";
-    /* Zeichen und Zustand in einer Zeile, ohne dass der Erklaersatz den
-       Zustand ein zweites Mal wiederholt. */
     st.textContent = t("status." + ls.status);
     head.appendChild(st);
     card.appendChild(head);
 
-    if (!withText) return card;
-
-    var p = document.createElement("p");
-    p.className = "muted-text";
-    var sentence = progressSentence(ls, settings.lang);
-    if (ls.status === "overnight_secure" && scope === "nextday" && state.nextdayGapDays > 0) {
-      sentence = t("progress.overnight_secure_later");
+    if (withText) {
+      var p = document.createElement("p");
+      p.className = "muted-text";
+      var sentence = progressSentence(ls, settings.lang);
+      if (ls.status === "overnight_secure" && scope === "nextday" && state.nextdayGapDays > 0) {
+        sentence = t("progress.overnight_secure_later");
+      }
+      p.textContent = sentence;
+      card.appendChild(p);
     }
-    p.textContent = sentence;
-    card.appendChild(p);
+
+    var facts = document.createElement("ul");
+    facts.className = "result-facts";
+    /* Eine Merkmalszeile, die auf fast allen Karten gleich lautet, ist keine
+       Diagnose. Sie erscheint nur, wenn sie dieses Zeichen unterscheidet. */
+    if (ls.strongestDimension && !commonDimension) {
+      facts.appendChild(fact(fill(t("result.strong"), { dim: t("dim." + ls.strongestDimension) })));
+    }
+    if (ls.topConfusion) {
+      var li = document.createElement("li");
+      renderSentence(li, t("result.confusion"),
+        { char: GLYPHS[ls.topConfusion].char, n: ls.topConfusionCount });
+      facts.appendChild(li);
+    }
+    /* Die Empfehlung steht dort, wo sie etwas beitraegt. Bei einem sicheren
+       Zeichen ohne Fehler waere sie sechsmal derselbe Satz ohne Aussage. */
+    var hasErrors = errs && errs[ls.letterId];
+    var secure = ls.status === "today_secure" || ls.status === "overnight_secure";
+    if (hasErrors || !secure) {
+      facts.appendChild(fact(fill(t("result.recommend"), { form: t("form." + recommendedForm(ls, errs)) })));
+    }
+    card.appendChild(facts);
     return card;
+  }
+
+  function fact(text) {
+    var li = document.createElement("li");
+    li.textContent = text;
+    return li;
   }
 
   function renderErrorSummary(scope) {
@@ -1830,10 +2498,7 @@
     for (var i = 0; i < state.answers.length; i++) {
       var a = state.answers[i];
       if (a.scope !== scope || a.correct || a.taskType === "name") continue;
-      /* Die Diagnose ist auf wenige Items begrenzt. Was danach mehrdeutig
-         bleibt, wird ausgewiesen statt in eine Kategorie geraten. */
-      if (a.category) counts[a.category]++;
-      else counts.unresolved++;
+      if (a.category) counts[a.category]++; else counts.unresolved++;
       any = true;
     }
     var el = $("result-errors");
@@ -1848,7 +2513,7 @@
   }
 
   /* ======================================================================
-     13. FOLGETAGS-ANGEBOT UND HINWEISE
+     14. HINWEISE UND EINSTELLUNGEN
      ====================================================================== */
 
   function renderNextdayOffer() {
@@ -1858,13 +2523,7 @@
     return due;
   }
 
-  function renderStorageWarning() {
-    $("storage-warning").hidden = storageOk;
-  }
-
-  /* ======================================================================
-     14. EINSTELLUNGEN
-     ====================================================================== */
+  function renderStorageWarning() { $("storage-warning").hidden = storageOk; }
 
   function applyI18n() {
     document.documentElement.lang = settings.lang;
@@ -1880,7 +2539,8 @@
 
   function rerenderActive() {
     var s = state.session;
-    if ($("view-precheck").classList.contains("active")) renderPrecheck();
+    if ($("view-start").classList.contains("active")) renderStart();
+    else if ($("view-precheck").classList.contains("active")) renderPrecheck();
     else if ($("view-stage").classList.contains("active")) renderStage();
     else if ($("view-result").classList.contains("active")) renderResult(s.stage === "resultNextday" ? "nextday" : "today");
     else if ($("view-practice").classList.contains("active") || $("view-nextday").classList.contains("active")) renderItemView();
@@ -1909,8 +2569,8 @@
       localStorage.removeItem(SETTINGS_KEY);
     } catch (e) {}
     state = emptyState();
-    showView("precheck");
-    renderPrecheck();
+    showView("start");
+    renderStart();
   }
 
   /* ======================================================================
@@ -1919,33 +2579,43 @@
 
   function restoreView() {
     var s = state.session;
+    if (s.stage === "precheck") { showView("precheck"); renderPrecheck(); return; }
     if (s.stage === "stage") { showView("stage"); renderStage(); return; }
-    if (s.stage === "practice" || s.stage === "diagnosis" || s.stage === "final") {
+    if (s.stage === "practice" || s.stage === "challenge" || s.stage === "review") {
       showView("practice"); renderItemView(); return;
     }
     if (s.stage === "nextday") { showView("nextday"); renderItemView(); return; }
     if (s.stage === "result") { showView("result"); renderResult("today"); return; }
     if (s.stage === "resultNextday") { showView("result"); renderResult("nextday"); return; }
-    showView("precheck");
-    renderPrecheck();
+    showView("start");
+    renderStart();
   }
 
   function wire() {
-    $("btn-precheck-start").addEventListener("click", startPrecheck);
+    $("btn-start-lesson").addEventListener("click", startPrecheck);
     $("btn-restart-lesson").addEventListener("click", startPrecheck);
     $("btn-precheck-unknown").addEventListener("click", function () {
       var item = state.session.queue[state.session.index];
       if (item) answerPrecheck(item, "unknown");
     });
-    $("btn-stage-next").addEventListener("click", advanceStage);
+    $("btn-stage-next").addEventListener("click", function () {
+      if (stageConfirm) { var fn = stageConfirm; stageConfirm = null; fn(); return; }
+      advanceStage();
+    });
     $("btn-open-nextday").addEventListener("click", startNextday);
     $("btn-result-home").addEventListener("click", function () {
-      state.session.stage = "done";
+      if (state.session.stage === "result") state.session.stage = "done";
       persistState();
-      showView("precheck");
-      renderPrecheck();
+      showView("start");
+      renderStart();
     });
     $("btn-clear-data").addEventListener("click", clearAllLocalData);
+    $("btn-to-overview").addEventListener("click", function () {
+      /* Ausstieg ohne Fortschrittsverlust: der Zustand ist bereits persistiert,
+         restoreView bringt die Lektion an derselben Stelle zurueck. */
+      showView("start");
+      renderStart();
+    });
 
     var langBtns = document.querySelectorAll("#seg-lang [data-lang]");
     for (var i = 0; i < langBtns.length; i++) {
@@ -1967,7 +2637,7 @@
   }
 
   function init() {
-    if (!document.getElementById("view-precheck")) return;   /* tests.html: nur reine Funktionen */
+    if (!document.getElementById("view-start")) return;   /* tests.html: nur reine Funktionen */
     storageOk = probeStorage();
     loadPersisted();
     try {
@@ -1982,32 +2652,23 @@
     restoreView();
   }
 
-  /* Reine Funktionen fuer tests.html. Kein Zustand, kein DOM. */
   window.IqraPure = {
-    GLYPHS: GLYPHS,
-    TRAIT_CODES: TRAIT_CODES,
-    DISTRACTORS: DISTRACTORS,
-    STAGE_STEPS: STAGE_STEPS,
-    PRACTICE_PLAN: PRACTICE_PLAN,
-    FINAL_PLAN: FINAL_PLAN,
-    I18N: I18N,
-    classifyError: classifyError,
-    resolveDiagnosis: resolveDiagnosis,
-    computeLetterState: computeLetterState,
-    isTodaySecure: isTodaySecure,
-    isOvernightSecure: isOvernightSecure,
-    todayLocal: todayLocal,
-    nextDueDate: nextDueDate,
-    isDue: isDue,
-    buildDistractors: buildDistractors,
-    buildTraitOptions: buildTraitOptions,
-    buildGrid: buildGrid,
-    traitCodeOf: traitCodeOf,
-    progressSentence: progressSentence,
-    migrateState: migrateState,
-    emptyState: emptyState,
-    normalizeSession: normalizeSession,
-    SCHEMA_VERSION: SCHEMA_VERSION
+    GLYPHS: GLYPHS, TARGETS: TARGETS, MINIMAL_PAIRS: MINIMAL_PAIRS,
+    DISTRACTORS: DISTRACTORS, TASK_TYPES: TASK_TYPES, STAGE_STEPS: STAGE_STEPS,
+    PRACTICE_PLAN: PRACTICE_PLAN, CHALLENGE_PLAN: CHALLENGE_PLAN, PRECHECK_PLAN: PRECHECK_PLAN,
+    I18N: I18N, SCHEMA_VERSION: SCHEMA_VERSION,
+    classifyError: classifyError, resolveDiagnosis: resolveDiagnosis,
+    computeLetterState: computeLetterState, isTodaySecure: isTodaySecure,
+    isOvernightSecure: isOvernightSecure, formGroup: formGroup,
+    todayLocal: todayLocal, nextDueDate: nextDueDate, isDue: isDue,
+    buildDistractors: buildDistractors, buildGrid: buildGrid, gridRuleFor: gridRuleFor,
+    matchesRule: matchesRule, buildSortItem: buildSortItem,
+    traitCodeOf: traitCodeOf, letterByTrait: letterByTrait, findPair: findPair, pairKey: pairKey,
+    planRemediation: planRemediation, pickPairFor: pickPairFor,
+    startLevelFrom: startLevelFrom, levelForBlock: levelForBlock,
+    dimensionOf: dimensionOf, recommendedForm: recommendedForm,
+    progressSentence: progressSentence, migrateState: migrateState,
+    emptyState: emptyState, normalizeSession: normalizeSession
   };
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);

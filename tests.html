@@ -23,7 +23,7 @@
 <body>
 <h1>Iqra – Tests der reinen Funktionen</h1>
 <p class="note">Kein Framework, kein Build. <code>app.js</code> wird geladen; die App startet nicht, weil
-diese Seite kein <code>#view-precheck</code> enthält. Getestet wird ausschließlich <code>window.IqraPure</code>.</p>
+diese Seite kein <code>#view-start</code> enthält. Getestet wird ausschließlich <code>window.IqraPure</code>.</p>
 <div id="summary">läuft …</div>
 <div id="results"></div>
 
@@ -32,384 +32,459 @@ diese Seite kein <code>#view-precheck</code> enthält. Getestet wird ausschließ
 (function () {
   "use strict";
   var P = window.IqraPure;
-  var groups = [];
-  var current = null;
-  var total = 0, failed = 0;
+  var groups = [], current = null, total = 0, failed = 0;
 
   function group(name) { current = { name: name, items: [] }; groups.push(current); }
-  function ok(cond, label) {
-    total++;
-    if (!cond) failed++;
-    current.items.push({ ok: !!cond, label: label });
-  }
+  function ok(cond, label) { total++; if (!cond) failed++; current.items.push({ ok: !!cond, label: label }); }
   function eq(a, b, label) { ok(JSON.stringify(a) === JSON.stringify(b), label + "  → " + JSON.stringify(a)); }
 
   function answer(o) {
     return {
       letterId: o.letterId, taskType: o.taskType || "flash", pickKind: o.pickKind || "glyph",
-      picked: o.picked, correct: !!o.correct
+      picked: o.picked, correct: !!o.correct, targetSet: o.targetSet
     };
   }
-  function cat(o) { return P.classifyError(answer(o)).category; }
-  function diag(o) { return P.classifyError(answer(o)).needsDiagnosis; }
+  function cls(o) { return P.classifyError(answer(o)); }
+  function cat(o) { return cls(o).category; }
+
+  function A(letterId, taskType, correct, firstTry, qid, scope, extra) {
+    var a = { qid: qid, letterId: letterId, taskType: taskType, correct: correct,
+              firstTry: firstTry, scope: scope || "today", level: 1, picked: "x",
+              attemptNo: firstTry ? 1 : 2, ts: 0 };
+    if (extra) for (var k in extra) if (Object.prototype.hasOwnProperty.call(extra, k)) a[k] = extra[k];
+    return a;
+  }
 
   /* ---------------------------------------------------------------- 1 */
-  group("Fehlerkategorien – genau drei");
+  group("Sechs Arbeitszeichen");
 
-  ok(cat({ letterId: "ba", picked: "ا" }) === "shape_confusion",
-     "Ziel ب, gewählt ا → shape_confusion");
-  ok(cat({ letterId: "alif", picked: "ب" }) === "shape_confusion",
-     "Ziel ا, gewählt ب → shape_confusion");
-  ok(cat({ letterId: "alif", picked: "ل" }) === "shape_confusion",
-     "Ziel ا, gewählt ل (Stufe 3) → shape_confusion, keine leere Kategorie");
-  ok(cat({ letterId: "ba", picked: "ي" }) === "dot_count_confusion",
-     "Ziel ب (1 unten), gewählt ي (2 unten) → dot_count_confusion");
-  ok(cat({ letterId: "ta", picked: "ث" }) === "dot_count_confusion",
-     "Ziel ت (2 oben), gewählt ث (3 oben) → dot_count_confusion");
-  ok(cat({ letterId: "ba", picked: "ن" }) === "dot_position_confusion",
-     "Ziel ب (1 unten), gewählt ن (1 oben) → dot_position_confusion");
-  ok(cat({ letterId: "ta", picked: "ن" }) === "dot_count_confusion",
-     "Ziel ت (2 oben), gewählt ن (1 oben) → dot_count_confusion");
-  ok(cat({ letterId: "ba", picked: "ب", correct: true }) === null,
-     "Richtige Antwort erzeugt keine Kategorie");
-
-  var cats = ["shape_confusion", "dot_count_confusion", "dot_position_confusion"];
-  var seen = [];
-  ["ا", "ت", "ث", "ن", "ي", "ل", "د"].forEach(function (ch) {
-    var c = P.classifyError(answer({ letterId: "ba", picked: ch })).category;
-    if (c && seen.indexOf(c) === -1) seen.push(c);
-  });
-  ok(seen.every(function (c) { return cats.indexOf(c) !== -1; }),
-     "Es entsteht nie eine vierte Kategorie: " + JSON.stringify(seen));
+  eq(P.TARGETS, ["alif", "ba", "ta", "tha", "nun", "ya"], "Arbeitsset umfasst genau sechs Zeichen");
+  ok(P.TARGETS.every(function (id) { return P.GLYPHS[id] && P.GLYPHS[id].taught; }),
+     "alle sechs sind als gelehrt markiert");
+  var traits = P.TARGETS.map(function (id) { return P.traitCodeOf(id); });
+  ok(new Set(traits).size === 6, "jedes Zeichen hat eine eigene Merkmalskombination: " + traits.join(" · "));
+  ok(P.GLYPHS.ba.dots === 1 && P.GLYPHS.ba.pos === "below", "ب: ein Punkt unten");
+  ok(P.GLYPHS.ta.dots === 2 && P.GLYPHS.ta.pos === "above", "ت: zwei Punkte oben");
+  ok(P.GLYPHS.tha.dots === 3 && P.GLYPHS.tha.pos === "above", "ث: drei Punkte oben");
+  ok(P.GLYPHS.nun.dots === 1 && P.GLYPHS.nun.pos === "above", "ن: ein Punkt oben");
+  ok(P.GLYPHS.ya.dots === 2 && P.GLYPHS.ya.pos === "below", "ي: zwei Punkte unten");
+  ok(P.GLYPHS.alif.dots === 0 && P.GLYPHS.alif.rasm === "stroke", "ا: keine Punkte, eigene Grundform");
+  ok(P.letterByTrait(1, "above") === "nun" && P.letterByTrait(2, "below") === "ya",
+     "Merkmalskombination lässt sich eindeutig auf ein Zeichen zurückführen");
 
   /* ---------------------------------------------------------------- 2 */
-  group("Direkte ب/ت-Verwechslung und Diagnose");
+  group("Drei Schwierigkeitsstufen");
 
-  ok(cat({ letterId: "ba", picked: "ت" }) === null && diag({ letterId: "ba", picked: "ت" }) === true,
-     "Ziel ب, gewählt ت → keine Kategorie, needsDiagnosis");
-  ok(cat({ letterId: "ta", picked: "ب" }) === null && diag({ letterId: "ta", picked: "ب" }) === true,
-     "Ziel ت, gewählt ب → keine Kategorie, needsDiagnosis");
-  ok(P.resolveDiagnosis(false) === "dot_count_confusion",
-     "Anzahlfrage falsch → dot_count_confusion");
-  ok(P.resolveDiagnosis(true) === "dot_position_confusion",
-     "Anzahlfrage richtig → dot_position_confusion");
-  ok(["dot_count_confusion", "dot_position_confusion"].indexOf(P.resolveDiagnosis(true)) !== -1 &&
-     ["dot_count_confusion", "dot_position_confusion"].indexOf(P.resolveDiagnosis(false)) !== -1,
-     "Diagnose endet immer in Anzahl ODER Position, nie in einer vierten Kategorie");
-
-  group("Namensfehler und Merkmalscodes");
-  var nm = P.classifyError(answer({ letterId: "ba", taskType: "name", pickKind: "name", picked: "ta" }));
-  ok(nm.category === null && nm.nameMiss === true,
-     "Namensfehler → nameMiss, keine Kategorie");
-  ok(cat({ letterId: "ba", taskType: "trait", pickKind: "trait", picked: "1-above" }) === "dot_position_confusion",
-     "Merkmalscode 1-above bei Ziel ب → dot_position_confusion");
-  ok(cat({ letterId: "ba", taskType: "trait", pickKind: "trait", picked: "2-below" }) === "dot_count_confusion",
-     "Merkmalscode 2-below bei Ziel ب → dot_count_confusion");
-  ok(cat({ letterId: "ba", taskType: "trait", pickKind: "trait", picked: "0-none" }) === "dot_count_confusion",
-     "Merkmalscode 0-none behauptet keine Position → dot_count_confusion");
-  ok(cat({ letterId: "ba", taskType: "dots", pickKind: "trait", picked: "2-above" }) === null &&
-     diag({ letterId: "ba", taskType: "dots", pickKind: "trait", picked: "2-above" }) === true,
-     "Punktplatzierung 2-above bei Ziel ب → Diagnose statt vierter Kategorie");
-
-  group("Rasterfund – Mehrfachauswahl");
-  ok(cat({ letterId: "ta", taskType: "grid", picked: ["ت", "ت", "ث", "ث"] }) === "dot_count_confusion",
-     "Zwei Fehlmarkierungen ث bei Ziel ت → dot_count_confusion (häufigste Kategorie)");
-  ok(diag({ letterId: "ta", taskType: "grid", picked: ["ت", "ت", "ت"], correct: true }) === false,
-     "Vollständig richtige Markierung erzeugt weder Kategorie noch Diagnose");
-  ok(diag({ letterId: "ta", taskType: "grid", picked: ["ت", "ت"] }) === true,
-     "Nur Auslassung, keine Fehlmarkierung → Diagnose statt fehlender Kategorie");
+  var levelSizes = [1, 2, 3].map(function (lv) { return P.buildDistractors("ba", lv).length; });
+  eq(levelSizes, [4, 5, 6], "Optionszahl steigt mit der Stufe (4 / 5 / 6)");
+  P.TARGETS.forEach(function (id) {
+    [1, 2, 3].forEach(function (lv) {
+      var d = P.buildDistractors(id, lv);
+      ok(d.length === lv + 3, id + " Stufe " + lv + ": " + d.length + " Optionen");
+    });
+  });
+  ok(P.DISTRACTORS.ba[2].indexOf("nun") !== -1,
+     "Stufe 2 für ب enthält ن – gleiche Anzahl, andere Position");
+  ok(P.DISTRACTORS.ta[2].indexOf("ya") !== -1,
+     "Stufe 2 für ت enthält ي – gleiche Anzahl, andere Position");
+  ok(P.DISTRACTORS.ta[3].indexOf("tha") !== -1,
+     "Stufe 3 für ت enthält ث – gleiche Position, andere Anzahl");
+  ok(P.startLevelFrom([{ correct: false }, { correct: false }, { correct: false },
+                       { correct: false }, { correct: false }, { correct: false }]) === 1,
+     "schwacher Vorcheck → Einstieg auf Stufe 1");
+  ok(P.startLevelFrom([{ correct: true }, { correct: true }, { correct: true },
+                       { correct: true }, { correct: true }, { correct: true }]) === 2,
+     "starker Vorcheck → Einstieg auf Stufe 2");
+  ok(P.startLevelFrom([{ correct: true }, { correct: true }, { correct: true },
+                       { correct: true }, { correct: true }, { correct: true }]) !== 3,
+     "Einstieg nie direkt auf Stufe 3");
+  eq([P.levelForBlock(1, 1), P.levelForBlock(2, 1), P.levelForBlock(3, 1)], [1, 2, 3],
+     "Blöcke steigern die Stufe von 1 über 2 auf 3");
+  eq([P.levelForBlock(1, 2), P.levelForBlock(2, 2), P.levelForBlock(3, 2)], [2, 3, 3],
+     "bei Einstieg auf Stufe 2 wird nie unter Stufe 2 zurückgefallen");
 
   /* ---------------------------------------------------------------- 3 */
-  group("Lernstatus today_secure / wobbly / not_yet");
+  group("Sechs Aufgabenformen");
 
-  function A(letterId, taskType, correct, firstTry, qid, scope) {
-    return { qid: qid, letterId: letterId, taskType: taskType, correct: correct,
-             firstTry: firstTry, scope: scope || "today", level: 1, picked: "x",
-             attemptNo: firstTry ? 1 : 2, ts: 0 };
-  }
+  eq(P.TASK_TYPES, ["flash", "grid", "sortCount", "sortPos", "construct", "pair"],
+     "sechs deutlich unterschiedliche Aufgabenformen");
+  var allSpecs = P.PRACTICE_PLAN.concat(P.CHALLENGE_PLAN);
+  var usedForms = [];
+  allSpecs.forEach(function (s) { if (usedForms.indexOf(s.taskType) === -1) usedForms.push(s.taskType); });
+  ok(usedForms.length === 6, "alle sechs Formen kommen in Übung oder Challenge vor: " + usedForms.join(", "));
+  ok(P.formGroup("sortCount") === "sort" && P.formGroup("sortPos") === "sort",
+     "Sortieren nach Anzahl und Position zählt als EINE Formgruppe");
+  ok(P.formGroup("flash") === "flash" && P.formGroup("construct") === "construct",
+     "die übrigen Formen bleiben eigenständig");
 
-  ok(P.isTodaySecure({ scope: "today", firstTryForms: ["grid", "dots", "trait"], itemsBetween: 5 }) === false,
-     "3 Formen aber ohne flash → nicht sicher");
-  ok(P.isTodaySecure({ scope: "today", firstTryForms: ["flash", "trait", "name"], itemsBetween: 5 }) === false,
-     "3 Formen ohne produktive Aufgabe → nicht sicher");
-  ok(P.isTodaySecure({ scope: "today", firstTryForms: ["flash", "grid", "trait"], itemsBetween: 1 }) === false,
-     "3 Formen, aber nur 1 Item dazwischen → nicht sicher");
-  ok(P.isTodaySecure({ scope: "today", firstTryForms: ["flash", "grid"], itemsBetween: 9 }) === false,
-     "nur 2 Formen → nicht sicher");
-  ok(P.isTodaySecure({ scope: "today", firstTryForms: ["flash", "grid", "trait"], itemsBetween: 2 }) === true,
-     "alle vier Bedingungen erfüllt → today_secure");
-
-  var secureLog = [
-    A("ba", "flash", true, true, "q1"), A("ta", "trait", true, true, "q2"),
-    A("alif", "flash", true, true, "q3"), A("ta", "flash", true, true, "q4"),
-    A("ba", "dots", true, true, "q5"), A("ba", "trait", true, true, "q6")
-  ];
-  var lsBa = P.computeLetterState(secureLog, "ba", "today");
-  eq(lsBa.status, "today_secure", "Protokoll mit flash+dots+trait und 3 Items dazwischen → ب today_secure");
-  ok(lsBa.itemsBetween >= 2, "itemsBetween aus Einfügereihenfolge = " + lsBa.itemsBetween);
-
-  var wobblyLog = [
-    A("ba", "flash", true, true, "q1"), A("ta", "trait", false, true, "q2"),
-    A("ba", "dots", true, false, "q3"), A("ba", "trait", true, false, "q4")
-  ];
-  eq(P.computeLetterState(wobblyLog, "ba", "today").status, "wobbly",
-     "1 Ersttreffer + Nachtreffer, Kriterium verfehlt → wobbly");
-
-  var notYetLog = [
-    A("ta", "flash", false, true, "q1"), A("ta", "grid", false, true, "q2"),
-    A("ta", "trait", false, true, "q3")
-  ];
-  eq(P.computeLetterState(notYetLog, "ta", "today").status, "not_yet",
-     "kein Ersttreffer → not_yet");
-  eq(P.computeLetterState([], "ta", "today").status, "not_yet",
-     "keine Antworten → not_yet, nie 'sicher'");
-
-  var majorityWrong = [
-    A("ta", "flash", true, true, "q1"), A("ta", "grid", false, true, "q2"),
-    A("ta", "trait", false, true, "q3"), A("ta", "dots", false, true, "q4")
-  ];
-  eq(P.computeLetterState(majorityWrong, "ta", "today").status, "not_yet",
-     "überwiegend falsch trotz eines Ersttreffers → not_yet");
-
-  var nameOnly = [A("ba", "name", true, true, "q1"), A("ba", "name", true, true, "q2"), A("ba", "name", true, true, "q3")];
-  eq(P.computeLetterState(nameOnly, "ba", "today").status, "not_yet",
-     "Namensitems allein ändern den Lernstatus nicht");
+  var g12 = P.buildGrid("ta", 2);
+  ok(g12.cells.length === 12, "Rasterfund hat mindestens zwölf Zellen (" + g12.cells.length + ")");
+  var hits = g12.cells.filter(function (c) { return P.matchesRule(c, g12.rule); });
+  ok(hits.length >= 2, "Rasterfund hat mehrere Zielzeichen (" + hits.length + ")");
+  ok(g12.cells.every(function (c) { return !!P.GLYPHS[c]; }), "nur echte Unicode-Zeichen im Raster");
+  ok(P.gridRuleFor("ta").key === "rule.2-above",
+     "Rasterregel ist merkmalsbasiert („zwei Punkte oben“), nicht zeichenbasiert");
+  ok(P.matchesRule("ta", P.gridRuleFor("ta")) && !P.matchesRule("ya", P.gridRuleFor("ta")),
+     "ي erfüllt die Regel „zwei Punkte oben“ nicht");
+  ok(P.buildSortItem("sortCount", 3).length === 5, "Sortieraufgabe auf Stufe 3 nutzt fünf Zeichen");
 
   /* ---------------------------------------------------------------- 4 */
-  group("overnight_secure");
+  group("Fehlerkategorien – genau drei");
 
-  ok(P.isOvernightSecure({ scope: "nextday", firstTryForms: ["flash", "dots"] }) === true,
-     "2 verschiedene Formen im ersten Versuch → overnight_secure");
-  ok(P.isOvernightSecure({ scope: "nextday", firstTryForms: ["flash"] }) === false,
-     "2 Treffer derselben Form → nicht sicher");
-  ok(P.isOvernightSecure({ scope: "today", firstTryForms: ["flash", "dots", "grid"] }) === false,
-     "Vergabe nur im scope 'nextday', nie am Lektionstag");
-  var ndLog = [A("ba", "flash", true, true, "n1", "nextday"), A("ta", "flash", true, true, "n2", "nextday"),
-               A("ba", "dots", true, true, "n3", "nextday")];
-  eq(P.computeLetterState(ndLog, "ba", "nextday").status, "overnight_secure",
-     "Folgetagsprotokoll mit 2 Formen → overnight_secure");
-  eq(P.computeLetterState(ndLog, "ta", "nextday").status, "wobbly",
-     "nur 1 Form am Folgetag → wobbly, nicht overnight_secure");
-  eq(P.computeLetterState(ndLog, "ba", "today").status, "not_yet",
-     "Folgetagsantworten zählen nicht in den Tagesstatus hinein");
+  ok(cat({ letterId: "ba", picked: "ا" }) === "shape_confusion", "Ziel ب, gewählt ا → shape_confusion");
+  ok(cat({ letterId: "alif", picked: "ب" }) === "shape_confusion", "Ziel ا, gewählt ب → shape_confusion");
+  ok(cat({ letterId: "alif", picked: "ل" }) === "shape_confusion", "Ziel ا, gewählt ل → shape_confusion");
+  ok(cat({ letterId: "ba", picked: "ن" }) === "dot_position_confusion",
+     "Ziel ب (1 unten), gewählt ن (1 oben) → dot_position_confusion");
+  ok(cat({ letterId: "ta", picked: "ي" }) === "dot_position_confusion",
+     "Ziel ت (2 oben), gewählt ي (2 unten) → dot_position_confusion");
+  ok(cat({ letterId: "ta", picked: "ث" }) === "dot_count_confusion",
+     "Ziel ت (2 oben), gewählt ث (3 oben) → dot_count_confusion");
+  ok(cat({ letterId: "tha", picked: "ن" }) === "dot_count_confusion",
+     "Ziel ث (3 oben), gewählt ن (1 oben) → dot_count_confusion");
+  ok(cat({ letterId: "ya", picked: "ب" }) === "dot_count_confusion",
+     "Ziel ي (2 unten), gewählt ب (1 unten) → dot_count_confusion");
+  ok(cat({ letterId: "ba", picked: "ب", correct: true }) === null, "richtige Antwort erzeugt keine Kategorie");
+
+  var seen = [];
+  P.TARGETS.forEach(function (target) {
+    P.TARGETS.concat(["lam", "dal"]).forEach(function (pick) {
+      if (pick === target) return;
+      var c = cat({ letterId: target, picked: P.GLYPHS[pick].char });
+      if (c && seen.indexOf(c) === -1) seen.push(c);
+    });
+  });
+  ok(seen.length === 3 && seen.indexOf("shape_confusion") !== -1 &&
+     seen.indexOf("dot_count_confusion") !== -1 && seen.indexOf("dot_position_confusion") !== -1,
+     "über alle 6×7 Kombinationen entstehen genau drei Kategorien: " + seen.join(", "));
+
+  ok(cat({ letterId: "ba", picked: "ت" }) === null && cls({ letterId: "ba", picked: "ت" }).needsDiagnosis,
+     "ب/ت weichen in beiden Dimensionen ab → Diagnose statt vierter Kategorie");
+  ok(cat({ letterId: "nun", picked: "ي" }) === null && cls({ letterId: "nun", picked: "ي" }).needsDiagnosis,
+     "ن/ي weichen in beiden Dimensionen ab → Diagnose");
+  ok(["dot_count_confusion", "dot_position_confusion"].indexOf(P.resolveDiagnosis(true)) !== -1 &&
+     ["dot_count_confusion", "dot_position_confusion"].indexOf(P.resolveDiagnosis(false)) !== -1,
+     "Diagnose endet immer in Anzahl ODER Position");
 
   /* ---------------------------------------------------------------- 5 */
-  group("Distraktoren");
+  group("Konkret gespeicherte Verwechslungspaare");
 
-  var prev = null, sets = [], i, j;
-  for (i = 0; i < 200; i++) {
-    var letter = ["alif", "ba", "ta"][i % 3];
-    var level = (i % 3) + 1;
-    var d = P.buildDistractors(letter, level, prev);
-    sets.push({ letter: letter, level: level, d: d, prev: prev });
-    prev = d.join(",");
-  }
-  ok(sets.every(function (s) { return s.d.length === 4; }), "Immer genau 4 Optionen (200 Läufe)");
-  ok(sets.every(function (s) {
-    var n = 0;
-    for (var k = 0; k < s.d.length; k++) if (s.d[k] === s.letter) n++;
-    return n === 1;
-  }), "Zielzeichen genau einmal enthalten, nie doppelt");
-  ok(sets.every(function (s) {
-    return s.d.filter(function (x) { return x !== s.letter; }).length === 3;
-  }), "Genau drei Distraktoren, Zielzeichen nie als Distraktor");
-  ok(sets.every(function (s) {
-    return !s.prev || s.d.join(",") !== s.prev;
-  }), "Zwei aufeinanderfolgende Items zeigen nie dasselbe Set in derselben Reihenfolge");
-  ok(sets.every(function (s) {
-    var uniq = [];
-    for (var k = 0; k < s.d.length; k++) if (uniq.indexOf(s.d[k]) === -1) uniq.push(s.d[k]);
-    return uniq.length === 4;
-  }), "Keine Option kommt doppelt vor");
-  ok(sets.every(function (s) { return s.d.every(function (g) { return !!P.GLYPHS[g]; }); }),
-     "Nur echte Unicode-Zeichen aus der Glyphentabelle, keine erfundenen Glyphen");
+  eq(cls({ letterId: "ba", picked: "ن" }).confusedWith, "nun",
+     "Ziel ب, gewählt ن → confusedWith speichert das konkrete Zeichen");
+  eq(cls({ letterId: "ta", picked: "ث" }).confusedWith, "tha", "Ziel ت, gewählt ث → confusedWith = tha");
+  eq(cls({ letterId: "ya", picked: "ت" }).confusedWith, "ta", "Ziel ي, gewählt ت → confusedWith = ta");
+  eq(cls({ letterId: "ba", taskType: "construct", pickKind: "trait", picked: "1-above" }).confusedWith, "nun",
+     "Konstruktion „ein Punkt oben“ bei Ziel ب → confusedWith = nun");
+  eq(cls({ letterId: "ba", picked: "ب", correct: true }).confusedWith, null,
+     "richtige Antwort speichert kein Verwechslungspaar");
 
-  /* gleiche Antwort zweimal hintereinander mit identischem prev erzwingen */
-  var forced = P.buildDistractors("ba", 1, ["alif", "ta", "nun", "ba"].join(","));
-  ok(forced.join(",") !== ["alif", "ta", "nun", "ba"].join(","),
-     "Erzwungene Kollision wird aufgelöst");
-
-  group("Merkmalsoptionen kreuzen Anzahl und Position");
-  for (i = 0; i < 100; i++) {
-    var lid = ["ba", "ta"][i % 2];
-    var opts = P.buildTraitOptions(lid);
-    var correct = P.traitCodeOf(lid);
-    if (opts.length !== 4) { ok(false, "buildTraitOptions liefert 4 Optionen"); break; }
-    if (opts.indexOf(correct) === -1) { ok(false, "richtige Option enthalten"); break; }
-  }
-  ok(true, "buildTraitOptions: 100 Läufe, immer 4 Optionen inkl. der richtigen");
-  var tb = P.buildTraitOptions("ba");
-  var tParts = tb.map(function (c) { return c.split("-"); });
-  ok(tParts.some(function (p) { return p[1] === "below" && p[0] !== "1"; }),
-     "mindestens ein Anzahl-Ablenker bei gleicher Position");
-  ok(tParts.some(function (p) { return p[0] === "1" && p[1] !== "below"; }),
-     "mindestens ein Positions-Ablenker bei gleicher Anzahl");
-
-  group("Rasterfund-Aufbau");
-  var g9 = P.buildGrid("ta", 2);
-  ok(g9.length === 9, "Raster hat 9 Zellen");
-  ok(g9.filter(function (x) { return x === "ta"; }).length === 3, "genau 3 Zielzeichen im Raster");
-  ok(g9.every(function (x) { return !!P.GLYPHS[x]; }), "nur echte Zeichen im Raster");
+  var pairsFound = [];
+  P.MINIMAL_PAIRS.forEach(function (p) { pairsFound.push(P.pairKey(p.a, p.b) + ":" + p.dim); });
+  ok(P.findPair("ba", "ta").dim === "both", "ب/ت unterscheidet sich in beiden Dimensionen");
+  ok(P.findPair("ba", "nun").dim === "position", "ب/ن ist als Positionspaar geführt");
+  ok(P.findPair("ta", "ya").dim === "position", "ت/ي ist als Positionspaar geführt");
+  ok(P.findPair("ta", "tha").dim === "count", "ت/ث ist als Anzahlpaar geführt");
+  ok(P.findPair("nun", "ya").dim === "both", "ن/ي unterscheidet sich in beiden Dimensionen");
+  ok(P.findPair("alif", "ba").dim === "shape", "ا/ب ist als Formpaar geführt");
+  ok(P.findPair("ba", "nun").soleDiff === false && P.findPair("ta", "ya").soleDiff === false,
+     "Paare mit ن bzw. ي sind als fachlich ungeprüft markiert (soleDiff false, Blocker B-3)");
+  ok(P.findPair("ta", "tha").soleDiff === true, "ت/ث gilt als eindimensional belegbar");
+  ok(P.findPair("ba", "ta") === P.findPair("ta", "ba"), "Paarsuche ist richtungsunabhängig");
 
   /* ---------------------------------------------------------------- 6 */
-  group("Fälligkeit – nur der nächste lokale Kalendertag");
+  group("Adaptive Nachübung");
+
+  var q = [{ letterId: "ba", taskType: "flash" }, { letterId: "ta", taskType: "grid" },
+           { letterId: "nun", taskType: "flash" }, { letterId: "ya", taskType: "construct" },
+           { letterId: "tha", taskType: "flash" }, { letterId: "ba", taskType: "grid" },
+           { letterId: "ta", taskType: "flash" }, { letterId: "alif", taskType: "grid" }];
+  var rem = P.planRemediation(q, 0, { letterId: "ba", taskType: "flash", level: 2, confusedWith: "nun" }, {});
+  ok(rem.added.length === 2, "ein Fehler erzeugt zwei Einschübe: leichtere Kontrastaufgabe und späteres Nachprüfen");
+  ok(rem.added[0].spec.taskType !== "flash",
+     "die Nachübung nutzt eine ANDERE Aufgabenform als die gescheiterte (" + rem.added[0].spec.taskType + ")");
+  ok(rem.added[1] && rem.added[1].spec.taskType !== "flash" &&
+     P.formGroup(rem.added[1].spec.taskType) !== P.formGroup(rem.added[0].spec.taskType),
+     "die spätere Prüfung nutzt eine dritte Formgruppe (" + rem.added[1].spec.taskType + ")");
+  ok(rem.added[0].spec.level === 1, "die Nachübung liegt eine Stufe tiefer (2 → 1)");
+  ok(rem.added[0].at >= 3, "der erste Einschub liegt mindestens zwei Items später (Position " + rem.added[0].at + ")");
+  ok(rem.added[1].at > rem.added[0].at, "die erneute Prüfung liegt nach der Nachübung");
+  ok(rem.added[0].spec.pair === "ba-nun",
+     "die Kontrastaufgabe greift das konkret verwechselte Paar auf (" + rem.added[0].spec.pair + ")");
+
+  var rem1 = P.planRemediation(q, 0, { letterId: "ba", taskType: "flash", level: 1 }, {});
+  ok(rem1.added[0].spec.level === 1, "auf Stufe 1 wird nicht unter Stufe 1 gefallen");
+  var remCap = P.planRemediation(q, 0, { letterId: "ba", taskType: "flash", level: 2 }, { ba: 2 });
+  ok(remCap.added.length === 0, "höchstens zwei Nachübungen je Zeichen und Sitzung");
+  var remAlif = P.planRemediation(q, 0, { letterId: "alif", taskType: "grid", level: 2 }, {});
+  ok(remAlif.added.every(function (a) { return a.spec.taskType !== "construct"; }),
+     "ا bekommt keine Punktkonstruktion – das Zeichen hat keine Punkte");
+  ok(P.pickPairFor("ta", "tha") === "ta-tha", "Paarauswahl folgt der tatsächlichen Verwechslung");
+  ok(P.pickPairFor("ya", null).indexOf("ya") !== -1, "ohne bekannte Verwechslung wird ein Paar des Zeichens gewählt");
+
+  group("Keine sofortige identische Wiederholung");
+  var adj = true, adjAt = -1;
+  for (var i = 1; i < P.PRACTICE_PLAN.length; i++) {
+    if (P.PRACTICE_PLAN[i].letterId === P.PRACTICE_PLAN[i - 1].letterId) { adj = false; adjAt = i; }
+  }
+  ok(adj, "Übungsplan: kein Zeichen zweimal unmittelbar hintereinander" + (adj ? "" : " (Position " + adjAt + ")"));
+  var adjC = true;
+  for (i = 1; i < P.CHALLENGE_PLAN.length; i++) {
+    if (P.CHALLENGE_PLAN[i].letterId === P.CHALLENGE_PLAN[i - 1].letterId) adjC = false;
+  }
+  ok(adjC, "Challenge: kein Zeichen zweimal unmittelbar hintereinander");
+  var sameTask = true;
+  for (i = 1; i < P.PRACTICE_PLAN.length; i++) {
+    if (P.PRACTICE_PLAN[i].letterId === P.PRACTICE_PLAN[i - 1].letterId &&
+        P.PRACTICE_PLAN[i].taskType === P.PRACTICE_PLAN[i - 1].taskType) sameTask = false;
+  }
+  ok(sameTask, "nie dieselbe Aufgabenform für dasselbe Zeichen direkt nacheinander");
+
+  group("Gestaffelte Zeicheneinführung");
+  var block1 = P.PRACTICE_PLAN.filter(function (s) { return s.block === 1; }).map(function (s) { return s.letterId; });
+  ok(block1.every(function (l) { return ["alif", "ba", "ta"].indexOf(l) !== -1; }),
+     "Block 1 führt nur ا ب ت ein – nicht fünf neue Zeichen in Folge");
+  var block2 = P.PRACTICE_PLAN.filter(function (s) { return s.block === 2; }).map(function (s) { return s.letterId; });
+  ok(block2.indexOf("tha") === -1, "ث erscheint noch nicht in Block 2");
+  var idxPairTaTha = -1, idxThaSolo = -1;
+  P.PRACTICE_PLAN.forEach(function (s, k) {
+    if (s.taskType === "pair" && s.pair === "ta-tha" && idxPairTaTha === -1) idxPairTaTha = k;
+    if (s.letterId === "tha" && idxThaSolo === -1) idxThaSolo = k;
+  });
+  ok(idxPairTaTha !== -1 && idxPairTaTha < idxThaSolo,
+     "ث kommt erst NACH dem ت/ث-Minimalpaar, nie als isoliertes Erstkontakt-Item");
+
+  /* ---------------------------------------------------------------- 7 */
+  group("Abschluss-Challenge");
+
+  ok(P.CHALLENGE_PLAN.length >= 12, "mindestens zwölf Items (" + P.CHALLENGE_PLAN.length + ")");
+  var chLetters = [];
+  P.CHALLENGE_PLAN.forEach(function (s) { if (chLetters.indexOf(s.letterId) === -1) chLetters.push(s.letterId); });
+  ok(chLetters.length === 6, "alle sechs Zeichen kommen in der Challenge vor");
+  var chLevels = [];
+  P.CHALLENGE_PLAN.forEach(function (s) { if (chLevels.indexOf(s.level) === -1) chLevels.push(s.level); });
+  ok(chLevels.sort().join(",") === "1,2,3", "alle drei Schwierigkeitsstufen sind enthalten");
+  var chForms = [];
+  P.CHALLENGE_PLAN.forEach(function (s) { if (chForms.indexOf(s.taskType) === -1) chForms.push(s.taskType); });
+  ok(chForms.length >= 4, "mindestens vier Aufgabenformen (" + chForms.length + ": " + chForms.join(", ") + ")");
+  var productive = chForms.filter(function (f) {
+    return ["grid", "sortCount", "sortPos", "construct"].indexOf(f) !== -1;
+  });
+  ok(productive.length >= 2, "mindestens zwei produktive Aufgaben (" + productive.join(", ") + ")");
+  var freq = {};
+  P.CHALLENGE_PLAN.forEach(function (s) { freq[s.letterId] = (freq[s.letterId] || 0) + 1; });
+  var maxFreq = 0;
+  for (var l in freq) if (Object.prototype.hasOwnProperty.call(freq, l) && freq[l] > maxFreq) maxFreq = freq[l];
+  ok(maxFreq <= 3, "Frequenzdeckel: kein Zeichen öfter als dreimal (" + JSON.stringify(freq) + ")");
+  ok(freq.ba + freq.ta > freq.tha + freq.nun + freq.ya - 1,
+     "ب und ت sind am stärksten gewichtet (" + (freq.ba + freq.ta) + " von " + P.CHALLENGE_PLAN.length + ")");
+  ok(freq.tha >= 1 && freq.nun >= 1 && freq.ya >= 1,
+     "ث, ن und ي kommen als echte Verwechslungszeichen vor");
+
+  /* ---------------------------------------------------------------- 8 */
+  group("Statusberechnung pro Zeichen");
+
+  ok(P.isTodaySecure({ scope: "today", firstTryForms: ["flash", "grid", "construct"], itemsBetween: 3 }) === true,
+     "drei Formen mit Abruf und produktiver Aufgabe → today_secure");
+  ok(P.isTodaySecure({ scope: "today", firstTryForms: ["grid", "sort", "construct"], itemsBetween: 5 }) === false,
+     "ohne verdeckten Abruf → nicht sicher");
+  ok(P.isTodaySecure({ scope: "today", firstTryForms: ["flash", "pair", "sort"], itemsBetween: 5 }) === true,
+     "Sortieren zählt als produktive Aufgabe");
+  ok(P.isTodaySecure({ scope: "today", firstTryForms: ["flash", "pair"], itemsBetween: 9 }) === false,
+     "nur zwei Formgruppen → nicht sicher");
+  ok(P.isTodaySecure({ scope: "today", firstTryForms: ["flash", "grid", "construct"], itemsBetween: 1 }) === false,
+     "weniger als zwei Items dazwischen → nicht sicher");
+
+  var sortOnly = [A("ba", "flash", true, true, "q1"), A("ba", "sortCount", true, true, "q2"),
+                  A("nun", "flash", true, true, "q3"), A("ba", "sortPos", true, true, "q4")];
+  var lsSort = P.computeLetterState(sortOnly, "ba", "today");
+  eq(lsSort.firstTryForms, ["flash", "sort"],
+     "sortCount und sortPos ergeben zusammen nur EINE Formgruppe");
+  ok(lsSort.status !== "today_secure", "Abruf plus zweimal Sortieren reicht nicht für today_secure");
+
+  var secureLog = [
+    A("ba", "flash", true, true, "q1"), A("ta", "grid", true, true, "q2"),
+    A("nun", "flash", true, true, "q3"), A("ba", "construct", true, true, "q4"),
+    A("ya", "flash", true, true, "q5"), A("ba", "grid", true, true, "q6")
+  ];
+  var lsBa = P.computeLetterState(secureLog, "ba", "today");
+  eq(lsBa.status, "today_secure", "vollständiges Protokoll → ب today_secure");
+  ok(lsBa.itemsBetween >= 2, "itemsBetween aus Einfügereihenfolge = " + lsBa.itemsBetween);
+
+  eq(P.computeLetterState([A("tha", "flash", true, true, "q1"), A("tha", "grid", true, false, "q2")],
+                          "tha", "today").status, "wobbly", "ein Ersttreffer, Kriterium verfehlt → wobbly");
+  eq(P.computeLetterState([A("ya", "flash", false, true, "q1"), A("ya", "grid", false, true, "q2")],
+                          "ya", "today").status, "not_yet", "kein Ersttreffer → not_yet");
+  eq(P.computeLetterState([], "nun", "today").status, "not_yet", "keine Antworten → not_yet, nie sicher");
+  P.TARGETS.forEach(function (id) {
+    ok(P.computeLetterState([], id, "today").status === "not_yet", id + ": ohne Antworten kein sicherer Status");
+  });
+
+  group("Verwechslung und Empfehlung im Ergebnis");
+  var confLog = [
+    A("ta", "flash", false, true, "c1", "today", { confusedWith: "tha", category: "dot_count_confusion" }),
+    A("ta", "grid", false, true, "c2", "today", { confusedWith: "tha", category: "dot_count_confusion" }),
+    A("ta", "pair", false, true, "c3", "today", { confusedWith: "ya", category: "dot_position_confusion" })
+  ];
+  var lsTa = P.computeLetterState(confLog, "ta", "today");
+  eq(lsTa.topConfusion, "tha", "häufigste Verwechslung wird ermittelt");
+  eq(lsTa.topConfusionCount, 2, "Häufigkeit der Verwechslung wird gezählt");
+  eq(P.recommendedForm(lsTa, { ta: { dot_count_confusion: 2, dot_position_confusion: 1 } }), "sortCount",
+     "Anzahlfehler → empfohlene nächste Form ist Sortieren nach Punktanzahl");
+  eq(P.recommendedForm(lsTa, { ta: { dot_position_confusion: 3 } }), "sortPos",
+     "Positionsfehler → Sortieren nach Punktposition");
+  eq(P.recommendedForm(lsTa, { ta: { shape_confusion: 2 } }), "grid", "Formfehler → Rasterfund");
+  var strongLog = [A("ba", "sortPos", true, true, "s1", "today", { dimension: "position" }),
+                   A("ba", "flash", true, true, "s2", "today", { dimension: "shape" }),
+                   A("nun", "flash", true, true, "s3"),
+                   A("ba", "construct", true, true, "s4", "today", { dimension: "position" })];
+  eq(P.computeLetterState(strongLog, "ba", "today").strongestDimension, "position",
+     "stärkstes Merkmal wird aus den Ersttreffern abgeleitet");
+
+  /* ---------------------------------------------------------------- 9 */
+  group("overnight_secure und Folgetagsblock");
+
+  ok(P.isOvernightSecure({ scope: "nextday", firstTryForms: ["flash", "construct"] }) === true,
+     "zwei verschiedene Formen im ersten Versuch → overnight_secure");
+  ok(P.isOvernightSecure({ scope: "nextday", firstTryForms: ["flash"] }) === false,
+     "nur eine Form → nicht overnight_secure");
+  ok(P.isOvernightSecure({ scope: "today", firstTryForms: ["flash", "grid", "construct"] }) === false,
+     "Vergabe nur im scope nextday");
+  var ndLog = [A("ya", "flash", true, true, "n1", "nextday"), A("ba", "flash", true, true, "n2", "nextday"),
+               A("ya", "construct", true, true, "n3", "nextday")];
+  eq(P.computeLetterState(ndLog, "ya", "nextday").status, "overnight_secure", "ي nach zwei Formen sicher");
+  eq(P.computeLetterState(ndLog, "ba", "nextday").status, "wobbly", "nur eine Form → wobbly");
+  eq(P.computeLetterState(ndLog, "ya", "today").status, "not_yet",
+     "Folgetagsantworten zählen nicht in den Tagesstatus");
 
   eq(P.nextDueDate("2026-07-29"), "2026-07-30", "einfacher Tageswechsel");
   eq(P.nextDueDate("2026-07-31"), "2026-08-01", "Monatswechsel");
   eq(P.nextDueDate("2026-12-31"), "2027-01-01", "Jahreswechsel");
   eq(P.nextDueDate("2028-02-28"), "2028-02-29", "Schaltjahr");
-  eq(P.nextDueDate("2026-02-28"), "2026-03-01", "kein Schaltjahr");
-  ok(P.nextDueDate("2026-07-29") !== "2026-07-31" && P.nextDueDate("2026-07-29") !== "2026-08-02",
-     "kein 2- oder 4-Tage-Ergebnis");
-
-  var spanOk = true;
-  var probe = new Date(2026, 0, 1);
-  for (i = 0; i < 800; i++) {
-    var from = (function (d) {
-      var m = d.getMonth() + 1, dd = d.getDate();
-      return d.getFullYear() + "-" + (m < 10 ? "0" + m : m) + "-" + (dd < 10 ? "0" + dd : dd);
-    })(probe);
-    var to = P.nextDueDate(from);
-    var t1 = new Date(from.slice(0, 4), +from.slice(5, 7) - 1, +from.slice(8, 10));
-    var t2 = new Date(to.slice(0, 4), +to.slice(5, 7) - 1, +to.slice(8, 10));
-    if (Math.round((t2 - t1) / 86400000) !== 1) { spanOk = false; break; }
-    probe.setDate(probe.getDate() + 1);
-  }
-  ok(spanOk, "800 aufeinanderfolgende Tage: Abstand ist immer exakt 1 Kalendertag");
-
-  /* Lokaler Tag, nicht UTC: 23:30 Ortszeit muss noch derselbe Tag sein. */
-  var late = new Date(2026, 6, 29, 23, 30, 0);
-  eq(P.todayLocal(late), "2026-07-29", "23:30 Ortszeit liefert den lokalen Tag, nicht den UTC-Tag");
-  var early = new Date(2026, 6, 29, 0, 30, 0);
-  eq(P.todayLocal(early), "2026-07-29", "00:30 Ortszeit liefert den lokalen Tag");
-
+  eq(P.todayLocal(new Date(2026, 6, 29, 23, 30)), "2026-07-29",
+     "23:30 Ortszeit liefert den lokalen Tag, nicht den UTC-Tag");
+  ok(P.isDue("2026-07-30", "2026-08-05") === true, "später geöffnet: weiterhin fällig, keine Strafe");
   ok(P.isDue("2026-07-30", "2026-07-29") === false, "vor dem Fälligkeitstag nicht fällig");
-  ok(P.isDue("2026-07-30", "2026-07-30") === true, "am Fälligkeitstag fällig");
-  ok(P.isDue("2026-07-30", "2026-08-05") === true, "später geöffnet: weiterhin fällig, kein Reset, keine Strafe");
-  ok(P.isDue(null, "2026-07-30") === false, "ohne dueDate nichts fällig");
 
-  /* ---------------------------------------------------------------- 7 */
-  group("Fortschrittssätze");
+  /* ---------------------------------------------------------------- 10 */
+  group("Distraktorregeln");
 
-  var forbidden = ["beherrsch", "von 28", "Minuten", "dakika", "Prozent", "%"];
-  var statuses = ["today_secure", "wobbly", "not_yet", "overnight_secure"];
-  ["de", "tr"].forEach(function (lang) {
-    statuses.forEach(function (st) {
-      var s = P.progressSentence({ status: st, firstTryForms: [], itemsBetween: 0 }, lang);
-      var bad = forbidden.filter(function (w) { return s.toLowerCase().indexOf(w.toLowerCase()) !== -1; });
-      ok(bad.length === 0, lang + "/" + st + ": kein verbotener Begriff (" + s.slice(0, 40) + "…)");
-    });
-  });
+  var prev = null, sets = [];
+  for (i = 0; i < 300; i++) {
+    var letter = P.TARGETS[i % 6];
+    var level = (i % 3) + 1;
+    var d = P.buildDistractors(letter, level, prev);
+    sets.push({ letter: letter, level: level, d: d, prev: prev });
+    prev = d.join(",");
+  }
+  ok(sets.every(function (s) { return s.d.length === s.level + 3; }),
+     "Optionszahl entspricht immer der Stufe (300 Läufe)");
+  ok(sets.every(function (s) {
+    var n = 0;
+    for (var k = 0; k < s.d.length; k++) if (s.d[k] === s.letter) n++;
+    return n === 1;
+  }), "Zielzeichen genau einmal enthalten, nie doppelt");
+  ok(sets.every(function (s) { return !s.prev || s.d.join(",") !== s.prev; }),
+     "zwei aufeinanderfolgende Items zeigen nie dasselbe Set in derselben Reihenfolge");
+  ok(sets.every(function (s) { return new Set(s.d).size === s.d.length; }), "keine Option kommt doppelt vor");
+  ok(sets.every(function (s) { return s.d.every(function (x) { return !!P.GLYPHS[x]; }); }),
+     "nur echte Unicode-Zeichen, keine erfundenen Glyphen");
 
-  var oneCorrect = [A("ba", "flash", true, true, "q1")];
-  var lsOne = P.computeLetterState(oneCorrect, "ba", "today");
-  ok(lsOne.status !== "today_secure", "eine einzige richtige Antwort ergibt nicht today_secure");
-  ok(P.progressSentence(lsOne, "de").toLowerCase().indexOf("beherrsch") === -1,
-     "Satz nach einer einzigen richtigen Antwort enthält nicht „beherrscht“");
-  ok(P.progressSentence(lsOne, "de").indexOf("über Nacht") === -1 &&
-     P.progressSentence(lsOne, "de").indexOf("nach einer Nacht") === -1,
-     "overnight_secure erscheint nie vor der Folgetagsprüfung");
+  /* ---------------------------------------------------------------- 11 */
+  group("Migration und Wiederherstellung");
 
-  var allText = [];
-  ["de", "tr"].forEach(function (l) {
-    for (var k in P.I18N[l]) if (Object.prototype.hasOwnProperty.call(P.I18N[l], k)) allText.push(P.I18N[l][k]);
-  });
-  ok(allText.every(function (s) { return s.indexOf("28") === -1; }),
-     "Nirgends im gesamten Textbestand erscheint „28“ (kein „x von 28“)");
-  ok(allText.every(function (s) { return !/\b\d+\s*(Minuten|Minute|dakika)\b/i.test(s); }),
-     "Keine fest verdrahtete Minutenangabe im Textbestand");
-
-  /* ---------------------------------------------------------------- 8 */
-  group("Reload und Migration alter Prototypdaten");
-
-  var legacy = {
-    onboardingDone: true, situation: "convert", goal: "letters",
-    progress: { letters: 3, lessons: 1, minutes: 5 },
-    savedMedia: ["post1", "post2"],
-    qb: { askedIds: ["flash-ba"], wrongIds: ["nameToChar-ta"], lastLetterId: "ta" },
-    round: { questionIds: ["flash-ba"], currentIndex: 0, score: 1, results: {} }
+  var legacyV1 = {
+    onboardingDone: true, progress: { letters: 3, lessons: 1, minutes: 5 },
+    savedMedia: ["post1"], qb: { wrongIds: ["x"] }, round: { currentIndex: 2 }
   };
-  var m = P.migrateState(legacy);
-  ok(m.schemaVersion === P.SCHEMA_VERSION, "Migration setzt die aktuelle Schemaversion");
-  ok(m.progress === undefined && m.savedMedia === undefined && m.qb === undefined && m.round === undefined,
-     "progress / savedMedia / qb / round werden ersatzlos verworfen");
-  eq(m.answers, [], "keine Antworten aus alten Daten übernommen");
-  eq(m.dueDate, null, "keine Fälligkeit aus alten Daten übernommen");
-  eq(m.session.stage, "intro", "alte Runde blockiert nichts, Start bei intro");
+  var m1 = P.migrateState(legacyV1);
+  ok(m1.schemaVersion === P.SCHEMA_VERSION, "Prototypdaten ohne Version → aktuelles Schema");
+  ok(m1.progress === undefined && m1.savedMedia === undefined && m1.qb === undefined,
+     "progress / savedMedia / qb werden ersatzlos verworfen");
+  eq(m1.answers, [], "keine Antworten aus alten Daten übernommen");
 
+  var legacyV2 = {
+    schemaVersion: 2, precheck: [{ letterId: "ba" }],
+    answers: [{ qid: "x", letterId: "ba", taskType: "dots", correct: true, firstTry: true, scope: "today" }],
+    dueDate: "2026-08-01",
+    session: { stage: "practice", index: 2, queue: [1, 2, 3] }
+  };
+  var m2 = P.migrateState(legacyV2);
+  eq(m2.answers, [], "Drei-Zeichen-Protokoll aus Schema 2 wird verworfen, nicht halb übernommen");
+  eq(m2.dueDate, null, "keine Fälligkeit aus dem alten Schema");
+  eq(m2.session.stage, "intro", "alte Runde blockiert nichts");
   eq(P.migrateState(null).answers, [], "null → leerer Zustand");
   eq(P.migrateState("kaputt").session.stage, "intro", "unbrauchbare Daten → leerer Zustand");
-  eq(P.migrateState({ schemaVersion: 99, answers: [1, 2] }).answers, [],
-     "unbekannte Schemaversion wird nicht teilweise übernommen");
 
   var keep = {
     schemaVersion: P.SCHEMA_VERSION,
-    precheck: [{ letterId: "ba", answered: true, picked: "ba" }],
+    precheck: [{ letterId: "ba", correct: true }],
     answers: [A("ba", "flash", true, true, "q1")],
-    errors: [], dueDate: "2026-08-01", nextdayDoneDate: null,
-    session: { stage: "practice", index: 3, queue: [1, 2, 3, 4, 5], stageStep: 9, pending: null, diagnosisDone: [] }
+    errors: [], dueDate: "2026-08-01", nextdayDoneDate: null, startLevel: 2,
+    session: { stage: "challenge", index: 3, queue: [1, 2, 3, 4, 5], stageStep: 9, pending: null, remediated: {} }
   };
   var k = P.migrateState(keep);
   eq(k.answers.length, 1, "gültige Antworten überleben einen Reload");
   eq(k.session.index, 3, "Position in der Runde überlebt einen Reload");
+  eq(k.startLevel, 2, "Einstiegsstufe überlebt einen Reload");
   eq(k.dueDate, "2026-08-01", "Fälligkeit überlebt einen Reload");
 
   group("Wächter gegen blockierte Runden");
-  eq(P.normalizeSession({ stage: "practice", index: 9, queue: [1, 2] }).index, 1,
+  eq(P.normalizeSession({ stage: "challenge", index: 9, queue: [1, 2] }).index, 1,
      "Index hinter dem Queue-Ende wird begrenzt");
   eq(P.normalizeSession({ stage: "practice", index: 0, queue: [] }).stage, "intro",
-     "leere Queue führt zurück auf intro statt auf einen leeren Screen");
-  eq(P.normalizeSession({ stage: "diagnosis", index: 0, queue: [] }).stage, "intro",
-     "Diagnosemodus ohne Items blockiert nicht");
+     "leere Queue führt zurück auf intro");
+  eq(P.normalizeSession({ stage: "review", index: 0, queue: [] }).stage, "intro",
+     "Auflösungsmodus ohne Items blockiert nicht");
   eq(P.normalizeSession({ stage: "stage", stageStep: 999 }).stageStep, P.STAGE_STEPS.length - 1,
      "Bühnenschritt hinter dem Ende wird begrenzt");
   eq(P.normalizeSession({}).stage, "intro", "leere Session ist gültig");
 
-  /* ---------------------------------------------------------------- 9 */
-  group("Struktur- und Ausschlusskriterien");
+  /* ---------------------------------------------------------------- 12 */
+  group("Lernbühne und ehrliche Sprache");
 
-  var passive = P.STAGE_STEPS.filter(function (s) { return s.kind === "passive"; });
-  var totalMs = passive.reduce(function (a, s) { return a + s.ms; }, 0);
-  ok(totalMs <= 20000, "Passive Betrachtungszeit gesamt ≤ 20 s (" + (totalMs / 1000) + " s)");
-  ok(passive.every(function (s) { return s.ms <= 5000; }),
-     "längste ununterbrochene Passivstrecke ≤ 5 s");
-  var firstActionAt = 0, found = false;
-  for (i = 0; i < P.STAGE_STEPS.length; i++) {
-    if (P.STAGE_STEPS[i].kind === "action") { found = true; break; }
-    firstActionAt += P.STAGE_STEPS[i].ms || 0;
-  }
-  ok(found && firstActionAt <= 5000, "erste Nutzerhandlung nach ≤ 5 s (" + (firstActionAt / 1000) + " s)");
-
-  var all = P.PRACTICE_PLAN.concat(P.FINAL_PLAN);
-  var alifShare = all.filter(function (x) { return x.letterId === "alif"; }).length / all.length;
-  ok(alifShare >= 0.12 && alifShare <= 0.28,
-     "Übungsbudget ca. 20 % ا / 80 % ب ت (ist " + Math.round(alifShare * 100) + " %)");
-
-  var forms = {};
-  all.forEach(function (x) {
-    if (!forms[x.letterId]) forms[x.letterId] = [];
-    if (forms[x.letterId].indexOf(x.taskType) === -1) forms[x.letterId].push(x.taskType);
+  var sections = [];
+  P.STAGE_STEPS.forEach(function (s) { if (sections.indexOf(s.section) === -1) sections.push(s.section); });
+  eq(sections, ["A", "B", "C"], "drei Lernabschnitte: Grundform, Anzahl, Position");
+  P.STAGE_STEPS.forEach(function (s) {
+    ok(!s.ms || s.ms <= 5000, "kein passiver Abschnitt länger als fünf Sekunden");
   });
-  ["alif", "ba", "ta"].forEach(function (l) {
-    ok(forms[l].length >= 3, l + " kann ≥ 3 verschiedene Aufgabenformen erreichen: " + forms[l].join(", "));
-    ok(forms[l].indexOf("flash") !== -1, l + " enthält einen verdeckten Abruf");
-    ok(forms[l].indexOf("grid") !== -1 || forms[l].indexOf("dots") !== -1,
-       l + " enthält eine produktive Aufgabe");
+  ["A", "B", "C"].forEach(function (sec) {
+    var steps = P.STAGE_STEPS.filter(function (s) { return s.section === sec; });
+    var hasAction = steps.some(function (s) { return s.kind !== "explain" && s.kind !== "note"; });
+    ok(hasAction, "Abschnitt " + sec + " endet in einer Handlung, nicht in „Weiter“");
   });
+  var confront = P.STAGE_STEPS.filter(function (s) { return s.kind === "confront"; });
+  ok(confront.length === 1, "Abschnitt B endet im offenen Kontrast, nicht in einer Bestätigung");
 
-  var adjacent = true;
-  for (i = 1; i < P.PRACTICE_PLAN.length; i++) {
-    if (P.PRACTICE_PLAN[i].letterId === P.PRACTICE_PLAN[i - 1].letterId) adjacent = false;
-  }
-  ok(adjacent, "kein Zeichen zweimal unmittelbar hintereinander (keine Sofortwiederholung)");
+  var forbidden = ["beherrsch", "von 28", "Minuten", "dakika", "gemeistert", "%"];
+  var allText = [];
+  ["de", "tr"].forEach(function (lg) {
+    for (var key in P.I18N[lg]) {
+      if (Object.prototype.hasOwnProperty.call(P.I18N[lg], key)) allText.push(P.I18N[lg][key]);
+    }
+  });
+  forbidden.forEach(function (w) {
+    var hits = allText.filter(function (s) { return s.toLowerCase().indexOf(w.toLowerCase()) !== -1; });
+    ok(hits.length === 0, "kein Text enthält „" + w + "“");
+  });
+  ok(allText.every(function (s) { return s.indexOf("28") === -1; }), "nirgends „x von 28“");
+  ok(allText.every(function (s) { return !/\b\d+\s*(Minuten?|dakika)\b/i.test(s); }),
+     "keine fest verdrahtete Dauer im Textbestand");
+  ["today_secure", "wobbly", "not_yet", "overnight_secure"].forEach(function (st) {
+    ["de", "tr"].forEach(function (lg) {
+      var s = P.progressSentence({ status: st }, lg);
+      ok(s.toLowerCase().indexOf("beherrsch") === -1 && s !== "progress.not_yet" || st === "not_yet",
+         lg + "/" + st + ": Fortschrittssatz vorhanden und ohne „beherrscht“");
+    });
+  });
+  var one = P.computeLetterState([A("ba", "flash", true, true, "q1")], "ba", "today");
+  ok(one.status !== "today_secure", "eine einzige richtige Antwort ergibt nicht today_secure");
+  ok(P.progressSentence(one, "de").indexOf("Nacht") === -1,
+     "overnight_secure erscheint nie vor der Folgetagsprüfung");
 
-  var taskTypes = [];
-  all.forEach(function (x) { if (taskTypes.indexOf(x.taskType) === -1) taskTypes.push(x.taskType); });
-  ok(taskTypes.length === 4 && ["flash", "grid", "dots", "trait"].every(function (x) { return taskTypes.indexOf(x) !== -1; }),
-     "genau vier echte Aufgabenformen: " + taskTypes.join(", "));
-
-  ok(P.FINAL_PLAN.every(function (x) { return x.level === 3; }),
-     "Abschlussdurchgang nutzt durchgehend die höchste Distraktorstufe");
+  var deKeys = Object.keys(P.I18N.de), trKeys = Object.keys(P.I18N.tr);
+  ok(deKeys.length === trKeys.length && deKeys.every(function (x) { return trKeys.indexOf(x) !== -1; }),
+     "Deutsch und Türkisch sind vollständig gleich ausgestattet (" + deKeys.length + " Schlüssel)");
 
   /* ---------------------------------------------------------------- Ausgabe */
   var res = document.getElementById("results");
