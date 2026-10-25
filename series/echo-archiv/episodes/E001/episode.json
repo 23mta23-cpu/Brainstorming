@@ -134,7 +134,10 @@
     {
      "id": "S01",
      "seed": 101,
-     "prompt": "Extreme close-up macro shot, no face and no head in the frame: a young man's bare pale right hand emerging from a deep navy blue coat sleeve reaches in from the left toward a large round bronze vault seal seen straight on, the seal fills the right half of the frame; the seal has a smooth polished rim ring without any marks, slots or symbols and a small dark keyhole in its center; his fingertips stop a few centimeters before the metal; floating golden dust, dramatic warm rim light, dark background."
+     "refs": [
+      "nox"
+     ],
+     "prompt": "Extreme close-up macro shot of the young man from the reference image: only the edge of his face is visible at the top left, his bare pale right hand emerging from the navy blue sleeve of his coat reaches in from the left toward a large round bronze vault seal seen straight on, the whole seal is inside the frame on the right side; the seal has a smooth polished rim ring without any marks, slots or symbols and a small dark keyhole in its center; his fingertips stop a few centimeters before the metal and do not cover the seal; floating golden dust, dramatic warm rim light, dark background."
     }
    ],
    "motion": {
