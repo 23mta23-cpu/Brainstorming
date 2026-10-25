@@ -11,7 +11,7 @@ Regel: Keine neue große Serie, solange begonnene Kernhandlungen offen sind. Jed
 | Folge | Skript | Story-Review | Render | QC tech | Freigabe | Veröffentlicht |
 |---|---|---|---|---|---|---|
 | E01 Regel Acht | v2 PASS (Commit `006911a`); **v3.2** (59,3 s, Bildstil v3) | v3 REVISE → v3.1 **PASS** | **v3 gerendert** (25.10.) | 15/15 PASS, Whisper 15/15 | ausstehend (Anhören!) | – |
-| E02 Der Brief | v1.2 (Mindestdauern 60,5 s) | v1.0 REVISE (7) → v1.1 REVISE (2, ohne neues Bild) → v1.2 behoben | in Produktion | – | – | – |
+| E02 Der Brief | v1.2 + Bildtext „5 JAHRE ZU SPÄT" | v1.0 REVISE (7) → v1.1 REVISE (2) → v1.2 behoben · Bildtext-Review 25.10.: PASS | v1 gerendert 25.10. (62,8 s, QC 15/15, Whisper 14/14) | – | – | – |
 | E02–E10 | PLANNED (Outline) | – | – | – | – | – |
 
 ## Offene Handlungsstränge
@@ -37,6 +37,7 @@ Regel: Keine neue große Serie, solange begonnene Kernhandlungen offen sind. Jed
 | N3 | Wie kam Linas Brief ins Archiv? | E02 | Handbuch §6: zur Abreise geschrieben → kurz vor dem Rückkehrtag geschickt → von Nox verweigert → zurück zu Lina → am Bahnsteig liegen gelassen → Nachhall/Poststelle; gezeigt E10 | geplant |
 | N4 | Woher weiß Mira, dass der Brief von „ihr" ist, warum bricht sie das Siegel? | E02 | E03 (sie kennt die Schleife, versteckt seine Notizen) | offen |
 | L2 | Poststelle/Zustellung (nicht leuchtende Post darf zugestellt werden) | E02 | Kanon, Handbuch §2 | Lore |
+| T1 | „5 JAHRE ZU SPÄT" (E02 S01): Verweigerung + Rückkehrtag genau ~5 Jahre her; gezählt ab Zustellung an Nox, nicht ab dem Versiegeln (~6 J.) | E02 | Fixpunkt: E03–E10 nennen keine andere Zahl; E10-Rückblende Nox ~12, Lina ~11 | Kanon |
 | N1 | Woran erinnert sich Nox, damit sein Echo ruft? | E01 v3 | geklärt in Handbuch §6: an das Versprechen (eigene Notiz vor E01); gezeigt E09 | geplant |
 | N2 | Wer ist der Erzähler? | E01 v3 | geklärt: neutrale Chronik-Stimme (Handbuch §2) | geklärt |
 
