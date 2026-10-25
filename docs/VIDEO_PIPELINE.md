@@ -6,8 +6,8 @@ Befehle: siehe Skill `.claude/skills/produce-episode/SKILL.md`. Hier: Stufen, St
 | # | Stufe | Umsetzung | Status |
 |---|---|---|---|
 | 1–2 | Marktanalyse, Chancen | `trend-scout`, `MARKET_INTELLIGENCE.md` | IMPLEMENTED |
-| 3–5 | Ideen, Bewertung, Auswahl | `STORY_BIBLE.md` §1 | IMPLEMENTED |
-| 6 | Handlung + Serienende | `STORY_BIBLE.md` §6–7, `STORY_TRACKER.md` | IMPLEMENTED |
+| 3–5 | Ideen, Bewertung, Auswahl | `SERIEN_HANDBUCH.md` §1 | IMPLEMENTED |
+| 6 | Handlung + Serienende | `SERIEN_HANDBUCH.md` §6–7, `STORY_TRACKER.md` | IMPLEMENTED |
 | 7 | Drehbuch | `episode.json` (maschinenlesbar) | TESTED |
 | 8 | Story-Logik | `story-reviewer` | TESTED |
 | 9 | Storyboard | Kontaktbogen-Stills (`render.mjs --times`) | TESTED |

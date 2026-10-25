@@ -5,7 +5,7 @@ Regel: Keine neue große Serie, solange begonnene Kernhandlungen offen sind. Jed
 ## Serien
 | Serie | Status | Staffel | Ende geplant | Produziert | Veröffentlicht |
 |---|---|---|---|---|---|
-| Das Echo-Archiv | aktiv | S1 (10 Folgen) | ja — S1-Auflösung E10, Serienende S3 (`STORY_BIBLE.md` §6–7) | E01 (Pilot v2) | – |
+| Das Echo-Archiv | aktiv | S1 (10 Folgen) | ja — S1-Auflösung E10, Serienende S3 (`SERIEN_HANDBUCH.md` §6–7) | E01 (Pilot v2) | – |
 
 ## Episoden
 | Folge | Skript | Story-Review | Render | QC tech | Freigabe | Veröffentlicht |
@@ -34,11 +34,11 @@ Regel: Keine neue große Serie, solange begonnene Kernhandlungen offen sind. Jed
 | L1 | Erinnerungen fließen in die Uhr | E01 | S3 (gelöschte Erinnerungen werden zu Echos) | offen |
 | P9 | „ANNAHME VERWEIGERT — N. Veyr": Nox lehnte Linas Brief ungeöffnet ab (wenige Tage vor dem Rückkehrtag, Prüfung) | E02 | E10 | offen |
 | P10 | „Jeden Tag um sieben" am Bahnhof | E02 | E10 (Abend, Regen) | offen |
-| N3 | Wie kam Linas Brief ins Archiv? | E02 | Bible §6: zur Abreise geschrieben → kurz vor dem Rückkehrtag geschickt → von Nox verweigert → zurück zu Lina → am Bahnsteig liegen gelassen → Nachhall/Poststelle; gezeigt E10 | geplant |
+| N3 | Wie kam Linas Brief ins Archiv? | E02 | Handbuch §6: zur Abreise geschrieben → kurz vor dem Rückkehrtag geschickt → von Nox verweigert → zurück zu Lina → am Bahnsteig liegen gelassen → Nachhall/Poststelle; gezeigt E10 | geplant |
 | N4 | Woher weiß Mira, dass der Brief von „ihr" ist, warum bricht sie das Siegel? | E02 | E03 (sie kennt die Schleife, versteckt seine Notizen) | offen |
-| L2 | Poststelle/Zustellung (nicht leuchtende Post darf zugestellt werden) | E02 | Kanon, Bible §2 | Lore |
-| N1 | Woran erinnert sich Nox, damit sein Echo ruft? | E01 v3 | geklärt in Bible §6: an das Versprechen (eigene Notiz vor E01); gezeigt E09 | geplant |
-| N2 | Wer ist der Erzähler? | E01 v3 | geklärt: neutrale Chronik-Stimme (Bible §2) | geklärt |
+| L2 | Poststelle/Zustellung (nicht leuchtende Post darf zugestellt werden) | E02 | Kanon, Handbuch §2 | Lore |
+| N1 | Woran erinnert sich Nox, damit sein Echo ruft? | E01 v3 | geklärt in Handbuch §6: an das Versprechen (eigene Notiz vor E01); gezeigt E09 | geplant |
+| N2 | Wer ist der Erzähler? | E01 v3 | geklärt: neutrale Chronik-Stimme (Handbuch §2) | geklärt |
 
 ## Story-Review E01 — Agentenlauf 1 (`story-reviewer`): VERDICT REVISE
 Blocker und Umsetzung (v2):
@@ -51,7 +51,7 @@ Eigener Kontinuitätsfix: Kinderfoto zeigte Nox im Archivmantel → Navy-Pullove
 Pip-Definition geschärft (Kanon 4 / §3), damit P3 keine Lüge ist.
 
 ## Story-Review E01 — Nachprüfung (Lauf 2): VERDICT PASS
-Alle 3 Blocker behoben, keine neuen. Hinweise umgesetzt: Uhr-Echo = Entscheidung am Tag der versprochenen Rückkehr (Bible §6);
+Alle 3 Blocker behoben, keine neuen. Hinweise umgesetzt: Uhr-Echo = Entscheidung am Tag der versprochenen Rückkehr (Handbuch §6);
 Kanon 1 präzisiert (alle Wirkungen nur bei Hautkontakt; Rufen nur, solange der Besitzer sich erinnert → nur Nox' Echo ruft);
 E10 visuell von S09 abgegrenzt (Gegenwart, Lina ~16, Regen); E08 begründet (Kurator trägt Nox' Abschieds-Echo); P1-Text aktualisiert.
 

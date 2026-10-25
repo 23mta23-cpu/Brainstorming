@@ -3,7 +3,7 @@
 ```
 Markt (WebSearch, manuell Creative Center) ──► trend-scout ──► MARKET_INTELLIGENCE.md
                                                                       │
-STORY_BIBLE.md / STORY_TRACKER.md ──► episode.json ──► story-reviewer ──► (PASS)
+SERIEN_HANDBUCH.md / STORY_TRACKER.md ──► episode.json ──► story-reviewer ──► (PASS)
                                             │
                      ┌──────────────────────┴───────────────────────┐
                      ▼                                              ▼

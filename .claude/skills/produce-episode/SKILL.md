@@ -8,7 +8,7 @@ description: End-to-end production of one Echo-Archiv TikTok episode (script JSO
 Paths: `E=series/echo-archiv/episodes/E00X`. Fresh container: `scripts/setup_tools.sh`. Never run image generation and TTS at the same time (RAM).
 `PY=/home/user/tools/piper-venv/bin/python` · `GEN=/home/user/tools/gen-venv/bin/python` · `TTS2=/home/user/tools/tts2-venv/bin/python`
 
-1. **Outline check** — episode in `docs/STORY_BIBLE.md` §6, threads in `docs/STORY_TRACKER.md`.
+1. **Outline check** — episode in `docs/SERIEN_HANDBUCH.md` §6, threads in `docs/STORY_TRACKER.md`.
 2. **Script** — `$E/episode.json`, schema = E001/E002 (hook, decision, micro/macro loop, twist, cliffhanger, plants, cast, shots[]).
    Shot: `id, min, fn, emotion, visual, camera, line{who,text,pre,takes?}, kf[], plate_of?, motion{zoom,x,y,shake,from,to}, fx[], fx_at{}, fx_txt[], fx_img{}, talk{}, cap_y?, sfx, cut`.
    - First line must END ≤ 1.8 s (QC). German ~3.5–4.5 syllables/s; target 55–70 s.

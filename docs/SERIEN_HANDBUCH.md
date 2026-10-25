@@ -1,4 +1,4 @@
-# Story Bible
+# Serienhandbuch (Welt, Figuren, Staffelplan, Kanon)
 
 ## 1. Konzeptauswahl (2026-10-25)
 

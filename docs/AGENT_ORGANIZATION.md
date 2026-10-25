@@ -8,7 +8,7 @@ oder Parallelität echten Nutzen bringt. Die Hauptsitzung (AI Co-CEO) bleibt fü
 | Executive (Strategie, Finanzen, Ops) | Hauptsitzung + `COMPANY_STRATEGY.md`, `COSTS.md` | braucht Gesamtkontext |
 | Market Intelligence | **Agent `trend-scout`** (Sonnet, Web-Tools) | günstigeres Modell, isolierter Recherche-Kontext, klarer Output |
 | Marketing & Growth | Hauptsitzung + `TIKTOK_STRATEGY.md`; Community = Mensch | Posting/Kommentare sind menschliche Aufgaben (keine Auto-Veröffentlichung) |
-| Creative Studio (Showrunner, Writer, Character Design) | Hauptsitzung + `STORY_BIBLE.md` + Character Lock (`characters.js`) | Schreiben und Inszenieren hängen eng zusammen |
+| Creative Studio (Showrunner, Writer, Character Design) | Hauptsitzung + `SERIEN_HANDBUCH.md` + Character Lock (`characters.js`) | Schreiben und Inszenieren hängen eng zusammen |
 | Continuity Editor / Lore Keeper | `STORY_TRACKER.md` + Kanonregeln, geprüft durch `story-reviewer` | Register statt Agent: billig und dauerhaft |
 | Story-Review, Content Policy, IP | **Agent `story-reviewer`** (read-only) | adversarialer Blick in frischem Kontext; kann nichts verändern |
 | Video Production (Regie, Animation, Voice, Schnitt) | Skill `produce-episode` + `pipeline/` | deterministische Skripte statt Agentenketten |

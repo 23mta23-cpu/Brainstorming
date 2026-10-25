@@ -35,7 +35,7 @@ Dokument: „Virale KI-Microdramen auf TikTok: Tiefenanalyse, Serienkonzept und 
 | Winner-Score-Gewichte | ANNAHME | Plausibel, aber unbelegt; erst nach Baseline kalibrieren |
 
 ## Widersprüche / Lücken im PDF (und unsere Korrektur)
-1. **Kein Serienende:** E10 endet mit „Lina arbeitet für die Gegenseite" → verletzt unsere Abschlussregel. Korrigiert: S1 löst den Lina-Konflikt auf, S2-Haken erst danach (`STORY_BIBLE.md`).
+1. **Kein Serienende:** E10 endet mit „Lina arbeitet für die Gegenseite" → verletzt unsere Abschlussregel. Korrigiert: S1 löst den Lina-Konflikt auf, S2-Haken erst danach (`SERIEN_HANDBUCH.md`).
 2. **Regel acht ohne Auflösung:** Neu definiert (Payoff E07/E09): „Ein Archivar darf sich nicht erinnern." Nox bricht sie, indem er sich erinnert.
 3. **Wer schrieb „Lina lebt"?** Neu: Nox selbst (Signatur gebrochener Kreis) → Rewatch-Hebel, Payoff E09.
 4. **Vision vs. Erinnerung unklar** (Kraft zeigt laut Pitch den *anderen* Ausgang): Vision zeigt den Weg, in dem Nox zurückkam → „Du hast es versprochen" bekommt in E10 doppelte Bedeutung.
@@ -51,5 +51,5 @@ Dokument: „Virale KI-Microdramen auf TikTok: Tiefenanalyse, Serienkonzept und 
 - „Code-animierte virale Videos" ↔ awesome-opus5-5-videos → bestätigt unseren Render-Ansatz.
 
 ## Übernommen in
-Strategie (`COMPANY_STRATEGY.md`), Story (`STORY_BIBLE.md`), Pipeline (`episode.json`-Schema folgt PDF S. 19), QC (`QUALITY_STANDARDS.md`),
+Strategie (`COMPANY_STRATEGY.md`), Story (`SERIEN_HANDBUCH.md`), Pipeline (`episode.json`-Schema folgt PDF S. 19), QC (`QUALITY_STANDARDS.md`),
 TikTok-Plan (`TIKTOK_STRATEGY.md`).

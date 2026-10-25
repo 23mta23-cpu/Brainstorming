@@ -9,7 +9,7 @@
 - Capability-Matrix + Entscheidungen (`docs/TECHNOLOGY_DECISIONS.md`).
 - Market Intelligence Erstanalyse + Tracker (`docs/MARKET_INTELLIGENCE.md`, `docs/COMPETITOR_TRACKER.md`).
 - Strategie, TikTok-Strategie, Policy, Agentenorganisation, Qualitätsschleusen, Kosten.
-- Story: 3 Konzepte bewertet, Echo-Archiv gewählt, Staffel 1 + Serienende geplant (`docs/STORY_BIBLE.md`, `docs/STORY_TRACKER.md`).
+- Story: 3 Konzepte bewertet, Echo-Archiv gewählt, Staffel 1 + Serienende geplant (`docs/SERIEN_HANDBUCH.md`, `docs/STORY_TRACKER.md`).
 - Pipeline TESTED; Pilot E001 **v2** gerendert (nach Agent-Review: 3 Blocker behoben), QC 14/14 PASS, Launch-Entwurf (`series/echo-archiv/episodes/E001/LAUNCH.md`).
 - Agenten TESTED: `story-reviewer` (v1 REVISE → v2 PASS), `trend-scout` (Daily Screen im Log). Bordmittel `/code-review` TESTED: 4 Pipeline-Bugs gefunden und behoben (fehlendes Pflichtfeld `series`, Absturz bei dialogfreien Folgen, `tts.py probe` ohne MLS-Modell, Validierungsabsturz bei Zeile ohne `who`). Kaltstart-Test `scripts/setup_tools.sh`: 41 s, 17/17 Repos am auditierten Commit.
 - Drive: Ordner „AI-Studio – Freigaben (Kopien aus GitHub)" (https://drive.google.com/drive/folders/1sV7w5ucmWRobBkaE2c2tCfabOwOZzahP) mit Freigabepaket E001 (https://docs.google.com/document/d/1zbGT4I41Fq4oboMMVPD6keyVMbaXpU2DzfktFuDvKQw). Kopie; Quelle bleibt GitHub.
@@ -55,7 +55,7 @@ Arbeitsplan (Status hier fortschreiben):
    S07 Schild „ZUSTELLUNG", S14 Brieftext „Nox, ich warte am Bahnhof. / Jeden Tag um sieben. / Deine Lina" (write), S16 Stempel „ANNAHME VERWEIGERT" (stamp, rot) + „N. Veyr" (write);
    `pin` S02/S06/S15 (+S11b über plate_of S02); `photo` S04; Mund-`at` S04m S05m S06m S07m S15m S17m.
 2. `plates.py` → Vorschau-Kontaktbogen → `build.py` → QC + `asr_check.py` → LAUNCH.md (E02) → Tracker/NEXT_SESSION.
-3. Danach E03 „Miras Lüge" (Bible §6; N4: Woher weiß Mira von Lina, warum bricht sie das Siegel; P7 Notizen in ihrer Tasche).
+3. Danach E03 „Miras Lüge" (Handbuch §6; N4: Woher weiß Mira von Lina, warum bricht sie das Siegel; P7 Notizen in ihrer Tasche).
 
 ## Relevante Pfade & Befehle
 ```bash

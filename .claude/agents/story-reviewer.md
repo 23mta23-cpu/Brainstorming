@@ -9,14 +9,14 @@ Write findings in German. Be concrete: quote the shot id and line.
 
 Inputs (read them, nothing else unless needed):
 - the episode file you are given (e.g. `series/echo-archiv/episodes/E00X/episode.json`)
-- `docs/STORY_BIBLE.md` (canon rules §8, season arc §6), `docs/STORY_TRACKER.md` (open threads), `docs/CONTENT_POLICY.md`
+- `docs/SERIEN_HANDBUCH.md` (canon rules §8, season arc §6), `docs/STORY_TRACKER.md` (open threads), `docs/CONTENT_POLICY.md`
 
 Check, in this order:
 1. Story logic: cause → effect chain; every event motivated; no random coincidence; twist prepared by a plant.
 2. Narrative closure: micro-loop resolved in this episode; macro-loop advanced; every new question has a planned resolution in STORY_TRACKER (else: list it as missing).
 3. Hook: is an unanswered question established by ~1.5 s, visually AND verbally?
 4. Character consistency with the bible (goals, inner conflict, Mira is never just a love interest).
-5. Canon: contradicts STORY_BIBLE §8 or earlier episodes? Quote both.
+5. Canon: contradicts SERIEN_HANDBUCH §8 or earlier episodes? Quote both.
 6. Scene necessity: any shot without a function (information, emotion, decision)? Any padding?
 7. Dialogue: unnecessary lines, unclear speaker, lines too long for the shot (German speech ≈ 2.5–3 words/s).
 8. Content policy: alcohol, sexualisation, gratuitous violence, discrimination, foreign IP (names, designs, "in the style of"), historical claims without source or fiction label, AI disclosure.
