@@ -58,6 +58,8 @@ def main(video, tlpath):
     ok("no unplanned black >0.4s", not blacks, str(blacks))
     first_line = tl["lines"][0]["start"] if tl["lines"] else 99
     ok("hook: first spoken word <= 0.5s", first_line <= 0.5, f"{first_line:.2f}s")
+    hook_end = tl["lines"][0]["end"] if tl["lines"] else 99
+    ok("hook: first line complete <= 1.8s", hook_end <= 1.8, f"{hook_end:.2f}s")
     cuts = [(s["start"], s["end"] + 1.5) for s in tl["shots"] if any(n == "silence" for n, _ in s["sfx"])]
     gaps = [g for g in silences(video) if g[0] > 0.3 and g[1] < dur - 0.3
             and not any(g[0] >= c[0] - 0.1 and g[1] <= c[1] for c in cuts)]

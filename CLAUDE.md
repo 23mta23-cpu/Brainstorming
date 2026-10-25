@@ -16,7 +16,9 @@ Sprache: Deutsch mit dem Team, Englisch in Code. Start jeder Sitzung: `NEXT_SESS
 
 ## Wo was liegt
 - Produktion: Skill `produce-episode` · Pipeline `pipeline/` · Serie `series/echo-archiv/`
-- Figuren/Welt nur über `series/echo-archiv/characters/characters.js` und `world.js` (Character Lock)
+- Character Lock v3: Referenzbilder `series/echo-archiv/look/refs/*.png` + Stil `look/STYLE.txt`; jedes Keyframe mit Figur nutzt die Referenz
+  (`characters.js`/`world.js` = Vektor-Lock v2, nur noch für die archivierte v2)
+- Lokale Modelle (0 €): FLUX.2-klein-4B (Bild, Apache-2.0), Chatterbox (Stimme, MIT) — Batch-Läufe, Platte liest nur ~15 MB/s
 - Strategie & Markt: `docs/COMPANY_STRATEGY.md`, `docs/TIKTOK_STRATEGY.md`, `docs/MARKET_INTELLIGENCE.md`
 - Technik: `docs/ARCHITECTURE.md`, `docs/TECHNOLOGY_DECISIONS.md`, `docs/REPOSITORY_MATRIX.md`
 - Qualität & Kosten: `docs/QUALITY_STANDARDS.md`, `docs/COSTS.md`

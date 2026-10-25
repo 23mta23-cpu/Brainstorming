@@ -1,15 +1,48 @@
 {
-  "style": "Stylized 3D animated feature film still, hand-painted textures, soft global illumination, volumetric light with floating golden dust, rich palette of deep teal, navy blue and warm gold, cinematic shallow depth of field, expressive face with large readable eyes, strong clean silhouette, highly detailed, vertical 9:16 frame.",
-  "jobs": [
-    {"id": "nox_a", "out": "refs/nox_a.png", "w": 576, "h": 1024, "seed": 11,
-     "prompt": "Full-body character design of Nox Veyr, a 17-year-old young archivist, slim build, asymmetric short black hair with a long fringe falling over one eye, pale skin, dark brown eyes, calm serious expression, front view. He wears a long high-collared archivist coat that is split exactly down the vertical center line: the half on the left side of the image is deep navy blue, the half on the right side of the image is ochre gold, with a visible stitched seam down the middle. A small broken golden ring pin on the collar, dark trousers, leather boots, bare hands. Plain dark background with soft rim light."},
-    {"id": "nox_b", "out": "refs/nox_b.png", "w": 576, "h": 1024, "seed": 11, "refs": ["test/nox_test_ref.png"],
-     "prompt": "Keep exactly the same young man: same face, same black hair with the long fringe, same pose, same lighting and background. Recolor his long coat so it is split exactly in half by a vertical stitched seam down the center: the half on the left side of the image is deep navy blue, the half on the right side of the image is ochre gold."},
-    {"id": "mira", "out": "refs/mira.png", "w": 576, "h": 1024, "seed": 5,
-     "prompt": "Full-body character design of Mira, an 18-year-old young woman archivist, warm brown skin, sharp black bob haircut with straight-cut bangs, a single silver hair clip, focused dark brown eyes, composed upright posture, three-quarter view. She wears a modest high-collared deep teal archivist uniform coat reaching below the knees, an angular cream-colored shoulder plate trimmed in gold on one shoulder, dark grey leather gloves, dark trousers and boots. Plain dark background with soft rim light."},
-    {"id": "lina", "out": "refs/lina.png", "w": 576, "h": 1024, "seed": 9,
-     "prompt": "Full-body character design of Lina, an 11-year-old girl, shoulder-length chestnut brown hair with two small tufts, round face, big hopeful brown eyes, wearing a cream wool winter coat, a long red knitted scarf, dark tights and small black boots, holding a white envelope sealed with red wax in both hands. Front view, plain dark background with soft rim light."},
-    {"id": "pip", "out": "refs/pip.png", "w": 576, "h": 1024, "seed": 4,
-     "prompt": "Character design of Pip, a small living brass compass creature about the size of a hand: round polished brass body, a glass face showing a red-and-white compass needle, two round glossy black eyes peeking over the brass rim, tiny brass feet, a small ring loop on top, cute and curious expression. Sitting on a dark wooden shelf, plain dark background, soft rim light."}
-  ]
+ "style": "Stylized 3D animated feature film still, hand-painted textures, soft global illumination, volumetric light with floating golden dust, rich palette of deep teal, navy blue and warm gold, cinematic shallow depth of field, expressive face with large readable eyes, strong clean silhouette, highly detailed, vertical 9:16 frame.",
+ "jobs": [
+  {
+   "id": "nox_a",
+   "out": "refs/nox_a.png",
+   "w": 576,
+   "h": 1024,
+   "seed": 11,
+   "prompt": "Full-body character design of Nox Veyr, a 17-year-old young archivist, slim build, asymmetric short black hair with a long fringe falling over one eye, pale skin, dark brown eyes, calm serious expression, front view. He wears a long high-collared archivist coat that is split exactly down the vertical center line: the half on the left side of the image is deep navy blue, the half on the right side of the image is ochre gold, with a visible stitched seam down the middle. A small broken golden ring pin on the collar, dark trousers, leather boots, bare hands. Plain dark background with soft rim light."
+  },
+  {
+   "id": "nox_b",
+   "out": "refs/nox_b.png",
+   "w": 576,
+   "h": 1024,
+   "seed": 11,
+   "refs": [
+    "test/nox_test_ref.png"
+   ],
+   "prompt": "Keep exactly the same young man: same face, same black hair with the long fringe, same pose, same lighting and background. Recolor his long coat so it is split exactly in half by a vertical stitched seam down the center: the half on the left side of the image is deep navy blue, the half on the right side of the image is ochre gold."
+  },
+  {
+   "id": "mira",
+   "out": "refs/mira.png",
+   "w": 576,
+   "h": 1024,
+   "seed": 5,
+   "prompt": "Full-body character design of Mira, an 18-year-old young woman archivist, warm brown skin, sharp black bob haircut with straight-cut bangs, a single silver hair clip, focused dark brown eyes, composed upright posture, three-quarter view. She wears a modest high-collared deep teal archivist uniform coat reaching below the knees, an angular cream-colored shoulder plate trimmed in gold on one shoulder, dark grey leather gloves, dark trousers and boots. Plain dark background with soft rim light."
+  },
+  {
+   "id": "lina",
+   "out": "refs/lina.png",
+   "w": 576,
+   "h": 1024,
+   "seed": 21,
+   "prompt": "Full-body character design of Lina, an 11-year-old human girl, shoulder-length straight chestnut brown hair with a simple side parting, no animal ears, round face, big hopeful brown eyes, wearing a cream wool winter coat, a long red knitted scarf, dark tights and small black boots, holding a white envelope sealed with red wax in both hands. Front view, plain dark background with soft rim light."
+  },
+  {
+   "id": "pip",
+   "out": "refs/pip.png",
+   "w": 576,
+   "h": 1024,
+   "seed": 24,
+   "prompt": "Character design of Pip, a small living brass compass creature about the size of a hand: a round polished brass body with no ring or loop on top, a glass face showing a red-and-white compass needle, two large round glossy black eyes sitting on top of the brass rim above the glass (not inside it), tiny brass legs and feet, cute and curious expression. Sitting on a dark wooden shelf, plain dark background, soft rim light."
+  }
+ ]
 }

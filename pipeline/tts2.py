@@ -1,11 +1,11 @@
 """Expressive German TTS with Chatterbox Multilingual (MIT, local CPU). Run with /home/user/tools/tts2-venv/bin/python.
 A voice = a short reference clip. References come from CC0 Piper voices (pipeline/tts.py) or, later, consented own recordings.
-Usage (test): tts2.py say REF.wav "Text" OUT.wav [exaggeration] [cfg_weight]"""
-import os, sys, time
+Usage: tts2.py say REF.wav "Text" OUT.wav [exaggeration] [cfg_weight]   |   tts2.py batch jobs.json (used by build.py)"""
+import json, os, sys, time
 from pathlib import Path
 
+import soundfile as sf
 import torch
-import torchaudio
 
 CKPT = Path(os.environ.get("TOOLS_DIR", "/home/user/tools")) / "models" / "chatterbox"
 torch.set_num_threads(os.cpu_count() or 4)
@@ -25,7 +25,7 @@ def say(text, ref, out, exaggeration=0.5, cfg_weight=0.5, seed=0):
     m = model()
     with torch.no_grad():
         wav = m.generate(text, language_id="de", audio_prompt_path=str(ref), exaggeration=exaggeration, cfg_weight=cfg_weight)
-    torchaudio.save(str(out), wav, m.sr)
+    sf.write(str(out), wav.squeeze(0).numpy(), m.sr, subtype="PCM_16")  # 16-bit PCM: readable by the stdlib wave module
     return out
 
 
@@ -34,5 +34,13 @@ if __name__ == "__main__" and sys.argv[1] == "say":
     ex = float(sys.argv[5]) if len(sys.argv) > 5 else 0.5
     cfg = float(sys.argv[6]) if len(sys.argv) > 6 else 0.5
     say(sys.argv[3], sys.argv[2], sys.argv[4], ex, cfg)
-    info = torchaudio.info(sys.argv[4])
-    print(f"{sys.argv[4]}: {info.num_frames / info.sample_rate:.2f}s audio in {time.time() - t:.0f}s")
+    print(f"{sys.argv[4]}: {sf.info(sys.argv[4]).duration:.2f}s audio in {time.time() - t:.0f}s")
+
+
+if __name__ == "__main__" and sys.argv[1] == "batch":
+    for j in json.loads(Path(sys.argv[2]).read_text()):
+        if Path(j["out"]).exists():
+            continue
+        t = time.time()
+        say(j["text"], j["ref"], j["out"], j["exaggeration"], j["cfg_weight"], j["seed"])
+        print(f"chatterbox {time.time() - t:4.0f}s  {j['text']}", flush=True)

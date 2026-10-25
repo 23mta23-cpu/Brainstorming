@@ -26,6 +26,8 @@ B bleibt Backup-Format für einen späteren günstigen Humor-Test; C wird als La
 ## 2. Welt
 
 - **Nachhall**: eine verborgene Stadt hinter der gewöhnlichen. Aus jeder Entscheidung, die ein Leben verändert hat, entsteht ein **Echo** — ein Gegenstand, der den nicht gewählten Weg enthält.
+- **Optik der Echos (Lock v3):** gewöhnliche alte Gegenstände (Schlüssel, Handschuh, Brief, Spielzeug, Ring), die schwach gold oder türkis glimmen, jeder in einem versiegelten Glaskasten. **Keine** Lichtkugeln/Leuchtgläser mit Szenen darin (Kanon 1 + Abstand zu bekannten Filmmotiven).
+- **Erzähler:** neutrale, allwissende Chronik-Stimme, keine Figur. Er kennt deshalb auch Regel acht („Offiziell gibt es nur sieben").
 - Manche Echos sind harmlos, manche verändern Erinnerungen, manche können eine Entscheidung erneut geschehen lassen (lokales Umschreiben der Wirklichkeit).
 - Das **Archiv** sammelt und versiegelt Echos, bevor sie die Wirklichkeit verändern. Archivare tragen Handschuhe: Berührung mit bloßer Haut aktiviert Echos.
 - **Die sieben Regeln** (in jedem Archivsaal eingraviert):
@@ -43,14 +45,19 @@ B bleibt Backup-Format für einen späteren günstigen Humor-Test; C wird als La
 | Figur | Funktion | Ziel | Innerer Konflikt | Silhouette / Merkmal | Farbe | Stimme (Pilot) |
 |---|---|---|---|---|---|---|
 | **Nox Veyr** (~17) | Protagonist | herausfinden, wer er war | Wahrheit finden vs. Erinnerungen verlieren | geteilter Mantel (sein rechter Ärmel navy, linker ocker), asymmetrischer Pony, gebrochener Kreis am linken Kragen | navy/ocker | thorsten-high |
-| **Mira** (~18) | Rivalin/Partnerin, Kurator-Schülerin | Rang „Siegelmeisterin" | Regeln vs. Gewissen | scharfer Bob, silberne Haarspange, hoher Kragen, geometrische Schulterplatte (ihre linke Schulter) | petrol/silber | kerstin-low |
+| **Mira** (~18) | Rivalin/Partnerin, Kurator-Schülerin | Rang „Siegelmeisterin" (Können: versiegeln mit goldenen Siegelzeichen) | Regeln vs. Gewissen | scharfer Bob mit Pony, silberne Haarspange, hoher Kragen, cremefarbene Schulterplatten mit Goldkante (beide Schultern, Lock v3), dunkelgraue Handschuhe | petrol/silber | Chatterbox, Referenz aus kerstin (CC0) |
 | **Lina Veyr** (~12 in Visionen, ~16 heute) | Nox' Schwester, Macro-Mystery | dass Nox sein Versprechen hält | Treue vs. Groll | roter Schal | rot | kerstin, hochgepitcht + Echo |
-| **Pip** | lebende Kompasskreatur | zeigt auf das Echo des Weges, den sein Gegenüber früher *nicht* gewählt hat (nie auf die Zukunft) | Comic Relief + überraschendes Wissen | runder Messingkörper, Nadel, Augen über dem Glasrand | messing | (stumm) |
+| **Pip** | lebende Kompasskreatur | zeigt auf das Echo des Weges, den sein Gegenüber früher *nicht* gewählt hat (nie auf die Zukunft) | Comic Relief + überraschendes Wissen | runder Messingkörper, Nadel, große Augen über dem Glasrand, Füßchen, **kein** Ring oben (Abgrenzung zur Taschenuhr) | messing | (stumm) |
 | **Der Kurator** | Mentor / Antagonist | Archiv stabil halten | schützt Nox oder manipuliert ihn? | Gesicht nie ganz sichtbar, geometrische Silhouette | grau/gold | offen |
 
 Mira ist **keine Love Interest**: eigene Ziele, Fähigkeiten, Entscheidungen. Echo-Partikel (gold) sind Markenelement.
 
-## 4. Visuelle Sprache (Phase 1, ehrlich benannt)
+## 4. Visuelle Sprache
+**v3 (ab 25.10.2026, gültig):** stilisierter 3D-Animationsfilm-Look (Stil-Text ohne Studionamen in `look/STYLE.txt`): handgemalte Texturen,
+weiches globales Licht, volumetrisches Licht mit Goldstaub, Palette Petrol/Navy/Gold, geringe Schärfentiefe. Erzeugt lokal mit FLUX.2-klein-4B,
+Figuren immer über die gesperrten Referenzbilder `look/refs/`. Bewegung: Kamerafahrten auf Plates, Überblendungen in-Shot, Mund-Patches, Effekt-Overlays.
+
+**v2 (archiviert):**
 2D-Vektor-Cel-Look (SVG), starke Silhouetten, 2–3 Hauptfarben pro Figur, große lesbare Augen, Licht als Story-Mittel, Filmkorn.
 Das ist **Motion-Graphics/Puppet-Animation**, nicht die im Research skizzierte „3D-Cel-Animation". Ziel Phase 2: referenzbasierte generative Shots auf Basis derselben Designs.
 
@@ -61,6 +68,8 @@ Keine melodische Musik bis zur Policy-Entscheidung (siehe `CONTENT_POLICY.md`).
 ## 6. Staffel 1 „Regel Acht" — Zentralkonflikt, Bogen, Ende
 
 **Zentralfrage:** Wer ist Lina, und warum vergisst Nox sie immer wieder?
+**N1 (geklärt):** Vor E01 fand Nox eine seiner eigenen früheren Notizen und erinnert sich seitdem an das *Versprechen* — nicht an Lina selbst. Das genügt, damit sein Echo ihn ruft (Kanon 1), und erklärt, warum er die Stimme in S10 nicht erkennt. Gezeigt in E09.
+
 **Wahrheit (geplante Auflösung):** Lina ist Nox' jüngere Schwester. Als Kinder trennten sie sich am Bahnhof: Nox stieg in den Zug ins Archiv und versprach, in einem Jahr zurückzukommen; Lina schenkte ihm die Taschenuhr (Gravur N. VEYR · LINA). Am Tag der versprochenen Rückkehr entschied Nox sich, im Archiv zu bleiben (Aufnahmeprüfung — Ehrgeiz gegen Loyalität). **Aus dieser Entscheidung entstand das Uhr-Echo**; sein nicht gewählter Weg ist die Rückfahrt, auf die Lina am Bahnhof wartet (Vision S09). Danach löschte der Kurator Nox' Erinnerung an sie (Regel acht). Nox hat seither mehrfach Spuren gefunden, sich erinnert, sein Echo berührt — und Lina wieder vergessen. Er hinterlässt sich selbst Notizen. Mira hat das beobachtet und gemeldet, aber seine Notizen versteckt.
 
 | Folge | Titel | Engine | Micro-Story (gelöst) | Macro (Fortschritt) |

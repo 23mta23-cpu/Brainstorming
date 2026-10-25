@@ -7,6 +7,7 @@ from pathlib import Path
 HERE = Path(__file__).parent
 GEN_PY = "/home/user/tools/gen-venv/bin/python"
 STYLE = Path(HERE.parent / "series/echo-archiv/look/STYLE.txt")
+LOCKED = {"nox", "mira", "lina", "pip"}  # reference ids that make up the character lock
 
 
 def jobs_for(epdir):
@@ -24,9 +25,17 @@ def jobs_for(epdir):
     return jobs
 
 
+def pending_refs(epdir):
+    """Locked reference images that are missing (e.g. after a redesign) are generated first, in the same model load."""
+    look = epdir / "../../look"
+    spec = json.loads((look / "jobs_refs.json").read_text())
+    return [{**j, "out": f"../../look/{j['out']}", "refs": [f"../../look/{r}" for r in j.get("refs", [])]}
+            for j in spec["jobs"] if j["out"].startswith("refs/") and not (look / j["out"]).exists() and j["id"] in LOCKED]
+
+
 def main(epdir, only):
     epdir = Path(epdir)
-    spec = {"style": STYLE.read_text().strip(), "jobs": jobs_for(epdir)}
+    spec = {"style": STYLE.read_text().strip(), "jobs": pending_refs(epdir) + jobs_for(epdir)}
     (epdir / "keyframes.json").write_text(json.dumps(spec, ensure_ascii=False, indent=1))
     subprocess.run([GEN_PY, str(HERE / "gen.py"), str(epdir / "keyframes.json"), *only], check=True)
 

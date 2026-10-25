@@ -1,5 +1,6 @@
 """episode.json -> final.mp4 (+ timeline.json, mix.wav, qc.json).
-Usage: /home/user/tools/piper-venv/bin/python pipeline/build.py series/echo-archiv/episodes/E001 [--skip-render]"""
+Usage: /home/user/tools/piper-venv/bin/python pipeline/build.py series/echo-archiv/episodes/E001 [--skip-render] [--reuse-video]
+v3 episodes (shots with "kf"/"plate_of") need plates first: pipeline/keyframes.py + pipeline/plates.py."""
 import hashlib, json, re, subprocess, sys, wave
 from pathlib import Path
 import numpy as np
@@ -12,7 +13,10 @@ FX = {  # ffmpeg filters per voice effect; every voice ends trimmed, 48 kHz mono
     None: TRIM + "aresample=48000",
     "narrator": TRIM + "asetrate={sr}*0.92,aresample=48000,atempo=1.087,aecho=0.8:0.5:45|90:0.18|0.1",
     "child_echo": TRIM + "asetrate={sr}*1.26,aresample=48000,atempo=0.794,aecho=0.8:0.6:70|160:0.3|0.15",
+    "echo": TRIM + "aresample=48000,aecho=0.8:0.6:70|160:0.3|0.15",
 }
+TTS2_PY = "/home/user/tools/tts2-venv/bin/python"  # Chatterbox lives in its own venv (pinned deps)
+SCENE_FX = {"motes", "alarm", "rays", "echo_pulse", "engraving", "glint", "flash", "snow", "dream", "memory_flow", "handwriting", "endcard"}
 
 
 # master bus: glue compression, brickwall limiter so transients don't block loudnorm, then TikTok-ish -14 LUFS
@@ -34,6 +38,7 @@ def validate(ep):
     for s in ep.get("shots", []):
         errs += [f"{s.get('id', '?')}: missing {k}" for k in ("id", "min", "fn", "emotion", "visual", "camera", "cut") if k not in s]
         errs += [f"{s['id']}: unknown sfx '{n}'" for n, _ in s.get("sfx", []) if n not in SFX and n not in ("drone", "silence")]
+        errs += [f"{s['id']}: unknown scene fx '{n}'" for n in s.get("fx", []) if n not in SCENE_FX]
         ln = s.get("line")
         if ln and not {"who", "text"} <= ln.keys():
             errs.append(f"{s['id']}: line needs 'who' and 'text'")
@@ -55,14 +60,37 @@ def load48(path):
     return a
 
 
-def voice_line(line, cast, cache):
-    c = dict(cast[line.get("voice", line["who"])])  # per-line voice (e.g. whisper) and tempo overrides
+def voice_spec(line, ep, epdir, cache):
+    """Voice config + cache paths for one line. The key covers text, settings, FX chain and the reference audio bytes."""
+    c = dict(ep["cast"][line.get("voice", line["who"])])  # per-line voice (e.g. whisper) and tempo overrides
     if "length_scale" in line:
         c["length_scale"] = line["length_scale"]
+    if "ref" in c:
+        c["ref"] = str((epdir / c["ref"]).resolve())
+        c["ref_sha"] = hashlib.sha1(Path(c["ref"]).read_bytes()).hexdigest()
     key = hashlib.sha1(json.dumps([line["text"], c, FX[c.get("fx")]], sort_keys=True).encode()).hexdigest()[:12]
-    raw, out = cache / f"{key}.raw.wav", cache / f"{key}.wav"
+    return c, cache / f"{key}.raw.wav", cache / f"{key}.wav"
+
+
+def prerender_chatterbox(ep, epdir, cache):
+    """All missing Chatterbox lines in one subprocess (the model loads once)."""
+    jobs = []
+    for s in ep["shots"]:
+        if "line" in s:
+            c, raw, out = voice_spec(s["line"], ep, epdir, cache)
+            if c.get("engine") == "chatterbox" and not out.exists() and not raw.exists():
+                jobs.append({"text": s["line"]["text"], "ref": c["ref"], "out": str(raw), "exaggeration": c.get("exaggeration", 0.5),
+                             "cfg_weight": c.get("cfg_weight", 0.5), "seed": c.get("seed", 0)})
+    if jobs:
+        (cache / "chatterbox_jobs.json").write_text(json.dumps(jobs, ensure_ascii=False))
+        subprocess.run([TTS2_PY, str(HERE / "tts2.py"), "batch", str(cache / "chatterbox_jobs.json")], check=True)
+
+
+def voice_line(line, ep, epdir, cache):
+    c, raw, out = voice_spec(line, ep, epdir, cache)
     if not out.exists():
-        tts.synth(line["text"], raw, c["model"], c.get("speaker"), c.get("length_scale", 1.0))
+        if c.get("engine") != "chatterbox":
+            tts.synth(line["text"], raw, c["model"], c.get("speaker"), c.get("length_scale", 1.0))
         run("ffmpeg", "-y", "-loglevel", "error", "-i", str(raw), "-af", FX[c.get("fx")].format(sr=tts.read_wav(raw)[1]), "-ac", "1", str(out))
     return load48(out)
 
@@ -74,13 +102,30 @@ def envelope(a, fps):
     return np.round(np.clip(rms / (np.percentile(rms, 95) + 1e-6), 0, 1), 2).tolist()
 
 
-def build_timeline(ep, cache):
+def visuals(s, epdir, strict=True):
+    """v3 shot -> plate URIs for the generic scene (plates/<kf>.jpg, mouth patches plates/<kf>.png)."""
+    if "kf" not in s and "plate_of" not in s:
+        return {}
+    pl = lambda k, ext="jpg": (epdir / "plates" / f"{k}.{ext}").resolve()
+    base = s.get("plate_of") or s["kf"][0]["id"]
+    m = dict(s.get("motion", {}))
+    for k in ("from", "to"):
+        if k in m:
+            m[k] = pl(m[k]).as_uri()
+    missing = [p for p in [pl(base)] + [pl(v) for k, v in s.get("motion", {}).items() if k in ("from", "to")] if not p.exists()]
+    if missing and strict:
+        sys.exit(f"{s['id']}: missing plates {[p.name for p in missing]} - run pipeline/keyframes.py and pipeline/plates.py first")
+    talk = {who: pl(k, "png").as_uri() for who, k in s.get("talk", {}).items() if pl(k, "png").exists()}
+    return {"plate": pl(base).as_uri(), "motion": m, "fx": s.get("fx", []), "talk": talk}
+
+
+def build_timeline(ep, epdir, cache, strict=True):
     fps, t, shots, lines, audio = ep["format"]["fps"], 0.0, [], [], {}
     for s in ep["shots"]:
         dur = s["min"]
         if "line" in s:
             ln = s["line"]
-            a = voice_line(ln, ep["cast"], cache)
+            a = voice_line(ln, ep, epdir, cache)
             ld = len(a) / SR
             sps = len(re.findall(r"[aeiouäöüy]+", ln["text"].lower())) / ld  # vowel groups ~ German syllables
             if sps > 5.5:  # calm dramatic delivery; conversational German is ~5-6
@@ -91,7 +136,7 @@ def build_timeline(ep, cache):
                           "end": round(start + ld, 3), "env": envelope(a, fps)})
             audio[len(lines) - 1] = a
         shots.append({"id": s["id"], "start": round(t, 3), "end": round(t + dur, 3), "sfx": s.get("sfx", []),
-                      "text": s.get("onscreen_text")})
+                      "text": s.get("onscreen_text"), **visuals(s, epdir, strict)})
         t += dur
     return {"fps": fps, "duration": round(t, 3), "shots": shots, "lines": lines}, audio
 
@@ -149,7 +194,8 @@ def main(epdir, skip_render=False, reuse_video=False):
     ep = json.load(open(epdir / "episode.json"))
     validate(ep)
     work = epdir / "build"; cache = work / "tts"; cache.mkdir(parents=True, exist_ok=True)
-    tl, voices = build_timeline(ep, cache)
+    prerender_chatterbox(ep, epdir, cache)
+    tl, voices = build_timeline(ep, epdir, cache, strict=not skip_render)  # audio-only runs may precede the plates
     lo, hi = ep["format"]["target_seconds"]
     print(f"duration {tl['duration']:.2f}s (target {lo}-{hi}), {len(tl['shots'])} shots, {len(tl['lines'])} lines")
     json.dump(tl, open(work / "timeline.json", "w"))
@@ -157,7 +203,8 @@ def main(epdir, skip_render=False, reuse_video=False):
     if skip_render: return
     f = ep["format"]
     if not (reuse_video and (work / "video.mp4").exists()):
-        run("node", str(HERE / "render.mjs"), str(epdir / "scene.html"), str(work / "timeline.json"),
+        scene = epdir / "scene.html" if (epdir / "scene.html").exists() else epdir.parent.parent / "scene.html"  # v3: series-wide scene
+        run("node", str(HERE / "render.mjs"), str(scene), str(work / "timeline.json"),
             str(work / "video.mp4"), str(f["fps"]), str(f["width"]), str(f["height"]))
     final = epdir / "final" / f"{ep['episode_id']}_{ep['title'].replace(' ', '_')}.mp4"
     final.parent.mkdir(exist_ok=True)

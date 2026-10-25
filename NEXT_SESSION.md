@@ -42,12 +42,18 @@ Automatische Fortsetzung: geplante Aufgabe „Echo-Archiv: automatische Fortsetz
 Arbeitsplan (Status hier fortschreiben):
 1. [x] Recherche: FLUX.2-klein-4B (Apache-2.0, Multi-Referenz-Editing), Chatterbox Multilingual (MIT, Deutsch); Video auf CPU nicht machbar
 2. [x] Machbarkeit: CPU hat AMX → bf16 ~860 GFLOPS; **65 s/Bild** (576×1024), 127 s mit Referenz, Peak-RAM 9,9 GB (`pipeline/gen.py`)
-3. [~] Character Lock v3: `series/echo-archiv/look/refs/` — nox.png (=nox_a, Mantel korrekt), mira.png, pip.png OK; **lina.png neu generieren (Tierohren-Artefakt)**
+3. [~] Character Lock v3: `series/echo-archiv/look/refs/` — nox.png, mira.png, lina.png (v2, ohne Ohren) OK; **pip.png wird im Keyframe-Batch neu erzeugt** (Augen über Rand, kein Ring)
 4. [~] Pipeline v3: `pipeline/keyframes.py` (Skript → Jobs), `pipeline/gen.py`, `pipeline/plates.py` (Upscale + Mund-Patches), `pipeline/tts2.py` (Chatterbox) geschrieben; **offen**: Stimm-Referenzen, Szene v3 (`series/echo-archiv/scene.html`), build.py-Integration
-5. [~] E01 v3 Skript geschrieben (`episode.json` v3, 18 Shots, 24 Keyframes, ~62 s) — **Story-Review steht aus (Regel 5: vor dem Rendern!)**. ACHTUNG: E001 ist WIP — v2-Szene passt nicht mehr zum v3-Skript; v2 bleibt über Commit `006911a` reproduzierbar (Tag-Push vom Git-Proxy verweigert)
+5. [~] E01 Skript **v3.2** (21 Shots, 24 Keyframes, Summe Mindestdauern 58,4 s) — Story-Review: v3 REVISE (5 Blocker) → v3.1 **PASS**; Asset-Gates G1 Lina/Pip, G2 Stimmen (erledigt: `series/echo-archiv/voices/` + SOURCES.md), G3 Ring in S05/S07 bei Keyframe-Prüfung. ACHTUNG: E001 ist WIP — v2-Szene passt nicht mehr zum v3-Skript; v2 bleibt über Commit `006911a` reproduzierbar (Tag-Push vom Git-Proxy verweigert)
 6. [ ] Ehrlicher Vergleich v2 vs. v3 (Kontaktbogen) → Freigabepaket
 
 ## Genaue nächste Aktion
+**Qualitätsoffensive zuerst** (Reihenfolge wegen RAM, nie parallel):
+1. Stimmen: `piper-venv/bin/python pipeline/build.py series/echo-archiv/episodes/E001 --skip-render` (Chatterbox-Batch, prüft Dauer/Hook)
+2. Bilder (ein Lauf, ~17 min Laden + ~25 × 70–130 s): `python3 pipeline/keyframes.py series/echo-archiv/episodes/E001` — danach jedes Keyframe ansehen (Ring S05/S07, Konsistenz)
+3. `gen-venv/bin/python pipeline/plates.py series/echo-archiv/episodes/E001` → Vorschau-Stills → `build.py` (voller Render) → QC → Vergleich v2/v3
+Danach erst E02.
+
 1. `scripts/setup_tools.sh` ausführen (falls Container neu).
 2. Feedback zu E001 einarbeiten (falls vorhanden).
 3. Skill `produce-episode` für **E02 „Der Brief"** (Lost Letter; Micro: fremder Brief wird zugestellt; Macro: Linas Brief an Nox erwähnt den Bahnhof; löst Q3 „Veyr").
