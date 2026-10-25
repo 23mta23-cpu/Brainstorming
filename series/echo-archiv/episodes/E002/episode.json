@@ -677,11 +677,11 @@
    "kf": [
     {
      "id": "S11c",
-     "seed": 212,
+     "seed": 213,
      "refs": [
       "mira"
      ],
-     "prompt": "Close-up: the dark grey gloved hands of the young woman from the reference image rest on a small glass display case containing a glowing old envelope with a red wax seal; golden sealing glyphs on the glass dissolve into sparks of light as she unseals it; her face above, serious and conflicted."
+     "prompt": "Close-up: the dark grey gloved hands of the young woman from the reference image rest on a small glass display case containing a glowing old envelope with a plain round red wax seal; thin glowing golden rings and simple geometric lines on the glass (only circles and straight lines, no letters, no characters, no symbols, no writing) dissolve into sparks of light as she unseals it; her face above, serious and conflicted; a small silver hair clip on one side of her black bob, exactly like the reference."
     }
    ],
    "motion": {

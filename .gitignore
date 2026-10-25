@@ -10,3 +10,5 @@ agentdb.rvf*
 # prompt-embedding cache of pipeline/gen.py (~8 MB per prompt, regenerable)
 .emb/
 series/*/episodes/*/plates/
+# rejected keyframes (kept locally for comparison only)
+series/*/episodes/*/kf_rejected/
