@@ -106,13 +106,13 @@
    "engine": "chatterbox",
    "ref": "../../voices/mira_ref.wav",
    "exaggeration": 0.6,
-   "cfg_weight": 0.5
+   "cfg_weight": 0.3
   },
   "lina": {
    "engine": "chatterbox",
    "ref": "../../voices/lina_ref.wav",
-   "exaggeration": 0.6,
-   "cfg_weight": 0.5,
+   "exaggeration": 0.5,
+   "cfg_weight": 0.3,
    "fx": "echo"
   }
  },
