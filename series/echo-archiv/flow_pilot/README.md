@@ -5,6 +5,8 @@ Kosten: etwa 60 Flow-Credits (3 × Veo 3.1 Fast à 20), im AI-Pro-Abo enthalten 
 Danach entscheiden wir gemeinsam anhand der Clips, wie Folge 3 und die Neufassung von Folge 1–2 gebaut werden.
 
 ## Schritte (ca. 10 Minuten; Bezeichnungen in Flow können leicht abweichen)
+Alternative ohne Flow: Gemini-App → Chip **„Videos"** wählen (nicht der normale Chat) → Bild-Button → Startbild → Format 9:16 → Prompt → senden. Reihenfolge: **P3 zuerst** (unverfänglich), dann P2, dann P1.
+
 1. Die drei Startbilder aus diesem Ordner herunterladen: `P1_start.jpg`, `P2_start.jpg`, `P3_start.jpg`
    (auf GitHub: Datei anklicken → Download-Symbol).
 2. **labs.google/flow** öffnen, mit dem Google-Konto anmelden, das Google AI Pro hat → neues Projekt.
@@ -24,8 +26,10 @@ Vor einer Veröffentlichung prüfe ich die Nutzungsbedingungen für Flow-Clips (
 ---
 
 ## P1 — Handlung: Nox greift nach dem Brief, Mira hält ihn zurück (Startbild `P1_start.jpg`)
+Fassung 1 wurde von Gemini abgelehnt (25.10., „I can't generate that video") — vermutlich Filter auf „bare hand / grabs the wrist firmly / young".
+Fassung 2 (ohne Griff, ohne „bare", ohne Altersangabe):
 ```
-Close-up of two hands above an old cream envelope with a red wax seal that glows warm gold on a dark wooden desk: a young man's bare hand coming out of a navy blue sleeve, and a young woman's dark grey gloved hand. The bare hand slowly reaches down toward the glowing seal; just before the fingertips touch it, the grey gloved hand grabs the wrist firmly and pulls it back up. The bare fingers tremble and curl into a fist. Golden dust swirls up from the seal and slowly settles. Camera: slow dolly in. Lighting: warm glow from the letter, deep teal background, volumetric light with floating golden dust. Style: stylized 3D animated feature film, hand-painted textures; keep both hands, sleeves and the letter exactly as in the image. Audio: a low magical hum that rises, then fades; a soft sharp breath; fabric rustle. No music, no speech. Negative: no subtitles, no captions, no text, no watermarks; the bare hand never touches the envelope.
+Stylized 3D animated film, close-up. Two cartoon hands above a glowing old envelope with a red wax seal on a wooden desk: one hand without a glove coming out of a navy sleeve, one hand in a dark grey glove. The ungloved hand slowly moves toward the glowing seal; the gloved hand gently stops it by resting on the wrist and guiding it back. Golden dust swirls up from the seal and settles. Slow dolly in, warm golden glow, deep teal background. Keep everything exactly as in the image. Sound: soft magical hum, a quiet breath, fabric rustle. No music, no subtitles, no text.
 ```
 
 ## P2 — Sprechendes Gesicht: Nox begreift, wer den Brief abgelehnt hat (Startbild `P2_start.jpg`)
