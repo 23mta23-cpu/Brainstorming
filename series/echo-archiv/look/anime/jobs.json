@@ -1,0 +1,71 @@
+{
+ "style": "2D anime-style illustration, cel shading with soft gradients, clean confident ink line art, expressive eyes, painted atmospheric background, rich palette of deep teal, navy blue and warm gold, cinematic lighting, flat 2D look, not a 3D render, vertical 9:16 frame.",
+ "jobs": [
+  {
+   "id": "nox_anime",
+   "out": "nox.png",
+   "refs": [
+    "../refs/nox.png"
+   ],
+   "seed": 401,
+   "prompt": "Redraw the character from the reference image as a full-body 2D anime character design: same face, same black hair with asymmetric bangs, same coat split exactly in half — his right half navy blue, his left half ochre — with the brass toggle, dark leather gloves, a small broken gold ring pin on his left collar; standing pose, calm expression, plain dark teal background.",
+   "w": 720,
+   "h": 1280
+  },
+  {
+   "id": "mira_anime",
+   "out": "mira.png",
+   "refs": [
+    "../refs/mira.png"
+   ],
+   "seed": 402,
+   "prompt": "Redraw the character from the reference image as a full-body 2D anime character design: same face, same sharp black bob with bangs, a small silver hair clip on one side, same high-collared teal coat with cream shoulder plates with gold edges on both shoulders, dark grey gloves, dark boots; standing pose, serious expression, plain dark teal background.",
+   "w": 720,
+   "h": 1280
+  },
+  {
+   "id": "pip_anime",
+   "out": "pip.png",
+   "refs": [
+    "../refs/pip.png"
+   ],
+   "seed": 403,
+   "prompt": "Redraw the creature from the reference image as a 2D anime mascot design: the same small round brass compass body with a glass face and a red needle, the same two big round eyes above the glass rim, the same tiny feet, no ring on top; cute, curious expression, plain dark teal background.",
+   "w": 720,
+   "h": 1280
+  },
+  {
+   "id": "P1_anime",
+   "out": "P1_start_anime.png",
+   "refs": [
+    "../../flow_pilot/P1_start.jpg"
+   ],
+   "seed": 404,
+   "prompt": "Redraw this exact image as a 2D anime-style illustration with the same composition, same camera angle and same lighting; two hands above an old cream envelope with a red wax seal that glows warm gold on a dark wooden desk: one hand without a glove coming out of a navy blue sleeve, one hand in a dark grey glove; golden dust in the air.",
+   "w": 720,
+   "h": 1280
+  },
+  {
+   "id": "P2_anime",
+   "out": "P2_start_anime.png",
+   "refs": [
+    "../../flow_pilot/P2_start.jpg"
+   ],
+   "seed": 405,
+   "prompt": "Redraw this exact image as a 2D anime-style illustration with the same composition, same camera angle and same lighting; extreme close-up of the same young man with black hair and asymmetric bangs, wide eyes in shock with a tear on his cheek, lips parted, the same coat split navy blue and ochre; warm lamp light from below, dark background with golden dust.",
+   "w": 720,
+   "h": 1280
+  },
+  {
+   "id": "P3_anime",
+   "out": "P3_start_anime.png",
+   "refs": [
+    "../../flow_pilot/P3_start.jpg"
+   ],
+   "seed": 406,
+   "prompt": "Redraw this exact image as a 2D anime-style illustration with the same composition, same camera angle and same lighting; the same young man with black hair in a coat split navy blue and ochre, the same small brass compass creature with two round eyes and a red needle on his shoulder pointing up, walls of archive drawers behind him; warm lamp light, golden dust.",
+   "w": 720,
+   "h": 1280
+  }
+ ]
+}
