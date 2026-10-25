@@ -49,22 +49,12 @@ Arbeitsplan (Status hier fortschreiben):
 6. [x] Vergleich v2/v3 + Freigabepaket v3 (LAUNCH.md); E001 v3 fertig bis auf menschliches Anhören/Freigabe
 
 ## Genaue nächste Aktion
-**Stand 25.10. ~12:10 UTC.** Zwei Stränge, nie gleichzeitig (RAM): Bild-KI ↔ Stimmen.
-A) **Stimmen v3 (Co-CEO-Wahl: Nox B, Mira C, Lina A, Erzähler C)** — Engine IMPLEMENTED, noch nicht TESTED:
-   Cast in E001/E002 = `engine: qwen` + `voices/casting/<id>.wav` + `ref_text`; `build.py` → `scripts/sandbox-run.sh qwen-venv … tts_qwen.py` (4 Takes/Zeile im Batch)
-   → `qwen-venv … tts2.py pick` (Whisper wählt). Modell `tools/models/qwen3-tts-base`. tts2-venv gibt es nicht mehr (Whisper jetzt in qwen-venv).
-   Nächster Schritt **nach** Ende des Bild-Batches: `$PY pipeline/build.py series/echo-archiv/episodes/E002 --skip-render` (Speed messen; Hook ≤ 1,8 s:
-   S01 hat noch `tempo` 1.2/`pace` 5.2 aus Chatterbox-Zeit → neu prüfen), dann E001 neu vertonen + neu rendern (Hook!, LAUNCH-Credits auf Qwen ändern).
-B) **E02 Keyframes**: Neustart 14:22 → gebündelter Lauf (Log scratchpad `e002-kf2.log`): S02, S03, S11c, S12, S15, S15m (Nachläufe) + S17m (Prompt „fast geschlossen"), S18, S19. S16, S17 geprüft ok. Geprüft+ok: S01, S04–S11, S13, S14 (Brieftext kalibriert). Abgelehnt → Nachlauf nötig (Prompts schon geändert):
-   **S02, S03** (v1 nach `kf_rejected/`), **S11c** (Pseudo-Schriftzeichen), **S12** (Finger berührt Siegel; v1 in `kf_rejected/` als Reserve).
-   **S15** (nackte Hände nach S13, Mantel ganz navy, Buchstaben im Hintergrund) — (alte S15/S15m gelöscht).
-   Nachlauf = `python3 pipeline/keyframes.py series/echo-archiv/episodes/E002` (resumable; ~17 min Kaltstart + ~4 min/Bild). Hinweis S13: beide Ärmel navy (Lock: links ocker) — akzeptiert.
-   Danach Overlays kalibrieren (Keyframe-Pixel): `texts` S14 Brieftext „Nox, ich warte am Bahnhof. / Jeden Tag um sieben. / Deine Lina" (write),
-   S16 Stempel „ANNAHME VERWEIGERT" (stamp, rot) + „N. Veyr" (write); `pin` S11b (plate_of S02 → nach S02-Neubild neu kalibrieren)/S15; Mund-`at` S15m S17m; S18 Tasche.
-   S01/S04/S05/S06/S07 sind kalibriert (S02-Pin nach Neubild neu).
-C) Dann `plates.py` → Vorschau-Kontaktbogen → `build.py` → QC + `asr_check.py` → LAUNCH.md (E02) → Tracker/NEXT_SESSION → Video an Co-CEO.
-C2) Neu (Co-CEO 25.10.): E02 S01 Bildtext „5 JAHRE UNGEÖFFNET" (Hook-Rubrik); E01 S01 braucht auch einen Bildtext (≠ Sprechtext) → beim Neu-Vertonen/-Rendern, story-reviewer prüft. RTK-Hook aktiv ab nächster Sitzung.
-D) Danach E03 „Miras Lüge" (Handbuch §6; N4: Woher weiß Mira von Lina, warum bricht sie das Siegel; P7 Notizen in ihrer Tasche).
+**Stand 25.10. ~16:05 UTC.**
+- **E02 „Der Brief" v1 gerendert** (62,8 s, QC 15/15, Whisper 14/14) und an Co-CEO geschickt; `E002/LAUNCH.md`. Danach Review-Verbesserungen (Bildtext „5 JAHRE ZU SPÄT", größerer Hook-Text) → **Neu-Render läuft** (Log scratchpad `render2.log`, erst E002, dann E001).
+- **E01 neu vertont** mit Qwen-Cast (61,7 s, Hook 1,72 s mit `tempo` 1.1, 15/15 nach Echo-Fix), Bildtext „7 REGELN. 8 KERBEN.", Tick-Loop am Ende → wird im selben Lauf gerendert.
+Nach dem Lauf: beide `.qc.json` + Whisper prüfen; Frame-Sheet je Folge ansehen; **E001/LAUNCH.md auf v3.1 aktualisieren** (Stimmen Qwen3-TTS statt Chatterbox/Piper, Credits, Hook-Befund „Rieding" erledigt: jetzt 0,91–1,00, Länge 61,7 s > 1 min); E002/LAUNCH.md Bildtext nachziehen; QUALITY_STANDARDS-Spalte; beide Videos an Co-CEO.
+Dann **E03 „Miras Lüge"**: Outline Handbuch §6 (Rival Secret; Mira berichtet dem Kurator, versteckt Nox' Notizen; N4, P7), Skript nach Schema E002 inkl. Hook-Rubrik/Bildtext/Loop, `story-reviewer`, dann Keyframes (Nacht-Batch), Stimmen, Render.
+Offen beim Co-CEO: Anhören E01/E02 (Stimmen!), Musik-Policy, TikTok-Account, Rollen, Freigaben.
 
 ## Relevante Pfade & Befehle
 ```bash
