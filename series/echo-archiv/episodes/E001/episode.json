@@ -122,7 +122,7 @@
    "min": 2.2,
    "fn": "Hook: verbotene Grenze + unmögliche Regel (≤1,5 s)",
    "emotion": "verbotene Neugier",
-   "visual": "ECU: Nox' bloße Hand greift nach dem Bronze-Siegel; sieben Kerben leuchten, die achte ist dunkel.",
+   "visual": "ECU: Nox' bloße Hand greift nach dem Bronze-Siegel; sieben Kerben leuchten, die achte ist dunkel (Kerben als Grafik-Overlay, Bildmodelle zählen unzuverlässig).",
    "camera": "Makro, langsamer Push-in",
    "line": {
     "who": "erzaehler",
@@ -134,7 +134,7 @@
     {
      "id": "S01",
      "seed": 101,
-     "prompt": "Extreme close-up: a young man's bare pale hand emerging from a deep navy blue coat sleeve reaches toward a large circular bronze vault seal engraved with eight notches around its rim, seven notches glow warm gold and one notch is dark and empty, his fingertips stop a few centimeters before the metal, floating golden dust, dramatic warm rim light, dark background."
+     "prompt": "Extreme close-up macro shot, no face and no head in the frame: a young man's bare pale right hand emerging from a deep navy blue coat sleeve reaches in from the left toward a large round bronze vault seal seen straight on, the seal fills the right half of the frame; the seal has a smooth polished rim ring without any marks, slots or symbols and a small dark keyhole in its center; his fingertips stop a few centimeters before the metal; floating golden dust, dramatic warm rim light, dark background."
     }
    ],
    "motion": {
@@ -148,7 +148,8 @@
     ]
    },
    "fx": [
-    "motes"
+    "motes",
+    "notches"
    ],
    "sfx": [
     [
@@ -174,24 +175,17 @@
     "text": "Offiziell gibt es nur sieben.",
     "pre": 0.05
    },
-   "kf": [
-    {
-     "id": "S02",
-     "seed": 102,
-     "edit_of": "S01",
-     "prompt": "Same image, identical composition and details, but the single dark notch on the bronze seal now glows bright red and a red warning light washes over the whole scene."
-    }
-   ],
+   "plate_of": "S01",
    "motion": {
     "zoom": [
      1.09,
      1.13
     ],
-    "shake": 3,
-    "from": "S01"
+    "shake": 3
    },
    "fx": [
-    "alarm"
+    "alarm",
+    "notches_red"
    ],
    "sfx": [
     [
@@ -419,7 +413,8 @@
     ]
    },
    "fx": [
-    "motes"
+    "motes",
+    "notches"
    ],
    "sfx": [
     [
@@ -436,7 +431,7 @@
    "emotion": "Alarm",
    "visual": "Wie S02: achte Kerbe rot, Warnlicht.",
    "camera": "Makro, Wackeln",
-   "plate_of": "S02",
+   "plate_of": "S01",
    "motion": {
     "zoom": [
      1.13,
@@ -445,7 +440,8 @@
     "shake": 4
    },
    "fx": [
-    "alarm"
+    "alarm",
+    "notches_red"
    ],
    "sfx": [
     [
