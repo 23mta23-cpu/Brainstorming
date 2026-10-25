@@ -123,8 +123,9 @@
    "line": {
     "who": "erzaehler",
     "text": "Nox brach Regel acht.",
-    "pre": 0.1,
-    "takes": 8
+    "pre": 0.05,
+    "takes": 8,
+    "tempo": 1.1
    },
    "kf": [
     {
@@ -191,7 +192,8 @@
       640
      ]
     ]
-   }
+   },
+   "onscreen_text": "7 REGELN. 8 KERBEN."
   },
   {
    "id": "S02",
