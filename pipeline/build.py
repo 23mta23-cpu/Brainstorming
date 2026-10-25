@@ -172,6 +172,9 @@ def place(buf, x, at, gain=1.0):
     buf[i:i + len(x)] += x * gain
 
 
+SPEECH_RMS = 0.16  # ~ -16 dBFS on voiced samples: ~11 dB over the ambience bed, like E001 v3 (Chatterbox)
+
+
 def mix(tl, voices):
     n = int((tl["duration"] + 0.5) * SR)
     bed, fx, vo = np.zeros(n), np.zeros(n), np.zeros(n)
@@ -186,8 +189,9 @@ def mix(tl, voices):
                 mute.append((s["start"], s["end"] + off))
             else:
                 place(fx, SFX[name](d), at, 0.7)
-    for i, a in voices.items():
-        place(vo, a, tl["lines"][i]["start"])
+    for i, a in voices.items():  # dialogue normalisation: every line at the same speech level, whatever engine made it
+        act = a[np.abs(a) > 0.01]
+        place(vo, a, tl["lines"][i]["start"], SPEECH_RMS / np.sqrt((act ** 2).mean()) if act.size else 1.0)
     g = np.ones(n)  # "Ton bricht ab": hard gate on bed + fx, short release back in
     for a, b in mute:
         ia, ib = int(a * SR), int(b * SR)
