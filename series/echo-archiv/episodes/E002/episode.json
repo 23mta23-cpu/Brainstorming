@@ -720,12 +720,12 @@
    "kf": [
     {
      "id": "S12",
-     "seed": 213,
+     "seed": 214,
      "refs": [
       "nox",
       "mira"
      ],
-     "prompt": "Close-up of hands only, no faces: the bare right hand of the young man from the first reference image, coming out of his navy blue sleeve, reaches toward a glowing old envelope with a red wax seal lying on a desk, his left hand holds a dark leather glove he has just pulled off; the dark grey gloved hand of the young woman from the second reference image grabs the cuff of his navy blue sleeve."
+     "prompt": "Close-up of hands only, no faces: the bare right hand of the young man from the first reference image, coming out of his navy blue sleeve, stops in mid-air a hand's width above a glowing old envelope with a red wax seal lying on a desk, clearly not touching it; the dark grey gloved hand of the young woman from the second reference image, in her teal sleeve, firmly grabs his wrist from the side and holds him back; in the background his left hand holds a dark leather glove he has just pulled off."
     }
    ],
    "motion": {
