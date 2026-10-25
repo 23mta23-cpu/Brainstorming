@@ -33,7 +33,7 @@ def disk(size, at, r):
     return m.filter(ImageFilter.GaussianBlur(r * 0.2))
 
 
-def change_mask(base, var, at=None):
+def change_mask(base, var, at=None, r=WINDOW):
     a = np.asarray(base.convert("RGB"), np.float32)
     b = np.asarray(var.convert("RGB"), np.float32)
     d = np.abs(a - b).mean(axis=2)
@@ -42,7 +42,7 @@ def change_mask(base, var, at=None):
     energy = d[: gh * CELL, : gw * CELL].reshape(gh, CELL, gw, CELL).mean(axis=(1, 3))
     if at:  # only the speaker's mouth may change
         yy, xx = np.mgrid[:gh, :gw]
-        energy[np.hypot((xx + 0.5) * CELL - at[0], (yy + 0.5) * CELL - at[1]) > WINDOW] = 0
+        energy[np.hypot((xx + 0.5) * CELL - at[0], (yy + 0.5) * CELL - at[1]) > r] = 0
     thr = max(10.0, energy.mean() + 3 * energy.std())
     seed = np.unravel_index(np.argmax(energy), energy.shape)
     region, q = np.zeros_like(energy, bool), deque([seed])
@@ -77,11 +77,16 @@ def main(epdir):
                         epdir / "plates" / f"{k['edit_of']}.jpg")  # replaces the base plate written just before
                 report[k["id"]] = f"fix of {k['edit_of']} at {k['at']}"
             elif "patch" in k:
-                alpha, area = change_mask(Image.open(epdir / "kf" / f"{k['edit_of']}.png"), Image.open(src), k.get("at"))
+                base = Image.open(epdir / "kf" / f"{k['edit_of']}.png").convert("RGB")
+                alpha, area = change_mask(base, Image.open(src), k.get("at"), k.get("r", WINDOW))
                 if area > MAX_AREA:
                     report[k["id"]] = f"skipped: change covers {area:.0%} of frame (edit drifted)"
                     continue
-                var = Image.open(src).convert("RGB")
+                b, v = np.asarray(base, np.float32), np.asarray(Image.open(src).convert("RGB"), np.float32)
+                same = (np.asarray(alpha) > 12) & (np.abs(v - b).mean(axis=2) < 20)  # unchanged skin shows the edit's tint
+                if same.any():
+                    v = np.clip(v - (v - b)[same].mean(axis=0), 0, 255)  # match the base tone, so no tinted blob flickers
+                var = Image.fromarray(v.astype(np.uint8))
                 rgba = var.resize(SIZE, Image.LANCZOS).convert("RGBA")
                 rgba.putalpha(alpha.resize(SIZE, Image.LANCZOS))
                 rgba.save(epdir / "plates" / f"{k['id']}.png")

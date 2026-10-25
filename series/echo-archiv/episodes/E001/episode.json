@@ -1066,7 +1066,12 @@
      "seed": 116,
      "edit_of": "S16",
      "patch": "mouth",
-     "prompt": "Same image, identical in every detail, except the young woman's mouth is slightly open as if speaking."
+     "prompt": "Same image, identical in every detail, except the young woman's mouth is slightly open as if speaking.",
+     "at": [
+      362,
+      410
+     ],
+     "r": 50
     },
     {
      "id": "S16p",
@@ -1096,6 +1101,13 @@
    ],
    "fx_img": {
     "photo": "S16p"
+   },
+   "fx_at": {
+    "photo": [
+     355,
+     742,
+     1.575
+    ]
    }
   },
   {
@@ -1133,6 +1145,13 @@
     "who": "nox",
     "text": "Wer ist sie?",
     "pre": 0.3
+   },
+   "fx_at": {
+    "handwriting": [
+     375,
+     560,
+     1.0
+    ]
    }
   },
   {
