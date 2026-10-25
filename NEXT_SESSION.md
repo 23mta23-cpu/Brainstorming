@@ -15,7 +15,7 @@
 - Drive: Ordner „AI-Studio – Freigaben (Kopien aus GitHub)" (https://drive.google.com/drive/folders/1sV7w5ucmWRobBkaE2c2tCfabOwOZzahP) mit Freigabepaket E001 (https://docs.google.com/document/d/1zbGT4I41Fq4oboMMVPD6keyVMbaXpU2DzfktFuDvKQw). Kopie; Quelle bleibt GitHub.
 
 ## Installiert & getestet (flüchtig! nach Neustart: `scripts/setup_tools.sh`)
-SkillSpector 2.12.0 · Piper 1.8.0 + 3 CC0-Stimmen · RTK (Binary, nicht gehookt, `--rtk`) · OpenMontage-Deps (Tests 1328 grün; nicht im Setup-Skript, da nicht Teil der Pipeline).
+gen-venv (FLUX.2-klein) · qwen-venv (Qwen3-TTS + faster-whisper) · Modelle flux2-klein-4b, qwen3-tts-base, whisper-small · SkillSpector 2.12.0 · Piper 1.8.0 + 3 CC0-Stimmen · RTK (Binary, nicht gehookt, `--rtk`) · OpenMontage-Deps (Tests 1328 grün; nicht im Setup-Skript, da nicht Teil der Pipeline).
 
 ## Offene Tests
 - Kopf-an-Kopf-Vergleich Engineering-Methodik (Bordmittel+Ponytail vs. Superpowers) an einer echten Aufgabe — nur falls Engineering wächst.
@@ -23,7 +23,8 @@ SkillSpector 2.12.0 · Piper 1.8.0 + 3 CC0-Stimmen · RTK (Binary, nicht gehookt
 
 ## Blocker
 - Keine Hörprüfung durch mich möglich → Stimmen-Freigabe durch Menschen.
-- Budget 0 € → kein generatives Video (CPU zu langsam), Stimmen nur Open Source (Chatterbox).
+- Budget 0 € → kein generatives Video (CPU zu langsam), Stimmen nur Open Source (jetzt Qwen3-TTS, entworfene Stimmen).
+- Platte: ~2,5 GB frei (Kontingent). Nur Neu-Ladbares löschen.
 
 ## Erforderliche Freigaben / Rückfragen an den Co-CEO
 1. **E001 v3 ansehen/anhören** (`final/E001_Regel_Acht.mp4`, Vergleich `final/E001_v2_vs_v3.jpg`) — v. a. Hook-Satz und Miras Twist-Satz; freigeben oder Korrekturen nennen.
@@ -48,14 +49,20 @@ Arbeitsplan (Status hier fortschreiben):
 6. [x] Vergleich v2/v3 + Freigabepaket v3 (LAUNCH.md); E001 v3 fertig bis auf menschliches Anhören/Freigabe
 
 ## Genaue nächste Aktion
-**E02 „Der Brief" in Produktion** (Skript v1.2, Story-Review: REVISE → REVISE(2) → behoben; Stimmen fertig 14/14 ASR, 60,8 s):
-1. [~] Keyframes laufen/liefen: `python3 pipeline/keyframes.py series/echo-archiv/episodes/E002` (27 Jobs, `kf/S04p.png` = Kopie E001 S16p, nicht generieren).
-   Jedes Bild prüfen (Identität, Ort, Requisiten, Policy); Overlays kalibrieren (Keyframe-Pixel):
-   `texts` (fx_txt): S01 + S11 Adresse „Für Nox" (Kinderschrift), S04 „Lina lebt." auf der Fotorückseite? (S04 zeigt die Vorderseite → `photo`),
-   S07 Schild „ZUSTELLUNG", S14 Brieftext „Nox, ich warte am Bahnhof. / Jeden Tag um sieben. / Deine Lina" (write), S16 Stempel „ANNAHME VERWEIGERT" (stamp, rot) + „N. Veyr" (write);
-   `pin` S02/S06/S15 (+S11b über plate_of S02); `photo` S04; Mund-`at` S04m S05m S06m S07m S15m S17m.
-2. `plates.py` → Vorschau-Kontaktbogen → `build.py` → QC + `asr_check.py` → LAUNCH.md (E02) → Tracker/NEXT_SESSION.
-3. Danach E03 „Miras Lüge" (Handbuch §6; N4: Woher weiß Mira von Lina, warum bricht sie das Siegel; P7 Notizen in ihrer Tasche).
+**Stand 25.10. ~12:10 UTC.** Zwei Stränge, nie gleichzeitig (RAM): Bild-KI ↔ Stimmen.
+A) **Stimmen v3 (Co-CEO-Wahl: Nox B, Mira C, Lina A, Erzähler C)** — Engine IMPLEMENTED, noch nicht TESTED:
+   Cast in E001/E002 = `engine: qwen` + `voices/casting/<id>.wav` + `ref_text`; `build.py` → `scripts/sandbox-run.sh qwen-venv … tts_qwen.py` (4 Takes/Zeile im Batch)
+   → `qwen-venv … tts2.py pick` (Whisper wählt). Modell `tools/models/qwen3-tts-base`. tts2-venv gibt es nicht mehr (Whisper jetzt in qwen-venv).
+   Nächster Schritt **nach** Ende des Bild-Batches: `$PY pipeline/build.py series/echo-archiv/episodes/E002 --skip-render` (Speed messen; Hook ≤ 1,8 s:
+   S01 hat noch `tempo` 1.2/`pace` 5.2 aus Chatterbox-Zeit → neu prüfen), dann E001 neu vertonen + neu rendern (Hook!, LAUNCH-Credits auf Qwen ändern).
+B) **E02 Keyframes**: Batch läuft (Log scratchpad `e002-kf.log`). Geprüft+ok: S01, S04–S11, S13. Abgelehnt → Nachlauf nötig (Prompts schon geändert):
+   **S02, S03** (v1-Dateien noch in `kf/` → vor dem Nachlauf löschen), **S11c** (Pseudo-Schriftzeichen), **S12** (Finger berührt Siegel; v1 in `kf_rejected/` als Reserve).
+   Nachlauf = `python3 pipeline/keyframes.py series/echo-archiv/episodes/E002` (resumable; ~17 min Kaltstart + ~4 min/Bild). Hinweis S13: beide Ärmel navy (Lock: links ocker) — akzeptiert.
+   Danach Overlays kalibrieren (Keyframe-Pixel): `texts` S14 Brieftext „Nox, ich warte am Bahnhof. / Jeden Tag um sieben. / Deine Lina" (write),
+   S16 Stempel „ANNAHME VERWEIGERT" (stamp, rot) + „N. Veyr" (write); `pin` S11b (plate_of S02 → nach S02-Neubild neu kalibrieren)/S15; Mund-`at` S15m S17m; S18 Tasche.
+   S01/S04/S05/S06/S07 sind kalibriert (S02-Pin nach Neubild neu).
+C) Dann `plates.py` → Vorschau-Kontaktbogen → `build.py` → QC + `asr_check.py` → LAUNCH.md (E02) → Tracker/NEXT_SESSION → Video an Co-CEO.
+D) Danach E03 „Miras Lüge" (Handbuch §6; N4: Woher weiß Mira von Lina, warum bricht sie das Siegel; P7 Notizen in ihrer Tasche).
 
 ## Relevante Pfade & Befehle
 ```bash
