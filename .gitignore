@@ -9,3 +9,4 @@ ruvector.db
 agentdb.rvf*
 # prompt-embedding cache of pipeline/gen.py (~8 MB per prompt, regenerable)
 .emb/
+series/*/episodes/*/plates/
