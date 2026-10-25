@@ -829,8 +829,21 @@
     "to": "S14b"
    },
    "fx": [
-    "memory_flow"
+    "memory_flow",
+    "pin"
    ],
+   "fx_at": {
+    "memory_flow": [
+     300,
+     420,
+     1.1
+    ],
+    "pin": [
+     400,
+     880,
+     1.1
+    ]
+   },
    "sfx": [
     [
      "heart",
