@@ -40,11 +40,11 @@ Feedback: Pilot v2 wirkt „wie vom Werkstudenten", Figuren/Animation ungenügen
 Rahmen: **0 € Budget, auch keine Lizenzkosten** → nur kostenlose, kommerziell nutzbare Open-Source-Modelle/Tools (Apache-2.0/MIT/CC0/OFL).
 Automatische Fortsetzung: geplante Aufgabe „Echo-Archiv: automatische Fortsetzung" (alle 2 h) — vom Co-CEO freigegeben.
 Arbeitsplan (Status hier fortschreiben):
-1. [ ] Recherche: moderner TikTok-Animationsstil 2026 + kostenlose lokale Modelle (Bild, Tiefe, TTS, ggf. Video) auf CPU
-2. [ ] Machbarkeitstest auf dieser Maschine (4 vCPU, keine GPU): Zeit + Qualität je Keyframe messen
-3. [ ] Neuer Look: Character Sheets (Nox, Mira, Lina, Pip) in hoher Qualität, konsistent
-4. [ ] Pipeline v3: KI-Keyframes + 2.5D-Kamera/Parallax + Ausdrucks-/Mund-Varianten + bessere Stimmen
-5. [ ] E01 v3 neu schreiben auf ~60–70 s (Creator-Rewards-Schwelle > 1 min), Story-Review, produzieren, QC
+1. [x] Recherche: FLUX.2-klein-4B (Apache-2.0, Multi-Referenz-Editing), Chatterbox Multilingual (MIT, Deutsch); Video auf CPU nicht machbar
+2. [x] Machbarkeit: CPU hat AMX → bf16 ~860 GFLOPS; **65 s/Bild** (576×1024), 127 s mit Referenz, Peak-RAM 9,9 GB (`pipeline/gen.py`)
+3. [~] Character Lock v3: `series/echo-archiv/look/refs/` — nox.png (=nox_a, Mantel korrekt), mira.png, pip.png OK; **lina.png neu generieren (Tierohren-Artefakt)**
+4. [~] Pipeline v3: `pipeline/keyframes.py` (Skript → Jobs), `pipeline/gen.py`, `pipeline/plates.py` (Upscale + Mund-Patches), `pipeline/tts2.py` (Chatterbox) geschrieben; **offen**: Stimm-Referenzen, Szene v3 (`series/echo-archiv/scene.html`), build.py-Integration
+5. [~] E01 v3 Skript geschrieben (`episode.json` v3, 18 Shots, 24 Keyframes, ~62 s) — **Story-Review steht aus (Regel 5: vor dem Rendern!)**. ACHTUNG: E001 ist WIP — v2-Szene passt nicht mehr zum v3-Skript; v2 bleibt über Commit `006911a` reproduzierbar (Tag-Push vom Git-Proxy verweigert)
 6. [ ] Ehrlicher Vergleich v2 vs. v3 (Kontaktbogen) → Freigabepaket
 
 ## Genaue nächste Aktion

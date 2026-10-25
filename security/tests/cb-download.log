@@ -1,0 +1,4 @@
+Fetching 8 files:   0%|          | 0/8 [00:00<?, ?it/s]Fetching 8 files:  12%|█▎        | 1/8 [00:00<00:02,  2.89it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 8 files:  25%|██▌       | 2/8 [00:00<00:01,  3.70it/s]Fetching 8 files:  62%|██████▎   | 5/8 [00:01<00:00,  3.59it/s]Fetching 8 files:  75%|███████▌  | 6/8 [00:01<00:00,  3.07it/s]Fetching 8 files:  88%|████████▊ | 7/8 [00:08<00:02,  2.12s/it]Fetching 8 files: 100%|██████████| 8/8 [00:15<00:00,  3.39s/it]Fetching 8 files: 100%|██████████| 8/8 [00:15<00:00,  1.96s/it]
+done /home/user/tools/models/chatterbox
+exit=0

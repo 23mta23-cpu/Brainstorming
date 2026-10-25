@@ -1,0 +1,9 @@
+{
+  "style": "Stylized 3D animated feature film still, hand-painted textures, soft global illumination, volumetric light with floating golden dust, rich palette of deep teal, navy blue and warm gold, cinematic shallow depth of field, expressive face with large readable eyes, strong clean silhouette, highly detailed, vertical 9:16 frame.",
+  "jobs": [
+    {"id": "nox_test", "out": "test/nox_test.png", "w": 576, "h": 1024, "seed": 7,
+     "prompt": "Full-body character design of Nox Veyr, a 17-year-old young archivist, slim build, asymmetric short black hair with a long fringe falling over his right eye, pale skin, dark brown eyes, calm and serious expression. He wears a long archivist coat split vertically into two colors with a visible stitched seam down the middle: deep navy blue on his right side and ochre gold on his left side, high collar, a small broken golden ring pin on his left collar, dark trousers and leather boots, bare hands. Standing pose in three-quarter view against a plain dark background with soft rim light."},
+    {"id": "archive_test", "out": "test/archive_test.png", "w": 576, "h": 1024, "seed": 3,
+     "prompt": "An endless underground archive hall: towering dark wooden shelves filled with small glass jars, each jar holds a softly glowing golden or teal light, brass rails and ladders, warm hanging lanterns, light mist. At the end of the hall a monumental round bronze vault door with a circular seal engraved with eight notches, seven glowing gold and one dark. No people."}
+  ]
+}

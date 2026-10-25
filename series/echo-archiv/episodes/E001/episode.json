@@ -2,354 +2,129 @@
  "episode_id": "E001",
  "series": "Das Echo-Archiv",
  "title": "Regel Acht",
- "format": {
-  "width": 1080,
-  "height": 1920,
-  "fps": 30,
-  "target_seconds": [
-   30,
-   40
-  ]
- },
- "hook": {
-  "type": "unmoegliche_regel",
-  "spoken": "Nox brach Regel acht. Offiziell gibt es nur sieben.",
-  "visual_question": "Eine bloße Hand greift nach einem Siegel mit sieben leuchtenden Kerben und einem dunklen achten Schlitz."
- },
+ "version": 3,
+ "format": {"width": 1080, "height": 1920, "fps": 30, "target_seconds": [55, 70]},
+ "look": {"w": 720, "h": 1280,
+  "refs": {"nox": "../../look/refs/nox.png", "mira": "../../look/refs/mira.png", "lina": "../../look/refs/lina.png", "pip": "../../look/refs/pip.png"}},
+ "hook": {"type": "unmoegliche_regel", "spoken": "Nox brach Regel acht. Offiziell gibt es nur sieben.",
+  "visual_question": "Eine bloße Hand greift nach einem Siegel mit sieben leuchtenden Kerben und einem dunklen achten Schlitz."},
  "emotional_core": "Wahrheit gegen Erinnerung",
- "character_decision": "Nox berührt das Echo trotz Miras Warnung.",
- "micro_loop": {
-  "question": "Was ist hinter der versiegelten Tür?",
-  "resolution": "Eine Taschenuhr — ein Echo, das Nox' Namen trägt."
- },
- "macro_loop": {
-  "question": "Wer ist Lina, und warum vergisst Nox sie immer wieder?",
-  "planned_resolution": "E10"
- },
+ "character_decision": "Nox berührt sein eigenes Echo trotz Miras Warnung.",
+ "micro_loop": {"question": "Was ruft Nox hinter der versiegelten Tür?", "resolution": "Eine Taschenuhr — sein eigenes Echo, graviert mit N. VEYR · LINA."},
+ "macro_loop": {"question": "Wer ist Lina, und warum vergisst Nox sie immer wieder?", "planned_resolution": "E10"},
  "twist": "Es ist nicht das erste Mal: Nox hat Lina schon einmal vergessen.",
  "cliffhanger": "Auf der Rückseite des Fotos steht in Nox' eigener Handschrift: Lina lebt.",
  "plants": [
-  {
-   "id": "P1",
-   "what": "Das Siegel hat sieben leuchtende Kerben und einen dunklen, rot glimmenden achten Schlitz (ab Frame 0).",
-   "payoff": "E07/E09: Regel acht ist eingraviert — 'Ein Archivar darf sich nicht erinnern.'"
-  },
-  {
-   "id": "P2",
-   "what": "Die Notiz ist mit Nox' gebrochenem Kreis signiert.",
-   "payoff": "E09: Nox hinterlässt sich selbst Botschaften, weil er weiß, dass er vergisst."
-  },
-  {
-   "id": "P3",
-   "what": "Pips Nadel zeigt auf die Tür, bevor sie sich öffnet.",
-   "payoff": "E08: Pip zeigt immer auf den nicht gewählten Weg."
-  },
-  {
-   "id": "P4",
-   "what": "Lina sagt 'Du hast es versprochen' in der Vision — sie zeigt den nicht gewählten Weg des Rückkehrtages: Nox fährt zurück, Lina wartet.",
-   "payoff": "E10: Doppelte Bedeutung wird aufgelöst."
-  },
-  {
-   "id": "P5",
-   "what": "Lina hält in Vision und auf dem Foto denselben Brief.",
-   "payoff": "E02 'Der Brief'"
-  },
-  {
-   "id": "P6",
-   "what": "Hinter der Uhr: eine zweite, innere versiegelte Tür.",
-   "payoff": "E07: Stille Kammer, Inschrift Regel acht"
-  },
-  {
-   "id": "P7",
-   "what": "Fotoecke in Miras Mantel (S03).",
-   "payoff": "E03: Mira trägt Nox' versteckte Spuren bei sich"
-  },
-  {
-   "id": "P8",
-   "what": "Mira: 'Nicht schon wieder.'",
-   "payoff": "S12 in derselben Folge + E09 (Schleife)"
-  }
- ],
+  {"id": "P1", "what": "Siegel: sieben leuchtende Kerben, ein dunkler achter Schlitz (ab Frame 0).", "payoff": "E07/E09: Regel acht"},
+  {"id": "P2", "what": "'Lina lebt.' mit Nox' gebrochenem Kreis signiert.", "payoff": "E09: Nox' frühere Notizen"},
+  {"id": "P3", "what": "Pip auf Nox' Schulter blickt zur Tür.", "payoff": "E08"},
+  {"id": "P4", "what": "Vision: nicht gewählter Weg des Rückkehrtages (Nox fährt zurück, Lina wartet).", "payoff": "E10"},
+  {"id": "P5", "what": "Lina hält in der Vision einen versiegelten Brief.", "payoff": "E02"},
+  {"id": "P6", "what": "Hinter der Uhr: innere versiegelte Tür.", "payoff": "E07"},
+  {"id": "P8", "what": "Mira: 'Nicht schon wieder.'", "payoff": "S16 + E09"}],
  "content_flags": [],
  "historical_claims": [],
  "ai_disclosure": true,
  "cast": {
-  "erzaehler": {
-   "model": "de_DE-thorsten_emotional-medium",
-   "speaker": 4,
-   "length_scale": 1.1,
-   "fx": "narrator"
-  },
-  "nox": {
-   "model": "de_DE-thorsten-high",
-   "length_scale": 1.0
-  },
-  "mira": {
-   "model": "de_DE-kerstin-low",
-   "length_scale": 1.0
-  },
-  "lina": {
-   "model": "de_DE-kerstin-low",
-   "length_scale": 1.08,
-   "fx": "child_echo"
-  },
-  "nox_whisper": {
-   "model": "de_DE-thorsten_emotional-medium",
-   "speaker": 7,
-   "length_scale": 1.1
-  }
+  "erzaehler": {"engine": "chatterbox", "ref": "../../voices/erzaehler_ref.wav", "exaggeration": 0.45, "cfg_weight": 0.5},
+  "nox": {"engine": "chatterbox", "ref": "../../voices/nox_ref.wav", "exaggeration": 0.5, "cfg_weight": 0.5},
+  "nox_whisper": {"model": "de_DE-thorsten_emotional-medium", "speaker": 7, "length_scale": 1.1},
+  "mira": {"engine": "chatterbox", "ref": "../../voices/mira_ref.wav", "exaggeration": 0.6, "cfg_weight": 0.5},
+  "lina": {"engine": "chatterbox", "ref": "../../voices/lina_ref.wav", "exaggeration": 0.6, "cfg_weight": 0.5, "fx": "echo"}
  },
  "shots": [
-  {
-   "id": "S01",
-   "min": 2.0,
-   "fn": "Hook: verbotene Grenze + unmögliche Regel (≤1,5 s); das eigene Echo tickt hinter der Tür",
-   "emotion": "verbotene Neugier",
-   "visual": "ECU: Nox' bloße Hand (ohne Handschuh) greift zum Siegel. Sieben Kerben leuchten, die achte ist ein dunkler, rot glimmender Schlitz.",
-   "camera": "85mm, langsamer 6%-Push-in",
-   "line": {
-    "who": "erzaehler",
-    "text": "Nox brach Regel acht.",
-    "pre": 0.12
-   },
-   "sfx": [
-    [
-     "drone",
-     0
-    ],
-    [
-     "tick",
-     0.2
-    ]
-   ],
-   "cut": "hart"
-  },
-  {
-   "id": "S02",
-   "min": 1.6,
-   "fn": "Paradox schließen: Regel acht existiert offiziell nicht",
-   "emotion": "Alarm",
-   "visual": "Warnlicht pulsiert, die achte Kerbe flammt rot auf, Pips Nadel dreht sich zur Tür.",
-   "camera": "halbnah, leichtes Wackeln",
-   "line": {
-    "who": "erzaehler",
-    "text": "Offiziell gibt es nur sieben.",
-    "pre": 0.05
-   },
-   "sfx": [
-    [
-     "alarm",
-     0
-    ]
-   ],
-   "cut": "hart"
-  },
-  {
-   "id": "S03",
-   "min": 1.8,
-   "fn": "Warnung + Plant für den Twist ('schon wieder')",
-   "emotion": "Angst um ihn, Müdigkeit",
-   "visual": "Zweier: Mira packt Nox mit Handschuh am Ärmel; eine Fotoecke ragt aus ihrem Mantel.",
-   "camera": "halbnah, statisch",
-   "line": {
-    "who": "mira",
-    "text": "Nox. Nicht schon wieder.",
-    "pre": 0.1,
-    "length_scale": 1.1
-   },
-   "sfx": [
-    [
-     "whoosh_short",
-     0
-    ]
-   ],
-   "cut": "hart"
-  },
-  {
-   "id": "S04",
-   "min": 2.0,
-   "fn": "Das eigene Echo ruft Nox; Mira (Siegel-Können) kann es nicht halten",
-   "emotion": "Ehrfurcht",
-   "visual": "Das Siegel dreht sich von selbst gegen Miras Handschuh-Hand; die Türhälften gleiten auf, Licht fällt heraus.",
-   "camera": "total, Push-in",
-   "sfx": [
-    [
-     "metal",
-     0.1
-    ]
-   ],
-   "cut": "hart"
-  },
-  {
-   "id": "S05",
-   "min": 2.2,
-   "fn": "Micro-Loop: Was ist dahinter?",
-   "emotion": "unheimlich",
-   "visual": "Vorraum: eine Taschenuhr schwebt im Lichtkegel; dahinter eine zweite, innere versiegelte Tür.",
-   "camera": "halbnah, langsames Kreisen",
-   "line": {
-    "who": "lina",
-    "text": "Du bist endlich gekommen.",
-    "pre": 0.5
-   },
-   "sfx": [
-    [
-     "tick",
-     0
-    ]
-   ],
-   "cut": "hart"
-  },
-  {
-   "id": "S06",
-   "min": 1.4,
-   "fn": "Nox' Unwissen zeigen",
-   "emotion": "Verwirrung",
-   "visual": "Close-up Nox, Blick wandert.",
-   "camera": "Close-up, statisch",
-   "line": {
-    "who": "nox",
-    "text": "Wer bist du?",
-    "pre": 0.15,
-    "length_scale": 1.6
-   },
-   "cut": "hart"
-  },
-  {
-   "id": "S07",
-   "min": 2.2,
-   "fn": "Lore-Loop: Name auf der Uhr",
-   "emotion": "Neugier",
-   "visual": "ECU Gravur: N. VEYR · LINA. Miras Handschuh-Hand greift ins Bild.",
-   "camera": "Makro, seitlicher Schwenk",
-   "line": {
-    "who": "mira",
-    "text": "Nicht anfassen!",
-    "pre": 0.7
-   },
-   "cut": "hart"
-  },
-  {
-   "id": "S08",
-   "min": 1.3,
-   "fn": "Die Entscheidung",
-   "emotion": "Trotz",
-   "visual": "Nox' Fingerspitze berührt die Uhr. Weißblitz. Ton bricht ab.",
-   "camera": "ECU",
-   "sfx": [
-    [
-     "silence",
-     0.75
-    ]
-   ],
-   "cut": "Weißblitz"
-  },
-  {
-   "id": "S09",
-   "min": 2.6,
-   "fn": "Vision des nicht gewählten Weges",
-   "emotion": "Hoffnung, Sehnsucht",
-   "visual": "Vision des nicht gewählten Weges: Ein Zug fährt ein, Blick aus der Zugtür. Lina mit rotem Schal und Brief wartet hoffnungsvoll.",
-   "camera": "POV des Ankommenden, langsamer Zoom",
-   "line": {
-    "who": "lina",
-    "text": "Du hast es versprochen.",
-    "pre": 0.4
-   },
-   "sfx": [
-    [
-     "whoosh_down",
-     0
-    ]
-   ],
-   "cut": "hart"
-  },
-  {
-   "id": "S10",
-   "min": 2.6,
-   "fn": "Der Preis: Nox erinnert sich kurz – und verliert es",
-   "emotion": "Verlust",
-   "visual": "Goldene Erinnerungspartikel lösen sich aus Nox und fliegen in die Uhr.",
-   "camera": "halbnah, Push-in",
-   "sfx": [
-    [
-     "heart",
-     0.1
-    ],
-    [
-     "shimmer",
-     0.2
-    ]
-   ],
-   "cut": "hart",
-   "line": {
-    "who": "nox",
-    "voice": "nox_whisper",
-    "text": "Lina.",
-    "pre": 0.35
-   }
-  },
-  {
-   "id": "S11",
-   "min": 2.0,
-   "fn": "Twist vorbereiten",
-   "emotion": "Trauer",
-   "visual": "Close-up Mira, eine Träne.",
-   "camera": "Close-up, minimaler Push-in",
-   "line": {
-    "who": "nox",
-    "text": "Warum weinst du?",
-    "pre": 0.6,
-    "length_scale": 1.45
-   },
-   "cut": "hart"
-  },
-  {
-   "id": "S12",
-   "min": 2.8,
-   "fn": "Twist",
-   "emotion": "Schmerz",
-   "visual": "Mira hält ein Foto hoch: Nox als Junge mit einem Mädchen mit rotem Schal.",
-   "camera": "halbnah",
-   "line": {
-    "who": "mira",
-    "text": "Weil du sie schon wieder vergessen hast.",
-    "pre": 0.2,
-    "post": 0.4,
-    "length_scale": 1.25
-   },
-   "cut": "Foto-Flip"
-  },
-  {
-   "id": "S13",
-   "min": 3.2,
-   "fn": "Cliffhanger aus der Geschichte",
-   "emotion": "Schock + Hoffnung",
-   "visual": "Rückseite des Fotos, von Miras Handschuh gehalten: 'Lina lebt.' — signiert mit Nox' gebrochenem Kreis.",
-   "camera": "Insert, langsamer Push-in",
+  {"id": "S01", "min": 2.2, "fn": "Hook: verbotene Grenze + unmögliche Regel (≤1,5 s)", "emotion": "verbotene Neugier",
+   "visual": "ECU: Nox' bloße Hand greift nach dem Bronze-Siegel; sieben Kerben leuchten, die achte ist dunkel.", "camera": "Makro, langsamer Push-in",
+   "line": {"who": "erzaehler", "text": "Nox brach Regel acht.", "pre": 0.1},
+   "kf": [{"id": "S01", "seed": 101, "prompt": "Extreme close-up: a young man's bare pale hand emerging from a deep navy blue coat sleeve reaches toward a large circular bronze vault seal engraved with eight notches around its rim, seven notches glow warm gold and one notch is dark and empty, his fingertips stop a few centimeters before the metal, floating golden dust, dramatic warm rim light, dark background."}],
+   "motion": {"zoom": [1.0, 1.09], "y": [0, -20]}, "fx": ["motes"], "sfx": [["drone", 0], ["tick", 0.2]], "cut": "hart"},
+  {"id": "S02", "min": 2.2, "fn": "Paradox schließen", "emotion": "Alarm",
+   "visual": "Die achte Kerbe flammt rot auf, rotes Warnlicht.", "camera": "Makro, leichtes Wackeln",
+   "line": {"who": "erzaehler", "text": "Offiziell gibt es nur sieben.", "pre": 0.05},
+   "kf": [{"id": "S02", "seed": 102, "edit_of": "S01", "prompt": "Same image, identical composition and details, but the single dark notch on the bronze seal now glows bright red and a red warning light washes over the whole scene."}],
+   "motion": {"zoom": [1.09, 1.13], "shake": 3, "from": "S01"}, "fx": ["alarm"], "sfx": [["alarm", 0]], "cut": "hart"},
+  {"id": "S03", "min": 4.6, "fn": "Welt etablieren", "emotion": "Staunen",
+   "visual": "Totale: die Archivhalle mit leuchtenden Echo-Gläsern; Nox geht von hinten gesehen zur Tresortür, Pip auf seiner Schulter.", "camera": "Totale, langsamer Dolly vorwärts",
+   "line": {"who": "erzaehler", "text": "Hier verwahrt das Archiv Echos. Dinge, die von Entscheidungen übrig bleiben.", "pre": 0.15},
+   "kf": [{"id": "S03", "seed": 103, "refs": ["nox", "pip"], "prompt": "Wide shot of an endless underground archive hall with towering dark wooden shelves full of glass jars, each holding a softly glowing golden or teal light, brass ladders, warm hanging lanterns, light mist. The young man from the first reference image walks away from the camera down the hall toward a monumental round bronze vault door, seen from behind so his split navy and ochre coat is visible; the small brass compass creature from the second reference image sits on his shoulder."}],
+   "motion": {"zoom": [1.0, 1.1], "y": [0, -40]}, "fx": ["motes"], "sfx": [], "cut": "hart"},
+  {"id": "S04", "min": 3.0, "fn": "Regel der Kraft erklären", "emotion": "Neugier",
+   "visual": "Makro: ein Glas mit einer winzigen leuchtenden Szene darin (zwei Wege an einer Weggabelung).", "camera": "Makro, Kreisfahrt",
+   "line": {"who": "erzaehler", "text": "Nox kann sehen, was hätte sein können, wenn er eines berührt.", "pre": 0.1},
+   "kf": [{"id": "S04", "seed": 104, "prompt": "Macro shot of a single glass jar on a dark wooden archive shelf; inside the jar floats a tiny glowing miniature scene of a forest path splitting into two directions, one path lit gold and one fading into shadow, the glass reflects warm lantern light, golden dust, shallow depth of field."}],
+   "motion": {"zoom": [1.05, 1.0], "x": [-25, 25]}, "fx": ["motes"], "sfx": [["shimmer", 0.2]], "cut": "hart"},
+  {"id": "S05", "min": 2.6, "fn": "Preis etablieren (Grundlage für den Twist)", "emotion": "Entschlossenheit",
+   "visual": "Halbnah: Nox zieht seinen Handschuh aus, Blick auf die Tür.", "camera": "Halbnah, Push-in",
+   "line": {"who": "erzaehler", "text": "Jedes Mal kostet es ihn eine Erinnerung.", "pre": 0.1},
+   "kf": [{"id": "S05", "seed": 105, "refs": ["nox"], "prompt": "Medium shot of the young man from the reference image in the glowing archive hall, pulling a dark leather glove off his right hand with a determined, slightly sad expression, looking toward warm golden light coming from off-screen, his split navy and ochre coat clearly visible."}],
+   "motion": {"zoom": [1.0, 1.07]}, "fx": ["motes"], "sfx": [], "cut": "hart"},
+  {"id": "S06", "min": 2.4, "fn": "Warnung + Plant für den Twist", "emotion": "Angst um ihn, Müdigkeit",
+   "visual": "Zweier: Mira greift mit Handschuh nach Nox' Ärmel.", "camera": "Halbnah, statisch",
+   "line": {"who": "mira", "text": "Nox. Nicht schon wieder.", "pre": 0.1},
+   "kf": [{"id": "S06", "seed": 106, "refs": ["nox", "mira"], "prompt": "Medium two-shot in the glowing archive hall: the young woman from the second reference image grabs the coat sleeve of the young man from the first reference image with her gloved hand, she looks at him worried and tired, he looks toward a golden light off-screen. Both faces clearly visible."},
+          {"id": "S06m", "seed": 106, "edit_of": "S06", "patch": "mouth", "prompt": "Same image, identical in every detail, except the young woman's mouth is slightly open as if speaking."}],
+   "motion": {"zoom": [1.0, 1.04]}, "talk": {"mira": "S06m"}, "sfx": [["whoosh_short", 0]], "cut": "hart"},
+  {"id": "S07", "min": 2.4, "fn": "Nox' Ziel aussprechen (Echo ruft)", "emotion": "Sehnsucht",
+   "visual": "Close-up Nox, goldenes Licht von der Tür auf seinem Gesicht.", "camera": "Close-up, minimaler Push-in",
+   "line": {"who": "nox", "text": "Es ruft mich, Mira.", "pre": 0.15},
+   "kf": [{"id": "S07", "seed": 107, "refs": ["nox"], "prompt": "Close-up portrait of the young man from the reference image, warm golden light from a doorway falling across his face, longing and determined expression, eyes glistening, dark archive background with soft bokeh lights."},
+          {"id": "S07m", "seed": 107, "edit_of": "S07", "patch": "mouth", "prompt": "Same image, identical in every detail, except the young man's mouth is slightly open as if speaking."}],
+   "motion": {"zoom": [1.0, 1.05]}, "talk": {"nox": "S07m"}, "sfx": [], "cut": "hart"},
+  {"id": "S08", "min": 3.0, "fn": "Das eigene Echo ruft: die Tür öffnet sich", "emotion": "Ehrfurcht",
+   "visual": "Die Tresortür entriegelt sich von selbst, Licht bricht durch die Fugen; Miras Handschuh-Hand am Siegel.", "camera": "Totale, Push-in",
+   "kf": [{"id": "S08", "seed": 108, "prompt": "The monumental round bronze vault door in the archive hall begins to open by itself, blinding warm golden light bursting through its seams and the gap, a gloved hand pressed against the seal trying to hold it shut, dust and light rays, dramatic."},
+          {"id": "S08b", "seed": 108, "edit_of": "S08", "prompt": "Same scene, but the round vault door now stands wide open and brilliant golden light floods out toward the camera."}],
+   "motion": {"zoom": [1.0, 1.1], "to": "S08b"}, "fx": ["motes", "rays"], "sfx": [["metal", 0.1]], "cut": "Lichtblende"},
+  {"id": "S09", "min": 3.4, "fn": "Micro-Loop: was ruft", "emotion": "unheimlich",
+   "visual": "Vorraum: eine Taschenuhr schwebt im Lichtkegel; dahinter eine innere versiegelte Tür.", "camera": "Halbnah, langsames Kreisen",
+   "line": {"who": "lina", "text": "Du bist endlich gekommen.", "pre": 0.6},
+   "kf": [{"id": "S09", "seed": 109, "prompt": "A small dark stone vestibule: an antique gold pocket watch floats in mid-air inside a single beam of warm light, its chain drifting, golden dust in the beam; behind it in the darkness a second, smaller sealed round door is barely visible. Mysterious, quiet."}],
+   "motion": {"zoom": [1.0, 1.06], "x": [15, -15]}, "fx": ["motes", "echo_pulse"], "sfx": [["tick", 0]], "cut": "hart"},
+  {"id": "S10", "min": 2.0, "fn": "Nox weiß nichts", "emotion": "Verwirrung",
+   "visual": "Close-up Nox, verwirrt.", "camera": "Close-up, statisch",
+   "line": {"who": "nox", "text": "Wer bist du?", "pre": 0.2},
+   "kf": [{"id": "S10", "seed": 110, "refs": ["nox"], "prompt": "Close-up of the young man from the reference image looking up in confusion, lit from below by a warm golden glow, dark stone background, gentle bokeh."},
+          {"id": "S10m", "seed": 110, "edit_of": "S10", "patch": "mouth", "prompt": "Same image, identical in every detail, except the young man's mouth is slightly open as if speaking."}],
+   "motion": {"zoom": [1.0, 1.03]}, "talk": {"nox": "S10m"}, "sfx": [], "cut": "hart"},
+  {"id": "S11", "min": 2.8, "fn": "Lore-Loop: Name auf der Uhr", "emotion": "Neugier",
+   "visual": "Makro: Gravur N. VEYR · LINA auf dem Uhrdeckel.", "camera": "Makro, seitlicher Schwenk",
+   "line": {"who": "mira", "text": "Nicht anfassen!", "pre": 0.9},
+   "kf": [{"id": "S11", "seed": 111, "prompt": "Extreme macro shot of the closed lid of an antique polished gold pocket watch filling the frame, smooth flat center area without any engraving, fine scratches, warm glints, dark background."}],
+   "motion": {"zoom": [1.02, 1.08], "x": [30, -30]}, "fx": ["engraving", "glint"], "sfx": [], "cut": "hart"},
+  {"id": "S12", "min": 1.4, "fn": "Die Entscheidung", "emotion": "Trotz",
+   "visual": "Nox' Fingerspitze berührt die Uhr. Weißblitz. Ton bricht ab.", "camera": "ECU",
+   "kf": [{"id": "S12", "seed": 112, "prompt": "Extreme close-up: a young man's bare fingertip, with a deep navy coat sleeve, touching an antique gold pocket watch floating in a beam of light, a burst of golden light at the point of contact."}],
+   "motion": {"zoom": [1.0, 1.12]}, "fx": ["flash"], "sfx": [["silence", 0.75]], "cut": "Weißblitz"},
+  {"id": "S13", "min": 3.6, "fn": "Vision des nicht gewählten Weges", "emotion": "Hoffnung, Sehnsucht",
+   "visual": "Blick aus der Tür eines einfahrenden Zuges: verschneiter Bahnsteig, Lina wartet mit Brief.", "camera": "POV des Ankommenden",
+   "line": {"who": "lina", "text": "Du hast es versprochen.", "pre": 0.5},
+   "kf": [{"id": "S13", "seed": 113, "refs": ["lina"], "prompt": "View through the open door of an arriving train onto a snowy old railway platform at dusk, warm platform lamps, falling snow; the girl from the reference image stands on the platform holding a sealed letter, looking up at the camera with a hopeful smile. Soft dreamy overexposed glow at the edges."}],
+   "motion": {"zoom": [1.12, 1.0], "x": [60, 0]}, "fx": ["snow", "dream"], "sfx": [["whoosh_down", 0]], "cut": "hart"},
+  {"id": "S14", "min": 3.6, "fn": "Der Preis", "emotion": "Verlust",
+   "visual": "Goldene Erinnerungspartikel lösen sich aus Nox und fliegen in die Uhr; sein Blick wird leer.", "camera": "Halbnah, Push-in",
+   "line": {"who": "nox", "voice": "nox_whisper", "text": "Lina.", "pre": 0.4},
+   "kf": [{"id": "S14", "seed": 114, "refs": ["nox"], "prompt": "Medium close-up of the young man from the reference image in a dark vestibule, glowing golden particles of light streaming out of his head and drifting toward a floating gold pocket watch in the upper corner, his face lit gold, sorrowful expression."},
+          {"id": "S14b", "seed": 114, "edit_of": "S14", "prompt": "Same image, but the young man's eyes are now pale and empty, staring blankly, the expression gone still."}],
+   "motion": {"zoom": [1.0, 1.06], "to": "S14b"}, "fx": ["memory_flow"], "sfx": [["heart", 0.1], ["shimmer", 0.2]], "cut": "hart"},
+  {"id": "S15", "min": 2.8, "fn": "Twist vorbereiten", "emotion": "Trauer",
+   "visual": "Close-up Mira, eine Träne.", "camera": "Close-up, minimaler Push-in",
+   "line": {"who": "nox", "text": "Warum weinst du?", "pre": 0.8},
+   "kf": [{"id": "S15", "seed": 115, "refs": ["mira"], "prompt": "Close-up portrait of the young woman from the reference image, a single tear running down her cheek, eyes glossy, restrained grief, soft teal and gold light, dark background."}],
+   "motion": {"zoom": [1.0, 1.04]}, "sfx": [], "cut": "hart"},
+  {"id": "S16", "min": 3.6, "fn": "Twist", "emotion": "Schmerz",
+   "visual": "Mira hält ein altes Foto hoch: ein Junge und ein Mädchen mit rotem Schal.", "camera": "Halbnah",
+   "line": {"who": "mira", "text": "Weil du sie schon wieder vergessen hast.", "pre": 0.2, "post": 0.5},
+   "kf": [{"id": "S16", "seed": 116, "refs": ["mira", "lina"], "prompt": "Medium shot of the young woman from the first reference image holding up an old faded photograph with her gloved hand toward the camera, tears on her face; the photograph shows a smiling boy with black hair and the girl from the second reference image in her red scarf standing together in the snow."},
+          {"id": "S16m", "seed": 116, "edit_of": "S16", "patch": "mouth", "prompt": "Same image, identical in every detail, except the young woman's mouth is slightly open as if speaking."}],
+   "motion": {"zoom": [1.0, 1.05]}, "talk": {"mira": "S16m"}, "sfx": [], "cut": "Foto-Flip"},
+  {"id": "S17", "min": 4.2, "fn": "Cliffhanger aus der Geschichte", "emotion": "Schock + Hoffnung",
+   "visual": "Rückseite des Fotos in Miras Handschuh: 'Lina lebt.', signiert mit Nox' gebrochenem Kreis.", "camera": "Insert, Push-in",
    "onscreen_text": "Lina lebt.",
-   "sfx": [
-    [
-     "whoosh_short",
-     0
-    ]
-   ],
-   "cut": "Schwarzblende"
-  },
-  {
-   "id": "S14",
-   "min": 3.0,
-   "fn": "Marke + Offenlegung",
-   "emotion": "Nachhall",
-   "visual": "Schwarz, Echo-Welle, Titel DAS ECHO-ARCHIV · Folge 1, KI-Hinweis.",
-   "camera": "statisch",
-   "sfx": [
-    [
-     "logo",
-     0.05
-    ]
-   ],
-   "cut": "Ende"
-  }
+   "kf": [{"id": "S17", "seed": 117, "prompt": "Close-up of the blank back side of an old aged photograph made of cream paper, held by a dark grey gloved hand, completely empty paper with soft creases and a coffee-colored age stain at one corner, dark background, warm light."}],
+   "motion": {"zoom": [1.0, 1.06]}, "fx": ["handwriting"], "sfx": [["whoosh_short", 0]], "cut": "Schwarzblende"},
+  {"id": "S18", "min": 3.6, "fn": "Marke + Offenlegung", "emotion": "Nachhall",
+   "visual": "Echo-Ringe, Titel DAS ECHO-ARCHIV · Folge 1, KI-Hinweis.", "camera": "statisch",
+   "kf": [{"id": "S18", "seed": 118, "prompt": "Very dark, out-of-focus view of the endless archive hall, faint glowing jars as soft bokeh, deep shadows, lots of empty dark space in the center."}],
+   "motion": {"zoom": [1.0, 1.03]}, "fx": ["endcard"], "sfx": [["logo", 0.05]], "cut": "Ende"}
  ]
 }
