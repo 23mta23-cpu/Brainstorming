@@ -1,0 +1,291 @@
+{
+ "style": "Stylized 3D animated feature film still, hand-painted textures, soft global illumination, volumetric light with floating golden dust, rich palette of deep teal, navy blue and warm gold, cinematic shallow depth of field, expressive face with large readable eyes, strong clean silhouette, highly detailed, vertical 9:16 frame.",
+ "jobs": [
+  {
+   "id": "S01",
+   "prompt": "Extreme close-up: an old cream envelope sealed with a round red wax seal lies inside a small sealed glass display case on a dark wooden desk; the envelope glows faintly warm gold from within; the front of the envelope is completely blank, no writing; floating golden dust, dark background.",
+   "out": "kf/S01.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 201,
+   "refs": []
+  },
+  {
+   "id": "S02",
+   "prompt": "Close-up: the young man from the reference image looks down at a small glowing glass display case on the desk in front of him, faint warm golden light from the case on his face, puzzled and drawn in, dark walls of letter compartments behind him.",
+   "out": "kf/S02.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 202,
+   "refs": [
+    "../../look/refs/nox.png"
+   ]
+  },
+  {
+   "id": "S03",
+   "prompt": "Wide shot of a vast underground post room of the archive: towering dark wooden walls of small drawers and compartments, loose stacks of old letters on long sorting desks, some letters glow faintly gold, brass pneumatic mail tubes running up into darkness, warm lamps; the young man from the first reference image sits at a desk, the brass compass creature from the second reference image on his shoulder.",
+   "out": "kf/S03.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 203,
+   "refs": [
+    "../../look/refs/nox.png",
+    "../../look/refs/pip.png"
+   ]
+  },
+  {
+   "id": "S04",
+   "prompt": "Medium close-up: the young man from the reference image sits at a sorting desk and holds up an old photograph with his dark leather gloved hands so that its picture side faces the camera; the picture side is completely faded to a plain pale cream color inside a thin white border; puzzled expression, warm desk lamp light.",
+   "out": "kf/S04.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 204,
+   "refs": [
+    "../../look/refs/nox.png"
+   ]
+  },
+  {
+   "id": "S04m",
+   "prompt": "Same image, identical in every detail, except the young man's mouth is slightly open as if speaking.",
+   "out": "kf/S04m.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 204,
+   "refs": [
+    "kf/S04.png"
+   ]
+  },
+  {
+   "id": "S04p",
+   "prompt": "Kopie von E001/kf/S16p.png (Foto Nox als Kind + Lina) — nicht generieren",
+   "out": "kf/S04p.png",
+   "w": 640,
+   "h": 640,
+   "seed": 0,
+   "refs": []
+  },
+  {
+   "id": "S05",
+   "prompt": "Medium shot in the archive post room: the young woman from the reference image drops a tall stack of loose old letters onto a sorting desk with her dark grey gloved hands, stern and tired expression, warm lamp light, walls of letter compartments behind her.",
+   "out": "kf/S05.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 205,
+   "refs": [
+    "../../look/refs/mira.png"
+   ]
+  },
+  {
+   "id": "S05m",
+   "prompt": "Same image, identical in every detail, except the young woman's mouth is slightly open as if speaking.",
+   "out": "kf/S05m.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 205,
+   "refs": [
+    "kf/S05.png"
+   ]
+  },
+  {
+   "id": "S06",
+   "prompt": "Close-up: the young man from the reference image, wearing dark leather gloves, holds up one plain old envelope that does not glow at all, while some loose letters on the desk around him glow faintly gold; he frowns.",
+   "out": "kf/S06.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 206,
+   "refs": [
+    "../../look/refs/nox.png"
+   ]
+  },
+  {
+   "id": "S06m",
+   "prompt": "Same image, identical in every detail, except the young man's mouth is slightly open as if speaking.",
+   "out": "kf/S06m.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 206,
+   "refs": [
+    "kf/S06.png"
+   ]
+  },
+  {
+   "id": "S07",
+   "prompt": "Medium shot: the young woman from the reference image points with her dark grey gloved hand at a brass pneumatic mail tube in the wall that has a small blank polished brass label plate above its opening; matter-of-fact expression, warm light.",
+   "out": "kf/S07.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 207,
+   "refs": [
+    "../../look/refs/mira.png"
+   ]
+  },
+  {
+   "id": "S07m",
+   "prompt": "Same image, identical in every detail, except the young woman's mouth is slightly open as if speaking.",
+   "out": "kf/S07m.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 207,
+   "refs": [
+    "kf/S07.png"
+   ]
+  },
+  {
+   "id": "S08",
+   "prompt": "Close-up of the dark leather gloved hand of the young man from the reference image dropping a plain old envelope into the open round brass mouth of a pneumatic mail tube, only his hand and navy blue sleeve visible, no face; warm light, slight motion blur.",
+   "out": "kf/S08.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 208,
+   "refs": [
+    "../../look/refs/nox.png"
+   ]
+  },
+  {
+   "id": "S09",
+   "prompt": "An elderly woman with grey hair in a knitted cardigan stands in the doorway of a small cozy apartment in an ordinary city in soft morning light, holding an old opened envelope to her chest with both hands, eyes closed, a gentle smile, a brass letterbox slot in the wooden door beside her.",
+   "out": "kf/S09.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 209,
+   "refs": []
+  },
+  {
+   "id": "S10",
+   "prompt": "Close-up: the brass compass creature from the second reference image sits on the navy and ochre coat shoulder of the young man from the first reference image; its red needle points sharply upward toward a high drawer in the wall of letter compartments; the young man follows its gaze.",
+   "out": "kf/S10.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 210,
+   "refs": [
+    "../../look/refs/nox.png",
+    "../../look/refs/pip.png"
+   ]
+  },
+  {
+   "id": "S11",
+   "prompt": "A dark leather gloved hand pulls open a high wooden drawer in a wall of letter compartments; inside stands a small sealed glass display case with one old cream envelope with a round red wax seal, glowing faintly gold like the other letters around it; floating golden dust.",
+   "out": "kf/S11.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 211,
+   "refs": []
+  },
+  {
+   "id": "S11c",
+   "prompt": "Close-up: the dark grey gloved hands of the young woman from the reference image rest on a small glass display case containing a glowing old envelope with a red wax seal; golden sealing glyphs on the glass dissolve into sparks of light as she unseals it; her face above, serious and conflicted.",
+   "out": "kf/S11c.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 212,
+   "refs": [
+    "../../look/refs/mira.png"
+   ]
+  },
+  {
+   "id": "S12",
+   "prompt": "Close-up of hands only, no faces: the bare right hand of the young man from the first reference image, coming out of his navy blue sleeve, reaches toward a glowing old envelope with a red wax seal lying on a desk, his left hand holds a dark leather glove he has just pulled off; the dark grey gloved hand of the young woman from the second reference image grabs the cuff of his navy blue sleeve.",
+   "out": "kf/S12.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 213,
+   "refs": [
+    "../../look/refs/nox.png",
+    "../../look/refs/mira.png"
+   ]
+  },
+  {
+   "id": "S13",
+   "prompt": "Close-up of hands: the young man from the reference image pulls a dark leather glove back onto his right hand with determination, his navy blue sleeve visible, a glowing old envelope with a red wax seal on the desk in front of him; no face visible.",
+   "out": "kf/S13.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 214,
+   "refs": [
+    "../../look/refs/nox.png"
+   ]
+  },
+  {
+   "id": "S14",
+   "prompt": "Top-down close-up: an opened old cream letter paper with faint ruled lines, completely blank with no writing, lies on a dark wooden desk next to its envelope with a broken red wax seal; dark leather gloved fingertips hold the edge of the paper; warm lamp light, golden dust.",
+   "out": "kf/S14.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 215,
+   "refs": []
+  },
+  {
+   "id": "S15",
+   "prompt": "Close-up portrait: the young man from the reference image looks up from a letter, confused and searching, warm lamp light from below, dark archive background with soft bokeh of glowing letters.",
+   "out": "kf/S15.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 216,
+   "refs": [
+    "../../look/refs/nox.png"
+   ]
+  },
+  {
+   "id": "S15m",
+   "prompt": "Same image, identical in every detail, except the young man's mouth is slightly open as if speaking.",
+   "out": "kf/S15m.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 216,
+   "refs": [
+    "kf/S15.png"
+   ]
+  },
+  {
+   "id": "S16",
+   "prompt": "Close-up: the back side of an old cream envelope with a broken red wax seal, held by dark leather gloved fingers; a large empty clean area of paper in the middle; warm lamp light, dark background.",
+   "out": "kf/S16.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 217,
+   "refs": []
+  },
+  {
+   "id": "S17",
+   "prompt": "Extreme close-up of the young man from the reference image, eyes wide in shock, lips parted, trembling warm lamp light on his face, dark background.",
+   "out": "kf/S17.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 218,
+   "refs": [
+    "../../look/refs/nox.png"
+   ]
+  },
+  {
+   "id": "S17m",
+   "prompt": "Same image, identical in every detail, except the young man's mouth is slightly open as if speaking.",
+   "out": "kf/S17m.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 218,
+   "refs": [
+    "kf/S17.png"
+   ]
+  },
+  {
+   "id": "S18",
+   "prompt": "Medium close-up: the young woman from the reference image stands in the shadows of the archive post room, she looks away guiltily and presses her dark grey gloved hand over the pocket of her own coat at her hip, from which a small bundle of folded handwritten notes and the white corner of an old photograph stick out.",
+   "out": "kf/S18.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 219,
+   "refs": [
+    "../../look/refs/mira.png"
+   ]
+  },
+  {
+   "id": "S19",
+   "prompt": "Very dark, out-of-focus view of the archive post room: walls of small letter compartments glowing faintly gold only as soft bokeh, deep shadows, lots of empty dark space in the center.",
+   "out": "kf/S19.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 220,
+   "refs": []
+  }
+ ]
+}
