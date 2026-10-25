@@ -993,7 +993,44 @@
      1.2
     ]
    ],
-   "cut": "hart"
+   "cut": "hart",
+   "fx_txt": [
+    {
+     "at": [
+      372,
+      520,
+      1,
+      1,
+      -8
+     ],
+     "text": "ANNAHME\nVERWEIGERT",
+     "font": "Cinzel",
+     "weight": 700,
+     "size": 50,
+     "color": "#b3261e",
+     "anim": "stamp",
+     "t0": 0.4,
+     "width": 420
+    },
+    {
+     "at": [
+      395,
+      735,
+      1,
+      1,
+      -3
+     ],
+     "text": "N. Veyr",
+     "font": "Caveat",
+     "size": 70,
+     "color": "#2b2433",
+     "anim": "write",
+     "t0": 1.2,
+     "dur": 0.9,
+     "width": 240,
+     "opacity": 0.9
+    }
+   ]
   },
   {
    "id": "S17",
