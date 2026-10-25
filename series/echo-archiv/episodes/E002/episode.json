@@ -394,7 +394,12 @@
      "seed": 206,
      "prompt": "Same image, identical in every detail, except the young man's mouth is slightly open as if speaking.",
      "edit_of": "S06",
-     "patch": "mouth"
+     "patch": "mouth",
+     "at": [
+      375,
+      462
+     ],
+     "r": 55
     }
    ],
    "talk": {
@@ -445,7 +450,12 @@
      "seed": 207,
      "prompt": "Same image, identical in every detail, except the young woman's mouth is slightly open as if speaking.",
      "edit_of": "S07",
-     "patch": "mouth"
+     "patch": "mouth",
+     "at": [
+      228,
+      395
+     ],
+     "r": 55
     }
    ],
    "talk": {
@@ -461,7 +471,27 @@
     "texts"
    ],
    "sfx": [],
-   "cut": "hart"
+   "cut": "hart",
+   "fx_txt": [
+    {
+     "at": [
+      557,
+      236,
+      1,
+      1,
+      -3
+     ],
+     "text": "ZUSTELLUNG",
+     "font": "Cinzel",
+     "weight": 700,
+     "size": 19,
+     "spacing": 1.5,
+     "color": "#3b2a0e",
+     "anim": "static",
+     "width": 150,
+     "opacity": 0.85
+    }
+   ]
   },
   {
    "id": "S08",
