@@ -41,3 +41,12 @@ Extreme close-up of the young man in the image, black hair with asymmetric bangs
 ```
 Close-up: a small brass compass creature with two round eyes sits on the shoulder of a young man in a coat split navy blue and ochre, in a dark archive with walls of drawers. The creature blinks, shuffles its tiny feet, and its red needle swings back and forth, then snaps to point straight up toward a high drawer. The young man turns his head and looks up, following the needle, curious, a faint smile. Camera: slow tilt up following his gaze. Lighting: warm lamp light, deep teal shadows, floating golden dust. Style: stylized 3D animated feature film, hand-painted textures; keep the creature and the young man exactly as in the image. Audio: a soft mechanical ticking, a tiny chirp, quiet room tone. No music, no speech. Negative: no subtitles, no captions, no text, no watermarks.
 ```
+
+## Ergebnis Runde 1 (25.10., Gemini-App, Clips in `clips/`)
+| Clip | Inhalt | Befund |
+|---|---|---|
+| `gemini_A_9x16_20s.mp4` | P3 Pip (3D, 0–10 s) + Nox weint (3D, 10–20 s) | **echte Bewegung** (Nadel, Blinzeln, Kopfdrehung); Veo spricht Deutsch verständlich („Entfeyer, das bin ich."); Gesichts-Clip **driftet** (anderes Gesicht, Mantel mit Knöpfen statt geteilter Hälften) |
+| `gemini_B_16x9_10s.mp4` | P1 Hände (Anime) | starke Bewegung + Magie-Effekt; **Querformat** (falsch); **bloße Hand berührt das Siegel** (Kanon 1); Komposition weicht vom Startbild ab |
+Kein sichtbares Wasserzeichen in den Ecken gefunden. Testschnitt mit Cast-Stimmen: `Testschnitt_A_eure_Stimmen.mp4` (Veo-Stimme entfernt, Cast-Take an der Pause geteilt und auf Veos Mundbewegung gelegt).
+Runde 2: Format 9:16 prüfen; Startbild wirklich anhängen (bzw. Flow „Frames to Video" = Startbild als exaktes erstes Bild); P1-Prompt: Hand stoppt sichtbar in der Luft; Dialog-Prompts verwenden.
+
