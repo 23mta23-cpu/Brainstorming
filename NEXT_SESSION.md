@@ -35,6 +35,18 @@ SkillSpector 2.12.0 · Piper 1.8.0 + 3 CC0-Stimmen · RTK (Binary, nicht gehookt
 6. Rollen der vier Teammitglieder (`docs/COMPANY_STRATEGY.md`).
 7. Optional: nicht benötigte account-synchronisierte Plugins deaktivieren (Token-/Hook-Overhead).
 
+## QUALITÄTSOFFENSIVE (Auftrag Co-CEO, 25.10.2026) — hat Vorrang vor allem anderen
+Feedback: Pilot v2 wirkt „wie vom Werkstudenten", Figuren/Animation ungenügend; Ziel: moderner 2026-Look; Länge zu kurz?
+Rahmen: **0 € Budget, auch keine Lizenzkosten** → nur kostenlose, kommerziell nutzbare Open-Source-Modelle/Tools (Apache-2.0/MIT/CC0/OFL).
+Automatische Fortsetzung: geplante Aufgabe „Echo-Archiv: automatische Fortsetzung" (alle 2 h) — vom Co-CEO freigegeben.
+Arbeitsplan (Status hier fortschreiben):
+1. [ ] Recherche: moderner TikTok-Animationsstil 2026 + kostenlose lokale Modelle (Bild, Tiefe, TTS, ggf. Video) auf CPU
+2. [ ] Machbarkeitstest auf dieser Maschine (4 vCPU, keine GPU): Zeit + Qualität je Keyframe messen
+3. [ ] Neuer Look: Character Sheets (Nox, Mira, Lina, Pip) in hoher Qualität, konsistent
+4. [ ] Pipeline v3: KI-Keyframes + 2.5D-Kamera/Parallax + Ausdrucks-/Mund-Varianten + bessere Stimmen
+5. [ ] E01 v3 neu schreiben auf ~60–70 s (Creator-Rewards-Schwelle > 1 min), Story-Review, produzieren, QC
+6. [ ] Ehrlicher Vergleich v2 vs. v3 (Kontaktbogen) → Freigabepaket
+
 ## Genaue nächste Aktion
 1. `scripts/setup_tools.sh` ausführen (falls Container neu).
 2. Feedback zu E001 einarbeiten (falls vorhanden).
