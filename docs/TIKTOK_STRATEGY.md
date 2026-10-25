@@ -28,6 +28,7 @@ Nox, Mira, Pip, Lina, Kurator — Silhouetten in jeder Folge identisch (Characte
 ## Captions, Hashtags, Community
 - Caption = eine echte Entscheidungsfrage aus der Folge („Würdest du die Uhr berühren?"), kein „Like für Teil 2".
 - 3–5 Hashtags: Serienhashtag `#DasEchoArchiv` + Genre (`#Mystery`, `#Animation`, `#Kurzserie`) + ggf. `#KIgeneriert`. Keine Trend-Hashtags ohne Bezug.
+- **Keine Kinder-/Cartoon-Signale** (`#CartoonKids`, `#Zeichentrick`, Kinder-Thumbnails): laut Kapwing 97 % „AI slop" unter #CartoonKids; Zielgruppe ist Teen/Erwachsene (Mystery-Ton).
 - Alle 3–4 Folgen eine echte Zuschauerentscheidung (A/B in Kommentaren), Ergebnis wird in der nächsten Folge umgesetzt — nur bei Weichen, die im Staffelbogen beide funktionieren.
 - Kommentare: Theorien beantworten ohne zu spoilern; Rewatch-Details (z. B. gebrochener Kreis) bestätigen, wenn gefunden.
 

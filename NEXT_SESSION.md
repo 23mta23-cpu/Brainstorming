@@ -10,14 +10,15 @@ Phase 8/9 abgeschlossen bis zur menschlichen Freigabe: Fundament, Security, Pipe
 - Market Intelligence Erstanalyse + Tracker (`docs/MARKET_INTELLIGENCE.md`, `docs/COMPETITOR_TRACKER.md`).
 - Strategie, TikTok-Strategie, Policy, Agentenorganisation, Qualitätsschleusen, Kosten.
 - Story: 3 Konzepte bewertet, Echo-Archiv gewählt, Staffel 1 + Serienende geplant (`docs/STORY_BIBLE.md`, `docs/STORY_TRACKER.md`).
-- Pipeline TESTED; Pilot E001 gerendert, QC 14/14 PASS, Launch-Entwurf (`series/echo-archiv/episodes/E001/LAUNCH.md`).
+- Pipeline TESTED; Pilot E001 **v2** gerendert (nach Agent-Review: 3 Blocker behoben), QC 14/14 PASS, Launch-Entwurf (`series/echo-archiv/episodes/E001/LAUNCH.md`).
+- Agenten TESTED: `story-reviewer` (REVISE → v2), `trend-scout` (Daily Screen im Log). Kaltstart-Test `scripts/setup_tools.sh`: 41 s, 17/17 Repos am auditierten Commit.
+- Drive: Ordner „AI-Studio – Freigaben (Kopien aus GitHub)" (https://drive.google.com/drive/folders/1sV7w5ucmWRobBkaE2c2tCfabOwOZzahP) mit Freigabepaket E001 (https://docs.google.com/document/d/1zbGT4I41Fq4oboMMVPD6keyVMbaXpU2DzfktFuDvKQw). Kopie; Quelle bleibt GitHub.
 
 ## Installiert & getestet (flüchtig! nach Neustart: `scripts/setup_tools.sh`)
 SkillSpector 2.12.0 · Piper 1.8.0 + 3 CC0-Stimmen · RTK (Binary, nicht gehookt, `--rtk`) · OpenMontage-Deps (Tests 1328 grün; nicht im Setup-Skript, da nicht Teil der Pipeline).
 
 ## Offene Tests
 - Kopf-an-Kopf-Vergleich Engineering-Methodik (Bordmittel+Ponytail vs. Superpowers) an einer echten Aufgabe — nur falls Engineering wächst.
-- `trend-scout` erster Lauf (täglicher Screen).
 - Vollscan ECC/OpenMontage (nur falls Nutzung geplant).
 
 ## Blocker
@@ -25,7 +26,8 @@ SkillSpector 2.12.0 · Piper 1.8.0 + 3 CC0-Stimmen · RTK (Binary, nicht gehookt
 - Kein generatives Video/keine Profi-Stimmen ohne Budgetfreigabe.
 
 ## Erforderliche Freigaben / Rückfragen an den Co-CEO
-1. **E001 ansehen/anhören** und freigeben oder Korrekturen nennen.
+1. **E001 v2 ansehen/anhören** und freigeben oder Korrekturen nennen.
+1b. **Halloween-Fenster (Sa 31.10.)**: Empfehlung: *nicht* E01 allein posten. Launch mit E01–E03 Anfang November. Ausnahme: E01-Freigabe bis 27.10. + E02/E03 bis 30.10. → dann E01 am 30.10.
 2. **Musik-Policy**: nur Sounddesign / Vokal-Percussion / lizenzierte Instrumentalmusik? (`docs/CONTENT_POLICY.md`)
 3. Hausregel Körperkontakt/Romantik bestätigen.
 4. TikTok-Account: neuer Serien-Account oder bestehender (MiracTT?).
@@ -55,4 +57,8 @@ Branch: `claude/ai-studio-foundation` (kein PR erstellt).
 - MLS-Mehrsprecher-Piper-Modell ist für kurze Sätze unzuverlässig (Pausen/Artefakte) → nur Einzelsprecher-Modelle.
 - AAC erzeugt ~0,6 dB True-Peak-Overshoot → Master auf −2 dBTP.
 - Vorschau-Kontaktbogen vor dem Vollrender spart Iterationen (fand Tür-Rotationsbug, Blitzposition, Haar-Clipping, Untertitel über Mund).
+- Story-Review **vor** dem Render ist Pflicht, nicht Kür: der Agent fand 3 echte Blocker, die ich im Selbstreview übersehen hatte. Kosten ~160 k Tokens/Lauf.
+- Sprechtempo in Silben/s messen, nicht Wörter/s (einsilbige Wörter verfälschen).
+- Subagent-Behauptungen mit strategischer Wirkung an der Primärquelle verifizieren (Anti-Spam-Meldung: bestätigt, aber anders als zuvor angenommen).
+- Drive-Markdown-Import zerstört 4-Byte-Emojis → in Drive-Kopien Emojis ausschreiben.
 - Fremdcode nie mit voller Umgebung starten (Tokens!) → `sandbox-run.sh`; `env -i` entfernt auch `VIRTUAL_ENV` → `uv pip --python` nutzen.

@@ -16,4 +16,6 @@ Wiederherstellung: `scripts/setup_tools.sh` (+ `--rtk`).
 Bereits vorhanden (nicht installiert): Python 3.13.17, Node 22.22.0, FFmpeg 6.1.1, uv 0.11.32, Docker 29.9.2, Cargo/Rust,
 Chromium 153 + Playwright (global), Inter-Font. Hardware: 4 vCPU, 15 GiB RAM, **keine GPU**.
 
+Kaltstart-Test 2026-10-25: `TOOLS_DIR`/`VENDOR_DIR` auf leere Verzeichnisse → 41 s, exit 0, 17/17 Repos am auditierten Commit, SkillSpector + TTS funktionsfähig.
+
 Fehlschläge & Korrekturen: OpenMontage-Install 1. Versuch scheiterte (falscher uv-Pfad), 2. Versuch (`VIRTUAL_ENV` von `env -i` entfernt) → mit `--python` gelöst.

@@ -55,9 +55,10 @@ function seal(o = {}) {
     <circle r="236" fill="none" stroke="#3a2812" stroke-width="10"/><circle r="150" fill="none" stroke="#3a2812" stroke-width="6"/>
     <g transform="rotate(${o.rot || 0})">`;
   for (let i = 0; i < 8; i++) {
-    const lit = i < 7 ? 0.35 + 0.3 * (o.glow || 0) : n8;
-    s += `<g transform="rotate(${i * 45})"><path d="M-14,-286 L14,-286 L0,-246 Z" fill="${i < 7 ? "#2b1d0c" : "#3a2812"}"/>
-      <path d="M-14,-286 L14,-286 L0,-246 Z" fill="${i < 7 ? "#f2c86b" : "#ff5a3c"}" opacity="${lit}"/></g>`;
+    const lit = i < 7 ? 0.6 + 0.35 * (o.glow || 0) : n8; // 7 lit rules; the 8th slot stays dark unless rule eight is touched
+    s += `<g transform="rotate(${i * 45})"><path d="M-20,-290 L20,-290 L0,-232 Z" fill="${i < 7 ? "#2b1d0c" : "#140d06"}"/>
+      <path d="M-20,-290 L20,-290 L0,-232 Z" fill="${i < 7 ? "#f2c86b" : "#ff5a3c"}" opacity="${lit}"/>
+      ${i < 7 ? `<circle cy="-268" r="26" fill="#f2c86b" opacity="${lit * 0.18}"/>` : ""}</g>`;
   }
   s += `</g><g opacity="0.9">${[40, 80, 120].map((r) => `<circle r="${r}" fill="none" stroke="#2b1d0c" stroke-width="5"/>`).join("")}
     <circle r="16" fill="#2b1d0c"/></g>`;

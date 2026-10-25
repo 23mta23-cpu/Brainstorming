@@ -1,11 +1,11 @@
 """Piper TTS wrapper (local, offline). Run with tools/piper-venv python.
 Voices are CC0 (thorsten, kerstin) or CC-BY-4.0 (mls -> credit required)."""
-import sys, wave, json
+import json, os, sys, wave
 from pathlib import Path
 import numpy as np
 from piper import PiperVoice, SynthesisConfig
 
-VOICE_DIR = Path("/home/user/tools/piper-voices")
+VOICE_DIR = Path(os.environ.get("TOOLS_DIR", "/home/user/tools")) / "piper-voices"  # same override as setup_tools.sh
 _cache = {}
 
 def voice(model):

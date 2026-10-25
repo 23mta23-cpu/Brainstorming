@@ -21,9 +21,12 @@ Bewusst **nicht** gebaut: die sieben Agenten aus dem Research (Visual Director, 
 sie würden denselben Kontext mehrfach laden und Übergaben erzeugen, ohne bessere Ergebnisse zu liefern.
 
 ## Funktionsnachweise
-- `story-reviewer`: auf E001 ausgeführt (Ergebnis in `STORY_TRACKER.md` → „Review-Lauf 1"). Hinweis: Agenten-Dateien werden beim Sitzungsstart geladen;
-  der erste Lauf erfolgte deshalb als General-Purpose-Agent mit exakt dieser Rollendatei.
-- `trend-scout`: definiert, noch nicht ausgeführt (nächste Sitzung: täglicher Screen).
+- `story-reviewer` (TESTED): Lauf 1 auf E001 → **REVISE** mit 3 berechtigten Blockern (Hook-Timing, Kanon-Widerspruch Hautkontakt, Vision-Logik) + 5 Verbesserungen;
+  alle in v2 umgesetzt, Nachprüfung per Fortsetzung desselben Agenten. ~160 k Subagent-Tokens, ~10 min. Ergebnis: `STORY_TRACKER.md`.
+- `trend-scout` (TESTED, Sonnet): erster Daily Screen → Primärquelle zur TikTok-Anti-Spam-Meldung gefunden (von mir verifiziert), Kids-Cartoon-Sättigung,
+  Halloween-Fenster, 2 Hook-Ideen. ~166 k Subagent-Tokens, 6 Suchen. Ergebnis: `MARKET_INTELLIGENCE.md` → Log.
+- Hinweis: Agenten-Dateien werden beim Sitzungsstart geladen; beide Läufe erfolgten deshalb als General-Purpose-Agent mit exakt der jeweiligen Rollendatei.
+- Kostenbeobachtung: Ein Agentenlauf kostet ~160 k Tokens → nicht für Routine, sondern für Review vor jedem Render und 1×/Woche Markt.
 - SkillSpector-Scan des eigenen Skills `produce-episode`: Score 0, keine Funde.
 
 ## Modellnutzung

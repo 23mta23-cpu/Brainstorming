@@ -9,7 +9,7 @@ Grundsatz: *Andere produzieren KI-Clips, die Geschichten enthalten. Wir bauen Ge
 2. **Unsere Produktionsqualität ist heute nicht wettbewerbsfähig mit generativem Video.** Code-Animation + lokale TTS = sauberer, konsistenter Produktionsnachweis, aber hölzernes Schauspiel und synthetische Stimmen. Die Stimme ist der größte einzelne Qualitätshebel.
 3. **DACH ist klein, deutsche Microdramen kämpfen um organische Reichweite** (OMR). Wer nur Deutsch denkt, deckelt das Potenzial.
 4. **TikTok-Monetarisierung allein trägt kein Unternehmen**: Creator Rewards erst ab 10 k Followern, 100 k Views/30 Tage und Videos > 1 min; Auszahlungen gering und schwankend.
-5. **Plattformrisiko**: TikTok geht gegen Accounts vor, deren Output vor allem KI-Content ist, der Original-Creator verdrängt. Massenproduktion ist ein Risiko, nicht ein Hebel.
+5. **Plattformrisiko** (verifiziert, TikTok Newsroom 10.07.2026): Der verschärfte Anti-Spam-Test zielt auf KI-Spam-Accounts zu Politik/Aktuellem, Finanzen und Medizin; KI-Storytelling wird ausdrücklich begrüßt. Restrisiken: fehlende Kennzeichnung, Massenposting, Nähe zu fremder IP (Fruit Love Island) und die Nutzer-Option „Manage Topics", mit der Zuschauer weniger KI-Inhalte sehen (Reichweiteneffekt unbekannt).
 
 ## Strategie in drei Phasen
 | Phase | Zeitraum (Plan) | Ziel | Kriterium für Übergang |

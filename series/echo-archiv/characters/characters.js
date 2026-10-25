@@ -8,7 +8,8 @@ const PAL = {
   nox: { skin: "#ecc9aa", skinSh: "#c99a7c", hair: "#1b2031", hairHi: "#3b4664", navy: "#243352", navySh: "#18233b",
          ochre: "#c8924a", ochreSh: "#9b6c32", shirt: "#e9e1d0", gold: "#e6bb5e", iris: "#4b3526" },
   mira: { skin: "#b9805f", skinSh: "#94603f", hair: "#1f1519", hairHi: "#4a3138", teal: "#1f5653", tealSh: "#143c3a",
-          plate: "#e8dcc0", plateSh: "#b9a988", silver: "#d5dde3", iris: "#3a2418" },
+          plate: "#e8dcc0", plateSh: "#b9a988", silver: "#d5dde3", iris: "#3a2418",
+          glove: "#2b3038", gloveHi: "#4a525e" }, // archivists wear gloves (rule 2); Nox' bare hand = rule-breaking
   lina: { skin: "#f0cfb3", skinSh: "#cfa184", hair: "#4a2d20", scarf: "#c8362d", scarfSh: "#8f231d", coat: "#e9e2d4",
           coatSh: "#bdb3a2", iris: "#5a3a26" },
   pip: { brass: "#d1a84e", brassSh: "#8d6a28", glass: "#f4ecd6", needle: "#c8362d" },
@@ -102,7 +103,16 @@ function noxBody(o) {
   </g>`;
 }
 
-function nox(o = {}) { return wrap(o, (o.noBody ? "" : noxBody(o)) + noxHead(o)); }
+function noxCasual() { // before the Archive (childhood photos/visions): no archive coat, no insignia; colour bridge navy + ochre
+  const P = PAL.nox;
+  return `<g><rect x="-26" y="88" width="52" height="80" fill="${P.skinSh}"/>
+    <path d="M-60,150 C-120,160 -166,192 -180,262 L-196,640 L196,640 L180,262 C166,192 120,160 60,150 Z" fill="${P.navy}"/>
+    <path d="M-180,262 C-204,330 -212,480 -204,600 L-160,610 C-162,480 -152,360 -144,300 Z" fill="${P.navySh}"/>
+    <path d="M-70,128 C-30,156 30,156 70,128 L76,166 C30,190 -30,190 -76,166 Z" fill="${P.ochre}"/>
+    <path d="M30,170 L52,260 L30,264 L16,176 Z" fill="${P.ochreSh}"/></g>`;
+}
+
+function nox(o = {}) { return wrap(o, (o.noBody ? "" : o.casual ? noxCasual() : noxBody(o)) + noxHead(o)); }
 
 function noxBack(o = {}) { // seen from behind: navy now on viewer's RIGHT
   const P = PAL.nox;
@@ -163,12 +173,12 @@ function miraBody(o) {
 
 function mira(o = {}) { return wrap(o, (o.noBody ? "" : miraBody(o)) + miraHead(o)); }
 
-function miraHand(o = {}) { // grabbing hand + teal sleeve, sleeve enters from left
+function miraHand(o = {}) { // gloved grabbing hand + teal sleeve, sleeve enters from left
   const P = PAL.mira;
   return wrap(o, `<path d="M-300,-46 L-30,-40 L-26,42 L-300,50 Z" fill="${P.teal}"/>
     <path d="M-40,-42 L-24,-42 L-20,44 L-36,44 Z" fill="${P.silver}"/>
-    <path d="M-24,-36 C10,-50 54,-44 70,-26 C84,-10 84,16 70,30 C54,44 10,46 -22,36 Z" fill="${P.skin}"/>
-    <path d="M30,-30 C40,-8 40,14 30,34 M50,-26 C58,-6 58,12 50,30" fill="none" stroke="${P.skinSh}" stroke-width="4" stroke-linecap="round"/>`);
+    <path d="M-24,-36 C10,-50 54,-44 70,-26 C84,-10 84,16 70,30 C54,44 10,46 -22,36 Z" fill="${P.glove}"/>
+    <path d="M30,-30 C40,-8 40,14 30,34 M50,-26 C58,-6 58,12 50,30" fill="none" stroke="${P.gloveHi}" stroke-width="4" stroke-linecap="round"/>`);
 }
 
 // ---------- LINA (child, seen in visions / photo) ----------

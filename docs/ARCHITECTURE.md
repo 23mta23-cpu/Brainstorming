@@ -28,7 +28,7 @@ STORY_BIBLE.md / STORY_TRACKER.md ──► episode.json ──► story-reviewe
 | Ort | Inhalt | Begründung |
 |---|---|---|
 | **GitHub** (`23mta23-cpu/brainstorming`, Branch `claude/ai-studio-foundation`) | Single Source of Truth: Code, Docs, Story-Register, Episoden-JSON, finale MP4 (≤ 25 MB) | versioniert, überlebt flüchtige Container |
-| **Google Drive** | nur menschenorientierte Freigabepakete + große Medien; verweist auf GitHub | Team ohne Git-Zugang; Dateien > 25 MB |
+| **Google Drive** ([Ordner](https://drive.google.com/drive/folders/1sV7w5ucmWRobBkaE2c2tCfabOwOZzahP)) | nur menschenorientierte Freigabepakete (Einweg-Kopie GitHub → Drive, mit Datum) + große Medien | Team ohne Git-Zugang; Dateien > 25 MB; MCP kann keine Videos dieser Größe hochladen |
 | `/home/user/vendor`, `/home/user/tools` | Fremd-Repos, venvs, Stimmen | flüchtig, per `scripts/setup_tools.sh` reproduzierbar |
 
 Drive-Befund: Es existiert bereits ein Ordner „MiracTT" (u. a. `OpenMontage_MiracTT_Backup.zip.part001–005`, `TimGioh_MiracTT_TikTok_Edit.mp4`). Nicht geöffnet/verändert.

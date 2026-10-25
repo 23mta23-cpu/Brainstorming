@@ -31,7 +31,8 @@ B bleibt Backup-Format für einen späteren günstigen Humor-Test; C wird als La
 - **Die sieben Regeln** (in jedem Archivsaal eingraviert):
   1. Kein Echo verlässt das Archiv. 2. Berühre kein Echo mit bloßer Hand. 3. Verändere keine Entscheidung. 4. Sprich nicht mit Echos.
   5. Kein Archivar sucht sein eigenes Echo. 6. Was versiegelt ist, bleibt versiegelt. 7. Vertraue dem Kurator.
-- **Regel acht** (geheim, nur hinter der versiegelten Tür der *Stillen Kammer* eingraviert): **„Ein Archivar darf sich nicht erinnern."**
+- Die versiegelte Tür aus E01 führt in den **Vorraum der Stillen Kammer**, wo die eigenen Echos der Archivare verwahrt werden. Die **innere Tür** öffnet sich erst in E07.
+- **Regel acht** (geheim, nur hinter der inneren Tür der *Stillen Kammer* eingraviert): **„Ein Archivar darf sich nicht erinnern."**
   Das Archiv löscht die persönlichen Bindungen seiner Archivare, damit niemand je versucht, die eigene Entscheidung umzuschreiben.
   Nox „bricht" Regel acht, indem er sich an Lina erinnert.
 - **Nox' Kraft**: Berührt er ein Echo, sieht er den nicht gewählten Weg. **Preis**: Er verliert jedes Mal eine eigene Erinnerung — meist die, die am stärksten mit dem Echo verbunden ist.
@@ -44,7 +45,7 @@ B bleibt Backup-Format für einen späteren günstigen Humor-Test; C wird als La
 | **Nox Veyr** (~17) | Protagonist | herausfinden, wer er war | Wahrheit finden vs. Erinnerungen verlieren | geteilter Mantel (sein rechter Ärmel navy, linker ocker), asymmetrischer Pony, gebrochener Kreis am linken Kragen | navy/ocker | thorsten-high |
 | **Mira** (~18) | Rivalin/Partnerin, Kurator-Schülerin | Rang „Siegelmeisterin" | Regeln vs. Gewissen | scharfer Bob, silberne Haarspange, hoher Kragen, geometrische Schulterplatte (ihre linke Schulter) | petrol/silber | kerstin-low |
 | **Lina Veyr** (~12 in Visionen, ~16 heute) | Nox' Schwester, Macro-Mystery | dass Nox sein Versprechen hält | Treue vs. Groll | roter Schal | rot | kerstin, hochgepitcht + Echo |
-| **Pip** | lebende Kompasskreatur | zeigt immer auf den nicht gewählten Weg | Comic Relief + überraschendes Wissen | runder Messingkörper, Nadel, Augen über dem Glasrand | messing | (stumm) |
+| **Pip** | lebende Kompasskreatur | zeigt auf das Echo des Weges, den sein Gegenüber früher *nicht* gewählt hat (nie auf die Zukunft) | Comic Relief + überraschendes Wissen | runder Messingkörper, Nadel, Augen über dem Glasrand | messing | (stumm) |
 | **Der Kurator** | Mentor / Antagonist | Archiv stabil halten | schützt Nox oder manipuliert ihn? | Gesicht nie ganz sichtbar, geometrische Silhouette | grau/gold | offen |
 
 Mira ist **keine Love Interest**: eigene Ziele, Fähigkeiten, Entscheidungen. Echo-Partikel (gold) sind Markenelement.
@@ -86,6 +87,9 @@ In Linas Rucksack liegen versiegelte Echos — sie sammelt draußen mit den „U
 - Eine neue große Serie beginnt erst, wenn S1 abgeschlossen produziert ist (Regel aus dem Auftrag).
 
 ## 8. Kanon-Regeln (dürfen nicht widersprochen werden)
-1. Echos aktivieren nur bei Hautkontakt. 2. Nox' Preis ist immer eine eigene Erinnerung, nie die eines anderen.
-3. Visionen zeigen den nicht gewählten Weg, nie die Zukunft. 4. Pip lügt nie, spricht nie. 5. Der Kurator zeigt sein Gesicht erst in S3.
+1. Visionen und der Preis entstehen nur bei Hautkontakt. Ein Echo kann seinen eigenen Besitzer rufen (Ton, Licht, Bewegung, Stimme) — fremde Echos tun das nie.
+2. Nox' Preis ist immer eine eigene Erinnerung, nie die eines anderen.
+3. Visionen zeigen den nicht gewählten Weg, nie die Zukunft. 4. Pip lügt nie, spricht nie (Definition §3). 5. Der Kurator zeigt sein Gesicht erst in S3.
 6. Historische Echos tragen die Endkarte „Inspiriert von realen Ereignissen. Figuren und Dialoge fiktionalisiert."
+7. Archivare tragen im Dienst Handschuhe; eine bloße Hand an einem Echo ist immer eine bewusste Entscheidung.
+8. Rückblenden vor dem Archiv zeigen Nox ohne Archivmantel (Navy-Pullover + ockerfarbener Schal).

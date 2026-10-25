@@ -30,8 +30,8 @@ const blinkAt = (t, seed) => { const p = (t + seed) % 3.7; return p < 0.12 ? Mat
 const SHOTS = {
   S01(u, d, t) { // ECU hand toward the seal
     const reach = seq(u, 0, d * 0.85), ring = seq(u, d * 0.6, d);
-    const hx = lerp(-160, 330, reach), hy = lerp(1500, 1180, reach);
-    let s = `<rect width="${W}" height="${H}" fill="#1b130b"/>` + seal({ x: 540, y: 860, s: 1.45, glow: 0.3 + 0.2 * Math.sin(t * 3) });
+    const hx = lerp(60, 330, reach), hy = lerp(1370, 1180, reach); // hand already reaching at frame 0 (hook)
+    let s = `<rect width="${W}" height="${H}" fill="#1b130b"/>` + seal({ x: 540, y: 860, s: 1.45, glow: 0.3 + 0.2 * Math.sin(t * 3), eighth: 0.12 + 0.1 * Math.sin(t * 5) });
     s += lightCone(540, -40, 1300, 1400, "#f6e3b0", 0.12);
     s += noxHand({ x: hx, y: hy, s: 1.5, rot: -22 });
     if (ring > 0) for (let i = 0; i < 18; i++) {
@@ -53,9 +53,12 @@ const SHOTS = {
   S03(u, d, t) { // Mira grabs Nox' sleeve
     const grab = seq(u, 0, 0.35);
     let s = archiveBg({ t, camX: 120, dim: 0.6 }) + `<rect width="${W}" height="${H}" fill="#05070f" opacity="0.35"/>`;
-    s += nox({ x: 720, y: 980, s: 1.35, look: [-0.7, 0.1], brow: 0.3, blink: blinkAt(t, 0.4), tilt: -4 });
-    s += mira({ x: 330, y: 1010, s: 1.3, look: [0.6, 0], brow: 0.6, mouth: speak("mira", t), tilt: 5 });
-    s += miraHand({ x: lerp(380, 520, grab), y: 1420, s: 1.2, rot: -8 });
+    // depth order: Mira behind, Nox in front, her hand on top gripping his navy (right) sleeve
+    s += mira({ x: 300, y: 1010, s: 1.3, look: [0.6, 0], brow: 0.8, mouth: speak("mira", t), tilt: 5 });
+    s += `<g transform="translate(180,1352) rotate(-14)"><rect x="-36" y="-30" width="72" height="56" fill="#efe6d2"/><rect x="-28" y="-22" width="56" height="36" fill="#c9b691"/>
+      <rect x="-56" y="2" width="112" height="44" rx="6" fill="${PAL.mira.tealSh}"/></g>`; // plant P7: the photo
+    s += nox({ x: 750, y: 980, s: 1.35, look: [-0.7, 0.1], brow: 0.3 + 0.4 * grab, blink: blinkAt(t, 0.4), tilt: -4 - 3 * grab });
+    s += miraHand({ x: lerp(300, 450, grab), y: 1430, s: 1.2, rot: -8 });
     return camera(s, 1.0);
   },
   S04(u, d, t) { // the door opens by itself
@@ -64,11 +67,13 @@ const SHOTS = {
     if (op > 0) for (let i = -3; i <= 3; i++)
       s += `<path d="M540,800 L${540 + i * 240 - 120},${H} L${540 + i * 240 + 120},${H} Z" fill="#f6e3b0" opacity="${0.07 * op}"/>`;
     s += noxBack({ x: 540, y: 1640, s: 1.2 }) + motes(t, 9, 50, [200, 400, 680, 1300], "#f6e3b0", 3, 0.5 * op);
+    s += miraHand({ x: 300 - 420 * op, y: 820 + Math.sin(t * 31) * 2.5 * (1 - op), s: 1.2 }); // her seal craft fails against his own echo
     return camera(s, 1 + 0.08 * u / d);
   },
   S05(u, d, t) { // dark room, floating watch, echo voice
     const v = speak("lina", t), bob = Math.sin(t * 1.6) * 14;
-    let s = `<rect width="${W}" height="${H}" fill="#04050a"/>` + lightCone(540, -60, 820, 1500, "#f6e3b0", 0.22);
+    let s = `<rect width="${W}" height="${H}" fill="#04050a"/><g opacity="0.38">${door({ x: 540, y: 1060, s: 0.6, glow: 0.2 })}</g>`
+      + lightCone(540, -60, 820, 1500, "#f6e3b0", 0.22); // plant P6: inner door of the Silent Chamber
     for (let k = 0; k < 3; k++) {
       const r = 180 + ((t * 120 + k * 120) % 360);
       s += `<circle cx="540" cy="${880 + bob}" r="${r}" fill="none" stroke="#f2c86b" stroke-width="3" opacity="${0.5 * v * (1 - (r - 180) / 360)}"/>`;
@@ -95,6 +100,7 @@ const SHOTS = {
       ${["N. VEYR", "·", "LINA"].map((w, i) => `<text x="542" y="${842 + i * 112}" text-anchor="middle" font-family="Cinzel" font-weight="700" font-size="104" fill="#fbe9b8" opacity="0.55">${w}</text>
         <text x="540" y="${838 + i * 112}" text-anchor="middle" font-family="Cinzel" font-weight="700" font-size="104" fill="#5a3f12">${w}</text>`).join("")}
       <rect x="${sweep}" y="300" width="380" height="1300" fill="url(#${gl})" transform="rotate(18 540 930)"/>`;
+    s += miraHand({ x: lerp(-260, 60, seq(u, 0.55, 1.1)), y: 1560, s: 1.4, rot: -24 }); // attributes the off-screen voice
     return camera(s, 1.05, W / 2, H / 2, lerp(40, -40, u / d));
   },
   S08(u, d, t) { // the touch
@@ -106,16 +112,22 @@ const SHOTS = {
     if (hit > 0) s += `<circle cx="${fx}" cy="${fy}" r="${hit * 1600}" fill="#fff" opacity="${0.4 + 0.6 * hit}"/>`;
     return camera(s, 1 + 0.05 * u / d);
   },
-  S09(u, d, t) { // vision: snowy station, the path not taken
+  S09(u, d, t) { // vision of the path NOT taken: Nox arrives by train and Lina is waiting (POV from the train door)
     const g = uid("sky"), fromWhite = 1 - seq(u, 0, 0.6);
+    const q = clamp(u / 1.0), slide = (1 - q) * (1 - q); // train decelerates to a stop
     let s = `<defs>${grad(g, [[0, "#eef3f8"], [0.6, "#c2d0dd"], [1, "#9fb1c2"]])}</defs><rect width="${W}" height="${H}" fill="url(#${g})"/>
-      <rect x="-40" y="980" width="1160" height="300" rx="40" fill="#5d6b7a"/>
-      ${Array.from({ length: 7 }, (_, i) => `<rect x="${i * 170 - 10}" y="1030" width="110" height="90" rx="12" fill="#ffe7a8" opacity="0.85"/>`).join("")}
-      <rect x="0" y="1280" width="${W}" height="${H}" fill="#dfe6ec"/><rect x="0" y="1280" width="${W}" height="14" fill="#8796a5"/>
-      <rect x="140" y="560" width="16" height="740" fill="#56606c"/><circle cx="148" cy="560" r="34" fill="#fff6d8" opacity="0.9"/>
-      <circle cx="148" cy="560" r="110" fill="#fff6d8" opacity="0.25"/>`;
-    s += linaFull({ x: 540, y: 760, s: 1.35, look: [0, -0.4], mouth: speak("lina", t), brow: 0.4, blink: blinkAt(t, 0.9) });
-    s += snow(t, 21, 130) + vignette(0.9, "#ffffff");
+      <rect x="0" y="760" width="${W}" height="520" fill="#b8c6d3"/>`;
+    for (let i = 0; i < 4; i++) { // platform lamps glide past and settle
+      const x = ((i * 420 + 1200 * slide) % 1680) - 200;
+      s += `<rect x="${x}" y="520" width="18" height="780" fill="#5f6a77"/><circle cx="${x + 9}" cy="520" r="30" fill="#fff6d8" opacity="0.9"/>
+        <circle cx="${x + 9}" cy="520" r="100" fill="#fff6d8" opacity="0.22"/>`;
+    }
+    s += `<rect x="0" y="1280" width="${W}" height="${H}" fill="#dfe6ec"/><rect x="0" y="1280" width="${W}" height="14" fill="#8796a5"/>`;
+    s += linaFull({ x: 540 + 600 * slide, y: 760, s: 1.35, look: [0, -0.4], mouth: speak("lina", t), brow: 0.25, smile: 0.5, blink: blinkAt(t, 0.9) });
+    s += snow(t, 21, 130) + vignette(0.85, "#ffffff");
+    s += `<rect width="120" height="${H}" fill="#3c4652"/><rect x="${W - 120}" width="120" height="${H}" fill="#3c4652"/>
+      <rect width="${W}" height="150" fill="#3c4652"/><rect x="112" y="150" width="10" height="${H}" fill="#55606d"/>
+      <rect x="${W - 122}" y="150" width="10" height="${H}" fill="#55606d"/><rect x="160" y="600" width="12" height="700" rx="6" fill="#aab4bf"/>`;
     s += `<rect width="${W}" height="${H}" fill="#fff" opacity="${fromWhite}"/>`;
     return camera(s, 1 + 0.06 * u / d);
   },
@@ -123,7 +135,7 @@ const SHOTS = {
     const flow = seq(u, 0.1, d), blank = seq(u, 0.4, d * 0.9);
     const beat = [0.1, 1.134, 2.168].reduce((m, b) => Math.max(m, Math.exp(-Math.abs(u - b) * 9)), 0);
     let s = `<rect width="${W}" height="${H}" fill="#05060c"/>` + watch({ x: 830, y: 470, s: 0.9, glow: 0.6 + 0.4 * flow });
-    s += nox({ x: 470, y: 1080, s: 1.7, look: [0.2, -0.1], brow: 0.5 - blank, blank, blink: 0 });
+    s += nox({ x: 470, y: 1080, s: 1.7, look: [0.2, -0.1], brow: 0.5 - blank, blank, blink: 0, mouth: speak("nox", t) * 0.6 });
     const r = rng(77);
     for (let i = 0; i < 60; i++) {
       const ph = r(), k = ((u * 0.55 + ph) % 1) * (0.3 + 0.7 * flow);
@@ -143,15 +155,16 @@ const SHOTS = {
     const lift = seq(u, 0, 0.5);
     let s = archiveBg({ t, camX: 200, dim: 0.5 }) + `<rect width="${W}" height="${H}" fill="#05070f" opacity="0.45"/>`;
     s += mira({ x: 330, y: 880, s: 1.35, look: [0.5, -0.1], brow: 1, wet: 1, tear: 1, mouth: speak("mira", t), tilt: 4 });
-    const py = lerp(1200, 560, lift);
-    s += `<g transform="translate(720,${py}) rotate(-6)"><rect x="-210" y="-250" width="420" height="500" fill="#efe6d2"/>
+    const shake = lift * (0.6 + 0.4 * Math.sin(u * 2.3)); // emotional tremble once the photo is up
+    const py = lerp(1200, 560, lift) + Math.sin(t * 11) * 3 * shake, pr = -6 + Math.sin(t * 8.3) * 1.4 * shake;
+    s += `<g transform="translate(720,${py}) rotate(${pr})"><rect x="-210" y="-250" width="420" height="500" fill="#efe6d2"/>
       <rect x="-180" y="-220" width="360" height="380" fill="#d9c7a4"/>
       <clipPath id="ph"><rect x="-180" y="-220" width="360" height="380"/></clipPath><g clip-path="url(#ph)">
         <rect x="-180" y="40" width="360" height="200" fill="#c9b691"/>
-        ${nox({ x: -70, y: -20, s: 0.42, smile: 0.8, look: [0.3, 0] })}
+        ${nox({ x: -70, y: -20, s: 0.42, smile: 0.8, look: [0.3, 0], casual: true })}
         ${linaFull({ x: 75, y: -15, s: 0.46, smile: 1, look: [-0.3, 0] })}
         <rect x="-180" y="-220" width="360" height="380" fill="#c8a76a" opacity="0.28"/></g></g>`;
-    s += miraHand({ x: 560, y: py + 230, s: 0.9, rot: -70 });
+    s += miraHand({ x: 560, y: py + 230, s: 0.9, rot: -70 + pr + 6 });
     return camera(s, 1.0);
   },
   S13(u, d, t) { // the back of the photo
@@ -162,6 +175,8 @@ const SHOTS = {
         <clipPath id="wr"><rect x="-340" y="-200" width="${680 * write}" height="300"/></clipPath>
         <text x="0" y="20" text-anchor="middle" font-family="Caveat" font-weight="700" font-size="190" fill="#24222e" clip-path="url(#wr)">Lina lebt.</text>
         ${sig > 0 ? brokenCircle(230, 230, 46, "#24222e", 9, sig) : ""}
+        <g transform="translate(-372,330) rotate(-18)"><rect x="-260" y="-46" width="230" height="96" fill="${PAL.mira.teal}"/>
+          <rect x="-44" y="-48" width="16" height="100" fill="${PAL.mira.silver}"/><ellipse cx="6" cy="0" rx="46" ry="62" fill="${PAL.mira.glove}"/></g>
       </g>`;
     s += `<rect width="${W}" height="${H}" fill="#000" opacity="${out}"/>`;
     return camera(s, 1 + 0.05 * u / d);

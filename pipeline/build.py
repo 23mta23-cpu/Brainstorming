@@ -1,6 +1,6 @@
 """episode.json -> final.mp4 (+ timeline.json, mix.wav, qc.json).
 Usage: /home/user/tools/piper-venv/bin/python pipeline/build.py series/echo-archiv/episodes/E001 [--skip-render]"""
-import hashlib, json, subprocess, sys, wave
+import hashlib, json, re, subprocess, sys, wave
 from pathlib import Path
 import numpy as np
 import sfx, tts
@@ -19,6 +19,30 @@ FX = {  # ffmpeg filters per voice effect; every voice ends trimmed, 48 kHz mono
 MASTER = "acompressor=threshold=-24dB:ratio=4:attack=3:release=120:makeup=3,alimiter=limit=0.4:attack=2:release=50,loudnorm=I=-14:TP=-2.0:LRA=8"  # TP margin for AAC overshoot
 
 
+SFX = {  # name -> maker(shot_duration); "drone" (bed) and "silence" (hard cut) are handled in mix()
+    "alarm": lambda d: sfx.alarm(d), "whoosh_short": lambda d: sfx.whoosh(0.5),
+    "whoosh_down": lambda d: sfx.whoosh(0.9, up=False), "metal": lambda d: sfx.metal_echo(),
+    "tick": lambda d: sfx.tick(int(d / 0.5) + 1), "heart": lambda d: sfx.heartbeat(3),
+    "shimmer": lambda d: sfx.shimmer(d), "logo": lambda d: sfx.echo_logo(),
+}
+
+
+def validate(ep):
+    """Fail fast before TTS/render: required fields, cast, sfx names, AI disclosure."""
+    errs = [f"missing field: {k}" for k in ("episode_id", "title", "format", "cast", "shots", "hook", "micro_loop",
+                                             "macro_loop", "cliffhanger") if k not in ep]
+    for s in ep.get("shots", []):
+        errs += [f"{s.get('id', '?')}: missing {k}" for k in ("id", "min", "fn", "emotion", "visual", "camera", "cut") if k not in s]
+        errs += [f"{s['id']}: unknown sfx '{n}'" for n, _ in s.get("sfx", []) if n not in SFX and n not in ("drone", "silence")]
+        ln = s.get("line")
+        if ln and ln.get("voice", ln["who"]) not in ep.get("cast", {}):
+            errs.append(f"{s['id']}: no cast entry for '{ln.get('voice', ln['who'])}'")
+    if ep.get("ai_disclosure") is not True:
+        errs.append("ai_disclosure must be true (CONTENT_POLICY)")
+    if errs:
+        sys.exit("episode.json invalid:\n  " + "\n  ".join(errs))
+
+
 def run(*cmd):
     subprocess.run(cmd, check=True, capture_output=True)
 
@@ -30,8 +54,10 @@ def load48(path):
 
 
 def voice_line(line, cast, cache):
-    c = cast[line["who"]]
-    key = hashlib.sha1(json.dumps([line["text"], c], sort_keys=True).encode()).hexdigest()[:12]
+    c = dict(cast[line.get("voice", line["who"])])  # per-line voice (e.g. whisper) and tempo overrides
+    if "length_scale" in line:
+        c["length_scale"] = line["length_scale"]
+    key = hashlib.sha1(json.dumps([line["text"], c, FX[c.get("fx")]], sort_keys=True).encode()).hexdigest()[:12]
     raw, out = cache / f"{key}.raw.wav", cache / f"{key}.wav"
     if not out.exists():
         tts.synth(line["text"], raw, c["model"], c.get("speaker"), c.get("length_scale", 1.0))
@@ -54,6 +80,9 @@ def build_timeline(ep, cache):
             ln = s["line"]
             a = voice_line(ln, ep["cast"], cache)
             ld = len(a) / SR
+            sps = len(re.findall(r"[aeiouäöüy]+", ln["text"].lower())) / ld  # vowel groups ~ German syllables
+            if sps > 5.5:  # calm dramatic delivery; conversational German is ~5-6
+                print(f"  warn {s['id']}: {sps:.1f} syllables/s ('{ln['text']}') - raise length_scale")
             dur = max(dur, ln.get("pre", 0.2) + ld + ln.get("post", 0.25))
             start = t + ln.get("pre", 0.2)
             lines.append({"shot": s["id"], "who": ln["who"], "text": ln["text"], "start": round(start, 3),
@@ -85,11 +114,7 @@ def mix(tl, voices):
             elif name == "silence":
                 mute.append((s["start"], s["end"] + off))
             else:
-                x = {"alarm": lambda: sfx.alarm(d), "whoosh_short": lambda: sfx.whoosh(0.5),
-                     "whoosh_down": lambda: sfx.whoosh(0.9, up=False), "metal": sfx.metal_echo,
-                     "tick": lambda: sfx.tick(int(d / 0.5) + 1), "heart": lambda: sfx.heartbeat(3),
-                     "shimmer": lambda: sfx.shimmer(d), "logo": sfx.echo_logo}[name]()
-                place(fx, x, at, 0.7)
+                place(fx, SFX[name](d), at, 0.7)
     for i, a in voices.items():
         place(vo, a, tl["lines"][i]["start"])
     g = np.ones(n)  # "Ton bricht ab": hard gate on bed + fx, short release back in
@@ -118,6 +143,7 @@ def write_wav(path, a):
 def main(epdir, skip_render=False, reuse_video=False):
     epdir = Path(epdir)
     ep = json.load(open(epdir / "episode.json"))
+    validate(ep)
     work = epdir / "build"; cache = work / "tts"; cache.mkdir(parents=True, exist_ok=True)
     tl, voices = build_timeline(ep, cache)
     lo, hi = ep["format"]["target_seconds"]

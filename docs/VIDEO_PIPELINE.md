@@ -18,7 +18,7 @@ Befehle: siehe Skill `.claude/skills/produce-episode/SKILL.md`. Hier: Stufen, St
 | 15 | Untertitel | im Frame gerendert (Safe Area) | TESTED |
 | 16 | Kreative QC | Kontaktbogen + Wellenform + Mensch | TESTED (teilweise; Hören = Mensch) |
 | 17 | Technische QC | `qc.py` | TESTED |
-| 18 | Überarbeitung | 2 Iterationen am Pilot (Bild + Ton) | TESTED |
+| 18 | Überarbeitung | v1 → v2 nach Agent-Review (Skript, Kanon, 8 Shots) + 3 Ton-Iterationen | TESTED |
 | 19 | Finales Rendern | `final/*.mp4`, H.264 CRF 21, AAC 192k | TESTED |
 | 20 | Menschliche Freigabe | `LAUNCH.md` | ausstehend |
 
