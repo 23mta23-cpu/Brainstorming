@@ -809,7 +809,81 @@
      0.2
     ]
    ],
-   "cut": "hart"
+   "cut": "hart",
+   "fx_txt": [
+    {
+     "at": [
+      281.8,
+      597.7,
+      1,
+      1,
+      -27
+     ],
+     "text": "Nox,",
+     "font": "Caveat",
+     "size": 36,
+     "color": "#2b2433",
+     "anim": "write",
+     "t0": 0.0,
+     "dur": 0.3,
+     "width": 90,
+     "opacity": 0.9
+    },
+    {
+     "at": [
+      300.6,
+      634.6,
+      1,
+      1,
+      -27
+     ],
+     "text": "ich warte am Bahnhof.",
+     "font": "Caveat",
+     "size": 36,
+     "color": "#2b2433",
+     "anim": "write",
+     "t0": 0.35,
+     "dur": 1.0,
+     "width": 330,
+     "opacity": 0.9
+    },
+    {
+     "at": [
+      319.4,
+      671.4,
+      1,
+      1,
+      -27
+     ],
+     "text": "Jeden Tag um sieben.",
+     "font": "Caveat",
+     "size": 36,
+     "color": "#2b2433",
+     "anim": "write",
+     "t0": 1.45,
+     "dur": 0.9,
+     "width": 320,
+     "opacity": 0.9
+    },
+    {
+     "at": [
+      338.2,
+      708.3,
+      1,
+      1,
+      -27
+     ],
+     "text": "Deine Lina",
+     "font": "Caveat",
+     "size": 36,
+     "color": "#2b2433",
+     "anim": "write",
+     "t0": 2.45,
+     "dur": 0.6,
+     "width": 190,
+     "opacity": 0.9
+    }
+   ]
   },
   {
    "id": "S15",
