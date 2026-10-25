@@ -103,6 +103,19 @@ const FX = {   // (u, d, t, shot, X): u = time in shot, d = shot length, X = cam
       <circle r="10" fill="none" stroke="#2a1704" stroke-opacity="0.7" stroke-width="5.6" stroke-dasharray="${2 * Math.PI * 10 * 0.78} 99" transform="translate(0.8,1.2) rotate(-40)"/>
       <circle r="10" fill="none" stroke="url(#pg)" stroke-width="3.6" stroke-linecap="round" stroke-dasharray="${2 * Math.PI * 10 * 0.78} 99" transform="rotate(-40)"/>
       <circle cx="-5" cy="-7" r="1.3" fill="#fff" opacity="${0.6 + 0.4 * Math.sin(t * 2)}"/>`),
+  texts: (u, d, t, sh, X) => (sh.fx_txt || []).map((g) => {   // text on paper/brass: handwriting writes on, stamps punch in
+    const lines = g.text.split("\n"), size = g.size || 60, t0 = g.t0 || 0, dur = g.dur || 1.0, w = clamp((u - t0) / dur);
+    const font = g.font || "Caveat", weight = g.weight || 700, anchorTo = g.align || "middle";
+    const body = lines.map((l, i) => `<text y="${(i - (lines.length - 1) / 2) * size * 1.15 + size * 0.35}" text-anchor="${anchorTo}" font-family="${font}" font-weight="${weight}" font-size="${size}" letter-spacing="${g.spacing || 0}" fill="${g.color || "#1f1d27"}">${l}</text>`).join("");
+    const half = (g.width || 400) / 2, hh = lines.length * size * 0.65 + 10;
+    if (g.anim === "stamp") {   // punches in at t0: scale 1.5 -> 1, then stays (ink: multiply)
+      const k = 1 + 0.5 * (1 - seq(u, t0, t0 + 0.12)), o = u < t0 ? 0 : 0.9;
+      return anchor(X, g.at, `<g transform="scale(${k})" opacity="${o}" style="mix-blend-mode:multiply"><rect x="${-half}" y="${-hh}" width="${2 * half}" height="${2 * hh}" rx="6" fill="none" stroke="${g.color}" stroke-width="${size * 0.09}"/>${body}</g>`);
+    }
+    const id = `tw${g.at[0]}_${g.at[1]}`;
+    const clip = g.anim === "write" ? `<clipPath id="${id}"><rect x="${-half}" y="${-hh}" width="${2 * half * w}" height="${2 * hh}"/></clipPath>` : "";
+    return anchor(X, g.at, `${clip}<g ${clip ? `clip-path="url(#${id})"` : ""} opacity="${g.opacity || 0.92}" style="mix-blend-mode:multiply">${body}</g>`);
+  }).join(""),
   photo: (u, d, t, sh, X) => anchor(X, at(sh, "photo"),   // picture on a held portrait photograph, generated separately for identity control; 156 x 200
     `<defs><filter id="sep"><feColorMatrix type="matrix" values="0.80 0.25 0.05 0 0.02 0.12 0.82 0.05 0 0.01 0.10 0.18 0.62 0 0 0 0 0 1 0"/></filter></defs>
       <image href="${sh.fx_img.photo}" x="-78" y="-100" width="156" height="200" preserveAspectRatio="xMidYMid slice" filter="url(#sep)" style="mix-blend-mode:multiply"/>`),
@@ -140,11 +153,11 @@ const FX = {   // (u, d, t, shot, X): u = time in shot, d = shot length, X = cam
       if (e > 0) s += `<circle cx="540" cy="860" r="${60 + e * 520}" fill="none" stroke="#f2c86b" stroke-width="${5 - k}" opacity="${Math.max(0, 0.8 - e * 0.55) * (1 - k * 0.2)}"/>`; }
     const o = seq(u, 0.9, 1.6);
     return s + `<g opacity="${o}"><text x="540" y="880" text-anchor="middle" font-family="Cinzel" font-weight="700" font-size="88" letter-spacing="6" fill="#f2c86b">DAS ECHO-ARCHIV</text>
-      <text x="540" y="960" text-anchor="middle" font-family="Inter" font-weight="600" font-size="38" letter-spacing="8" fill="#e6dcc2">FOLGE 1 · REGEL ACHT</text>
+      <text x="540" y="960" text-anchor="middle" font-family="Inter" font-weight="600" font-size="38" letter-spacing="8" fill="#e6dcc2">FOLGE ${TL.ep.num} · ${TL.ep.title.toUpperCase()}</text>
       <text x="540" y="1420" text-anchor="middle" font-family="Inter" font-size="34" fill="#a9adb9">KI-generierte fiktionale Serie</text></g>`; },
 };
 
-const ANCHORED = new Set(["notches", "notches_red", "pin", "photo", "echo_pulse", "engraving", "glint", "memory_flow", "handwriting"]);
+const ANCHORED = new Set(["notches", "notches_red", "pin", "photo", "texts", "echo_pulse", "engraving", "glint", "memory_flow", "handwriting"]);
 
 window.initScene = (tl) => {
   TL = tl;
@@ -183,7 +196,7 @@ window.renderAt = (t) => {
   ti.textContent = showTitle ? shot.text : "";
   ti.style.opacity = showTitle ? Math.min(seq(u, 0.1, 0.5), 1 - seq(u, 2.0, 2.5)) : 0;
   const b = document.getElementById("brand");
-  b.textContent = t < 2.6 ? "DAS ECHO-ARCHIV · 01" : "";
+  b.textContent = t < 2.6 ? `DAS ECHO-ARCHIV · ${String(TL.ep.num).padStart(2, "0")}` : "";
   b.style.opacity = t < 2.6 ? Math.min(1, t * 2, (2.6 - t) * 3) * 0.85 : 0;
 };
 </script></body></html>

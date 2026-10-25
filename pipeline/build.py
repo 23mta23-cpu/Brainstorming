@@ -16,7 +16,7 @@ FX = {  # ffmpeg filters per voice effect; every voice ends trimmed, 48 kHz mono
     "echo": TRIM + "aresample=48000,atempo=0.88,aecho=0.8:0.6:70|160:0.3|0.15",  # memory voice: slowed (pitch kept) + echo
 }
 TTS2_PY = "/home/user/tools/tts2-venv/bin/python"  # Chatterbox lives in its own venv (pinned deps)
-SCENE_FX = {"motes", "alarm", "notches", "notches_red", "pin", "photo", "rays", "echo_pulse", "engraving", "glint", "flash", "snow", "dream", "memory_flow", "handwriting", "endcard"}
+SCENE_FX = {"motes", "alarm", "notches", "notches_red", "pin", "photo", "texts", "rays", "echo_pulse", "engraving", "glint", "flash", "snow", "dream", "memory_flow", "handwriting", "endcard"}
 
 
 # master bus: glue compression, brickwall limiter so transients don't block loudnorm, then TikTok-ish -14 LUFS
@@ -121,7 +121,8 @@ def visuals(s, epdir, strict=True):
         sys.exit(f"{s['id']}: missing plates {[p.name for p in missing]} - run pipeline/keyframes.py and pipeline/plates.py first")
     talk = {who: pl(k, "png").as_uri() for who, k in s.get("talk", {}).items() if pl(k, "png").exists()}
     imgs = {n: pl(k).as_uri() for n, k in s.get("fx_img", {}).items()}  # e.g. the picture on a held photograph
-    return {"plate": pl(base).as_uri(), "motion": m, "fx": s.get("fx", []), "fx_at": s.get("fx_at", {}), "fx_img": imgs, "talk": talk}
+    return {"plate": pl(base).as_uri(), "motion": m, "fx": s.get("fx", []), "fx_at": s.get("fx_at", {}), "fx_img": imgs,
+            "fx_txt": s.get("fx_txt", []), "talk": talk}
 
 
 def build_timeline(ep, epdir, cache, strict=True):
@@ -143,7 +144,8 @@ def build_timeline(ep, epdir, cache, strict=True):
         shots.append({"id": s["id"], "start": round(t, 3), "end": round(t + dur, 3), "sfx": s.get("sfx", []),
                       "text": s.get("onscreen_text"), "cap_y": s.get("cap_y"), **visuals(s, epdir, strict)})  # cap_y: caption top, px
         t += dur
-    return {"fps": fps, "duration": round(t, 3), "shots": shots, "lines": lines}, audio
+    return {"fps": fps, "duration": round(t, 3), "ep": {"num": int(ep["episode_id"][1:]), "title": ep["title"]},
+            "shots": shots, "lines": lines}, audio
 
 
 def place(buf, x, at, gain=1.0):

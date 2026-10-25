@@ -1,0 +1,849 @@
+{
+ "episode_id": "E002",
+ "series": "Das Echo-Archiv",
+ "title": "Der Brief",
+ "version": "1.0",
+ "format": {
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "target_seconds": [
+   55,
+   70
+  ]
+ },
+ "look": {
+  "w": 720,
+  "h": 1280,
+  "refs": {
+   "nox": "../../look/refs/nox.png",
+   "mira": "../../look/refs/mira.png",
+   "lina": "../../look/refs/lina.png",
+   "pip": "../../look/refs/pip.png"
+  }
+ },
+ "hook": {
+  "type": "verbotenes_objekt",
+  "spoken": "Dieser Brief ist für Nox. Er hat ihn nie gelesen.",
+  "visual_question": "Ein glimmender Brief mit rotem Siegel und Kinderschrift „Für Nox“ — warum nie geöffnet?"
+ },
+ "emotional_core": "Schuld gegen Sehnsucht",
+ "character_decision": "Nox zieht den Handschuh wieder an: Er liest Linas Brief, statt ihn mit bloßer Hand zu berühren — um sie diesmal nicht zu vergessen.",
+ "micro_loop": {
+  "question": "Wohin mit einem Brief, der nie ankam?",
+  "resolution": "Ein verlorener Brief ohne Echo geht per Rückpost zurück; eine alte Frau erhält ihn nach Jahren."
+ },
+ "macro_loop": {
+  "question": "Wer ist Lina, und warum vergisst Nox sie immer wieder?",
+  "planned_resolution": "E10",
+  "progress": "Linas Brief: Sie wartet am Bahnhof, jeden Tag um sieben."
+ },
+ "twist": "Nox hat den Brief damals selbst abgelehnt: „ANNAHME VERWEIGERT — N. Veyr“.",
+ "cliffhanger": "Mira verdeckt ihre Manteltasche, aus der die Ecke des Fotos ragt — was weiß sie?",
+ "recap": "S04: „Lina lebt.“ (E01) für neue Zuschauer",
+ "plants": [
+  {
+   "id": "P5",
+   "what": "Payoff: derselbe Brief mit rotem Wachssiegel wie in Linas Vision (E01 S13) und auf dem Foto (E01 S16).",
+   "payoff": "E02"
+  },
+  {
+   "id": "P7",
+   "what": "Fotoecke in Miras Manteltasche (nachgeholt, S18).",
+   "payoff": "E03"
+  },
+  {
+   "id": "P9",
+   "what": "„Annahme verweigert — N. Veyr“: Nox lehnte Linas Brief selbst ab.",
+   "payoff": "E10 (am Tag der Aufnahmeprüfung, Ehrgeiz gegen Loyalität)"
+  },
+  {
+   "id": "P10",
+   "what": "„Jeden Tag um sieben“ am Bahnhof.",
+   "payoff": "E10 (Abend, Regen: Wiedersehen um sieben)"
+  },
+  {
+   "id": "Q3",
+   "what": "Gelöst: „Veyr“ ist Nox' Nachname (seine Unterschrift).",
+   "payoff": "E02"
+  }
+ ],
+ "content_flags": [],
+ "historical_claims": [],
+ "ai_disclosure": true,
+ "cast": {
+  "erzaehler": {
+   "engine": "chatterbox",
+   "ref": "../../voices/erzaehler_ref.wav",
+   "exaggeration": 0.45,
+   "cfg_weight": 0.5
+  },
+  "nox": {
+   "engine": "chatterbox",
+   "ref": "../../voices/nox_ref.wav",
+   "exaggeration": 0.5,
+   "cfg_weight": 0.5
+  },
+  "nox_whisper": {
+   "model": "de_DE-thorsten_emotional-medium",
+   "speaker": 7,
+   "length_scale": 1.1
+  },
+  "mira": {
+   "engine": "chatterbox",
+   "ref": "../../voices/mira_ref.wav",
+   "exaggeration": 0.6,
+   "cfg_weight": 0.3
+  },
+  "lina": {
+   "engine": "chatterbox",
+   "ref": "../../voices/lina_ref.wav",
+   "exaggeration": 0.5,
+   "cfg_weight": 0.3,
+   "fx": "echo"
+  }
+ },
+ "shots": [
+  {
+   "id": "S01",
+   "min": 2.0,
+   "fn": "Hook: Brief an Nox (≤1,5 s)",
+   "emotion": "Neugier",
+   "visual": "ECU: alter Umschlag mit rotem Wachssiegel in einem Glaskasten, glimmt golden; Kinderschrift „Für Nox“ (Overlay).",
+   "camera": "Makro, Push-in",
+   "line": {
+    "who": "erzaehler",
+    "text": "Dieser Brief ist für Nox.",
+    "pre": 0.1,
+    "takes": 8
+   },
+   "kf": [
+    {
+     "id": "S01",
+     "seed": 201,
+     "prompt": "Extreme close-up: an old cream envelope sealed with a round red wax seal lies inside a small sealed glass display case on a dark wooden archive shelf; the envelope glows faintly warm gold from within; the front of the envelope is completely blank, no writing; floating golden dust, dark background."
+    }
+   ],
+   "motion": {
+    "zoom": [
+     1.0,
+     1.1
+    ]
+   },
+   "fx": [
+    "motes",
+    "texts"
+   ],
+   "sfx": [
+    [
+     "drone",
+     0
+    ],
+    [
+     "shimmer",
+     0.2
+    ]
+   ],
+   "cut": "hart"
+  },
+  {
+   "id": "S02",
+   "min": 2.4,
+   "fn": "Hook-Frage: warum nie gelesen?",
+   "emotion": "Rätsel",
+   "visual": "Nox' Gesicht im Glanz des Glaskastens, er sieht den Brief an.",
+   "camera": "Nah",
+   "line": {
+    "who": "erzaehler",
+    "text": "Er hat ihn nie gelesen.",
+    "pre": 0.05
+   },
+   "kf": [
+    {
+     "id": "S02",
+     "seed": 202,
+     "refs": [
+      "nox"
+     ],
+     "prompt": "Close-up: the young man from the reference image looks at a small glowing glass display case in front of him, warm golden light from the case on his face, puzzled and drawn in, dark archive shelves of letters behind him."
+    }
+   ],
+   "motion": {
+    "zoom": [
+     1.0,
+     1.06
+    ]
+   },
+   "fx": [
+    "motes",
+    "pin"
+   ],
+   "sfx": [],
+   "cut": "hart"
+  },
+  {
+   "id": "S03",
+   "min": 4.4,
+   "fn": "Welt: die Poststelle",
+   "emotion": "Staunen",
+   "visual": "Totale: Poststelle des Archivs — Wände aus Fächern mit glimmenden Briefen, Messing-Rohrpost; Nox am Sortiertisch, Pip auf der Schulter.",
+   "camera": "Totale, langsamer Dolly",
+   "line": {
+    "who": "erzaehler",
+    "text": "In der Poststelle landen Briefe, die nie jemand las.",
+    "pre": 0.15
+   },
+   "kf": [
+    {
+     "id": "S03",
+     "seed": 203,
+     "refs": [
+      "nox",
+      "pip"
+     ],
+     "prompt": "Wide shot of a vast underground post room of the archive: towering dark wooden walls of small drawers and glass compartments holding old letters that glow faintly gold or teal, brass pneumatic mail tubes running up into darkness, a long sorting desk with warm lamps; the young man from the first reference image sits at the desk, the brass compass creature from the second reference image on his shoulder."
+    }
+   ],
+   "onscreen_text": "Am Morgen",
+   "motion": {
+    "zoom": [
+     1.0,
+     1.1
+    ],
+    "y": [
+     0,
+     -30
+    ]
+   },
+   "fx": [
+    "motes"
+   ],
+   "sfx": [
+    [
+     "drone",
+     0
+    ]
+   ],
+   "cut": "hart"
+  },
+  {
+   "id": "S04",
+   "min": 3.2,
+   "fn": "Rückbezug E01: „Lina lebt.“",
+   "emotion": "Ratlosigkeit",
+   "visual": "Nox betrachtet die Fotorückseite mit „Lina lebt.“ (Overlay).",
+   "camera": "Halbnah",
+   "line": {
+    "who": "nox",
+    "text": "Lina lebt. Aber wer ist sie?",
+    "pre": 0.15
+   },
+   "kf": [
+    {
+     "id": "S04",
+     "seed": 204,
+     "refs": [
+      "nox"
+     ],
+     "prompt": "Medium close-up: the young man from the reference image sits at a sorting desk and holds an old photograph in his gloved hands, looking at its plain cream back side, puzzled; warm desk lamp light, piles of old letters around."
+    },
+    {
+     "id": "S04m",
+     "seed": 204,
+     "prompt": "Same image, identical in every detail, except the young man's mouth is slightly open as if speaking.",
+     "edit_of": "S04",
+     "patch": "mouth"
+    }
+   ],
+   "talk": {
+    "nox": "S04m"
+   },
+   "motion": {
+    "zoom": [
+     1.0,
+     1.05
+    ]
+   },
+   "fx": [
+    "pin",
+    "texts"
+   ],
+   "sfx": [],
+   "cut": "hart"
+  },
+  {
+   "id": "S05",
+   "min": 2.6,
+   "fn": "Mira lenkt ab",
+   "emotion": "Strenge, Schuld",
+   "visual": "Mira lässt einen Stapel Briefe auf den Tisch fallen.",
+   "camera": "Halbnah",
+   "line": {
+    "who": "mira",
+    "text": "Heute nur versiegeln. Keine Fragen.",
+    "pre": 0.15
+   },
+   "kf": [
+    {
+     "id": "S05",
+     "seed": 205,
+     "refs": [
+      "mira"
+     ],
+     "prompt": "Medium shot in the archive post room: the young woman from the reference image drops a tall stack of old letters onto a sorting desk with her dark grey gloved hands, stern and tired expression, warm lamp light, walls of letter compartments behind her."
+    },
+    {
+     "id": "S05m",
+     "seed": 205,
+     "prompt": "Same image, identical in every detail, except the young woman's mouth is slightly open as if speaking.",
+     "edit_of": "S05",
+     "patch": "mouth"
+    }
+   ],
+   "talk": {
+    "mira": "S05m"
+   },
+   "motion": {
+    "zoom": [
+     1.0,
+     1.04
+    ]
+   },
+   "sfx": [
+    [
+     "whoosh_short",
+     0
+    ]
+   ],
+   "cut": "hart"
+  },
+  {
+   "id": "S06",
+   "min": 2.6,
+   "fn": "Micro: ein Brief ohne Glanz",
+   "emotion": "Aufmerksamkeit",
+   "visual": "Nox hält einen schlichten Umschlag hoch, der nicht leuchtet.",
+   "camera": "Nah",
+   "line": {
+    "who": "nox",
+    "text": "Der hier leuchtet nicht.",
+    "pre": 0.15
+   },
+   "kf": [
+    {
+     "id": "S06",
+     "seed": 206,
+     "refs": [
+      "nox"
+     ],
+     "prompt": "Close-up: the young man from the reference image, wearing dark leather gloves, holds up one plain old envelope that does not glow at all, while the letters on the desk around him glow faintly gold; he frowns."
+    },
+    {
+     "id": "S06m",
+     "seed": 206,
+     "prompt": "Same image, identical in every detail, except the young man's mouth is slightly open as if speaking.",
+     "edit_of": "S06",
+     "patch": "mouth"
+    }
+   ],
+   "talk": {
+    "nox": "S06m"
+   },
+   "motion": {
+    "zoom": [
+     1.0,
+     1.04
+    ]
+   },
+   "fx": [
+    "pin"
+   ],
+   "sfx": [],
+   "cut": "hart"
+  },
+  {
+   "id": "S07",
+   "min": 2.6,
+   "fn": "Regel der Rückpost",
+   "emotion": "sachlich",
+   "visual": "Mira zeigt auf ein Messingrohr mit Schild „RÜCKPOST“ (Overlay).",
+   "camera": "Halbnah",
+   "line": {
+    "who": "mira",
+    "text": "Dann ist er kein Echo. Rückpost.",
+    "pre": 0.15
+   },
+   "kf": [
+    {
+     "id": "S07",
+     "seed": 207,
+     "refs": [
+      "mira"
+     ],
+     "prompt": "Medium shot: the young woman from the reference image points with her dark grey gloved hand at a brass pneumatic mail tube in the wall that has a small blank polished brass label plate above its opening; matter-of-fact expression, warm light."
+    },
+    {
+     "id": "S07m",
+     "seed": 207,
+     "prompt": "Same image, identical in every detail, except the young woman's mouth is slightly open as if speaking.",
+     "edit_of": "S07",
+     "patch": "mouth"
+    }
+   ],
+   "talk": {
+    "mira": "S07m"
+   },
+   "motion": {
+    "zoom": [
+     1.0,
+     1.04
+    ]
+   },
+   "fx": [
+    "texts"
+   ],
+   "sfx": [],
+   "cut": "hart"
+  },
+  {
+   "id": "S08",
+   "min": 2.2,
+   "fn": "Micro-Aktion: Zustellung",
+   "emotion": "Erleichterung",
+   "visual": "Behandschuhte Hand wirft den Brief ins Rohr; Zug nach oben.",
+   "camera": "Detail",
+   "kf": [
+    {
+     "id": "S08",
+     "seed": 208,
+     "refs": [
+      "nox"
+     ],
+     "prompt": "Close-up of the dark leather gloved hand of the young man from the reference image dropping a plain old envelope into the open round brass mouth of a pneumatic mail tube, only his hand and navy blue sleeve visible, no face; warm light, slight motion blur."
+    }
+   ],
+   "motion": {
+    "zoom": [
+     1.0,
+     1.12
+    ],
+    "y": [
+     0,
+     -40
+    ]
+   },
+   "fx": [
+    "motes"
+   ],
+   "sfx": [
+    [
+     "whoosh_down",
+     0.2
+    ]
+   ],
+   "cut": "hart"
+  },
+  {
+   "id": "S09",
+   "min": 3.0,
+   "fn": "Micro gelöst: Brief kommt an",
+   "emotion": "Wärme",
+   "visual": "Gewöhnliche Stadt: eine alte Frau drückt den Brief an die Brust, lächelt.",
+   "camera": "Halbnah",
+   "line": {
+    "who": "erzaehler",
+    "text": "Manche Briefe kommen spät. Aber sie kommen an.",
+    "pre": 0.15
+   },
+   "kf": [
+    {
+     "id": "S09",
+     "seed": 209,
+     "prompt": "An elderly woman with grey hair in a knitted cardigan stands in the doorway of a small cozy apartment in an ordinary city in soft morning light, holding an old opened envelope to her chest with both hands, eyes closed, a gentle smile, a brass letterbox slot in the wooden door beside her."
+    }
+   ],
+   "motion": {
+    "zoom": [
+     1.0,
+     1.05
+    ]
+   },
+   "sfx": [
+    [
+     "shimmer",
+     0.3
+    ]
+   ],
+   "cut": "hart"
+  },
+  {
+   "id": "S10",
+   "min": 2.2,
+   "fn": "Pip zeigt den Weg",
+   "emotion": "Spannung",
+   "visual": "Pips Nadel schwenkt und zeigt auf ein hohes Fach.",
+   "camera": "Nah",
+   "kf": [
+    {
+     "id": "S10",
+     "seed": 210,
+     "refs": [
+      "nox",
+      "pip"
+     ],
+     "prompt": "Close-up: the brass compass creature from the second reference image sits on the navy and ochre coat shoulder of the young man from the first reference image; its red needle points sharply upward toward a high drawer in the wall of letters; the young man follows its gaze."
+    }
+   ],
+   "motion": {
+    "zoom": [
+     1.0,
+     1.06
+    ]
+   },
+   "fx": [
+    "motes"
+   ],
+   "sfx": [
+    [
+     "tick",
+     0
+    ]
+   ],
+   "cut": "hart"
+  },
+  {
+   "id": "S11",
+   "min": 2.8,
+   "fn": "Der Brief an Nox (P5)",
+   "emotion": "Sog",
+   "visual": "Ein hohes Fach gleitet auf; darin glimmt der Umschlag mit rotem Siegel; „Für Nox“ (Overlay).",
+   "camera": "Nah, Kran abwärts",
+   "line": {
+    "who": "nox",
+    "text": "Für mich?",
+    "pre": 0.6
+   },
+   "kf": [
+    {
+     "id": "S11",
+     "seed": 211,
+     "prompt": "A high wooden drawer in a wall of letter compartments slides open; inside lies one old cream envelope with a round red wax seal, glowing brighter warm gold than all the others; the front of the envelope is blank, no writing; floating golden dust."
+    }
+   ],
+   "motion": {
+    "zoom": [
+     1.06,
+     1.0
+    ],
+    "y": [
+     -30,
+     0
+    ]
+   },
+   "fx": [
+    "motes",
+    "texts"
+   ],
+   "sfx": [
+    [
+     "shimmer",
+     0
+    ]
+   ],
+   "cut": "hart"
+  },
+  {
+   "id": "S12",
+   "min": 3.0,
+   "fn": "Versuchung + Warnung",
+   "emotion": "Angst",
+   "visual": "Nox' bloße Hand greift nach dem Brief, Miras Handschuh packt sein Handgelenk.",
+   "camera": "Detail",
+   "line": {
+    "who": "mira",
+    "text": "Nicht! Sonst vergisst du sie wieder.",
+    "pre": 0.3
+   },
+   "kf": [
+    {
+     "id": "S12",
+     "seed": 212,
+     "refs": [
+      "nox",
+      "mira"
+     ],
+     "prompt": "Close-up of hands only, no faces: the bare right hand of the young man from the first reference image, coming out of his navy blue sleeve, reaches toward a glowing old envelope with a red wax seal on a desk; the dark grey gloved hand of the young woman from the second reference image, in her petrol sleeve, grabs his bare wrist firmly."
+    }
+   ],
+   "motion": {
+    "zoom": [
+     1.0,
+     1.06
+    ],
+    "shake": 2
+   },
+   "sfx": [
+    [
+     "heart",
+     0.2
+    ]
+   ],
+   "cut": "hart"
+  },
+  {
+   "id": "S13",
+   "min": 2.4,
+   "fn": "Entscheidung: Handschuh wieder an",
+   "emotion": "Entschlossenheit",
+   "visual": "Nox zieht den Handschuh wieder an.",
+   "camera": "Detail",
+   "kf": [
+    {
+     "id": "S13",
+     "seed": 213,
+     "refs": [
+      "nox"
+     ],
+     "prompt": "Close-up of hands: the young man from the reference image pulls a dark leather glove back onto his right hand with determination, his navy blue sleeve visible, a glowing old envelope with a red wax seal on the desk in front of him; no face visible."
+    }
+   ],
+   "motion": {
+    "zoom": [
+     1.0,
+     1.05
+    ]
+   },
+   "sfx": [
+    [
+     "silence",
+     0
+    ]
+   ],
+   "cut": "hart"
+  },
+  {
+   "id": "S14",
+   "min": 3.8,
+   "fn": "Macro: Linas Brief",
+   "emotion": "Sehnsucht",
+   "visual": "Offener Brief, Kinderschrift erscheint (Overlay); Linas Stimme liest.",
+   "camera": "Aufsicht",
+   "line": {
+    "who": "lina",
+    "text": "Ich warte am Bahnhof. Jeden Tag um sieben.",
+    "pre": 0.3
+   },
+   "kf": [
+    {
+     "id": "S14",
+     "seed": 214,
+     "prompt": "Top-down close-up: an opened old cream letter paper with faint ruled lines, completely blank with no writing, lies on a dark wooden desk next to its envelope with a broken red wax seal; dark leather gloved fingertips hold the edge of the paper; warm lamp light, golden dust."
+    }
+   ],
+   "motion": {
+    "zoom": [
+     1.0,
+     1.06
+    ]
+   },
+   "fx": [
+    "texts",
+    "motes"
+   ],
+   "sfx": [
+    [
+     "shimmer",
+     0.2
+    ]
+   ],
+   "cut": "hart"
+  },
+  {
+   "id": "S15",
+   "min": 2.4,
+   "fn": "Frage",
+   "emotion": "Verwirrung",
+   "visual": "Nox blickt auf, sucht.",
+   "camera": "Nah",
+   "line": {
+    "who": "nox",
+    "text": "Welcher Bahnhof?",
+    "pre": 0.15
+   },
+   "kf": [
+    {
+     "id": "S15",
+     "seed": 215,
+     "refs": [
+      "nox"
+     ],
+     "prompt": "Close-up portrait: the young man from the reference image looks up from a letter, confused and searching, warm lamp light from below, dark archive background with soft bokeh of glowing letters."
+    },
+    {
+     "id": "S15m",
+     "seed": 215,
+     "prompt": "Same image, identical in every detail, except the young man's mouth is slightly open as if speaking.",
+     "edit_of": "S15",
+     "patch": "mouth"
+    }
+   ],
+   "talk": {
+    "nox": "S15m"
+   },
+   "motion": {
+    "zoom": [
+     1.0,
+     1.04
+    ]
+   },
+   "fx": [
+    "pin"
+   ],
+   "sfx": [],
+   "cut": "hart"
+  },
+  {
+   "id": "S16",
+   "min": 3.0,
+   "fn": "Twist: Annahme verweigert",
+   "emotion": "Schock",
+   "visual": "Umschlag-Rückseite: roter Stempel „ANNAHME VERWEIGERT“, darunter „N. Veyr“ (Overlays).",
+   "camera": "Detail",
+   "kf": [
+    {
+     "id": "S16",
+     "seed": 216,
+     "prompt": "Close-up: the back side of an old cream envelope with a broken red wax seal, held by dark leather gloved fingers; a large empty clean area of paper in the middle; warm lamp light, dark background."
+    }
+   ],
+   "motion": {
+    "zoom": [
+     1.0,
+     1.08
+    ]
+   },
+   "fx": [
+    "texts"
+   ],
+   "sfx": [
+    [
+     "metal",
+     0.4
+    ],
+    [
+     "silence",
+     1.2
+    ]
+   ],
+   "cut": "hart"
+  },
+  {
+   "id": "S17",
+   "min": 3.2,
+   "fn": "Erkenntnis",
+   "emotion": "Fassungslosigkeit",
+   "visual": "Nox, extrem nah, erkennt seine eigene Unterschrift.",
+   "camera": "Extrem nah",
+   "line": {
+    "who": "nox",
+    "text": "Das ist meine Unterschrift.",
+    "pre": 0.2
+   },
+   "kf": [
+    {
+     "id": "S17",
+     "seed": 217,
+     "refs": [
+      "nox"
+     ],
+     "prompt": "Extreme close-up of the young man from the reference image, eyes wide in shock, lips parted, trembling warm lamp light on his face, dark background."
+    },
+    {
+     "id": "S17m",
+     "seed": 217,
+     "prompt": "Same image, identical in every detail, except the young man's mouth is slightly open as if speaking.",
+     "edit_of": "S17",
+     "patch": "mouth"
+    }
+   ],
+   "talk": {
+    "nox": "S17m"
+   },
+   "motion": {
+    "zoom": [
+     1.0,
+     1.06
+    ]
+   },
+   "sfx": [
+    [
+     "heart",
+     0
+    ]
+   ],
+   "cut": "hart"
+  },
+  {
+   "id": "S18",
+   "min": 2.8,
+   "fn": "Cliffhanger: Miras Tasche (P7)",
+   "emotion": "Schuld",
+   "visual": "Mira blickt weg, ihr Handschuh drückt auf die Manteltasche, eine Fotoecke ragt heraus.",
+   "camera": "Halbnah",
+   "kf": [
+    {
+     "id": "S18",
+     "seed": 218,
+     "refs": [
+      "mira"
+     ],
+     "prompt": "Medium close-up: the young woman from the reference image stands in the shadows of the archive post room, she looks away guiltily and presses her dark grey gloved hand over the pocket of her own coat at her hip, from which the white corner of an old photograph sticks out."
+    }
+   ],
+   "motion": {
+    "zoom": [
+     1.0,
+     1.05
+    ]
+   },
+   "sfx": [
+    [
+     "silence",
+     0
+    ]
+   ],
+   "cut": "hart"
+  },
+  {
+   "id": "S19",
+   "min": 3.4,
+   "fn": "Endkarte",
+   "emotion": "Sog",
+   "visual": "Dunkle Poststelle, Logo, Folgentitel.",
+   "camera": "Statisch",
+   "kf": [
+    {
+     "id": "S19",
+     "seed": 219,
+     "prompt": "Very dark, out-of-focus view of the archive post room: walls of small letter compartments glowing faintly gold only as soft bokeh, deep shadows, lots of empty dark space in the center."
+    }
+   ],
+   "motion": {
+    "zoom": [
+     1.0,
+     1.03
+    ]
+   },
+   "fx": [
+    "endcard"
+   ],
+   "sfx": [
+    [
+     "logo",
+     0.3
+    ]
+   ],
+   "cut": "hart"
+  }
+ ]
+}
