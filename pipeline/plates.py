@@ -3,13 +3,15 @@
 - for kf entries with "patch": diff against the base keyframe, keep only the strongest connected change region
   (mouth/eyes) - inside a window around "at" [x, y] (keyframe px) when given, so drift elsewhere (e.g. the other face)
   is ignored - feather it, write plates/<id>.png as RGBA overlay. Global drift (region too large) -> no patch, warning.
+- "patch": "fix" = permanent local retouch (expression, artefact): the edit replaces a feathered disk ("at", radius "r")
+  of the base plate.
 Usage: /home/user/tools/gen-venv/bin/python pipeline/plates.py series/echo-archiv/episodes/E001"""
 import json, sys
 from collections import deque
 from pathlib import Path
 
 import numpy as np
-from PIL import Image, ImageFilter
+from PIL import Image, ImageDraw, ImageFilter
 
 SIZE = (1188, 2112)
 CELL = 16          # coarse grid for region growing
@@ -17,9 +19,15 @@ MAX_AREA = 0.06    # a mouth/eye change should cover well under 6 % of the frame
 WINDOW = 70        # keyframe px around "at": a mouth plus a little jaw
 
 
-def upscale(src, dst):
-    im = Image.open(src).convert("RGB").resize(SIZE, Image.LANCZOS)
+def upscale(im, dst):
+    im = im.convert("RGB").resize(SIZE, Image.LANCZOS)
     im.filter(ImageFilter.UnsharpMask(radius=1.6, percent=70, threshold=2)).save(dst, quality=92)
+
+
+def disk(size, at, r):
+    m = Image.new("L", size, 0)
+    ImageDraw.Draw(m).ellipse([at[0] - r * 0.8, at[1] - r * 0.8, at[0] + r * 0.8, at[1] + r * 0.8], fill=255)
+    return m.filter(ImageFilter.GaussianBlur(r * 0.2))
 
 
 def change_mask(base, var, at=None):
@@ -60,7 +68,12 @@ def main(epdir):
             if not src.exists():
                 report[k["id"]] = "missing keyframe"
                 continue
-            if "patch" in k:
+            if k.get("patch") == "fix":
+                base = Image.open(epdir / "kf" / f"{k['edit_of']}.png").convert("RGB")
+                upscale(Image.composite(Image.open(src).convert("RGB"), base, disk(base.size, k["at"], k.get("r", WINDOW))),
+                        epdir / "plates" / f"{k['edit_of']}.jpg")  # replaces the base plate written just before
+                report[k["id"]] = f"fix of {k['edit_of']} at {k['at']}"
+            elif "patch" in k:
                 alpha, area = change_mask(Image.open(epdir / "kf" / f"{k['edit_of']}.png"), Image.open(src), k.get("at"))
                 if area > MAX_AREA:
                     report[k["id"]] = f"skipped: change covers {area:.0%} of frame (edit drifted)"
@@ -71,7 +84,7 @@ def main(epdir):
                 rgba.save(epdir / "plates" / f"{k['id']}.png")
                 report[k["id"]] = f"patch {area:.1%}"
             else:
-                upscale(src, epdir / "plates" / f"{k['id']}.jpg")
+                upscale(Image.open(src), epdir / "plates" / f"{k['id']}.jpg")
                 report[k["id"]] = "plate"
     (epdir / "plates" / "report.json").write_text(json.dumps(report, indent=1))
     for k, v in report.items():

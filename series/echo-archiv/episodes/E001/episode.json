@@ -399,6 +399,18 @@
       365,
       645
      ]
+    },
+    {
+     "id": "S07f",
+     "seed": 107,
+     "edit_of": "S07",
+     "patch": "fix",
+     "at": [
+      360,
+      505
+     ],
+     "r": 115,
+     "prompt": "Same image, identical in every detail, but without the white lines under his eyes: natural clean skin, his eyes glistening with unshed tears."
     }
    ],
    "motion": {
@@ -491,6 +503,18 @@
       "mira"
      ],
      "prompt": "Medium side shot: the young woman from the reference image presses both gloved hands flat against a large round bronze vault seal, glowing golden sealing glyphs flare under her palms, she strains with all her focus, red warning light washes over the scene, golden light leaks from the seams of the door."
+    },
+    {
+     "id": "S08f",
+     "seed": 108,
+     "edit_of": "S08",
+     "patch": "fix",
+     "at": [
+      335,
+      395
+     ],
+     "r": 105,
+     "prompt": "Same image, identical in every detail, except the young woman's face: a tense, strained expression, brows furrowed, lips pressed together, eyes focused hard on the seal, no smile."
     }
    ],
    "motion": {
