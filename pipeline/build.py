@@ -16,7 +16,7 @@ FX = {  # ffmpeg filters per voice effect; every voice ends trimmed, 48 kHz mono
     "echo": TRIM + "aresample=48000,atempo=0.88,aecho=0.8:0.6:70|160:0.3|0.15",  # memory voice: slowed (pitch kept) + echo
 }
 TTS2_PY = "/home/user/tools/tts2-venv/bin/python"  # Chatterbox lives in its own venv (pinned deps)
-SCENE_FX = {"motes", "alarm", "notches", "notches_red", "pin", "rays", "echo_pulse", "engraving", "glint", "flash", "snow", "dream", "memory_flow", "handwriting", "endcard"}
+SCENE_FX = {"motes", "alarm", "notches", "notches_red", "pin", "photo", "rays", "echo_pulse", "engraving", "glint", "flash", "snow", "dream", "memory_flow", "handwriting", "endcard"}
 
 
 # master bus: glue compression, brickwall limiter so transients don't block loudnorm, then TikTok-ish -14 LUFS
@@ -115,11 +115,13 @@ def visuals(s, epdir, strict=True):
     for k in ("from", "to"):
         if k in m:
             m[k] = pl(m[k]).as_uri()
-    missing = [p for p in [pl(base)] + [pl(v) for k, v in s.get("motion", {}).items() if k in ("from", "to")] if not p.exists()]
+    missing = [p for p in [pl(base)] + [pl(v) for k, v in s.get("motion", {}).items() if k in ("from", "to")]
+               + [pl(v) for v in s.get("fx_img", {}).values()] if not p.exists()]
     if missing and strict:
         sys.exit(f"{s['id']}: missing plates {[p.name for p in missing]} - run pipeline/keyframes.py and pipeline/plates.py first")
     talk = {who: pl(k, "png").as_uri() for who, k in s.get("talk", {}).items() if pl(k, "png").exists()}
-    return {"plate": pl(base).as_uri(), "motion": m, "fx": s.get("fx", []), "fx_at": s.get("fx_at", {}), "talk": talk}
+    imgs = {n: pl(k).as_uri() for n, k in s.get("fx_img", {}).items()}  # e.g. the picture on a held photograph
+    return {"plate": pl(base).as_uri(), "motion": m, "fx": s.get("fx", []), "fx_at": s.get("fx_at", {}), "fx_img": imgs, "talk": talk}
 
 
 def build_timeline(ep, epdir, cache, strict=True):

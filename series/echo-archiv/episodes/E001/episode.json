@@ -892,7 +892,7 @@
    "min": 3.6,
    "fn": "Twist — Mira bricht die Regel aus Gewissen",
    "emotion": "Schmerz",
-   "visual": "Mira hält ein altes Foto hoch: ein Junge und ein Mädchen mit rotem Schal.",
+   "visual": "Mira hält ein altes Foto hoch: ein Junge und ein Mädchen mit rotem Schal. (Foto-Motiv separat generiert und eingesetzt: Identitätskontrolle für den Twist.)",
    "camera": "Halbnah",
    "line": {
     "who": "mira",
@@ -905,10 +905,9 @@
      "id": "S16",
      "seed": 116,
      "refs": [
-      "mira",
-      "lina"
+      "mira"
      ],
-     "prompt": "Medium shot of the young woman from the first reference image holding up an old faded photograph with her gloved hand toward the camera, tears on her face but a resolute look; the photograph shows a smiling black-haired boy in a navy sweater with an ochre scarf next to the girl from the second reference image in her red scarf holding a sealed letter, standing together in the snow."
+     "prompt": "Medium shot in a dark stone vestibule lit by warm golden light: the young woman from the reference image, with her black bob haircut, silver hair clip, high petrol collar and cream shoulder plates, holds up an old photograph with both dark grey gloved hands toward the camera; tears on her cheeks, restrained grief. The picture side of the photograph faces the camera but is completely faded to a plain pale cream color inside a thin white border; her fingers hold only the border."
     },
     {
      "id": "S16m",
@@ -916,6 +915,17 @@
      "edit_of": "S16",
      "patch": "mouth",
      "prompt": "Same image, identical in every detail, except the young woman's mouth is slightly open as if speaking."
+    },
+    {
+     "id": "S16p",
+     "seed": 161,
+     "refs": [
+      "nox",
+      "lina"
+     ],
+     "w": 640,
+     "h": 640,
+     "prompt": "An old faded vintage photograph, slightly yellowed with soft grain, filling the whole frame: a boy of about twelve who looks like the young man from the first reference image as a child, with the same straight black hair with a side fringe and pale skin, wearing a navy blue sweater and an ochre scarf, stands next to the girl from the second reference image in her cream coat and red scarf holding a sealed letter; snowy old railway platform behind them; both smile at the camera."
     }
    ],
    "motion": {
@@ -928,7 +938,13 @@
     "mira": "S16m"
    },
    "sfx": [],
-   "cut": "Foto-Flip"
+   "cut": "Foto-Flip",
+   "fx": [
+    "photo"
+   ],
+   "fx_img": {
+    "photo": "S16p"
+   }
   },
   {
    "id": "S17",

@@ -20,7 +20,8 @@ WINDOW = 70        # keyframe px around "at": a mouth plus a little jaw
 
 
 def upscale(im, dst):
-    im = im.convert("RGB").resize(SIZE, Image.LANCZOS)
+    f = SIZE[0] / 720  # keyframes are 720 wide; inserts (e.g. a photo) keep their own aspect ratio
+    im = im.convert("RGB").resize((round(im.width * f), round(im.height * f)), Image.LANCZOS)
     im.filter(ImageFilter.UnsharpMask(radius=1.6, percent=70, threshold=2)).save(dst, quality=92)
 
 

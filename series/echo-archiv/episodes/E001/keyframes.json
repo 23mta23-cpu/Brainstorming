@@ -3,12 +3,14 @@
  "jobs": [
   {
    "id": "S01",
-   "prompt": "Extreme close-up macro shot, no face and no head in the frame: a young man's bare pale right hand emerging from a deep navy blue coat sleeve reaches in from the left toward a large round bronze vault seal seen straight on, the seal fills the right half of the frame; the seal has a smooth polished rim ring without any marks, slots or symbols and a small dark keyhole in its center; his fingertips stop a few centimeters before the metal; floating golden dust, dramatic warm rim light, dark background.",
+   "prompt": "Extreme close-up macro shot of the young man from the reference image: only the edge of his face is visible at the top left, his bare pale right hand emerging from the navy blue sleeve of his coat reaches in from the left toward a large round bronze vault seal seen straight on, the whole seal is inside the frame on the right side; the seal has a smooth polished rim ring without any marks, slots or symbols and a small dark keyhole in its center; his fingertips stop a few centimeters before the metal and do not cover the seal; floating golden dust, dramatic warm rim light, dark background.",
    "out": "kf/S01.png",
    "w": 720,
    "h": 1280,
    "seed": 101,
-   "refs": []
+   "refs": [
+    "../../look/refs/nox.png"
+   ]
   },
   {
    "id": "S03",
@@ -45,7 +47,7 @@
   },
   {
    "id": "S06",
-   "prompt": "Medium two-shot in the archive hall: the young woman from the second reference image grabs the coat sleeve of the young man from the first reference image with her gloved hand, she looks at him worried and tired, he looks toward golden light leaking from a closed door off-screen; the corner of an old photograph sticks out of her coat pocket. Both faces clearly visible.",
+   "prompt": "Medium two-shot inside the underground archive hall, tall dark wooden shelves with sealed glass display cases and warm hanging lanterns behind them. On the left, the young woman from the second reference image, about 18 years old and almost as tall as him, grabs the navy blue right sleeve of the young man from the first reference image with her dark grey gloved hand; she looks at him worried and tired. On the right, he looks past her toward golden light leaking from the seams of a closed round vault door off-screen. His coat exactly like the reference: his right half navy blue, his left half ochre. A small corner of an old photograph, only its plain white back side visible, sticks out of the pocket of her coat. Both faces clearly visible.",
    "out": "kf/S06.png",
    "w": 720,
    "h": 1280,
@@ -89,6 +91,17 @@
    ]
   },
   {
+   "id": "S07f",
+   "prompt": "Same image, identical in every detail, but without the white lines under his eyes: natural clean skin, his eyes glistening with unshed tears.",
+   "out": "kf/S07f.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 107,
+   "refs": [
+    "kf/S07.png"
+   ]
+  },
+  {
    "id": "S08",
    "prompt": "Medium side shot: the young woman from the reference image presses both gloved hands flat against a large round bronze vault seal, glowing golden sealing glyphs flare under her palms, she strains with all her focus, red warning light washes over the scene, golden light leaks from the seams of the door.",
    "out": "kf/S08.png",
@@ -97,6 +110,17 @@
    "seed": 108,
    "refs": [
     "../../look/refs/mira.png"
+   ]
+  },
+  {
+   "id": "S08f",
+   "prompt": "Same image, identical in every detail, except the young woman's face: a tense, strained expression, brows furrowed, lips pressed together, eyes focused hard on the seal, no smile.",
+   "out": "kf/S08f.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 108,
+   "refs": [
+    "kf/S08.png"
    ]
   },
   {
@@ -150,12 +174,14 @@
   },
   {
    "id": "S12",
-   "prompt": "Extreme close-up: a young man's bare fingertip, with a deep navy coat sleeve, touching an antique gold pocket watch floating in a beam of light, a burst of golden light at the point of contact.",
+   "prompt": "Extreme close-up of the young man from the reference image: his bare right index fingertip, coming out of the navy blue sleeve of his coat, touches the back of an antique gold pocket watch floating in a beam of light; a burst of golden light flares at the point of contact; only the edge of his face is visible at the side of the frame, soft and out of focus; dark background.",
    "out": "kf/S12.png",
    "w": 720,
    "h": 1280,
    "seed": 112,
-   "refs": []
+   "refs": [
+    "../../look/refs/nox.png"
+   ]
   },
   {
    "id": "S13",
@@ -203,14 +229,13 @@
   },
   {
    "id": "S16",
-   "prompt": "Medium shot of the young woman from the first reference image holding up an old faded photograph with her gloved hand toward the camera, tears on her face but a resolute look; the photograph shows a smiling black-haired boy in a navy sweater with an ochre scarf next to the girl from the second reference image in her red scarf holding a sealed letter, standing together in the snow.",
+   "prompt": "Medium shot in a dark stone vestibule lit by warm golden light: the young woman from the reference image, with her black bob haircut, silver hair clip, high petrol collar and cream shoulder plates, holds up an old photograph with both dark grey gloved hands toward the camera; tears on her cheeks, restrained grief. The picture side of the photograph faces the camera but is completely faded to a plain pale cream color inside a thin white border; her fingers hold only the border.",
    "out": "kf/S16.png",
    "w": 720,
    "h": 1280,
    "seed": 116,
    "refs": [
-    "../../look/refs/mira.png",
-    "../../look/refs/lina.png"
+    "../../look/refs/mira.png"
    ]
   },
   {
@@ -222,6 +247,18 @@
    "seed": 116,
    "refs": [
     "kf/S16.png"
+   ]
+  },
+  {
+   "id": "S16p",
+   "prompt": "An old faded vintage photograph, slightly yellowed with soft grain, filling the whole frame: a boy of about twelve who looks like the young man from the first reference image as a child, with the same straight black hair with a side fringe and pale skin, wearing a navy blue sweater and an ochre scarf, stands next to the girl from the second reference image in her cream coat and red scarf holding a sealed letter; snowy old railway platform behind them; both smile at the camera.",
+   "out": "kf/S16p.png",
+   "w": 640,
+   "h": 640,
+   "seed": 161,
+   "refs": [
+    "../../look/refs/nox.png",
+    "../../look/refs/lina.png"
    ]
   },
   {

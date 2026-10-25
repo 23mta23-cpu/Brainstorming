@@ -20,7 +20,7 @@ def jobs_for(epdir):
                 assert k["edit_of"] in seen, f"{k['id']}: edit_of {k['edit_of']} must come earlier"
                 refs = [f"kf/{k['edit_of']}.png"]
             seen.add(k["id"])
-            jobs.append({"id": k["id"], "prompt": k["prompt"], "out": f"kf/{k['id']}.png", "w": look["w"], "h": look["h"],
+            jobs.append({"id": k["id"], "prompt": k["prompt"], "out": f"kf/{k['id']}.png", "w": k.get("w", look["w"]), "h": k.get("h", look["h"]),
                          "seed": k.get("seed", 0), "refs": refs})
     return jobs
 
