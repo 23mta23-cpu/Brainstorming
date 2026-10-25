@@ -16,7 +16,7 @@ FX = {  # ffmpeg filters per voice effect; every voice ends trimmed, 48 kHz mono
     "echo": TRIM + "aresample=48000,atempo=0.88,aecho=0.8:0.6:70|160:0.3|0.15",  # memory voice: slowed (pitch kept) + echo
 }
 TTS2_PY = "/home/user/tools/tts2-venv/bin/python"  # Chatterbox lives in its own venv (pinned deps)
-SCENE_FX = {"motes", "alarm", "notches", "notches_red", "rays", "echo_pulse", "engraving", "glint", "flash", "snow", "dream", "memory_flow", "handwriting", "endcard"}
+SCENE_FX = {"motes", "alarm", "notches", "notches_red", "pin", "rays", "echo_pulse", "engraving", "glint", "flash", "snow", "dream", "memory_flow", "handwriting", "endcard"}
 
 
 # master bus: glue compression, brickwall limiter so transients don't block loudnorm, then TikTok-ish -14 LUFS
