@@ -12,3 +12,5 @@ agentdb.rvf*
 series/*/episodes/*/plates/
 # rejected keyframes (kept locally for comparison only)
 series/*/episodes/*/kf_rejected/
+# prompt-embedding cache in any gen.py job dir
+**/.emb/
