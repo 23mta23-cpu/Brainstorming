@@ -119,7 +119,7 @@ def visuals(s, epdir, strict=True):
     if missing and strict:
         sys.exit(f"{s['id']}: missing plates {[p.name for p in missing]} - run pipeline/keyframes.py and pipeline/plates.py first")
     talk = {who: pl(k, "png").as_uri() for who, k in s.get("talk", {}).items() if pl(k, "png").exists()}
-    return {"plate": pl(base).as_uri(), "motion": m, "fx": s.get("fx", []), "talk": talk}
+    return {"plate": pl(base).as_uri(), "motion": m, "fx": s.get("fx", []), "fx_at": s.get("fx_at", {}), "talk": talk}
 
 
 def build_timeline(ep, epdir, cache, strict=True):

@@ -9,10 +9,11 @@
   #cap { position: absolute; left: 110px; width: 820px; top: 1250px; text-align: center; font: 700 56px/1.18 Inter, sans-serif;
          color: #fff; -webkit-text-stroke: 9px #0b0d16; paint-order: stroke fill; }
   #cap.off { font-family: Caladea, serif; font-style: italic; font-size: 58px; color: #f4e6c4; }
-  #brand { position: absolute; left: 0; right: 0; top: 230px; text-align: center; font: 600 34px Cinzel, serif; letter-spacing: 10px;
+  #brand, #title { position: absolute; left: 0; right: 0; top: 230px; text-align: center; font: 600 34px Cinzel, serif; letter-spacing: 10px;
            color: #f2c86b; text-shadow: 0 0 18px #000; }
+  #title { top: 320px; font-size: 44px; color: #efe6cf; text-transform: uppercase; }
 </style></head>
-<body><svg id="stage" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg"></svg><div id="brand"></div><div id="cap"></div>
+<body><svg id="stage" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg"></svg><div id="brand"></div><div id="title"></div><div id="cap"></div>
 <script>
 // Generic v3 renderer: every shot = generated plate(s) + camera move + named overlay effects. Data comes from timeline.json.
 const W = 1080, H = 1920, PW = 1188, PH = 2112;   // plates carry 10 % headroom for camera moves
@@ -24,6 +25,8 @@ const seq = (u, a, b) => ease((u - a) / (b - a));
 function rng(seed) { return () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
   t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
 const pair = (v, p, d) => Array.isArray(v) ? lerp(v[0], v[1], p) : (v ?? d);
+const at = (sh, name, def) => (sh.fx_at || {})[name] || def;   // [x, y, scale] from episode.json: aligns an effect with its keyframe
+const place = ([x, y, k], cx, cy, body) => `<g transform="translate(${x},${y}) scale(${k}) translate(${-cx},${-cy})">${body}</g>`;
 
 function speaking(who, t) {   // audio envelope of the active line of `who` (0..1)
   for (const l of TL.lines) if (l.who === who && t >= l.start && t <= l.end + 0.05) {
@@ -65,11 +68,12 @@ const FX = {
       s += `<circle cx="540" cy="900" r="${r}" fill="none" stroke="#f2c86b" stroke-width="3" opacity="${0.45 * v * (1 - (r - 160) / 420)}"/>`; }
     return s;
   },
-  engraving: (u, d, t) => ["N. VEYR", "·", "LINA"].map((w, i) =>
+  engraving: (u, d, t, sh) => place(at(sh, "engraving", [540, 998, 1]), 540, 998, ["N. VEYR", "·", "LINA"].map((w, i) =>
       `<text x="542" y="${880 + i * 118}" text-anchor="middle" font-family="Cinzel" font-weight="700" font-size="108" fill="#fff3c4" opacity="0.45">${w}</text>
-       <text x="540" y="${876 + i * 118}" text-anchor="middle" font-family="Cinzel" font-weight="700" font-size="108" fill="#4b3410" opacity="0.88" style="mix-blend-mode:multiply">${w}</text>`).join(""),
-  glint: (u, d, t) => `<defs><linearGradient id="gl" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="0.5" stop-color="#fff" stop-opacity="0.5"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
-      <rect x="${lerp(-500, 1500, u / d)}" y="200" width="360" height="1500" fill="url(#gl)" transform="rotate(18 540 960)" style="mix-blend-mode:screen"/>`,
+       <text x="540" y="${876 + i * 118}" text-anchor="middle" font-family="Cinzel" font-weight="700" font-size="108" fill="#4b3410" opacity="0.88" style="mix-blend-mode:multiply">${w}</text>`).join("")),
+  glint: (u, d, t, sh) => { const [x, y, k] = at(sh, "glint", at(sh, "engraving", [540, 998, 1])), r = 300 * k;  // light sweeps across the lid only
+    return `<defs><clipPath id="gc"><circle cx="${x}" cy="${y}" r="${r}"/></clipPath><linearGradient id="gl" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="0.5" stop-color="#fff" stop-opacity="0.35"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
+      <g clip-path="url(#gc)"><rect x="${lerp(x - r - 240, x + r, seq(u, d * 0.25, d * 0.75))}" y="${y - 2 * r}" width="240" height="${4 * r}" fill="url(#gl)" transform="rotate(20 ${x} ${y})" style="mix-blend-mode:screen"/></g>`; },
   flash: (u, d, t) => `<rect width="${W}" height="${H}" fill="#fff" opacity="${seq(u, d * 0.35, d * 0.7)}"/>`,
   snow: (u, d, t) => { const r = rng(21); let s = "";
     for (let i = 0; i < 140; i++) { const x0 = r() * W, sp = 70 + r() * 130, ph = r() * H, z = 0.4 + r();
@@ -82,11 +86,11 @@ const FX = {
       const x = lerp(470 + (r() - 0.5) * 160, 860, k) + Math.sin(k * 9 + i) * 50 * (1 - k), y = lerp(760 + (r() - 0.5) * 140, 360, k) - Math.sin(k * 3.14) * 130;
       s += `<circle cx="${x}" cy="${y}" r="${2.5 + 4 * (1 - k)}" fill="#ffd77a" opacity="${0.85 * (1 - k) * f}" style="mix-blend-mode:screen"/>`; }
     return s; },
-  handwriting: (u, d, t) => { const w = clamp((u - 1.3) / 1.1), sig = clamp((u - 2.6) / 0.6), c = 2 * Math.PI * 44; // writes after Nox' question
-    return `<clipPath id="wr"><rect x="150" y="740" width="${780 * w}" height="320"/></clipPath>
+  handwriting: (u, d, t, sh) => { const w = clamp((u - 1.3) / 1.1), sig = clamp((u - 2.6) / 0.6), c = 2 * Math.PI * 44; // writes after Nox' question
+    return place(at(sh, "handwriting", [540, 950, 1]), 540, 950, `<clipPath id="wr"><rect x="150" y="740" width="${780 * w}" height="320"/></clipPath>
       <text x="540" y="950" text-anchor="middle" font-family="Caveat" font-weight="700" font-size="200" fill="#1f1d27" opacity="0.92" clip-path="url(#wr)" style="mix-blend-mode:multiply">Lina lebt.</text>
-      ${sig > 0 ? `<circle cx="790" cy="1130" r="44" fill="none" stroke="#1f1d27" stroke-width="9" stroke-linecap="round" stroke-dasharray="${c * 0.78 * sig} ${c}" transform="rotate(-40 790 1130)" opacity="0.9"/>` : ""}
-      <rect width="${W}" height="${H}" fill="#000" opacity="${seq(u, d - 0.45, d)}"/>`; },
+      ${sig > 0 ? `<circle cx="790" cy="1130" r="44" fill="none" stroke="#1f1d27" stroke-width="9" stroke-linecap="round" stroke-dasharray="${c * 0.78 * sig} ${c}" transform="rotate(-40 790 1130)" opacity="0.9"/>` : ""}`)
+      + `<rect width="${W}" height="${H}" fill="#000" opacity="${seq(u, d - 0.45, d)}"/>`; },
   endcard: (u, d, t) => { let s = `<rect width="${W}" height="${H}" fill="#000" opacity="0.55"/>`;
     for (let k = 0; k < 4; k++) { const e = u - (0.95 + k * 0.38);
       if (e > 0) s += `<circle cx="540" cy="860" r="${60 + e * 520}" fill="none" stroke="#f2c86b" stroke-width="${5 - k}" opacity="${Math.max(0, 0.8 - e * 0.55) * (1 - k * 0.2)}"/>`; }
@@ -113,7 +117,7 @@ window.renderAt = (t) => {
   if (m.to) s += plate(m.to, m, p, t, seq(u, d * 0.42, d * 0.78));  // in-shot transformation (door opens, eyes go blank)
   for (const [who, patch] of Object.entries(shot.talk || {}))       // mouth flap: variant patch while the voice is active
     if (speaking(who, t)) s += plate(patch, m, p, t, 1);
-  for (const f of shot.fx || []) s += FX[f](u, d, t);
+  for (const f of shot.fx || []) s += FX[f](u, d, t, shot);
   const r = rng(Math.floor(t * 30) + 5);
   s += `<defs><radialGradient id="vg" cx="0.5" cy="0.48" r="0.78"><stop offset="0.55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.5"/></radialGradient>
     <pattern id="gp" width="256" height="256" patternUnits="userSpaceOnUse" x="${Math.floor(r() * 256)}" y="${Math.floor(r() * 256)}"><image href="${GRAIN}" width="256" height="256"/></pattern></defs>
@@ -123,6 +127,9 @@ window.renderAt = (t) => {
   const cap = document.getElementById("cap");
   cap.textContent = line ? line.text : "";
   cap.className = line && !(TL.shots.find((x) => x.id === line.shot).talk || {})[line.who] ? "off" : "";
+  const ti = document.getElementById("title"), showTitle = shot.text && !(shot.fx || []).includes("handwriting");  // e.g. time jumps
+  ti.textContent = showTitle ? shot.text : "";
+  ti.style.opacity = showTitle ? Math.min(seq(u, 0.1, 0.5), 1 - seq(u, 2.0, 2.5)) : 0;
   const b = document.getElementById("brand");
   b.textContent = t < 2.6 ? "DAS ECHO-ARCHIV · 01" : "";
   b.style.opacity = t < 2.6 ? Math.min(1, t * 2, (2.6 - t) * 3) * 0.85 : 0;
