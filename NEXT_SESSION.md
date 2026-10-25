@@ -48,16 +48,19 @@ Arbeitsplan (Status hier fortschreiben):
 6. [ ] Ehrlicher Vergleich v2 vs. v3 (Kontaktbogen) → Freigabepaket
 
 ## Genaue nächste Aktion
-**Qualitätsoffensive zuerst** (Reihenfolge wegen RAM, nie parallel):
-1. [x] Stimmen (fertig, Cache in `E001/build/tts/` — nach Container-Neustart weg: dann ~15 min neu, gleiche Seeds)
-2. Bilder (ein Lauf, ~17 min Laden + ~25 × 70–130 s): `python3 pipeline/keyframes.py series/echo-archiv/episodes/E001` — danach jedes Keyframe ansehen (Ring S05/S07, Konsistenz)
-3. `gen-venv/bin/python pipeline/plates.py series/echo-archiv/episodes/E001` → Vorschau-Stills → `build.py` (voller Render) → QC → Vergleich v2/v3
+**Qualitätsoffensive E01 v3** (Reihenfolge wegen RAM, nie parallel; Stand 25.10. 06:05 UTC):
+1. [x] Stimmen fertig (15/15 ASR-ok, 59,3 s). Cache `E001/build/tts/` ist flüchtig → nach Neustart `build.py --skip-render` (~15 min, gleiche Seeds)
+2. [~] Keyframes: `python3 pipeline/keyframes.py series/echo-archiv/episodes/E001` (resumable, überspringt vorhandene `kf/*.png`).
+   Geprüft & ok: S03 S04 S05 S07 S07m S08 S08b S09 S10. **Nachlauf nötig** (Datei löschen → Skript erneut starten):
+   S01 (jetzt mit Nox-Referenz), S06 + S06m (Prompt präzisiert); neue Fix-Patches S07f (Tränenlinien), S08f (Miras Ausdruck) laufen automatisch mit.
+   Jedes neue Keyframe ansehen: Identität vs. `look/refs`, Ort, Requisiten, Policy; Overlay-Positionen (`fx_at`, Keyframe-Pixel) eintragen:
+   `pin` (Nox' gebrochener Kreis, linker Kragen) bei S05 S06 S07 S10 S14 · `notches` S01 (Siegelmitte/Radius, ggf. x-Stauchung) ·
+   `engraving`/`glint` S11 (Deckelmitte) · `handwriting` S17 (Fotorückseite) · `memory_flow` S14 (Kopf) · `echo_pulse` S09 (erledigt) · Mund-`at` für S06m S10m S16m
+3. `gen-venv/bin/python pipeline/plates.py series/echo-archiv/episodes/E001` → Bericht prüfen (Patches „skipped"?)
+4. Vorschau-Stills: `node pipeline/render.mjs series/echo-archiv/scene.html <ep>/build/timeline.json x.mp4 30 1080 1920 --times … --png <dir>` (vorher `build.py --skip-render` für frische Timeline) → Kontaktbogen ansehen
+5. `piper-venv/bin/python pipeline/build.py series/echo-archiv/episodes/E001` (voller Render + QC) → `tts2-venv/bin/python pipeline/asr_check.py …`
+6. Vergleich v2/v3 (v2: `git show 006911a:series/echo-archiv/episodes/E001/final/E001_Regel_Acht.mp4`), LAUNCH.md v3, SHOTLIST, QUALITY_STANDARDS, Drive-Kopie
 Danach erst E02.
-
-1. `scripts/setup_tools.sh` ausführen (falls Container neu).
-2. Feedback zu E001 einarbeiten (falls vorhanden).
-3. Skill `produce-episode` für **E02 „Der Brief"** (Lost Letter; Micro: fremder Brief wird zugestellt; Macro: Linas Brief an Nox erwähnt den Bahnhof; löst Q3 „Veyr").
-4. Danach E03 „Miras Lüge"; Launch, wenn E01–E03 freigegeben.
 
 ## Relevante Pfade & Befehle
 ```bash
