@@ -493,18 +493,6 @@
       365,
       645
      ]
-    },
-    {
-     "id": "S07f",
-     "seed": 107,
-     "edit_of": "S07",
-     "patch": "fix",
-     "at": [
-      360,
-      505
-     ],
-     "r": 115,
-     "prompt": "Same image, identical in every detail, but without the white lines under his eyes: natural clean skin, his eyes glistening with unshed tears."
     }
    ],
    "motion": {
