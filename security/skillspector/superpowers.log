@@ -1,0 +1,71 @@
+Multi-skill directory detected: 15 skills found
+
+  [1/15] Scanning brainstorming (brainstorming/)
+         Score: 52/100 (HIGH)
+
+  [2/15] Scanning diagnosing-superpowers (diagnosing-superpowers/)
+         Score: 26/100 (MEDIUM)
+
+  [3/15] Scanning dispatching-parallel-agents (dispatching-parallel-agents/)
+         Score: 0/100 (LOW)
+
+  [4/15] Scanning executing-plans (executing-plans/)
+         Score: 17/100 (LOW)
+
+  [5/15] Scanning finishing-a-development-branch 
+(finishing-a-development-branch/)
+         Score: 17/100 (LOW)
+
+  [6/15] Scanning receiving-code-review (receiving-code-review/)
+         Score: 0/100 (LOW)
+
+  [7/15] Scanning requesting-code-review (requesting-code-review/)
+         Score: 7/100 (LOW)
+
+  [8/15] Scanning subagent-driven-development (subagent-driven-development/)
+         Score: 17/100 (LOW)
+
+  [9/15] Scanning systematic-debugging (systematic-debugging/)
+         Score: 77/100 (HIGH)
+
+  [10/15] Scanning test-driven-development (test-driven-development/)
+         Score: 0/100 (LOW)
+
+  [11/15] Scanning using-git-worktrees (using-git-worktrees/)
+         Score: 11/100 (LOW)
+
+  [12/15] Scanning using-superpowers (using-superpowers/)
+         Score: 49/100 (MEDIUM)
+
+  [13/15] Scanning verification-before-completion 
+(verification-before-completion/)
+         Score: 7/100 (LOW)
+
+  [14/15] Scanning writing-plans (writing-plans/)
+         Score: 0/100 (LOW)
+
+  [15/15] Scanning writing-skills (writing-skills/)
+         Score: 100/100 (CRITICAL)
+
+
+═══ Multi-Skill Summary ═══
+
+  Skill                          Score    Severity     Findings   Execution 
+  ────────────────────────────── ──────── ──────────── ────────── ──────────
+  brainstorming                  52       HIGH         4          successful
+  diagnosing-superpowers         26       MEDIUM       2          successful
+  dispatching-parallel-agents    0        LOW          0          successful
+  executing-plans                17       LOW          1          successful
+  finishing-a-development-branch 17       LOW          1          successful
+  receiving-code-review          0        LOW          0          successful
+  requesting-code-review         7        LOW          1          successful
+  subagent-driven-development    17       LOW          1          successful
+  systematic-debugging           77       HIGH         5          successful
+  test-driven-development        0        LOW          0          successful
+  using-git-worktrees            11       LOW          1          successful
+  using-superpowers              49       MEDIUM       3          successful
+  verification-before-completion 7        LOW          1          successful
+  writing-plans                  0        LOW          0          successful
+  writing-skills                 100      CRITICAL     9          successful
+Combined report saved to: 
+/home/user/Brainstorming/security/skillspector/superpowers.json

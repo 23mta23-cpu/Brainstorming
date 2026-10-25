@@ -1,0 +1,144 @@
+Multi-skill directory detected: 311 skills found
+
+  [1/311] Scanning accessibility (accessibility/)
+         Score: 0/100 (LOW)
+
+  [2/311] Scanning agent-architecture-audit (agent-architecture-audit/)
+         Score: 0/100 (LOW)
+
+  [3/311] Scanning agent-eval (agent-eval/)
+         Score: 0/100 (LOW)
+
+  [4/311] Scanning agent-harness-construction (agent-harness-construction/)
+         Score: 0/100 (LOW)
+
+  [5/311] Scanning agent-introspection-debugging 
+(agent-introspection-debugging/)
+         Score: 0/100 (LOW)
+
+  [6/311] Scanning agent-payment-x402 (agent-payment-x402/)
+         Score: 29/100 (MEDIUM)
+
+  [7/311] Scanning agent-runtime-gateway-smoke-test 
+(agent-runtime-gateway-smoke-test/)
+         Score: 0/100 (LOW)
+
+  [8/311] Scanning agent-security-hardening (agent-security-hardening/)
+         Score: 7/100 (LOW)
+
+  [9/311] Scanning agent-self-evaluation (agent-self-evaluation/)
+         Score: 13/100 (LOW)
+
+  [10/311] Scanning agent-sort (agent-sort/)
+         Score: 8/100 (LOW)
+
+  [11/311] Scanning agentic-engineering (agentic-engineering/)
+         Score: 0/100 (LOW)
+
+  [12/311] Scanning agentic-os (agentic-os/)
+         Score: 36/100 (MEDIUM)
+
+  [13/311] Scanning ai-first-engineering (ai-first-engineering/)
+         Score: 0/100 (LOW)
+
+  [14/311] Scanning ai-regression-testing (ai-regression-testing/)
+         Score: 0/100 (LOW)
+
+  [15/311] Scanning android-clean-architecture (android-clean-architecture/)
+         Score: 5/100 (LOW)
+
+  [16/311] Scanning angular-developer (angular-developer/)
+         Score: 62/100 (HIGH)
+
+  [17/311] Scanning api-connector-builder (api-connector-builder/)
+         Score: 0/100 (LOW)
+
+  [18/311] Scanning api-design (api-design/)
+         Score: 20/100 (LOW)
+
+  [19/311] Scanning architecture-decision-records 
+(architecture-decision-records/)
+         Score: 0/100 (LOW)
+
+  [20/311] Scanning article-writing (article-writing/)
+         Score: 0/100 (LOW)
+
+  [21/311] Scanning automation-audit-ops (automation-audit-ops/)
+         Score: 0/100 (LOW)
+
+  [22/311] Scanning autonomous-agent-harness (autonomous-agent-harness/)
+         Score: 42/100 (MEDIUM)
+
+  [23/311] Scanning autonomous-loops (autonomous-loops/)
+         Score: 39/100 (MEDIUM)
+
+  [24/311] Scanning backend-patterns (backend-patterns/)
+         Score: 20/100 (LOW)
+
+  [25/311] Scanning benchmark (benchmark/)
+         Score: 0/100 (LOW)
+
+  [26/311] Scanning benchmark-methodology (benchmark-methodology/)
+         Score: 0/100 (LOW)
+
+  [27/311] Scanning benchmark-optimization-loop (benchmark-optimization-loop/)
+         Score: 0/100 (LOW)
+
+  [28/311] Scanning bengali-nlp (bengali-nlp/)
+         Score: 0/100 (LOW)
+
+  [29/311] Scanning blender-motion-state-inspection 
+(blender-motion-state-inspection/)
+         Score: 28/100 (MEDIUM)
+
+  [30/311] Scanning blueprint (blueprint/)
+         Score: 0/100 (LOW)
+
+  [31/311] Scanning brand-discovery (brand-discovery/)
+         Score: 0/100 (LOW)
+
+  [32/311] Scanning brand-voice (brand-voice/)
+         Score: 0/100 (LOW)
+
+
+═══ Multi-Skill Summary ═══
+
+  Skill                          Score    Severity     Findings   Execution 
+  ────────────────────────────── ──────── ──────────── ────────── ──────────
+  accessibility                  0        LOW          0          successful
+  agent-architecture-audit       0        LOW          0          successful
+  agent-eval                     0        LOW          0          successful
+  agent-harness-construction     0        LOW          0          successful
+  agent-introspection-debugging  0        LOW          0          successful
+  agent-payment-x402             29       MEDIUM       6          successful
+  agent-runtime-gateway-smoke-test 0        LOW          0          successful
+  agent-security-hardening       7        LOW          1          successful
+  agent-self-evaluation          13       LOW          3          successful
+  agent-sort                     8        LOW          1          successful
+  agentic-engineering            0        LOW          0          successful
+  agentic-os                     36       MEDIUM       3          successful
+  ai-first-engineering           0        LOW          0          successful
+  ai-regression-testing          0        LOW          0          successful
+  android-clean-architecture     5        LOW          1          successful
+  angular-developer              62       HIGH         6          successful
+  api-connector-builder          0        LOW          0          successful
+  api-design                     20       LOW          1          successful
+  architecture-decision-records  0        LOW          0          successful
+  article-writing                0        LOW          0          successful
+  automation-audit-ops           0        LOW          0          successful
+  autonomous-agent-harness       42       MEDIUM       4          successful
+  autonomous-loops               39       MEDIUM       18         successful
+  backend-patterns               20       LOW          1          successful
+  benchmark                      0        LOW          0          successful
+  benchmark-methodology          0        LOW          0          successful
+  benchmark-optimization-loop    0        LOW          0          successful
+  bengali-nlp                    0        LOW          0          successful
+  blender-motion-state-inspection 28       MEDIUM       2          successful
+  blueprint                      0        LOW          0          successful
+  brand-discovery                0        LOW          0          successful
+  brand-voice                    0        LOW          0          successful
+  <unscanned>                    —        —            279        partial   
+Recursive scan incomplete: one or more skills were omitted after an aggregate 
+safety limit or skipped as symlinks.
+Combined report saved to: 
+/home/user/Brainstorming/security/skillspector/ecc.json

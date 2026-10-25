@@ -1,0 +1,33 @@
+Multi-skill directory detected: 6 skills found
+
+  [1/6] Scanning ponytail (ponytail/)
+         Score: 0/100 (LOW)
+
+  [2/6] Scanning ponytail-audit (ponytail-audit/)
+         Score: 0/100 (LOW)
+
+  [3/6] Scanning ponytail-debt (ponytail-debt/)
+         Score: 0/100 (LOW)
+
+  [4/6] Scanning ponytail-gain (ponytail-gain/)
+         Score: 0/100 (LOW)
+
+  [5/6] Scanning ponytail-help (ponytail-help/)
+         Score: 0/100 (LOW)
+
+  [6/6] Scanning ponytail-review (ponytail-review/)
+         Score: 0/100 (LOW)
+
+
+═══ Multi-Skill Summary ═══
+
+  Skill                          Score    Severity     Findings   Execution 
+  ────────────────────────────── ──────── ──────────── ────────── ──────────
+  ponytail                       0        LOW          0          successful
+  ponytail-audit                 0        LOW          0          successful
+  ponytail-debt                  0        LOW          0          successful
+  ponytail-gain                  0        LOW          0          successful
+  ponytail-help                  0        LOW          0          successful
+  ponytail-review                0        LOW          0          successful
+Combined report saved to: 
+/home/user/Brainstorming/security/skillspector/ponytail.json

@@ -1,0 +1,76 @@
+{
+ "video": "series/echo-archiv/episodes/E001/final/E001_Regel_Acht.mp4",
+ "pass": true,
+ "checks": [
+  {
+   "check": "resolution 1080x1920",
+   "pass": true,
+   "detail": "1080x1920"
+  },
+  {
+   "check": "fps 30",
+   "pass": true,
+   "detail": "30.00"
+  },
+  {
+   "check": "codec h264/yuv420p",
+   "pass": true,
+   "detail": "h264/yuv420p"
+  },
+  {
+   "check": "audio aac 48k",
+   "pass": true,
+   "detail": "aac/48000"
+  },
+  {
+   "check": "duration matches timeline",
+   "pass": true,
+   "detail": "31.67s vs 31.66s"
+  },
+  {
+   "check": "duration 25-60s (discovery)",
+   "pass": true,
+   "detail": "31.67s"
+  },
+  {
+   "check": "loudness -14 LUFS ±1.5",
+   "pass": true,
+   "detail": "-14.6 LUFS"
+  },
+  {
+   "check": "true peak <= -1 dBTP",
+   "pass": true,
+   "detail": "-1.8 dBFS"
+  },
+  {
+   "check": "no unplanned black >0.4s",
+   "pass": true,
+   "detail": "[]"
+  },
+  {
+   "check": "hook: first spoken word <= 0.5s",
+   "pass": true,
+   "detail": "0.15s"
+  },
+  {
+   "check": "no dead air >0.6s (outside planned cut)",
+   "pass": true,
+   "detail": "[]"
+  },
+  {
+   "check": "file size < 287MB (TikTok upload)",
+   "pass": true,
+   "detail": "24.8 MB"
+  },
+  {
+   "check": "AI disclosure metadata",
+   "pass": true,
+   "detail": "AI-generated fictional series (KI-generierte fiktionale Serie)"
+  },
+  {
+   "check": "captions present for every line",
+   "pass": true,
+   "detail": "9 lines"
+  }
+ ]
+}

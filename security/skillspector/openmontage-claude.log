@@ -1,0 +1,140 @@
+Multi-skill directory detected: 49 skills found
+
+  [1/49] Scanning acestep (acestep/)
+         Score: 0/100 (LOW)
+
+  [2/49] Scanning agents (agents/)
+         Score: 47/100 (MEDIUM)
+
+  [3/49] Scanning ai-video-gen (ai-video-gen/)
+         Score: 18/100 (LOW)
+
+  [4/49] Scanning avatar-video (avatar-video/)
+         Score: 100/100 (CRITICAL)
+
+  [5/49] Scanning azure-speech-to-text (azure-speech-to-text/)
+         Score: 0/100 (LOW)
+
+  [6/49] Scanning azure-text-to-speech (azure-text-to-speech/)
+         Score: 0/100 (LOW)
+
+  [7/49] Scanning beautiful-mermaid (beautiful-mermaid/)
+         Score: 57/100 (HIGH)
+
+  [8/49] Scanning bfl-api (bfl-api/)
+         Score: 68/100 (HIGH)
+
+  [9/49] Scanning create-video (create-video/)
+         Score: 100/100 (CRITICAL)
+
+  [10/49] Scanning d3-viz (d3-viz/)
+         Score: 0/100 (LOW)
+
+  [11/49] Scanning elevenlabs (elevenlabs/)
+         Score: 0/100 (LOW)
+
+  [12/49] Scanning faceswap (faceswap/)
+         Score: 10/100 (LOW)
+
+  [13/49] Scanning ffmpeg (ffmpeg/)
+         Score: 21/100 (MEDIUM)
+
+  [14/49] Scanning flux-best-practices (flux-best-practices/)
+         Score: 0/100 (LOW)
+
+  [15/49] Scanning framer-motion (framer-motion/)
+         Score: 0/100 (LOW)
+
+  [16/49] Scanning heygen (heygen/)
+         Score: 100/100 (CRITICAL)
+
+  [17/49] Scanning lottie-bodymovin (lottie-bodymovin/)
+         Score: 0/100 (LOW)
+
+  [18/49] Scanning ltx2 (ltx2/)
+         Score: 22/100 (MEDIUM)
+
+  [19/49] Scanning manim-composer (manim-composer/)
+         Score: 0/100 (LOW)
+
+  [20/49] Scanning manimce-best-practices (manimce-best-practices/)
+         Score: 0/100 (LOW)
+
+  [21/49] Scanning manimgl-best-practices (manimgl-best-practices/)
+         Score: 41/100 (MEDIUM)
+
+  [22/49] Scanning music (music/)
+         Score: 9/100 (LOW)
+
+  [23/49] Scanning playwright-recording (playwright-recording/)
+         Score: 33/100 (MEDIUM)
+
+  [24/49] Scanning remotion (remotion/)
+         Score: 46/100 (MEDIUM)
+
+  [25/49] Scanning remotion-best-practices (remotion-best-practices/)
+         Score: 100/100 (CRITICAL)
+
+  [26/49] Scanning setup-api-key (setup-api-key/)
+         Score: 22/100 (MEDIUM)
+
+  [27/49] Scanning sound-effects (sound-effects/)
+         Score: 18/100 (LOW)
+
+  [28/49] Scanning speech-to-text (speech-to-text/)
+         Score: 54/100 (HIGH)
+
+  [29/49] Scanning tailwind-design-system (tailwind-design-system/)
+         Score: 0/100 (LOW)
+
+  [30/49] Scanning text-to-speech (text-to-speech/)
+         Score: 11/100 (LOW)
+
+  [31/49] Scanning threejs-animation (threejs-animation/)
+         Score: 7/100 (LOW)
+
+  [32/49] Scanning threejs-fundamentals (threejs-fundamentals/)
+         Score: 0/100 (LOW)
+
+
+═══ Multi-Skill Summary ═══
+
+  Skill                          Score    Severity     Findings   Execution 
+  ────────────────────────────── ──────── ──────────── ────────── ──────────
+  acestep                        0        LOW          0          successful
+  agents                         47       MEDIUM       8          successful
+  ai-video-gen                   18       LOW          7          successful
+  avatar-video                   100      CRITICAL     34         successful
+  azure-speech-to-text           0        LOW          0          successful
+  azure-text-to-speech           0        LOW          0          successful
+  beautiful-mermaid              57       HIGH         2          successful
+  bfl-api                        68       HIGH         16         successful
+  create-video                   100      CRITICAL     22         successful
+  d3-viz                         0        LOW          0          successful
+  elevenlabs                     0        LOW          0          successful
+  faceswap                       10       LOW          7          successful
+  ffmpeg                         21       MEDIUM       1          successful
+  flux-best-practices            0        LOW          0          successful
+  framer-motion                  0        LOW          0          successful
+  heygen                         100      CRITICAL     40         successful
+  lottie-bodymovin               0        LOW          0          successful
+  ltx2                           22       MEDIUM       1          successful
+  manim-composer                 0        LOW          0          successful
+  manimce-best-practices         0        LOW          0          successful
+  manimgl-best-practices         41       MEDIUM       9          successful
+  music                          9        LOW          3          successful
+  playwright-recording           33       MEDIUM       4          successful
+  remotion                       46       MEDIUM       2          successful
+  remotion-best-practices        100      CRITICAL     13         successful
+  setup-api-key                  22       MEDIUM       2          successful
+  sound-effects                  18       LOW          4          successful
+  speech-to-text                 54       HIGH         4          successful
+  tailwind-design-system         0        LOW          0          successful
+  text-to-speech                 11       LOW          5          successful
+  threejs-animation              7        LOW          1          successful
+  threejs-fundamentals           0        LOW          0          successful
+  <unscanned>                    —        —            17         partial   
+Recursive scan incomplete: one or more skills were omitted after an aggregate 
+safety limit or skipped as symlinks.
+Combined report saved to: 
+/home/user/Brainstorming/security/skillspector/openmontage-claude.json

@@ -1,0 +1,53 @@
+Multi-skill directory detected: 11 skills found
+
+  [1/11] Scanning yt-audit (yt-audit/)
+         Score: 0/100 (LOW)
+
+  [2/11] Scanning yt-chapters (yt-chapters/)
+         Score: 0/100 (LOW)
+
+  [3/11] Scanning yt-comment (yt-comment/)
+         Score: 0/100 (LOW)
+
+  [4/11] Scanning yt-edit (yt-edit/)
+         Score: 0/100 (LOW)
+
+  [5/11] Scanning yt-package (yt-package/)
+         Score: 0/100 (LOW)
+
+  [6/11] Scanning yt-plan (yt-plan/)
+         Score: 0/100 (LOW)
+
+  [7/11] Scanning yt-retention (yt-retention/)
+         Score: 0/100 (LOW)
+
+  [8/11] Scanning yt-script (yt-script/)
+         Score: 0/100 (LOW)
+
+  [9/11] Scanning yt-seo (yt-seo/)
+         Score: 0/100 (LOW)
+
+  [10/11] Scanning yt-shorts (yt-shorts/)
+         Score: 0/100 (LOW)
+
+  [11/11] Scanning yt-viral (yt-viral/)
+         Score: 0/100 (LOW)
+
+
+═══ Multi-Skill Summary ═══
+
+  Skill                          Score    Severity     Findings   Execution 
+  ────────────────────────────── ──────── ──────────── ────────── ──────────
+  yt-audit                       0        LOW          0          successful
+  yt-chapters                    0        LOW          0          successful
+  yt-comment                     0        LOW          0          successful
+  yt-edit                        0        LOW          0          successful
+  yt-package                     0        LOW          0          successful
+  yt-plan                        0        LOW          0          successful
+  yt-retention                   0        LOW          0          successful
+  yt-script                      0        LOW          0          successful
+  yt-seo                         0        LOW          0          successful
+  yt-shorts                      0        LOW          0          successful
+  yt-viral                       0        LOW          0          successful
+Combined report saved to: 
+/home/user/Brainstorming/security/skillspector/youtube.json

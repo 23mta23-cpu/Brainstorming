@@ -1,0 +1,140 @@
+Multi-skill directory detected: 91 skills found
+
+  [1/91] Scanning 3d-asset-generation (3d-asset-generation/)
+         Score: 0/100 (LOW)
+
+  [2/91] Scanning acestep (acestep/)
+         Score: 0/100 (LOW)
+
+  [3/91] Scanning agents (agents/)
+         Score: 47/100 (MEDIUM)
+
+  [4/91] Scanning ai-video-gen (ai-video-gen/)
+         Score: 18/100 (LOW)
+
+  [5/91] Scanning atlas-cloud (atlas-cloud/)
+         Score: 0/100 (LOW)
+
+  [6/91] Scanning avatar-video (avatar-video/)
+         Score: 100/100 (CRITICAL)
+
+  [7/91] Scanning azure-speech-to-text (azure-speech-to-text/)
+         Score: 0/100 (LOW)
+
+  [8/91] Scanning azure-text-to-speech (azure-text-to-speech/)
+         Score: 0/100 (LOW)
+
+  [9/91] Scanning beautiful-mermaid (beautiful-mermaid/)
+         Score: 57/100 (HIGH)
+
+  [10/91] Scanning bfl-api (bfl-api/)
+         Score: 68/100 (HIGH)
+
+  [11/91] Scanning canvas-procedural-animation (canvas-procedural-animation/)
+         Score: 0/100 (LOW)
+
+  [12/91] Scanning character-animation-qa (character-animation-qa/)
+         Score: 0/100 (LOW)
+
+  [13/91] Scanning character-rigging (character-rigging/)
+         Score: 0/100 (LOW)
+
+  [14/91] Scanning comfyui (comfyui/)
+         Score: 0/100 (LOW)
+
+  [15/91] Scanning create-video (create-video/)
+         Score: 100/100 (CRITICAL)
+
+  [16/91] Scanning d3-viz (d3-viz/)
+         Score: 0/100 (LOW)
+
+  [17/91] Scanning dashscope (dashscope/)
+         Score: 0/100 (LOW)
+
+  [18/91] Scanning doubao-tts (doubao-tts/)
+         Score: 0/100 (LOW)
+
+  [19/91] Scanning elevenlabs (elevenlabs/)
+         Score: 7/100 (LOW)
+
+  [20/91] Scanning faceswap (faceswap/)
+         Score: 10/100 (LOW)
+
+  [21/91] Scanning ffmpeg (ffmpeg/)
+         Score: 21/100 (MEDIUM)
+
+  [22/91] Scanning fish-audio-tts (fish-audio-tts/)
+         Score: 5/100 (LOW)
+
+  [23/91] Scanning flux-best-practices (flux-best-practices/)
+         Score: 0/100 (LOW)
+
+  [24/91] Scanning framer-motion (framer-motion/)
+         Score: 0/100 (LOW)
+
+  [25/91] Scanning gemini-omni (gemini-omni/)
+         Score: 0/100 (LOW)
+
+  [26/91] Scanning grok-media (grok-media/)
+         Score: 5/100 (LOW)
+
+  [27/91] Scanning gsap-core (gsap-core/)
+         Score: 0/100 (LOW)
+
+  [28/91] Scanning gsap-frameworks (gsap-frameworks/)
+         Score: 0/100 (LOW)
+
+  [29/91] Scanning gsap-performance (gsap-performance/)
+         Score: 0/100 (LOW)
+
+  [30/91] Scanning gsap-plugins (gsap-plugins/)
+         Score: 0/100 (LOW)
+
+  [31/91] Scanning gsap-react (gsap-react/)
+         Score: 0/100 (LOW)
+
+  [32/91] Scanning gsap-scrolltrigger (gsap-scrolltrigger/)
+         Score: 0/100 (LOW)
+
+
+═══ Multi-Skill Summary ═══
+
+  Skill                          Score    Severity     Findings   Execution 
+  ────────────────────────────── ──────── ──────────── ────────── ──────────
+  3d-asset-generation            0        LOW          0          successful
+  acestep                        0        LOW          0          successful
+  agents                         47       MEDIUM       8          successful
+  ai-video-gen                   18       LOW          7          successful
+  atlas-cloud                    0        LOW          0          successful
+  avatar-video                   100      CRITICAL     34         successful
+  azure-speech-to-text           0        LOW          0          successful
+  azure-text-to-speech           0        LOW          0          successful
+  beautiful-mermaid              57       HIGH         2          successful
+  bfl-api                        68       HIGH         16         successful
+  canvas-procedural-animation    0        LOW          0          successful
+  character-animation-qa         0        LOW          0          successful
+  character-rigging              0        LOW          0          successful
+  comfyui                        0        LOW          0          successful
+  create-video                   100      CRITICAL     22         successful
+  d3-viz                         0        LOW          0          successful
+  dashscope                      0        LOW          0          successful
+  doubao-tts                     0        LOW          0          successful
+  elevenlabs                     7        LOW          1          successful
+  faceswap                       10       LOW          7          successful
+  ffmpeg                         21       MEDIUM       1          successful
+  fish-audio-tts                 5        LOW          1          successful
+  flux-best-practices            0        LOW          0          successful
+  framer-motion                  0        LOW          0          successful
+  gemini-omni                    0        LOW          0          successful
+  grok-media                     5        LOW          1          successful
+  gsap-core                      0        LOW          0          successful
+  gsap-frameworks                0        LOW          0          successful
+  gsap-performance               0        LOW          0          successful
+  gsap-plugins                   0        LOW          0          successful
+  gsap-react                     0        LOW          0          successful
+  gsap-scrolltrigger             0        LOW          0          successful
+  <unscanned>                    —        —            59         partial   
+Recursive scan incomplete: one or more skills were omitted after an aggregate 
+safety limit or skipped as symlinks.
+Combined report saved to: 
+/home/user/Brainstorming/security/skillspector/openmontage-agents.json

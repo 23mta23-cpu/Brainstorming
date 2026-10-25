@@ -1,0 +1,8 @@
+series/*/episodes/*/build/
+__pycache__/
+*.pyc
+node_modules/
+# state written by account-synced ruflo plugins (not ours)
+.claude-flow/
+.swarm/
+ruvector.db

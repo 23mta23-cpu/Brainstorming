@@ -1,0 +1,17 @@
+Multi-skill directory detected: 2 skills found
+
+  [1/2] Scanning voicestudio (voicestudio/)
+         Score: 6/100 (LOW)
+
+  [2/2] Scanning voicestudio-maintainer (voicestudio-maintainer/)
+         Score: 0/100 (LOW)
+
+
+═══ Multi-Skill Summary ═══
+
+  Skill                          Score    Severity     Findings   Execution 
+  ────────────────────────────── ──────── ──────────── ────────── ──────────
+  voicestudio                    6        LOW          1          successful
+  voicestudio-maintainer         0        LOW          0          successful
+Combined report saved to: 
+/home/user/Brainstorming/security/skillspector/voicestudio.json

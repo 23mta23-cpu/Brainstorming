@@ -1,0 +1,57 @@
+Multi-skill directory detected: 12 skills found
+
+  [1/12] Scanning code-simplifier (code-simplifier/)
+         Score: 7/100 (LOW)
+
+  [2/12] Scanning design-patterns (design-patterns/)
+         Score: 0/100 (LOW)
+
+  [3/12] Scanning issue-triage (issue-triage/)
+         Score: 0/100 (LOW)
+
+  [4/12] Scanning performance (performance/)
+         Score: 12/100 (LOW)
+
+  [5/12] Scanning pr-review (pr-review/)
+         Score: 0/100 (LOW)
+
+  [6/12] Scanning pr-triage (pr-triage/)
+         Score: 0/100 (LOW)
+
+  [7/12] Scanning repo-recap (repo-recap/)
+         Score: 0/100 (LOW)
+
+  [8/12] Scanning rtk-tdd (rtk-tdd/)
+         Score: 80/100 (HIGH)
+
+  [9/12] Scanning rtk-triage (rtk-triage/)
+         Score: 0/100 (LOW)
+
+  [10/12] Scanning security-guardian (security-guardian/)
+         Score: 81/100 (CRITICAL)
+
+  [11/12] Scanning ship (ship/)
+         Score: 6/100 (LOW)
+
+  [12/12] Scanning tdd-rust (tdd-rust/)
+         Score: 27/100 (MEDIUM)
+
+
+═══ Multi-Skill Summary ═══
+
+  Skill                          Score    Severity     Findings   Execution 
+  ────────────────────────────── ──────── ──────────── ────────── ──────────
+  code-simplifier                7        LOW          1          successful
+  design-patterns                0        LOW          0          successful
+  issue-triage                   0        LOW          0          successful
+  performance                    12       LOW          1          successful
+  pr-review                      0        LOW          0          successful
+  pr-triage                      0        LOW          0          successful
+  repo-recap                     0        LOW          0          successful
+  rtk-tdd                        80       HIGH         5          successful
+  rtk-triage                     0        LOW          0          successful
+  security-guardian              81       CRITICAL     7          successful
+  ship                           6        LOW          1          successful
+  tdd-rust                       27       MEDIUM       2          successful
+Combined report saved to: 
+/home/user/Brainstorming/security/skillspector/rtk.json

@@ -1,0 +1,706 @@
+{
+ "Claude-Code-Video-Toolkit": {
+  "commit": "a6e9e5225d85",
+  "date": "2026-02-25",
+  "files": 1,
+  "license": "NONE",
+  "manifests": [],
+  "claude_plugin": [],
+  "skills": 0,
+  "agents_md": 0,
+  "hooks": [],
+  "mcp": [],
+  "install_scripts": [],
+  "risky_patterns": {}
+ },
+ "ECC": {
+  "commit": "90606c8315ee",
+  "date": "2026-10-20",
+  "files": 4627,
+  "license": "MIT (LICENSE)",
+  "manifests": [
+   ".opencode/package.json",
+   "ecc2/Cargo.toml",
+   "package.json",
+   "pyproject.toml"
+  ],
+  "claude_plugin": [
+   ".claude-plugin/PLUGIN_SCHEMA_NOTES.md",
+   ".claude-plugin/README.md",
+   ".claude-plugin/marketplace.json",
+   ".claude-plugin/plugin.json"
+  ],
+  "skills": 1062,
+  "agents_md": 310,
+  "hooks": [
+   ".cursor/hooks.json",
+   ".cursor/hooks/adapter.js",
+   ".cursor/hooks/after-file-edit.js",
+   ".cursor/hooks/after-mcp-execution.js",
+   ".cursor/hooks/after-shell-execution.js"
+  ],
+  "mcp": [
+   ".agents/skills/mcp-server-patterns/SKILL.md",
+   ".agents/skills/mcp-server-patterns/agents/openai.yaml",
+   ".cursor/skills/mcp-server-patterns/SKILL.md",
+   ".mcp.json"
+  ],
+  "install_scripts": [
+   ".codebuddy/install.js",
+   ".codebuddy/install.sh",
+   ".kiro/install.sh",
+   ".trae/install.sh",
+   "docs/fixes/install_hook_wrapper.ps1"
+  ],
+  "risky_patterns": {
+   "curl|sh": [
+    ".opencode/MIGRATION.md",
+    "agents/agent-evaluator.md",
+    "docs/ECC-PRO-SECURITY-ROADMAP.md"
+   ],
+   "wget|sh": [
+    "agents/agent-evaluator.md",
+    "manifests/pi-core.json",
+    "scripts/build-pi-core.js"
+   ],
+   "npx -y": [
+    "README.md",
+    "docs/ja-JP/skills/security-scan/SKILL.md",
+    "docs/uk-UA/README.md"
+   ],
+   "eval(": [
+    ".kiro/skills/pytorch-patterns/SKILL.md",
+    ".opencode/prompts/agents/java-reviewer.txt",
+    ".opencode/tools/security-audit.ts"
+   ],
+   "sudo": [
+    ".github/workflows/ci.yml",
+    ".zed/settings.json",
+    "TROUBLESHOOTING.md"
+   ],
+   "rm -rf ~|/": [
+    "docs/ja-JP/skills/perl-security/SKILL.md",
+    "docs/security/evidence/gateguard-fact-force.md",
+    "docs/zh-CN/skills/perl-security/SKILL.md"
+   ]
+  }
+ },
+ "OpenMontage": {
+  "commit": "e01dbf433f46",
+  "date": "2026-10-23",
+  "files": 2208,
+  "license": "AGPL (LICENSE)",
+  "manifests": [
+   "remotion-composer/package.json",
+   "requirements.txt",
+   "setup.py"
+  ],
+  "claude_plugin": [],
+  "skills": 140,
+  "agents_md": 5,
+  "hooks": [],
+  "mcp": [],
+  "install_scripts": [
+   ".agents/skills/remotion-to-hyperframes/assets/test-corpus/tier-2-multi-scene/setup.sh",
+   "setup.py"
+  ],
+  "risky_patterns": {
+   "curl|sh": [
+    ".agents/skills/media-use/SKILL.md"
+   ],
+   "eval(": [
+    ".agents/skills/hyperframes-media/scripts/lib/bgm.mjs",
+    "lib/clip_embedder.py",
+    "tools/graphics/math_animate.py"
+   ],
+   "sudo": [
+    ".agents/skills/video-edit/SKILL.md",
+    ".claude/skills/video-edit/SKILL.md",
+    ".github/workflows/ci.yml"
+   ],
+   "rm -rf ~|/": [
+    ".agents/skills/media-use/scripts/lib/probe.mjs"
+   ]
+  }
+ },
+ "SkillSpector": {
+  "commit": "d7338f58200a",
+  "date": "2026-10-22",
+  "files": 464,
+  "license": "Apache-2.0 (LICENSE)",
+  "manifests": [
+   "Dockerfile",
+   "package.json",
+   "pyproject.toml"
+  ],
+  "claude_plugin": [],
+  "skills": 33,
+  "agents_md": 0,
+  "hooks": [],
+  "mcp": [
+   "src/skillspector/mcp_server.py",
+   "tests/unit/test_mcp_server.py"
+  ],
+  "install_scripts": [],
+  "risky_patterns": {
+   "curl|sh": [
+    "README.md",
+    "docs/B.3.2-mcp-tool-poisoning.md",
+    "tests/integration/test_agent_cli_live.py"
+   ],
+   "wget|sh": [
+    "src/skillspector/nodes/analyzers/mcp_tool_poisoning.py",
+    "tests/nodes/analyzers/test_sc2_command_boundaries.py",
+    "tests/unit/test_patterns.py"
+   ],
+   "npx -y": [
+    "tests/test_mcp_rug_pull.py"
+   ],
+   "eval(": [
+    "README.md",
+    "src/skillspector/nodes/analyzers/behavioral_ast.py",
+    "src/skillspector/nodes/analyzers/pattern_defaults.py"
+   ],
+   "sudo": [
+    "src/skillspector/dependency_sources.py",
+    "src/skillspector/nodes/analyzers/pattern_defaults.py",
+    "src/skillspector/nodes/analyzers/static_patterns_anti_refusal.py"
+   ],
+   "rm -rf ~|/": [
+    "tests/nodes/analyzers/test_markdown_table_boundaries.py",
+    "tests/nodes/analyzers/test_security_reconstruction.py",
+    "tests/nodes/analyzers/test_static_false_positive_controls.py"
+   ]
+  }
+ },
+ "VoiceStudio": {
+  "commit": "3e4903096dec",
+  "date": "2026-10-25",
+  "files": 3867,
+  "license": "AGPL (LICENSE)",
+  "manifests": [
+   ".dagger/pyproject.toml",
+   "deploy/Dockerfile",
+   "deploy/docker-compose.yml",
+   "electron/package.json",
+   "package.json",
+   "pyproject.toml",
+   "scripts/setup.py"
+  ],
+  "claude_plugin": [],
+  "skills": 4,
+  "agents_md": 4,
+  "hooks": [
+   "electron/src/renderer/src/hooks/use-appearance.ts",
+   "electron/src/renderer/src/hooks/use-backend-status.test.ts",
+   "electron/src/renderer/src/hooks/use-backend-status.ts",
+   "electron/src/renderer/src/hooks/use-clone-demo.ts",
+   "electron/src/renderer/src/hooks/use-clone-readiness.ts"
+  ],
+  "mcp": [
+   "backend/mcp_server.py",
+   "electron/src/main/repair-mcp-server.test.ts",
+   "electron/src/main/repair-mcp-server.ts"
+  ],
+  "install_scripts": [
+   "backend/engines/audiocpp/bootstrap.py",
+   "backend/engines/confucius4/bootstrap.py",
+   "backend/engines/dots_tts/bootstrap.py",
+   "backend/engines/dots_tts/install.py",
+   "backend/engines/indextts/bootstrap.py"
+  ],
+  "risky_patterns": {
+   "curl|sh": [
+    ".github/scripts/scam_guard.py",
+    "README.md",
+    "deploy/install-worker/worker.mjs"
+   ],
+   "eval(": [
+    "backend/engines/moss_tts_v15/main.py",
+    "backend/services/watermark.py",
+    "omnivoice/eval/models/ecapa_tdnn_wavlm.py"
+   ],
+   "sudo": [
+    ".claude/skills/omnivoice/scripts/stop-backend.sh",
+    ".github/CONTRIBUTING.md",
+    ".github/scripts/scam_guard.py"
+   ]
+  }
+ },
+ "artcraft": {
+  "commit": "1f969a922493",
+  "date": "2026-10-23",
+  "files": 5824,
+  "license": "Apache-2.0 (LICENSE-APACHE)",
+  "manifests": [
+   "Cargo.toml",
+   "artcraft-native/Cargo.toml",
+   "frontend/package.json"
+  ],
+  "claude_plugin": [],
+  "skills": 0,
+  "agents_md": 0,
+  "hooks": [
+   "crates/api_clients/fal_client/src/requests_old/webhook/image/angle/enqueue_flux_2_lora_edit_image_angle_webhook.rs",
+   "crates/api_clients/fal_client/src/requests_old/webhook/image/angle/enqueue_qwen_edit_2511_edit_image_angle_webhook.rs",
+   "crates/api_clients/fal_client/src/requests_old/webhook/image/angle/mod.rs",
+   "crates/api_clients/fal_client/src/requests_old/webhook/image/background/mod.rs",
+   "crates/api_clients/fal_client/src/requests_old/webhook/image/background/remove_background_rembg_webhook.rs"
+  ],
+  "mcp": [],
+  "install_scripts": [],
+  "risky_patterns": {
+   "eval(": [
+    "crates/desktop/artcraft/src/services/worldlabs/windows/worldlabs_login_window/worldlabs_login_window_open.rs",
+    "crates/desktop/artcraft/src/services/worldlabs/windows/worldlabs_login_window/worldlabs_login_window_thread.rs"
+   ],
+   "sudo": [
+    ".github/workflows/artcraft-macos-publish.yml"
+   ]
+  }
+ },
+ "awesome-opus5-5-videos": {
+  "commit": "92aee2f586ac",
+  "date": "2026-10-13",
+  "files": 707,
+  "license": "MIT (LICENSE)",
+  "manifests": [],
+  "claude_plugin": [],
+  "skills": 0,
+  "agents_md": 0,
+  "hooks": [],
+  "mcp": [],
+  "install_scripts": [],
+  "risky_patterns": {
+   "sudo": [
+    "README.md",
+    "prompts/sudo-kiran-254201.md",
+    "prompts/sudo-kiran-335993.md"
+   ]
+  }
+ },
+ "claude-mem": {
+  "commit": "a4469fd4fc03",
+  "date": "2026-10-24",
+  "files": 2735,
+  "license": "Apache-2.0 (LICENSE)",
+  "manifests": [
+   "docker-compose.yml",
+   "dsh/package.json",
+   "openclaw/package.json",
+   "package.json",
+   "plugin/package.json"
+  ],
+  "claude_plugin": [
+   ".claude-plugin/marketplace.json",
+   ".claude-plugin/plugin.json",
+   "cowork/.claude-plugin/plugin.json",
+   "plugin/.claude-plugin/plugin.json"
+  ],
+  "skills": 43,
+  "agents_md": 0,
+  "hooks": [
+   "claude-mem-cursor/hooks/hooks.json",
+   "cowork/hooks/hooks.json",
+   "cursor-hooks/.gitignore",
+   "cursor-hooks/CONTEXT-INJECTION.md",
+   "cursor-hooks/INTEGRATION.md"
+  ],
+  "mcp": [
+   "plugin/.mcp.json",
+   "plugin/qoder.mcp.json",
+   "plugin/scripts/mcp-server.cjs",
+   "plugin/scripts/mcp-server.cjs.map"
+  ],
+  "install_scripts": [
+   "install/public/install.sh",
+   "install/public/installer.js",
+   "openclaw/install.sh"
+  ],
+  "risky_patterns": {
+   "curl|sh": [
+    ".claude/plans/animated-installer.md",
+    "Dockerfile.test-installer",
+    "README.md"
+   ],
+   "npx -y": [
+    "claude-mem-cursor/hooks/hooks.json",
+    "docs/public/grok-bot/index.mdx",
+    "tests/infrastructure/plugin-distribution.test.ts"
+   ],
+   "eval(": [
+    ".maestro/playbooks/2026-03-29-Issues-Triage-3-29-2026/Phase-06-Security-Fixes.md"
+   ],
+   "sudo": [
+    ".github/workflows/ci.yml",
+    "Dockerfile.test-installer",
+    "openclaw/install.sh"
+   ],
+   "rm -rf ~|/": [
+    "docs/public/architecture/pm2-to-bun-migration.mdx",
+    "plans/04-installer-transparency.md",
+    "src/npx-cli/commands/install.ts"
+   ]
+  }
+ },
+ "deer-flow": {
+  "commit": "2b6716c920e1",
+  "date": "2026-10-25",
+  "files": 4312,
+  "license": "MIT (LICENSE)",
+  "manifests": [
+   "backend/Dockerfile",
+   "backend/pyproject.toml",
+   "frontend/Dockerfile",
+   "frontend/package.json"
+  ],
+  "claude_plugin": [],
+  "skills": 33,
+  "agents_md": 5,
+  "hooks": [
+   "frontend/src/hooks/use-global-shortcuts.ts",
+   "frontend/src/hooks/use-mobile.ts",
+   "frontend/tests/unit/hooks/use-global-shortcuts.test.ts",
+   "frontend/tests/unit/hooks/use-mobile.dom.test.ts"
+  ],
+  "mcp": [
+   "backend/docs/MCP_SERVER.md"
+  ],
+  "install_scripts": [
+   "backend/packages/harness/deerflow/persistence/bootstrap.py",
+   "backend/packages/harness/deerflow/skills/installer.py",
+   "backend/packages/harness/deerflow/tools/builtins/setup_agent_tool.py",
+   "scripts/setup-sandbox.sh",
+   "scripts/setup_wizard.py"
+  ],
+  "risky_patterns": {
+   "curl|sh": [
+    ".agent/skills/smoke-test/references/troubleshooting.md",
+    "backend/packages/harness/deerflow/agents/middlewares/AGENTS.md",
+    "backend/packages/harness/deerflow/agents/middlewares/sandbox_audit_middleware.py"
+   ],
+   "wget|sh": [
+    "backend/packages/harness/deerflow/agents/middlewares/sandbox_audit_middleware.py",
+    "backend/tests/test_sandbox_audit_middleware.py"
+   ],
+   "npx -y": [
+    "README.md",
+    "README_fr.md",
+    "README_ja.md"
+   ],
+   "eval(": [
+    "backend/packages/harness/deerflow/runtime/stream_bridge/redis.py",
+    "backend/tests/test_deferred_tool_promotion_real_llm.py",
+    "backend/tests/test_skill_mutation_scanner.py"
+   ],
+   "sudo": [
+    ".agent/skills/smoke-test/references/troubleshooting.md",
+    "CONTRIBUTING.md",
+    "Install.md"
+   ],
+   "rm -rf ~|/": [
+    "backend/docs/GUARDRAILS.md",
+    "backend/tests/test_sandbox_audit_middleware.py"
+   ]
+  }
+ },
+ "graphify": {
+  "commit": "92741d162b20",
+  "date": "2026-10-23",
+  "files": 1101,
+  "license": "Apache-2.0 (LICENSE)",
+  "manifests": [
+   "Dockerfile",
+   "pyproject.toml"
+  ],
+  "claude_plugin": [],
+  "skills": 0,
+  "agents_md": 0,
+  "hooks": [],
+  "mcp": [
+   "tests/fixtures/sample.mcp.json"
+  ],
+  "install_scripts": [
+   "graphify/install.py"
+  ],
+  "risky_patterns": {
+   "curl|sh": [
+    "README.md",
+    "docs/translations/README.ar-SA.md",
+    "docs/translations/README.cs-CZ.md"
+   ],
+   "eval(": [
+    "tests/test_php_language_construct_calls.py",
+    "tests/test_python_import_resolution.py",
+    "tests/test_skill_part_a_explicit_root.py"
+   ],
+   "sudo": [
+    "README.md",
+    "docs/translations/README.ar-SA.md",
+    "docs/translations/README.cs-CZ.md"
+   ]
+  }
+ },
+ "headroom": {
+  "commit": "3fef15d376d9",
+  "date": "2026-10-24",
+  "files": 2684,
+  "license": "Apache-2.0 (LICENSE)",
+  "manifests": [
+   ".devcontainer/Dockerfile",
+   "Cargo.toml",
+   "Dockerfile",
+   "docker-compose.yml",
+   "docs/package.json",
+   "pyproject.toml"
+  ],
+  "claude_plugin": [
+   ".claude-plugin/marketplace.json",
+   "plugins/headroom-agent-hooks/.claude-plugin/plugin.json",
+   "plugins/headroom-snip/.claude-plugin/plugin.json"
+  ],
+  "skills": 0,
+  "agents_md": 0,
+  "hooks": [
+   "plugins/headroom-agent-hooks/.claude-plugin/plugin.json",
+   "plugins/headroom-agent-hooks/.github/plugin/plugin.json",
+   "plugins/headroom-agent-hooks/README.md",
+   "plugins/headroom-agent-hooks/bin/headroom-hook.sh",
+   "plugins/headroom-agent-hooks/hooks/hooks.json"
+  ],
+  "mcp": [
+   "benchmarks/tool_search_vs_native/mcp_server.py",
+   "examples/mcp_demo/mock_mcp_servers.py",
+   "headroom/ccr/mcp_server.py",
+   "headroom/memory/mcp_server.py"
+  ],
+  "install_scripts": [
+   "examples/deployment/macos-launchagent/install.sh",
+   "headroom/cli/install.py",
+   "headroom/graph/installer.py",
+   "headroom/mcp_registry/install.py",
+   "headroom/providers/aider/install.py"
+  ],
+  "risky_patterns": {
+   "curl|sh": [
+    ".github/workflows/ci.yml",
+    "README.md",
+    "docs/content/docs/docker-install.mdx"
+   ],
+   "npx -y": [
+    "plugins/opencode/src/transport.test.ts"
+   ],
+   "postinstall": [
+    "docs/package.json"
+   ],
+   "eval(": [
+    "crates/headroom-core/src/transforms/log_compressor.rs",
+    "headroom/models/ml_models.py",
+    "headroom/transforms/kompress_compressor.py"
+   ],
+   "sudo": [
+    ".devcontainer/post-create.sh",
+    ".github/actions/headroom-e2e-setup/action.yml",
+    ".github/workflows/ci.yml"
+   ],
+   "rm -rf ~|/": [
+    "wiki/macos-deployment.md"
+   ]
+  }
+ },
+ "omniroute": {
+  "commit": "515674b6cf7c",
+  "date": "2026-04-10",
+  "files": 2169,
+  "license": "MIT (LICENSE)",
+  "manifests": [
+   "Dockerfile",
+   "docker-compose.yml",
+   "electron/package.json",
+   "open-sse/package.json",
+   "package.json"
+  ],
+  "claude_plugin": [],
+  "skills": 0,
+  "agents_md": 0,
+  "hooks": [
+   "src/app/(dashboard)/dashboard/translator/hooks/useAvailableModels.tsx",
+   "src/app/(dashboard)/dashboard/translator/hooks/useProviderOptions.tsx",
+   "src/app/api/webhooks/[id]/route.ts",
+   "src/app/api/webhooks/[id]/test/route.ts",
+   "src/app/api/webhooks/route.ts"
+  ],
+  "mcp": [
+   "bin/mcp-server.mjs",
+   "docs/MCP-SERVER.md",
+   "docs/i18n/ar/docs/MCP-SERVER.md",
+   "docs/i18n/bg/docs/MCP-SERVER.md"
+  ],
+  "install_scripts": [],
+  "risky_patterns": {
+   "curl|sh": [
+    "docs/CLI-TOOLS.md",
+    "docs/i18n/bg/docs/CLI-TOOLS.md",
+    "docs/i18n/cs/docs/CLI-TOOLS.md"
+   ],
+   "postinstall": [
+    ".omc/project-memory.json",
+    "package.json"
+   ],
+   "eval(": [
+    "CONTRIBUTING.md",
+    "docs/i18n/ar/CONTRIBUTING.md",
+    "docs/i18n/bg/CONTRIBUTING.md"
+   ],
+   "sudo": [
+    ".github/workflows/electron-release.yml",
+    "src/app/(dashboard)/dashboard/cli-tools/components/AntigravityToolCard.tsx",
+    "src/i18n/messages/bg.json"
+   ]
+  }
+ },
+ "one-skill-to-rule-them-all": {
+  "commit": "ac00bed07526",
+  "date": "2026-10-23",
+  "files": 29,
+  "license": "CC (LICENSE)",
+  "manifests": [],
+  "claude_plugin": [
+   ".claude-plugin/marketplace.json",
+   ".claude-plugin/plugin.json"
+  ],
+  "skills": 1,
+  "agents_md": 0,
+  "hooks": [],
+  "mcp": [],
+  "install_scripts": [],
+  "risky_patterns": {}
+ },
+ "ponytail": {
+  "commit": "09c434ab73ca",
+  "date": "2026-10-18",
+  "files": 214,
+  "license": "MIT (LICENSE)",
+  "manifests": [
+   "package.json",
+   "pi-extension/package.json"
+  ],
+  "claude_plugin": [
+   ".claude-plugin/marketplace.json",
+   ".claude-plugin/plugin.json"
+  ],
+  "skills": 13,
+  "agents_md": 0,
+  "hooks": [
+   "hooks/band/board.ts",
+   "hooks/band/logo.ts",
+   "hooks/band/metrics.ts",
+   "hooks/band/register.tsx",
+   "hooks/band/types.d.ts"
+  ],
+  "mcp": [],
+  "install_scripts": [],
+  "risky_patterns": {
+   "eval(": [
+    "benchmarks/correctness.js"
+   ]
+  }
+ },
+ "rtk": {
+  "commit": "32b2ec4386d9",
+  "date": "2026-10-23",
+  "files": 838,
+  "license": "Apache-2.0 (LICENSE)",
+  "manifests": [
+   "Cargo.toml",
+   "engine/Cargo.toml",
+   "openclaw/package.json",
+   "plugin/Cargo.toml",
+   "proxy/Cargo.toml",
+   "text/Cargo.toml"
+  ],
+  "claude_plugin": [],
+  "skills": 12,
+  "agents_md": 6,
+  "hooks": [
+   ".claude/hooks/bash/pre-commit-format.sh",
+   ".claude/hooks/rtk-rewrite.sh",
+   ".claude/hooks/rtk-suggest.sh",
+   ".github/hooks/rtk-rewrite.json",
+   "engine/tests/fixtures/posthook/bash_ansi_output.json"
+  ],
+  "mcp": [],
+  "install_scripts": [
+   "install.sh",
+   "scripts/install-local.sh"
+  ],
+  "risky_patterns": {
+   "curl|sh": [
+    "INSTALL.md",
+    "README.md",
+    "README_es.md"
+   ],
+   "sudo": [
+    ".claude/agents/technical-writer.md",
+    ".claude/skills/performance/SKILL.md",
+    ".github/workflows/ci.yml"
+   ],
+   "rm -rf ~|/": [
+    "src/discover/lexer.rs",
+    "src/discover/registry.rs",
+    "src/hooks/permissions.rs"
+   ]
+  }
+ },
+ "superpowers": {
+  "commit": "2ce8aa15d05b",
+  "date": "2026-10-21",
+  "files": 231,
+  "license": "MIT (LICENSE)",
+  "manifests": [
+   "package.json"
+  ],
+  "claude_plugin": [
+   ".claude-plugin/marketplace.json",
+   ".claude-plugin/plugin.json"
+  ],
+  "skills": 15,
+  "agents_md": 0,
+  "hooks": [
+   "hooks/hooks-cursor.json",
+   "hooks/hooks.json",
+   "hooks/run-hook.cmd",
+   "hooks/session-start",
+   "tests/hooks/test-run-hook-cmd-windows.sh"
+  ],
+  "mcp": [],
+  "install_scripts": [
+   "tests/opencode/setup.sh"
+  ],
+  "risky_patterns": {
+   "rm -rf ~|/": [
+    ".opencode/INSTALL.md",
+    "docs/README.opencode.md"
+   ]
+  }
+ },
+ "youtube-agent-skill": {
+  "commit": "a2feb2104981",
+  "date": "2026-09-16",
+  "files": 24,
+  "license": "MIT (LICENSE)",
+  "manifests": [],
+  "claude_plugin": [
+   ".claude-plugin/marketplace.json",
+   ".claude-plugin/plugin.json"
+  ],
+  "skills": 11,
+  "agents_md": 0,
+  "hooks": [
+   "skills/yt-script/hooks.json"
+  ],
+  "mcp": [],
+  "install_scripts": [],
+  "risky_patterns": {}
+ }
+}
