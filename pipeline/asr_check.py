@@ -4,6 +4,7 @@ Usage: /home/user/tools/tts2-venv/bin/python pipeline/asr_check.py series/echo-a
 import difflib, json, os, re, sys
 from pathlib import Path
 
+import numpy as np
 import soundfile as sf
 import torch
 import torchaudio
@@ -39,8 +40,12 @@ def hear(path):
         _asr = WhisperModel(str(MODEL), device="cpu", compute_type="int8")
     a, sr = sf.read(str(path), dtype="float32", always_2d=True)
     x = torchaudio.functional.resample(torch.from_numpy(a.mean(axis=1)), sr, 16000).numpy()
-    segs, _ = _asr.transcribe(x, language="de", beam_size=5, word_timestamps=True)
-    return [w for s in segs for w in s.words]
+    pad = np.zeros(8000, np.float32)  # 0.5 s silence: Whisper drops the first words of audio that starts on speech
+    segs, _ = _asr.transcribe(np.concatenate([pad, x, pad]), language="de", beam_size=5, word_timestamps=True)
+    words = [w for s in segs for w in s.words]
+    for w in words:
+        w.start, w.end = max(0.0, w.start - 0.5), max(0.0, w.end - 0.5)
+    return words
 
 
 def main(epdir):

@@ -25,7 +25,7 @@ Vergleich: `final/E001_v2_vs_v3.jpg` · v2 bleibt reproduzierbar über Commit `0
 Stark: moderner, konsistenter Look; Figuren wiedererkennbar (Nox, Mira, Lina, Pip); Hook mit visuellem Rätsel ab Frame 0 (7 goldene + dunkle 8. Kerbe), erster Satz endet bei 1,54 s; Twist eindeutig (Foto: Nox als Kind + Lina); Rewatch-Details (Ringnadel = Signatur unter „Lina lebt.").
 Schwach / bitte prüfen:
 1. **Hook-Satz** „Nox brach Regel acht." — Spracherkennung hört „Rieding" statt „Regel" (Ähnlichkeit 0,83, bestes von 8 Takes). **Als Erstes anhören.** Kostenlose Lösung, falls unklar: eigene Aufnahme eines Teammitglieds als Erzähler-Referenz.
-2. **Miras Twist-Satz** beginnt laut Spracherkennung mit „dabei" statt „Weil" (0,93) — anhören.
+2. ~~Miras Twist-Satz~~ — nachgemessen: korrekt erkannt (1,00); der frühere Befund war ein Messfehler (Whisper verschluckt Anfänge ohne Stille, behoben).
 3. **Animation** = „Animated Illustration": Kamera, Mundbewegung, Effekte — keine durchgehende Figurenanimation (Gehen, Gestik). Generatives Video ist auf dieser CPU ohne Budget nicht machbar.
 4. S14b: Nox' Augen werden kurz leer-weiß (Erinnerungsverlust) — wirkt evtl. zu gruselig? · S07: Tränen als stilisierte Linien · S12: engerer Ausschnitt, etwas weicher.
 5. Plant P7 (Fotoecke in Miras Tasche, S06) fehlt — Bildmodell setzte das Foto zweimal an Nox; wegretuschiert. Story funktioniert (Foto erscheint in S16), Nachholen in E02/E03 möglich.
