@@ -2,33 +2,13 @@
  "style": "Stylized 3D animated feature film still, hand-painted textures, soft global illumination, volumetric light with floating golden dust, rich palette of deep teal, navy blue and warm gold, cinematic shallow depth of field, expressive face with large readable eyes, strong clean silhouette, highly detailed, vertical 9:16 frame.",
  "jobs": [
   {
-   "id": "pip",
-   "out": "../../look/refs/pip.png",
-   "w": 576,
-   "h": 1024,
-   "seed": 24,
-   "prompt": "Character design of Pip, a small living brass compass creature about the size of a hand: a round polished brass body with no ring or loop on top, a glass face showing a red-and-white compass needle, two large round glossy black eyes sitting on top of the brass rim above the glass (not inside it), tiny brass legs and feet, cute and curious expression. Sitting on a dark wooden shelf, plain dark background, soft rim light.",
-   "refs": []
-  },
-  {
    "id": "S01",
-   "prompt": "Extreme close-up: a young man's bare pale hand emerging from a deep navy blue coat sleeve reaches toward a large circular bronze vault seal engraved with eight notches around its rim, seven notches glow warm gold and one notch is dark and empty, his fingertips stop a few centimeters before the metal, floating golden dust, dramatic warm rim light, dark background.",
+   "prompt": "Extreme close-up macro shot, no face and no head in the frame: a young man's bare pale right hand emerging from a deep navy blue coat sleeve reaches in from the left toward a large round bronze vault seal seen straight on, the seal fills the right half of the frame; the seal has a smooth polished rim ring without any marks, slots or symbols and a small dark keyhole in its center; his fingertips stop a few centimeters before the metal; floating golden dust, dramatic warm rim light, dark background.",
    "out": "kf/S01.png",
    "w": 720,
    "h": 1280,
    "seed": 101,
    "refs": []
-  },
-  {
-   "id": "S02",
-   "prompt": "Same image, identical composition and details, but the single dark notch on the bronze seal now glows bright red and a red warning light washes over the whole scene.",
-   "out": "kf/S02.png",
-   "w": 720,
-   "h": 1280,
-   "seed": 102,
-   "refs": [
-    "kf/S01.png"
-   ]
   },
   {
    "id": "S03",
