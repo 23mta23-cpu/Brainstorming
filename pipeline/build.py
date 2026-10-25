@@ -15,8 +15,7 @@ FX = {  # ffmpeg filters per voice effect; every voice ends trimmed, 48 kHz mono
     "child_echo": TRIM + "asetrate={sr}*1.26,aresample=48000,atempo=0.794,aecho=0.8:0.6:70|160:0.3|0.15",
     "echo": TRIM + "aresample=48000,atempo=0.88,aecho=0.8:0.6:70|160:0.3|0.15",  # memory voice: slowed (pitch kept) + echo
 }
-TTS2_PY = "/home/user/tools/tts2-venv/bin/python"  # Chatterbox + Whisper live in their own venv (pinned deps)
-QWEN_PY = "/home/user/tools/qwen-venv/bin/python"
+QWEN_PY = "/home/user/tools/qwen-venv/bin/python"  # voice venv: Qwen3-TTS (run sandboxed) + faster-whisper for take picking
 SCENE_FX = {"motes", "alarm", "notches", "notches_red", "pin", "photo", "texts", "rays", "echo_pulse", "engraving", "glint", "flash", "snow", "dream", "memory_flow", "handwriting", "endcard"}
 
 
@@ -104,7 +103,7 @@ def prerender(ep, epdir, cache):
         spec.write_text(json.dumps(js, ensure_ascii=False))
         if engine == "qwen":
             subprocess.run([str(HERE.parent / "scripts" / "sandbox-run.sh"), QWEN_PY, str(HERE / "tts_qwen.py"), str(spec)], check=True)
-        subprocess.run([TTS2_PY, str(HERE / "tts2.py"), "batch" if engine == "chatterbox" else "pick", str(spec)], check=True)
+        subprocess.run([QWEN_PY, str(HERE / "tts2.py"), "batch" if engine == "chatterbox" else "pick", str(spec)], check=True)
 
 
 def voice_line(line, ep, epdir, cache):

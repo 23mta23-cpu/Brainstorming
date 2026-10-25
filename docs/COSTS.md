@@ -5,7 +5,7 @@
 |---|---|---|
 | Externe Dienste / APIs | **0 €** | keine bezahlten Provider genutzt |
 | Software | 0 € | Open Source; Remotion bewusst vermieden (Company License) |
-| Assets (Bild, Ton, Fonts, Stimmen) | 0 € | v3: lokal generiert (FLUX.2-klein Apache-2.0, Chatterbox MIT), Fonts OFL, Referenzen CC0 |
+| Assets (Bild, Ton, Fonts, Stimmen) | 0 € | v3: lokal generiert (FLUX.2-klein Apache-2.0, Stimmen Qwen3-TTS Apache-2.0 — entworfen, keine echte Person), Fonts OFL |
 | Rechenzeit E01 v3 (lokal, CPU) | 0 € | ~3 h Bildgenerierung (inkl. Neuversuche), ~30 min Stimmen, 3 min Render |
 | Rechenzeit je 32-s-Folge | ~2 min auf 4 vCPU | in der Claude-Code-Cloud-Umgebung enthalten |
 | Fehlgeschlagene Generierungen | 2 | MLS-Stimmen verworfen (Artefakte), 1 Lautheits-Iteration |

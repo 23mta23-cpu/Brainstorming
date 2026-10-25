@@ -20,7 +20,7 @@ Bordmittel von Claude Code wurden jeweils mitverglichen. Kein Vergleich nach Sta
 | Bildgenerierung | **FLUX.2-klein-4B lokal** (Apache-2.0, `pipeline/gen.py`, TESTED: 65 s/Bild, 127 s mit Referenz) | Multi-Referenz-Editing für Figurenkonsistenz + Mund-Varianten | Z-Image-Turbo (Apache-2.0, aber 33 GB fp32 — zu groß), Vektor-Code (v2, archiviert) | CPU hat AMX → bf16 ~860 GFLOPS; 0 € und kommerziell nutzbar. |
 | Videogenerierung | **nicht vorhanden** (BLOCKED: Freigabe/Budget) | – | OpenMontage + Kling/Veo/Runway (Phase 2) | Ehrlich: Wir erzeugen Motion-Graphics/2D-Puppet-Animation, kein generatives Video. |
 | Animation | Deterministische SVG-Animation, Playwright-Frame-Capture (TESTED) | awesome-opus5-5-videos (Technikreferenz) | Remotion (Lizenz!), HyperFrames (Apache-2.0, Alternative) | Keine neue Abhängigkeit; Chromium + Playwright vorinstalliert. |
-| Audio & Stimmen | **Chatterbox Multilingual** lokal (MIT, Deutsch, Stimmklon aus CC0-Referenzen; `pipeline/tts2.py`) | Piper (Flüstern, Referenzerzeugung), `pipeline/sfx.py`, **faster-whisper** (MIT) als Verständlichkeits-QC | VoiceStudio (isoliert), ElevenLabs (kostet → ausgeschlossen) | 0 €; ausdrucksstärker als Piper; ASR prüft, was ich nicht hören kann. |
+| Audio & Stimmen | **Qwen3-TTS** lokal (Apache-2.0, Deutsch): Stimmen per Text entworfen (VoiceDesign), gesprochen per Klon (Base); `pipeline/tts_qwen.py` in der Sandbox | `pipeline/sfx.py`, **faster-whisper** (MIT) als Verständlichkeits-QC und Take-Auswahl; Chatterbox (MIT) + Piper archiviert | VoiceStudio-App (AGPL, nur Modellliste genutzt), OmniVoice (CC-BY-NC), ElevenLabs (kostet) | 0 €; Co-CEO-Kritik an v3-Stimmen (künstlich, Alter, zu ähnlich) → eigene, entworfene Stimmen je Figur. |
 | Schnitt & Rendering | `build.py` + FFmpeg (TESTED) | Master-Kette Kompressor→Limiter→Loudnorm | Remotion (Company License bei 4 Personen), OpenMontage-Composer | Volle Kontrolle, lizenzfrei. |
 | Qualitätskontrolle | `pipeline/qc.py` (14 objektive Checks, TESTED) + Claude-Vision-Kontaktbogen | menschliche Freigabe | OpenMontage `composition_validator` (Referenz) | Objektives automatisiert, Subjektives beim Menschen. |
 | Analytics & Automatisierung | PLANNED: `analytics/posts.csv` + Performance-Auswertung nach ≥ 20 Videos | – | – | Erst echte Daten, dann Tooling (YAGNI). |
@@ -53,3 +53,14 @@ mit Referenzbild 127 s, Peak-RAM 9,9 GB (zweiphasig: Text-Encoder → Embedding-
 FAKT: Die Platte liest nur ~15 MB/s → jeder Kaltstart lädt 15,8 GB in ~17 min. Konsequenz: alle Bilder einer Folge in einem Batch.
 SCHLUSSFOLGERUNG: Bildqualität jetzt auf Niveau stilisierter 3D-Animationsfilm-Stills; echte Figurenanimation (generatives Video) bleibt auf CPU
 unrealistisch. Bewegung entsteht über Kamerafahrten, In-Shot-Überblendungen, Mund-Patches und Effekte („Animated Illustration", ehrlich so benannt).
+
+### D6 — Stimmen v3: entworfene Qwen3-TTS-Stimmen statt Chatterbox-Klon von Piper-Vorlagen (2026-10-25)
+Anlass: Co-CEO: „Die Stimmen sind schlecht gewählt" — künstlich, Alter passt nicht, zu ähnlich, Betonung falsch; Verweis auf VoiceStudio.
+FAKT: VoiceStudio ist AGPL-3.0 und GUI-first; seine Engine-Liste enthält Qwen3-TTS (Apache-2.0, 10 Sprachen inkl. Deutsch), VoxCPM2 und
+Fun-CosyVoice3 (Apache-2.0) sowie OmniVoice (CC-BY-NC → ausgeschlossen). Genutzt wird nur das Modell, nicht die App.
+FAKT: VoiceDesign erzeugt eine Stimme aus einer Beschreibung (Alter, Timbre, Haltung); 12 Kandidaten (3 je Figur, Seeds 1–12) als
+`voices/Casting_Stimmen.mp4` vorgelegt, Co-CEO wählte Nox B, Mira C, Lina A, Erzähler C. Alle Kandidaten ASR 1,00.
+Entscheidung: Die gewählten Casting-Clips sind die Stimm-Identität; jede Zeile spricht das Base-Klonmodell (ICL: Clip + Transkript),
+4 Takes je Zeile im Batch, Whisper wählt (Verständlichkeit, dann Tempo). Grund: VoiceDesign würde je Zeile eine neue Stimme ziehen.
+Grenzen: Base kennt keine Stil-Anweisung (Emotion folgt Vorlage + Satzzeichen); Lina-Vorlage nur 1,5 s; CPU ~7× langsamer als Echtzeit.
+Rückweg: Chatterbox-Pfad (`engine: chatterbox`) bleibt im Code; eigene Aufnahmen des Teams (mit schriftlicher Einwilligung) ersetzen die Clips 1:1.

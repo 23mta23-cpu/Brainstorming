@@ -1,4 +1,5 @@
-"""Expressive German TTS with Chatterbox Multilingual (MIT, local CPU). Run with /home/user/tools/tts2-venv/bin/python.
+"""Whisper take picking for the voice engines (run with /home/user/tools/qwen-venv/bin/python) + the archived Chatterbox engine
+(MIT; needs a venv with chatterbox-tts and the weights in tools/models/chatterbox, both removed 2026-10-25 — see docs/INSTALL_LOG.md).
 A voice = a short reference clip. References come from CC0 Piper voices (pipeline/tts.py) or, later, consented own recordings.
 Batch mode records up to TAKES takes per line and keeps the one Whisper hears best (asr_check.match), trimmed to the spoken words:
 Chatterbox sometimes appends invented words or seconds of noise after the line.

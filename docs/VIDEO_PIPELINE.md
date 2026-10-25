@@ -25,11 +25,11 @@ Befehle: siehe Skill `.claude/skills/produce-episode/SKILL.md`. Hier: Stufen, St
 ## v3 (ab 25.10.2026) — Ablauf
 1. `pipeline/keyframes.py <ep>` — Skript → Bild-Jobs (Figuren über gesperrte Referenzen, Editierketten), ein Batch in `gen.py` (FLUX.2-klein-4B)
 2. `pipeline/plates.py <ep>` — Hochskalierung auf 1188×2112 (10 % Kamera-Reserve), Mund-Patches aus Basis/Variante (Diff-Maske, Drift-Schutz)
-3. `pipeline/build.py <ep>` — Chatterbox-Stimmen (Batch; je Zeile bis zu 4 Takes, `"takes"` pro Zeile erhöhbar; Whisper wählt
+3. `pipeline/build.py <ep>` — Qwen3-TTS-Stimmen (Klon der gewählten Casting-Clips, Sandbox; je Zeile 4 Takes im Batch, `"takes"` pro Zeile erhöhbar; Whisper wählt
    Verständlichkeit vor Tempo ~3,8 Silben/s und schneidet nach dem letzten Skriptwort), Timeline aus realen Sprechdauern, Mix, Render der generischen Szene
    `series/echo-archiv/scene.html` (Plates + Kamera + Effekte + Untertitel), Master, QC (`qc.py`, inkl. Hook ≤ 1,8 s)
-4. `tts2-venv/bin/python pipeline/asr_check.py <ep>` — Endkontrolle jeder Zeile (Ähnlichkeit ≥ 0,8, ≤ 0,6 s Nachlauf) per Spracherkennung
-   (Ersatz für fehlendes Gehör; ersetzt nicht das Anhören durch einen Menschen). Stimm-Referenzen: `pipeline/voice_refs.py <name>`
+4. `qwen-venv/bin/python pipeline/asr_check.py <ep>` — Endkontrolle jeder Zeile (Ähnlichkeit ≥ 0,8, ≤ 0,6 s Nachlauf) per Spracherkennung
+   (Ersatz für fehlendes Gehör; ersetzt nicht das Anhören durch einen Menschen). Neue Figur: Stimme entwerfen mit `pipeline/voice_design.py` (Casting-Kandidaten in `voices/casting.json`), Wahl durch Co-CEO
 
 ## Was das Verfahren ist — und was nicht (v3)
 Ist: **„Animated Illustration"** — hochwertige KI-Stills im stilisierten 3D-Animationsfilm-Look mit Kamerafahrten, In-Shot-Verwandlungen,

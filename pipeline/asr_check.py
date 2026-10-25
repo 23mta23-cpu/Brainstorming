@@ -1,6 +1,6 @@
 """Intelligibility QC without ears: transcribe every voiced line (faster-whisper small, MIT, CPU int8) and compare with the script.
 tts2.py uses hear()/match() to pick the best of several takes and trim it to the spoken words.
-Usage: /home/user/tools/tts2-venv/bin/python pipeline/asr_check.py series/echo-archiv/episodes/E001  -> build/asr.json, exit 1 if a line fails"""
+Usage: /home/user/tools/qwen-venv/bin/python pipeline/asr_check.py series/echo-archiv/episodes/E001  -> build/asr.json, exit 1 if a line fails"""
 import difflib, json, os, re, sys
 from pathlib import Path
 
