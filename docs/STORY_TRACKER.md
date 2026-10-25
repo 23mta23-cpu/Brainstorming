@@ -11,6 +11,7 @@ Regel: Keine neue große Serie, solange begonnene Kernhandlungen offen sind. Jed
 | Folge | Skript | Story-Review | Render | QC tech | Freigabe | Veröffentlicht |
 |---|---|---|---|---|---|---|
 | E01 Regel Acht | v2 PASS (Commit `006911a`); **v3.2** (59,3 s, Bildstil v3) | v3 REVISE → v3.1 **PASS** | **v3 gerendert** (25.10.) | 15/15 PASS, Whisper 15/15 | ausstehend (Anhören!) | – |
+| E02 Der Brief | v1.1 (Mindestdauern 59,7 s) | v1.0 REVISE (7 Blocker) → v1.1 Nachprüfung | geplant | – | – | – |
 | E02–E10 | PLANNED (Outline) | – | – | – | – | – |
 
 ## Offene Handlungsstränge
@@ -23,14 +24,19 @@ Regel: Keine neue große Serie, solange begonnene Kernhandlungen offen sind. Jed
 | P4 | „Du hast es versprochen" (Vision = nicht gewählter Weg des Rückkehrtages) | E01 | E10 (Wiedersehen in der Gegenwart) | offen |
 | Q1 | Woher hat Mira das Foto, warum weint sie „schon wieder"? | E01 | E03 (sie beobachtet die Schleife) | offen |
 | Q2 | Warum öffnet die Tür sich von selbst? | E01 | E09 (Nox' eigenes Echo ruft ihn) | offen |
-| Q3 | Nachname „Veyr" auf der Uhr | E01 | E02 (Linas Brief) | offen |
+| Q3 | Nachname „Veyr" auf der Uhr | E01 | E02 (Unterschrift „N. Veyr … das bin ich.") | in E02 eingelöst (nach Freigabe) |
 | Q4 | „Lina lebt." — wer hielt sie für tot? | E01 | E06 (Archiv führt Angehörige als „verstorben", um Bindungen zu kappen), bestätigt E09 | offen |
 | Q5 | Wen alarmiert das Warnlicht? | E01 | E03 (Kurator weiß Bescheid; Mira muss berichten) | offen |
-| P5 | Lina hält in Vision und auf dem Foto denselben Brief | E01 | E02 „Der Brief" | offen |
+| P5 | Lina hält in Vision und auf dem Foto denselben Brief | E01 | E02 „Der Brief" | in E02 eingelöst (nach Freigabe) |
 | P6 | Innere versiegelte Tür hinter der Uhr | E01 | E07 (Stille Kammer, Regel acht) | offen |
 | P7 | Fotoecke in Miras Mantel | E01 | E03 (Mira trägt Nox' versteckte Spuren) | offen — **v3: in S06 nicht sichtbar** (Bildmodell setzte das Foto zweimal an Nox; Edit-Korrektur versagte, Fremdfoto wegretuschiert). Mira zeigt das Foto erst in S16; Payoff E03 bleibt gedeckt. Nachholen in E02/E03 möglich |
 | P8 | Mira: „Nicht schon wieder." | E01 | S16 derselben Folge + E09 (Schleife) | offen |
 | L1 | Erinnerungen fließen in die Uhr | E01 | S3 (gelöschte Erinnerungen werden zu Echos) | offen |
+| P9 | „ANNAHME VERWEIGERT — N. Veyr": Nox lehnte Linas Brief ungeöffnet ab (wenige Tage vor dem Rückkehrtag, Prüfung) | E02 | E10 | offen |
+| P10 | „Jeden Tag um sieben" am Bahnhof | E02 | E10 (Abend, Regen) | offen |
+| N3 | Wie kam Linas Brief ins Archiv? | E02 | Bible §6: Echo der Verweigerung, Archiv nahm es in der Poststelle auf; gezeigt E09/E10 | geplant |
+| N4 | Woher weiß Mira, dass der Brief von „ihr" ist, warum bricht sie das Siegel? | E02 | E03 (sie kennt die Schleife, versteckt seine Notizen) | offen |
+| L2 | Poststelle/Zustellung (nicht leuchtende Post darf zugestellt werden) | E02 | Kanon, Bible §2 | Lore |
 | N1 | Woran erinnert sich Nox, damit sein Echo ruft? | E01 v3 | geklärt in Bible §6: an das Versprechen (eigene Notiz vor E01); gezeigt E09 | geplant |
 | N2 | Wer ist der Erzähler? | E01 v3 | geklärt: neutrale Chronik-Stimme (Bible §2) | geklärt |
 
