@@ -14,7 +14,11 @@ Inputs (read them, nothing else unless needed):
 Check, in this order:
 1. Story logic: cause → effect chain; every event motivated; no random coincidence; twist prepared by a plant.
 2. Narrative closure: micro-loop resolved in this episode; macro-loop advanced; every new question has a planned resolution in STORY_TRACKER (else: list it as missing).
-3. Hook: is an unanswered question established by ~1.5 s, visually AND verbally?
+3. Hook: is an unanswered question established by ~1.5 s, visually AND verbally? Score the first line 0–100 on specificity (named, countable,
+   no vague hype words), stakes (loss, cost, rule broken), curiosity gap (open question the episode answers), brevity (≈ 9–24 words incl. on-screen text);
+   verdict = 0.6 × mean + 0.4 × weakest (a hook leaks at its weakest part); < 55 = BLOCKER. On-screen text in the first 2 s must say something
+   different from the spoken line. Loop point: does the last beat set up a question the first beat answers (rewatch)? (Method adapted from
+   youtube-agent-skill `yt-script`/`yt-shorts`, MIT.)
 4. Character consistency with the bible (goals, inner conflict, Mira is never just a love interest).
 5. Canon: contradicts SERIEN_HANDBUCH §8 or earlier episodes? Quote both.
 6. Scene necessity: any shot without a function (information, emotion, decision)? Any padding?

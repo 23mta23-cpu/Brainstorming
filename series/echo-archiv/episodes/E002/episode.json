@@ -159,7 +159,8 @@
      "anim": "static",
      "width": 320
     }
-   ]
+   ],
+   "text": "5 JAHRE UNGEÖFFNET"
   },
   {
    "id": "S02",
@@ -990,7 +991,7 @@
     {
      "id": "S17m",
      "seed": 218,
-     "prompt": "Same image, identical in every detail, except the young man's mouth is slightly open as if speaking.",
+     "prompt": "Same image, identical in every detail, except the young man's lips are almost closed, nearly touching, as if in the middle of a word.",
      "edit_of": "S17",
      "patch": "mouth"
     }

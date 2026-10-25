@@ -27,6 +27,19 @@ Statuswerte: INVENTORIED / SECURITY_CHECKED / INSTALLED / INTEGRATED / TESTED / 
 | 16 | NVIDIA/SkillSpector | d7338f5 · 2026-10-22 | Security-Scanner für Agent-Skills | Apache-2.0 | INSTALLED · INTEGRATED · TESTED | Sicherheitskern; statischer Modus (`--no-llm`), 11 Scans durchgeführt. |
 | 17 | calesthio/OpenMontage | e01dbf4 · 2026-10-23 | Agentisches Videoproduktions-Framework (Python-Tools für ~50 Provider, Remotion/HyperFrames, 140 Skills) | **AGPL-3.0** | TESTED (1328 Tests grün) · ISOLATED | Nicht Phase-1-Kern: Wert liegt in nicht autorisierten Bezahl-Providern; freier Pfad = Stock-Footage (passt nicht zu eigener animierter IP); AGPL-Kopierverbot ins eigene Repo. Kandidat Phase 2. |
 
+## Einsatzplan (Co-CEO-Vorgabe 25.10.: „die 17 Repos sinnvoll nutzen, beste Videos, skalieren")
+| Hebel | Repo | Einsatz | Status |
+|---|---|---|---|
+| Stimmen | VoiceStudio | Modellquelle → Qwen3-TTS (Apache-2.0), 4 entworfene Stimmen, Co-CEO-Wahl | IMPLEMENTED (Vertonung läuft nach Bild-Batch) |
+| Hook/Retention | youtube-agent-skill (MIT) | Hook-Rubrik (Konkretheit, Einsatz, Neugierlücke, Kürze; 0,6 × Mittel + 0,4 × Schwächstes) + Bildtext ≠ Sprechtext + Loop-Punkt im `story-reviewer`; nach Launch: Retention-Analyse (Hook-Leck / Klippen / Gleiten) auf TikTok-Exports | IMPLEMENTED (E02 S01 Bildtext „5 JAHRE UNGEÖFFNET") |
+| Token/Nutzungslimit | rtk (Apache-2.0-Edition `--no-default-features`, ohne BUSL) | PreToolUse-Hook: komprimiert Bash-Ausgaben (gemessen −48 bis −56 %) → mehr Arbeit pro Limit | in Arbeit |
+| Token/Nutzungslimit | headroom (Apache-2.0) | Proxy/`wrap claude` sitzt im API-Pfad — in der verwalteten Cloud-Sitzung nicht von innen einsetzbar; lokal beim Team sofort nutzbar | Entscheidung Co-CEO |
+| Weiterarbeit bei Limit | omniroute (MIT) | würde bei leerem Kontingent auf fremde Gratis-Modelle umschalten (nicht Claude), alle Inhalte gingen an diese Anbieter; Konten nötig | Entscheidung Co-CEO; Ersatz aktiv: geplante Fortsetzung alle 2 h |
+| Unternehmen | ECC (MIT) | Firmenkontext; selektiv als Vorlage: `content-engine` (Kalender/Plattformformate), `brand-voice` (Serien-Stimme für Captions), `market-research`, `growth-log` (Learnings-Format). Kein Voll-Install (311 Skills = Kontextlast) | geplant: Launch-Paket E01–E03 |
+| Bewegung/Look | awesome-opus5-5-videos | Technikbibliothek für Code-Animation → Effekte in `scene.html` (E03) | geplant |
+| Code-Disziplin | ponytail | aktiv | TESTED |
+| Sicherheit | SkillSpector | aktiv | TESTED |
+
 ## Details je Repo
 
 **Abhängigkeiten / Ressourcen / Risiken / Tests** (nur Abweichungen von „keine"):

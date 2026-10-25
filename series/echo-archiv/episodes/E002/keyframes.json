@@ -173,22 +173,22 @@
   },
   {
    "id": "S11c",
-   "prompt": "Close-up: the dark grey gloved hands of the young woman from the reference image rest on a small glass display case containing a glowing old envelope with a red wax seal; golden sealing glyphs on the glass dissolve into sparks of light as she unseals it; her face above, serious and conflicted.",
+   "prompt": "Close-up: the dark grey gloved hands of the young woman from the reference image rest on a small glass display case containing a glowing old envelope with a plain round red wax seal; thin glowing golden rings and simple geometric lines on the glass (only circles and straight lines, no letters, no characters, no symbols, no writing) dissolve into sparks of light as she unseals it; her face above, serious and conflicted; a small silver hair clip on one side of her black bob, exactly like the reference.",
    "out": "kf/S11c.png",
    "w": 720,
    "h": 1280,
-   "seed": 212,
+   "seed": 213,
    "refs": [
     "../../look/refs/mira.png"
    ]
   },
   {
    "id": "S12",
-   "prompt": "Close-up of hands only, no faces: the bare right hand of the young man from the first reference image, coming out of his navy blue sleeve, reaches toward a glowing old envelope with a red wax seal lying on a desk, his left hand holds a dark leather glove he has just pulled off; the dark grey gloved hand of the young woman from the second reference image grabs the cuff of his navy blue sleeve.",
+   "prompt": "Close-up of hands only, no faces: the bare right hand of the young man from the first reference image, coming out of his navy blue sleeve, stops in mid-air a hand's width above a glowing old envelope with a red wax seal lying on a desk, clearly not touching it; the dark grey gloved hand of the young woman from the second reference image, in her teal sleeve, firmly grabs his wrist from the side and holds him back; in the background his left hand holds a dark leather glove he has just pulled off.",
    "out": "kf/S12.png",
    "w": 720,
    "h": 1280,
-   "seed": 213,
+   "seed": 214,
    "refs": [
     "../../look/refs/nox.png",
     "../../look/refs/mira.png"
@@ -216,11 +216,11 @@
   },
   {
    "id": "S15",
-   "prompt": "Close-up portrait: the young man from the reference image looks up from a letter, confused and searching, warm lamp light from below, dark archive background with soft bokeh of glowing letters.",
+   "prompt": "Close-up portrait from the chest up: the young man from the reference image has just looked up from an old letter, confused and searching; his coat exactly like the reference: his right half navy blue, his left half ochre, with the brass toggle; his hands are not visible; warm lamp light from below; dark archive background with soft blurred golden bokeh lights, no letters, no text, no writing anywhere.",
    "out": "kf/S15.png",
    "w": 720,
    "h": 1280,
-   "seed": 216,
+   "seed": 217,
    "refs": [
     "../../look/refs/nox.png"
    ]
@@ -258,7 +258,7 @@
   },
   {
    "id": "S17m",
-   "prompt": "Same image, identical in every detail, except the young man's mouth is slightly open as if speaking.",
+   "prompt": "Same image, identical in every detail, except the young man's lips are almost closed, nearly touching, as if in the middle of a word.",
    "out": "kf/S17m.png",
    "w": 720,
    "h": 1280,
