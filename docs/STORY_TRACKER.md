@@ -28,7 +28,7 @@ Regel: Keine neue große Serie, solange begonnene Kernhandlungen offen sind. Jed
 | Q5 | Wen alarmiert das Warnlicht? | E01 | E03 (Kurator weiß Bescheid; Mira muss berichten) | offen |
 | P5 | Lina hält in Vision und auf dem Foto denselben Brief | E01 | E02 „Der Brief" | offen |
 | P6 | Innere versiegelte Tür hinter der Uhr | E01 | E07 (Stille Kammer, Regel acht) | offen |
-| P7 | Fotoecke in Miras Mantel | E01 | E03 (Mira trägt Nox' versteckte Spuren) | offen |
+| P7 | Fotoecke in Miras Mantel | E01 | E03 (Mira trägt Nox' versteckte Spuren) | offen — **v3: in S06 nicht sichtbar** (Bildmodell setzte das Foto zweimal an Nox; Edit-Korrektur versagte, Fremdfoto wegretuschiert). Mira zeigt das Foto erst in S16; Payoff E03 bleibt gedeckt. Nachholen in E02/E03 möglich |
 | P8 | Mira: „Nicht schon wieder." | E01 | S16 derselben Folge + E09 (Schleife) | offen |
 | L1 | Erinnerungen fließen in die Uhr | E01 | S3 (gelöschte Erinnerungen werden zu Echos) | offen |
 | N1 | Woran erinnert sich Nox, damit sein Echo ruft? | E01 v3 | geklärt in Bible §6: an das Versprechen (eigene Notiz vor E01); gezeigt E09 | geplant |
