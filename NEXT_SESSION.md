@@ -55,14 +55,15 @@ A) **Stimmen v3 (Co-CEO-Wahl: Nox B, Mira C, Lina A, Erzähler C)** — Engine I
    → `qwen-venv … tts2.py pick` (Whisper wählt). Modell `tools/models/qwen3-tts-base`. tts2-venv gibt es nicht mehr (Whisper jetzt in qwen-venv).
    Nächster Schritt **nach** Ende des Bild-Batches: `$PY pipeline/build.py series/echo-archiv/episodes/E002 --skip-render` (Speed messen; Hook ≤ 1,8 s:
    S01 hat noch `tempo` 1.2/`pace` 5.2 aus Chatterbox-Zeit → neu prüfen), dann E001 neu vertonen + neu rendern (Hook!, LAUNCH-Credits auf Qwen ändern).
-B) **E02 Keyframes**: Batch läuft (Log scratchpad `e002-kf.log`). Geprüft+ok: S01, S04–S11, S13, S14 (Brieftext kalibriert). Abgelehnt → Nachlauf nötig (Prompts schon geändert):
-   **S02, S03** (v1-Dateien noch in `kf/` → vor dem Nachlauf löschen), **S11c** (Pseudo-Schriftzeichen), **S12** (Finger berührt Siegel; v1 in `kf_rejected/` als Reserve).
-   **S15** (nackte Hände nach S13, Mantel ganz navy, Buchstaben im Hintergrund) — `kf/S15.png` (= abgelehnte v1, nur für den laufenden S15m-Job zurückgelegt) und **S15m** vor dem Nachlauf löschen.
+B) **E02 Keyframes**: Neustart 14:22 → gebündelter Lauf (Log scratchpad `e002-kf2.log`): S02, S03, S11c, S12, S15, S15m (Nachläufe) + S17m (Prompt „fast geschlossen"), S18, S19. S16, S17 geprüft ok. Geprüft+ok: S01, S04–S11, S13, S14 (Brieftext kalibriert). Abgelehnt → Nachlauf nötig (Prompts schon geändert):
+   **S02, S03** (v1 nach `kf_rejected/`), **S11c** (Pseudo-Schriftzeichen), **S12** (Finger berührt Siegel; v1 in `kf_rejected/` als Reserve).
+   **S15** (nackte Hände nach S13, Mantel ganz navy, Buchstaben im Hintergrund) — (alte S15/S15m gelöscht).
    Nachlauf = `python3 pipeline/keyframes.py series/echo-archiv/episodes/E002` (resumable; ~17 min Kaltstart + ~4 min/Bild). Hinweis S13: beide Ärmel navy (Lock: links ocker) — akzeptiert.
    Danach Overlays kalibrieren (Keyframe-Pixel): `texts` S14 Brieftext „Nox, ich warte am Bahnhof. / Jeden Tag um sieben. / Deine Lina" (write),
    S16 Stempel „ANNAHME VERWEIGERT" (stamp, rot) + „N. Veyr" (write); `pin` S11b (plate_of S02 → nach S02-Neubild neu kalibrieren)/S15; Mund-`at` S15m S17m; S18 Tasche.
    S01/S04/S05/S06/S07 sind kalibriert (S02-Pin nach Neubild neu).
 C) Dann `plates.py` → Vorschau-Kontaktbogen → `build.py` → QC + `asr_check.py` → LAUNCH.md (E02) → Tracker/NEXT_SESSION → Video an Co-CEO.
+C2) Neu (Co-CEO 25.10.): E02 S01 Bildtext „5 JAHRE UNGEÖFFNET" (Hook-Rubrik); E01 S01 braucht auch einen Bildtext (≠ Sprechtext) → beim Neu-Vertonen/-Rendern, story-reviewer prüft. RTK-Hook aktiv ab nächster Sitzung.
 D) Danach E03 „Miras Lüge" (Handbuch §6; N4: Woher weiß Mira von Lina, warum bricht sie das Siegel; P7 Notizen in ihrer Tasche).
 
 ## Relevante Pfade & Befehle
@@ -90,3 +91,7 @@ Branch: `claude/ai-studio-foundation` (kein PR erstellt).
 - Subagent-Behauptungen mit strategischer Wirkung an der Primärquelle verifizieren (Anti-Spam-Meldung: bestätigt, aber anders als zuvor angenommen).
 - Drive-Markdown-Import zerstört 4-Byte-Emojis → in Drive-Kopien Emojis ausschreiben.
 - Fremdcode nie mit voller Umgebung starten (Tokens!) → `sandbox-run.sh`; `env -i` entfernt auch `VIRTUAL_ENV` → `uv pip --python` nutzen.
+- venvs nur mit System-Python anlegen: ein per uv in der Sandbox geladenes Python liegt im temporären Sandbox-HOME und verschwindet (tts2-venv kaputt, 25.10.).
+- Abgelehnte Keyframes erst verschieben, wenn kein laufender Edit-Job (`*_m`, `edit_of`) mehr darauf aufbaut — sonst bricht der Batch.
+- Bildmodell malt bei „Glyphen/Siegelzeichen/Hintergrund-Briefe" Pseudo-Schrift (S11c, S15) → im Prompt „no letters, no characters, no writing" und Text nur als Overlay.
+- Repos sind Werkzeuge, nicht nur Risiken (Co-CEO 25.10.): Einsatzplan in `docs/REPOSITORY_MATRIX.md` fortschreiben; neue Folge = Hook-Rubrik (youtube-agent-skill) im story-reviewer.
