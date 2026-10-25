@@ -25,22 +25,22 @@
   {
    "check": "duration matches timeline",
    "pass": true,
-   "detail": "59.27s vs 59.25s"
+   "detail": "61.73s vs 61.73s"
   },
   {
-   "check": "duration 25-60s (discovery)",
+   "check": "duration 61-90s (> 1 min: Creator Rewards)",
    "pass": true,
-   "detail": "59.27s"
+   "detail": "61.73s"
   },
   {
    "check": "loudness -14 LUFS ±1.5",
    "pass": true,
-   "detail": "-14.6 LUFS"
+   "detail": "-14.8 LUFS"
   },
   {
    "check": "true peak <= -1 dBTP",
    "pass": true,
-   "detail": "-1.7 dBFS"
+   "detail": "-1.8 dBFS"
   },
   {
    "check": "no unplanned black >0.4s",
@@ -50,12 +50,12 @@
   {
    "check": "hook: first spoken word <= 0.5s",
    "pass": true,
-   "detail": "0.10s"
+   "detail": "0.05s"
   },
   {
    "check": "hook: first line complete <= 1.8s",
    "pass": true,
-   "detail": "1.54s"
+   "detail": "1.72s"
   },
   {
    "check": "no dead air >0.6s (outside planned cut)",
@@ -65,7 +65,7 @@
   {
    "check": "file size < 287MB (TikTok upload)",
    "pass": true,
-   "detail": "26.1 MB"
+   "detail": "27.1 MB"
   },
   {
    "check": "AI disclosure metadata",
