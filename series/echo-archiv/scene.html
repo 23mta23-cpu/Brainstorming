@@ -49,13 +49,19 @@ function plate(href, X, op = 1) {
   return `<image href="${href}" x="0" y="0" width="${PW}" height="${PH}" opacity="${op}" transform="${X}" preserveAspectRatio="none"/>`;
 }
 
+function occluder(sh, X) {   // garbage matte in keyframe px: plate-anchored effects stay behind foreground objects (a finger over the seal)
+  const poly = (sh.fx_at || {}).occlude;
+  return poly ? `<defs><mask id="oc" maskUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}"><rect width="${W}" height="${H}" fill="#fff"/>
+    <polygon transform="${X} scale(${PW / KW})" points="${poly.map((q) => q.join(",")).join(" ")}" fill="#000"/></mask></defs>` : "";
+}
+
 function notches(u, t, last) {   // the seal's eight rule marks around (0,0), radius 100: seven gold, the eighth dark (S01) or alarm red (S02)
   let s = `<defs><filter id="ng" x="-2" y="-2" width="5" height="5"><feGaussianBlur stdDeviation="5"/><feMerge><feMergeNode/><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
     <radialGradient id="nh"><stop offset="0" stop-color="#ffcf66" stop-opacity="0.55"/><stop offset="1" stop-color="#ffcf66" stop-opacity="0"/></radialGradient>
     <radialGradient id="nr"><stop offset="0" stop-color="#ff3b1f" stop-opacity="0.9"/><stop offset="1" stop-color="#ff3b1f" stop-opacity="0"/></radialGradient></defs>`;
   for (let i = 0; i < 8; i++) {
     const eighth = i === 7, wave = 0.5 + 0.5 * Math.sin(t * 2.4 - i * 0.8);   // light runs around the seven
-    const g = `<g transform="rotate(${-90 + i * 45}) translate(80,0)">`;
+    const g = `<g transform="rotate(${-90 + i * 45}) translate(80,0) rotate(90)">`;   // slots run along the rim
     if (!eighth) s += `${g}<circle r="22" fill="url(#nh)" opacity="${0.5 + 0.5 * wave}" style="mix-blend-mode:screen"/>
       <rect x="-14" y="-5.5" width="28" height="11" rx="4" fill="#1a1006" opacity="0.7"/>
       <rect x="-12.5" y="-4.2" width="25" height="8.4" rx="4" fill="#ffd36b" opacity="${0.8 + 0.2 * wave}" filter="url(#ng)"/></g>`;
@@ -138,6 +144,8 @@ const FX = {   // (u, d, t, shot, X): u = time in shot, d = shot length, X = cam
       <text x="540" y="1420" text-anchor="middle" font-family="Inter" font-size="34" fill="#a9adb9">KI-generierte fiktionale Serie</text></g>`; },
 };
 
+const ANCHORED = new Set(["notches", "notches_red", "pin", "photo", "echo_pulse", "engraving", "glint", "memory_flow", "handwriting"]);
+
 window.initScene = (tl) => {
   TL = tl;
   const c = document.createElement("canvas"); c.width = c.height = 256;
@@ -156,7 +164,10 @@ window.renderAt = (t) => {
   if (m.to) s += plate(m.to, X, seq(u, d * 0.42, d * 0.78));  // in-shot transformation (door opens, eyes go blank)
   for (const [who, patch] of Object.entries(shot.talk || {})) // mouth flap: variant patch while the voice is active
     if (speaking(who, t)) s += plate(patch, X, 1);
-  for (const f of shot.fx || []) s += FX[f](u, d, t, shot, X);
+  let fx = "", onPlate = "";   // the matte hides only plate-anchored effects, never screen-wide grades like the alarm
+  for (const f of shot.fx || []) if (ANCHORED.has(f)) onPlate += FX[f](u, d, t, shot, X); else fx += FX[f](u, d, t, shot, X);
+  const oc = occluder(shot, X);
+  s += (oc ? `${oc}<g mask="url(#oc)">${onPlate}</g>` : onPlate) + fx;
   const r = rng(Math.floor(t * 30) + 5);
   s += `<defs><radialGradient id="vg" cx="0.5" cy="0.48" r="0.78"><stop offset="0.55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.5"/></radialGradient>
     <pattern id="gp" width="256" height="256" patternUnits="userSpaceOnUse" x="${Math.floor(r() * 256)}" y="${Math.floor(r() * 256)}"><image href="${GRAIN}" width="256" height="256"/></pattern></defs>
