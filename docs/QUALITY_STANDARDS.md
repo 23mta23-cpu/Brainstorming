@@ -20,3 +20,13 @@ dort steht ein menschliches Urteil oder „offen".
 | 13 | Audience Experience | Mensch, dann Daten | überzeugt das Video insgesamt? | **offen** — Freigabe + erste Daten | **offen** — Freigabe + erste Daten |
 
 Freigaberegel: Veröffentlichung nur, wenn 1–7 und 9–12 bestanden und der Co-CEO 8, 9 (Hören) und 13 freigibt.
+
+## E001 v3.1 + E002 v1 (2026-10-25, Stimmen v3)
+| Schleuse | E001 v3.1 | E002 v1 |
+|---|---|---|
+| Technische QC (`qc.py`, neu: Länge 61–90 s) | 15/15 PASS · 61,7 s · −14,8 LUFS | 15/15 PASS · 62,8 s · −14,1 LUFS |
+| Hook (Satzende ≤ 1,8 s; Bildtext ≠ Sprechtext) | 1,72 s · „7 REGELN. 8 KERBEN." · Rubrik ~78 | 1,72 s · „5 JAHRE ZU SPÄT" · Rubrik ~76 |
+| Verständlichkeit (Whisper, fertiger Ton) | 15/15 (Hook 0,91; Lina S13 nach Hall-Fix 1,00) | 14/14 (S17 Name 0,81 = Aussprache „En Feyr") |
+| Sprache über Atmosphäre | 11,0 dB (Dialog-Normalisierung) | 11,1 dB |
+| Story-Review | Bildtext-Review PASS | v1.2 PASS + Bildtext-Review PASS |
+| Hören durch Menschen | **offen** | **offen** |

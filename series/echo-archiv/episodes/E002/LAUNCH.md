@@ -1,7 +1,7 @@
 # E002 „Der Brief" — Freigabepaket v1 (Entwurf, NICHT veröffentlicht)
 
 Datei: `final/E002_Der_Brief.mp4` · 62,8 s · 1080×1920 · 30 fps · H.264/AAC · 23,3 MB · technische QC **15/15** (`final/E002_Der_Brief.qc.json`) · Verständlichkeit (Whisper) **14/14**
-Hook: erster Satz endet bei 1,72 s (Ziel ≤ 1,8 s) · Bildtext „5 JAHRE UNGEÖFFNET" ab Frame 0 · Länge > 1 min (Creator-Rewards-fähig)
+Hook: erster Satz endet bei 1,72 s (Ziel ≤ 1,8 s) · Bildtext „5 JAHRE ZU SPÄT" ab Frame 0 (Story-Review: PASS, Hook-Wert ~76) · Länge > 1 min (Creator-Rewards-fähig)
 
 ## Was neu ist gegenüber E001 v3
 - **Stimmen v3:** eure Casting-Wahl (Nox B, Mira C, Erzähler C), Qwen3-TTS, je Zeile 4 Takes, Whisper wählt; Dialog-Normalisierung (Sprache 11,1 dB über Atmosphäre).
