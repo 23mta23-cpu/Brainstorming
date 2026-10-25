@@ -12,7 +12,7 @@ OUT = Path(__file__).parent.parent / "series" / "echo-archiv" / "voices"
 VOICES = {  # name: (Piper model, speaker, length_scale, pitch factor; tempo is compensated)
     "erzaehler": ("de_DE-thorsten_emotional-medium", 4, 1.0, 0.92),
     "nox": ("de_DE-thorsten-high", None, 1.0, 1.0),
-    "mira": ("de_DE-kerstin-low", None, 1.0, 1.0),
+    "mira": ("de_DE-kerstin-low", None, 1.15, 1.0),  # calm, tired archivist; her twist line came out at 5.6 syl/s
     "lina": ("de_DE-kerstin-low", None, 1.3, 1.26),  # slow child voice: Chatterbox copies the reference's pace
 }
 
