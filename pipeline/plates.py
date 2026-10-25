@@ -1,7 +1,8 @@
 """Keyframes -> render plates. Run with the image venv (numpy + PIL).
 - upscale every kf/<id>.png (720x1280) to plates/<id>.jpg at 1188x2112 (10 % headroom for camera moves), Lanczos + unsharp
 - for kf entries with "patch": diff against the base keyframe, keep only the strongest connected change region
-  (mouth/eyes), feather it, write plates/<id>.png as RGBA overlay. Global drift (region too large) -> no patch, warning.
+  (mouth/eyes) - inside a window around "at" [x, y] (keyframe px) when given, so drift elsewhere (e.g. the other face)
+  is ignored - feather it, write plates/<id>.png as RGBA overlay. Global drift (region too large) -> no patch, warning.
 Usage: /home/user/tools/gen-venv/bin/python pipeline/plates.py series/echo-archiv/episodes/E001"""
 import json, sys
 from collections import deque
@@ -13,6 +14,7 @@ from PIL import Image, ImageFilter
 SIZE = (1188, 2112)
 CELL = 16          # coarse grid for region growing
 MAX_AREA = 0.06    # a mouth/eye change should cover well under 6 % of the frame
+WINDOW = 70        # keyframe px around "at": a mouth plus a little jaw
 
 
 def upscale(src, dst):
@@ -20,13 +22,16 @@ def upscale(src, dst):
     im.filter(ImageFilter.UnsharpMask(radius=1.6, percent=70, threshold=2)).save(dst, quality=92)
 
 
-def change_mask(base, var):
+def change_mask(base, var, at=None):
     a = np.asarray(base.convert("RGB"), np.float32)
     b = np.asarray(var.convert("RGB"), np.float32)
     d = np.abs(a - b).mean(axis=2)
     d = np.asarray(Image.fromarray(d.astype(np.uint8)).filter(ImageFilter.GaussianBlur(3)), np.float32)
     gh, gw = d.shape[0] // CELL, d.shape[1] // CELL
     energy = d[: gh * CELL, : gw * CELL].reshape(gh, CELL, gw, CELL).mean(axis=(1, 3))
+    if at:  # only the speaker's mouth may change
+        yy, xx = np.mgrid[:gh, :gw]
+        energy[np.hypot((xx + 0.5) * CELL - at[0], (yy + 0.5) * CELL - at[1]) > WINDOW] = 0
     thr = max(10.0, energy.mean() + 3 * energy.std())
     seed = np.unravel_index(np.argmax(energy), energy.shape)
     region, q = np.zeros_like(energy, bool), deque([seed])
@@ -56,7 +61,7 @@ def main(epdir):
                 report[k["id"]] = "missing keyframe"
                 continue
             if "patch" in k:
-                alpha, area = change_mask(Image.open(epdir / "kf" / f"{k['edit_of']}.png"), Image.open(src))
+                alpha, area = change_mask(Image.open(epdir / "kf" / f"{k['edit_of']}.png"), Image.open(src), k.get("at"))
                 if area > MAX_AREA:
                     report[k["id"]] = f"skipped: change covers {area:.0%} of frame (edit drifted)"
                     continue
@@ -73,5 +78,17 @@ def main(epdir):
         print(f"{k:6} {v}")
 
 
+def selftest():
+    base = Image.new("RGB", (720, 1280), (40, 60, 80))
+    var = base.copy()
+    var.paste((200, 90, 90), (240, 430, 280, 460))   # "mouth" opens
+    var.paste((250, 250, 250), (500, 200, 600, 300))  # drift on the other face (bigger change)
+    _, a_all = change_mask(base, var)
+    alpha, a_win = change_mask(base, var, [260, 445])
+    ys, xs = np.nonzero(np.asarray(alpha) > 128)
+    assert a_win < a_all and xs.max() < 400 and ys.min() > 300, (a_win, a_all)  # window keeps only the mouth
+    print("selftest ok")
+
+
 if __name__ == "__main__":
-    main(sys.argv[1])
+    selftest() if sys.argv[1] == "--selftest" else main(sys.argv[1])
