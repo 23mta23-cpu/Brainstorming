@@ -926,7 +926,12 @@
      "seed": 216,
      "prompt": "Same image, identical in every detail, except the young man's mouth is slightly open as if speaking.",
      "edit_of": "S15",
-     "patch": "mouth"
+     "patch": "mouth",
+     "at": [
+      360,
+      515
+     ],
+     "r": 55
     }
    ],
    "talk": {
