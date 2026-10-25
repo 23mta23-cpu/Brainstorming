@@ -49,12 +49,15 @@ Arbeitsplan (Status hier fortschreiben):
 6. [x] Vergleich v2/v3 + Freigabepaket v3 (LAUNCH.md); E001 v3 fertig bis auf menschliches Anhören/Freigabe
 
 ## Genaue nächste Aktion
-**Stand 25.10. ~16:05 UTC.**
-- **E02 „Der Brief" v1 gerendert** (62,8 s, QC 15/15, Whisper 14/14) und an Co-CEO geschickt; `E002/LAUNCH.md`. Danach Review-Verbesserungen (Bildtext „5 JAHRE ZU SPÄT", größerer Hook-Text) → **Neu-Render läuft** (Log scratchpad `render2.log`, erst E002, dann E001).
-- **E01 neu vertont** mit Qwen-Cast (61,7 s, Hook 1,72 s mit `tempo` 1.1, 15/15 nach Echo-Fix), Bildtext „7 REGELN. 8 KERBEN.", Tick-Loop am Ende → wird im selben Lauf gerendert.
-Nach dem Lauf: beide `.qc.json` + Whisper prüfen; Frame-Sheet je Folge ansehen; **E001/LAUNCH.md auf v3.1 aktualisieren** (Stimmen Qwen3-TTS statt Chatterbox/Piper, Credits, Hook-Befund „Rieding" erledigt: jetzt 0,91–1,00, Länge 61,7 s > 1 min); E002/LAUNCH.md Bildtext nachziehen; QUALITY_STANDARDS-Spalte; beide Videos an Co-CEO.
-Dann **E03 „Miras Lüge"**: Outline Handbuch §6 (Rival Secret; Mira berichtet dem Kurator, versteckt Nox' Notizen; N4, P7), Skript nach Schema E002 inkl. Hook-Rubrik/Bildtext/Loop, `story-reviewer`, dann Keyframes (Nacht-Batch), Stimmen, Render.
-Offen beim Co-CEO: Anhören E01/E02 (Stimmen!), Musik-Policy, TikTok-Account, Rollen, Freigaben.
+**KURSWECHSEL 25.10. ~16:30 UTC (Co-CEO):** Standbilder + Stimmen („Animated Illustration") erfüllen die Erwartung **nicht** — gefordert sind echte
+Animationen mit Handlung (Referenz: TikTok „AI Fruit Drama": Bild-KI → Bild-zu-Video, z. B. Veo 3.1). Co-CEO hat **Google AI Pro** → Veo 3.1 in **Google Flow**
+ohne Zusatzkosten (laut Übersichten 1.000 Credits/Monat + 50/Tag; Veo 3.1 Lite 10, Fast 20 Credits/Clip). Flow ist nicht fernsteuerbar → Handoff:
+ich liefere Startbild (unser Keyframe) + Prompt je Shot, Team generiert in Flow, lädt Clips per GitHub-Web-Upload hoch, ich baue (Stimmen, Untertitel, Overlays, QC).
+1. **Wartet auf Co-CEO:** Flow-Pilot `series/echo-archiv/flow_pilot/README.md` (P1 Handlung, P2 Sprechgesicht, P3 Pip) → Clips in `flow_pilot/clips/`.
+2. Danach: Clips prüfen (Figurentreue, Lippen, Wasserzeichen, Artefakte), Testschnitt mit unseren Stimmen, Vergleich zur jetzigen Fassung; Nutzungsbedingungen Flow (kommerziell, Wasserzeichen) prüfen.
+3. Dann Produktionsweise festlegen: Shot-Liste „bewegungsorientiert" (jede Einstellung = Handlung), Flow-Prompts pro Shot generieren (Skript), E01/E02 neu animieren, E03 v1.1 schreiben (Review-Befunde E03-R1 im Tracker).
+Alternativen, falls Flow nicht reicht: Kaggle-Gratis-GPU + Wan 2.2 (Apache-2.0; OpenMontage hat `_wan_engine.py`), oder Veo-API mit Budget (Lite 0,05 $/s, Fast 0,10 $/s; Freigabe nötig).
+OpenMontage (AGPL, nur als separates Werkzeug) enthält Veo/Kling/Wan/LTX-Tools + Veo-Prompt-Skill (`skills/creative/prompting/veo-prompting.md`).
 
 ## Relevante Pfade & Befehle
 ```bash
