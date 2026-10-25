@@ -10,7 +10,7 @@ Regel: Keine neue große Serie, solange begonnene Kernhandlungen offen sind. Jed
 ## Episoden
 | Folge | Skript | Story-Review | Render | QC tech | Freigabe | Veröffentlicht |
 |---|---|---|---|---|---|---|
-| E01 Regel Acht | IMPLEMENTED (`episode.json`, v2) | Agent: REVISE → 3 Blocker behoben (v2), Nachprüfung s. u. | TESTED (v2) | 14/14 PASS | ausstehend | – |
+| E01 Regel Acht | IMPLEMENTED (`episode.json`, v2) | Agent: v1 REVISE → v2 **PASS** | TESTED (v2) | 14/14 PASS | ausstehend | – |
 | E02–E10 | PLANNED (Outline) | – | – | – | – | – |
 
 ## Offene Handlungsstränge
@@ -20,7 +20,7 @@ Regel: Keine neue große Serie, solange begonnene Kernhandlungen offen sind. Jed
 | P1 | Siegel: sieben Kerben + glimmende achte | E01 | E07 (Inschrift Regel acht) / E09 | offen |
 | P2 | „Lina lebt." mit Nox' gebrochenem Kreis signiert | E01 | E09 (Nox' frühere Notizen) | offen |
 | P3 | Pips Nadel zeigt zur Tür | E01 | E08 (zeigt auf das Echo des früher nicht gewählten Weges — hier Nox' eigenes) | offen |
-| P4 | „Du hast es versprochen" (Vision = Weg, in dem Nox zurückkam) | E01 | E10 (Wiedersehen) | offen |
+| P4 | „Du hast es versprochen" (Vision = nicht gewählter Weg des Rückkehrtages) | E01 | E10 (Wiedersehen in der Gegenwart) | offen |
 | Q1 | Woher hat Mira das Foto, warum weint sie „schon wieder"? | E01 | E03 (sie beobachtet die Schleife) | offen |
 | Q2 | Warum öffnet die Tür sich von selbst? | E01 | E09 (Nox' eigenes Echo ruft ihn) | offen |
 | Q3 | Nachname „Veyr" auf der Uhr | E01 | E02 (Linas Brief) | offen |
@@ -41,6 +41,11 @@ Blocker und Umsetzung (v2):
 langsameres Sprechtempo (S06, S11, S12); Vorraum + innere Tür (S05, Kanon-Widerspruch zu E07 behoben); Fotoecke als Vorbereitung (S03); Handschuh hält Foto (S13).
 Eigener Kontinuitätsfix: Kinderfoto zeigte Nox im Archivmantel → Navy-Pullover + ocker Schal (Kanon 8).
 Pip-Definition geschärft (Kanon 4 / §3), damit P3 keine Lüge ist.
+
+## Story-Review E01 — Nachprüfung (Lauf 2): VERDICT PASS
+Alle 3 Blocker behoben, keine neuen. Hinweise umgesetzt: Uhr-Echo = Entscheidung am Tag der versprochenen Rückkehr (Bible §6);
+Kanon 1 präzisiert (alle Wirkungen nur bei Hautkontakt; Rufen nur, solange der Besitzer sich erinnert → nur Nox' Echo ruft);
+E10 visuell von S09 abgegrenzt (Gegenwart, Lina ~16, Regen); E08 begründet (Kurator trägt Nox' Abschieds-Echo); P1-Text aktualisiert.
 
 ## Story-Review E01 — Selbstreview (v1, historisch)
 - Ursache-Wirkung: Echo ruft → Tür öffnet → Warnung → Entscheidung (Berührung) → Vision → Preis → Twist (schon wieder) → Cliffhanger. ✔

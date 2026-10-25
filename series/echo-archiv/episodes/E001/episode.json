@@ -31,7 +31,7 @@
  "plants": [
   {
    "id": "P1",
-   "what": "Das Siegel hat sieben Kerben, eine achte glimmt nur kurz auf.",
+   "what": "Das Siegel hat sieben leuchtende Kerben und einen dunklen, rot glimmenden achten Schlitz (ab Frame 0).",
    "payoff": "E07/E09: Regel acht ist eingraviert — 'Ein Archivar darf sich nicht erinnern.'"
   },
   {
@@ -46,7 +46,7 @@
   },
   {
    "id": "P4",
-   "what": "Lina sagt 'Du hast es versprochen' in der Vision — die Vision zeigt den Weg, in dem Nox zurückkam.",
+   "what": "Lina sagt 'Du hast es versprochen' in der Vision — sie zeigt den nicht gewählten Weg des Rückkehrtages: Nox fährt zurück, Lina wartet.",
    "payoff": "E10: Doppelte Bedeutung wird aufgelöst."
   },
   {

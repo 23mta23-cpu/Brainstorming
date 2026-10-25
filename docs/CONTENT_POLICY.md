@@ -16,9 +16,10 @@ Geschichten dürfen düster, emotional, komplex und humorvoll sein.
 | Historie | Quellen prüfen; erfundene Dialoge als fiktionalisiert kennzeichnen; erfundene Zitate nie als echt |
 | KI-Transparenz | Endkarte „KI-generierte fiktionale Serie", MP4-Metadaten, TikTok-AIGC-Schalter bei jedem Upload |
 | Audio-Rechte | nur selbst erzeugte Sounds, CC0/kommerziell lizenzierte Stimmen; keine Trend-Sounds ohne geklärte Rechte |
+| Stimmstile | Stil „drunk" des Modells thorsten_emotional ist gesperrt (Alkohol-Regel) |
 | Plattform | keine Spam-Taktiken, keine Fake-Interaktionen, kein Massenposting, keine Engagement-Bettelei |
 
-## Hausregeln aus der Serienarbeit (Vorschlag, bestätigt bis auf Widerruf)
+## Hausregeln aus der Serienarbeit (mein Vorschlag — gilt vorläufig, bis der Co-CEO entscheidet; **nicht** bestätigt)
 - Körperkontakt zwischen Figuren nur funktional und nicht-romantisch (z. B. Ärmel greifen statt Hand halten).
 - Romantik ist nie Story-Motor; höchstens langfristig angedeutet, keine Küsse.
 - Konflikte aus Werten (Regel vs. Gewissen, Erinnerung vs. Wahrheit), nicht aus Demütigung.

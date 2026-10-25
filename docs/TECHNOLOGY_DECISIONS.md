@@ -8,7 +8,7 @@ Bordmittel von Claude Code wurden jeweils mitverglichen. Kein Vergleich nach Sta
 | Fähigkeit | Führend (Status) | Ergänzung | Isolierte Alternative / verworfen | Begründung |
 |---|---|---|---|---|
 | Engineering & Planung | Claude Code Bordmittel (Plan-Modus, Subagenten) + **Ponytail** (INTEGRATED) | – | Superpowers (Kandidat), ECC (isoliert) | Engineering ist Mittel zum Zweck; jede weitere Methodik kostet Kontext pro Sitzung. Kein Kopf-an-Kopf-Benchmark durchgeführt (PLANNED). |
-| Codequalität & Reviews | Bordmittel `/code-review`, `/security-review` | Ponytail-Audit | ECC-Reviewer-Agenten | Bereits verfügbar, kein Install nötig. |
+| Codequalität & Reviews | Bordmittel `/code-review` (**TESTED**: fand 4 echte Bugs in `pipeline/`, alle behoben), `/security-review` | Ponytail-Audit | ECC-Reviewer-Agenten | Bereits verfügbar, kein Install nötig; Nachweis erbracht. |
 | Sicherheit | **SkillSpector** (TESTED) + `scripts/sandbox-run.sh` | `scripts/inventory.py` (Risikomuster) | SkillSpector-LLM-Modus (Freigabe nötig) | Einziges dediziertes Skill-Scanning; statisch, ohne Datenabfluss. |
 | Skills & Agenten | Projekt-Skill `produce-episode`, Agenten `story-reviewer`, `trend-scout` | – | ECC-Agenten, deer-flow-Harness | Nur Rollen mit echtem Kontextvorteil (frischer, kritischer Blick; günstige Recherche). |
 | Gedächtnis & Kontext | Versionierte Docs + `NEXT_SESSION.md` + Auto-Compaction | RTK (TESTED, optional) | claude-mem (rejected), Headroom (isoliert) | Container ist flüchtig; Git überlebt. Zusätzliche KI-Zusammenfassung kostet Tokens. |

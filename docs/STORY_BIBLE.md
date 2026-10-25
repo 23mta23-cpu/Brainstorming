@@ -61,7 +61,7 @@ Keine melodische Musik bis zur Policy-Entscheidung (siehe `CONTENT_POLICY.md`).
 ## 6. Staffel 1 „Regel Acht" — Zentralkonflikt, Bogen, Ende
 
 **Zentralfrage:** Wer ist Lina, und warum vergisst Nox sie immer wieder?
-**Wahrheit (geplante Auflösung):** Lina ist Nox' jüngere Schwester. Als Kinder am Bahnhof versprach Nox, zurückzukommen, und stieg in den Zug ins Archiv. Der Kurator löschte seine Erinnerung an sie (Regel acht). Nox hat seither mehrfach Spuren gefunden, sich erinnert, sein Echo berührt — und Lina wieder vergessen. Er hinterlässt sich selbst Notizen. Mira hat das beobachtet und gemeldet, aber seine Notizen versteckt.
+**Wahrheit (geplante Auflösung):** Lina ist Nox' jüngere Schwester. Als Kinder trennten sie sich am Bahnhof: Nox stieg in den Zug ins Archiv und versprach, in einem Jahr zurückzukommen; Lina schenkte ihm die Taschenuhr (Gravur N. VEYR · LINA). Am Tag der versprochenen Rückkehr entschied Nox sich, im Archiv zu bleiben (Aufnahmeprüfung — Ehrgeiz gegen Loyalität). **Aus dieser Entscheidung entstand das Uhr-Echo**; sein nicht gewählter Weg ist die Rückfahrt, auf die Lina am Bahnhof wartet (Vision S09). Danach löschte der Kurator Nox' Erinnerung an sie (Regel acht). Nox hat seither mehrfach Spuren gefunden, sich erinnert, sein Echo berührt — und Lina wieder vergessen. Er hinterlässt sich selbst Notizen. Mira hat das beobachtet und gemeldet, aber seine Notizen versteckt.
 
 | Folge | Titel | Engine | Micro-Story (gelöst) | Macro (Fortschritt) |
 |---|---|---|---|---|
@@ -72,9 +72,9 @@ Keine melodische Musik bis zur Policy-Entscheidung (siehe `CONTENT_POLICY.md`).
 | E05 | Nur eine Erinnerung | Impossible Choice | Nox rettet ein fremdes Kind-Echo | Preis: er vergisst Miras Namen; sie stellt sich neu vor |
 | E06 | Der falsche Feind | False Enemy | Ein Echo-Dieb wird gestellt | Er ist ein ehemaliger Archivar mit zurückgewonnenen Erinnerungen |
 | E07 | Prüfung Null | Rival Trial | Rangprüfung; Mira lässt Nox gewinnen | Zugang Stille Kammer; Regel acht ist eingraviert (Payoff P1) |
-| E08 | Pips Richtung | Mascot Reveal | Pip führt aus einem Labyrinth | Pip zeigt auf den Kurator |
+| E08 | Pips Richtung | Mascot Reveal | Pip führt aus einem Labyrinth | Pip zeigt auf den Kurator — er trägt das Echo von Nox' Abschied am Bahnhof als Anhänger (Nox' früher nicht gewählter Weg: bleiben) |
 | E09 | Der Kurator | Mentor Twist | Nox findet seine früheren Notizen (dreimalige Schleife, Payoff P2) | Kurator holte Nox vom Bahnhof und löscht Bindungen aller Archivare |
-| E10 | Lina | Season Finale | Nox berührt das Uhr-Echo **nicht** (kein Umschreiben der Vergangenheit), gibt es Mira zum Versiegeln, verlässt nachts das Archiv | **Auflösung:** Er findet Lina am echten Bahnhof. Sie: „Du hast es versprochen." Er: „Ich bin gekommen." (Payoff P4) |
+| E10 | Lina | Season Finale | Nox berührt das Uhr-Echo **nicht** (kein Umschreiben der Vergangenheit), gibt es Mira zum Versiegeln, verlässt nachts das Archiv | **Auflösung:** Er findet Lina am echten Bahnhof — **Gegenwart, bewusst anders als S09**: Lina ~16, Abend und Regen statt Schnee, Nox kommt zu Fuß. Sie: „Du hast es versprochen." Er: „Ich bin gekommen." (Payoff P4) |
 
 **Staffelende ist ein echter Abschluss** (Wer ist Lina, warum vergaß er sie, Wiedersehen). Der S2-Haken öffnet einen *neuen* Konflikt:
 In Linas Rucksack liegen versiegelte Echos — sie sammelt draußen mit den „Ungezählten".
@@ -87,7 +87,7 @@ In Linas Rucksack liegen versiegelte Echos — sie sammelt draußen mit den „U
 - Eine neue große Serie beginnt erst, wenn S1 abgeschlossen produziert ist (Regel aus dem Auftrag).
 
 ## 8. Kanon-Regeln (dürfen nicht widersprochen werden)
-1. Visionen und der Preis entstehen nur bei Hautkontakt. Ein Echo kann seinen eigenen Besitzer rufen (Ton, Licht, Bewegung, Stimme) — fremde Echos tun das nie.
+1. Alle Wirkungen eines Echos (Vision, Preis, Umschreiben der Wirklichkeit, Erinnerungsänderung) setzen Hautkontakt voraus. Einzige Ausnahme: Ein Echo kann seinen Besitzer rufen (Ton, Licht, Bewegung, Stimme) — nur, solange dieser sich an die Entscheidung erinnert. Darum ruft im Vorraum nur Nox' Echo: Er hat Regel acht gebrochen.
 2. Nox' Preis ist immer eine eigene Erinnerung, nie die eines anderen.
 3. Visionen zeigen den nicht gewählten Weg, nie die Zukunft. 4. Pip lügt nie, spricht nie (Definition §3). 5. Der Kurator zeigt sein Gesicht erst in S3.
 6. Historische Echos tragen die Endkarte „Inspiriert von realen Ereignissen. Figuren und Dialoge fiktionalisiert."

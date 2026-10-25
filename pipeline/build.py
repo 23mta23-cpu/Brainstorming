@@ -29,13 +29,15 @@ SFX = {  # name -> maker(shot_duration); "drone" (bed) and "silence" (hard cut) 
 
 def validate(ep):
     """Fail fast before TTS/render: required fields, cast, sfx names, AI disclosure."""
-    errs = [f"missing field: {k}" for k in ("episode_id", "title", "format", "cast", "shots", "hook", "micro_loop",
+    errs = [f"missing field: {k}" for k in ("episode_id", "series", "title", "format", "cast", "shots", "hook", "micro_loop",
                                              "macro_loop", "cliffhanger") if k not in ep]
     for s in ep.get("shots", []):
         errs += [f"{s.get('id', '?')}: missing {k}" for k in ("id", "min", "fn", "emotion", "visual", "camera", "cut") if k not in s]
         errs += [f"{s['id']}: unknown sfx '{n}'" for n, _ in s.get("sfx", []) if n not in SFX and n not in ("drone", "silence")]
         ln = s.get("line")
-        if ln and ln.get("voice", ln["who"]) not in ep.get("cast", {}):
+        if ln and not {"who", "text"} <= ln.keys():
+            errs.append(f"{s['id']}: line needs 'who' and 'text'")
+        elif ln and ln.get("voice", ln["who"]) not in ep.get("cast", {}):
             errs.append(f"{s['id']}: no cast entry for '{ln.get('voice', ln['who'])}'")
     if ep.get("ai_disclosure") is not True:
         errs.append("ai_disclosure must be true (CONTENT_POLICY)")
@@ -125,11 +127,13 @@ def mix(tl, voices):
         g[ib:ib + r] = np.linspace(0, 1, r)
     # duck bed + fx ~10 dB under dialogue so speech stays intelligible on phone speakers
     ve = np.convolve(np.abs(vo), np.ones(SR // 20) / (SR // 20), "same")
-    duck = 1 - 0.68 * np.clip(ve / (np.percentile(ve[ve > 1e-4], 50) + 1e-9), 0, 1)
+    voiced = ve[ve > 1e-4]  # dialogue-free episodes (e.g. silent shorts) skip ducking
+    duck = 1 - 0.68 * np.clip(ve / (np.percentile(voiced, 50) + 1e-9), 0, 1) if voiced.size else np.ones(n)
     duck = np.convolve(duck, np.ones(SR // 10) / (SR // 10), "same")
     amb = (bed * 0.45 + fx) * g * duck
     va = vo[np.abs(vo) > 0.01]
-    print(f"speech/ambience RMS ratio: {20 * np.log10(np.sqrt((va ** 2).mean()) / (np.sqrt((amb ** 2).mean()) + 1e-9)):.1f} dB")
+    if va.size:
+        print(f"speech/ambience RMS ratio: {20 * np.log10(np.sqrt((va ** 2).mean()) / (np.sqrt((amb ** 2).mean()) + 1e-9)):.1f} dB")
     out = amb + vo
     return out / max(1.0, np.abs(out).max() / 0.95)
 

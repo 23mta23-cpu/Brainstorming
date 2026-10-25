@@ -39,14 +39,14 @@ def median_f0(a, sr):
     return float(np.median(f0s)) if f0s else 0.0
 
 if __name__ == "__main__":
-    # probe: python tts.py probe OUTDIR  -> F0 table of MLS speakers + fixed voices
+    # probe: python tts.py probe OUTDIR  -> F0 table of every installed voice (multi-speaker models: every 6th speaker)
     out = Path(sys.argv[2]); out.mkdir(parents=True, exist_ok=True)
     text = "Im Archiv gibt es sieben Regeln. Warum weinst du?"
-    cfg = json.load(open(VOICE_DIR / "de_DE-mls-medium.onnx.json"))
     rows = []
-    for name, sid in list(cfg["speaker_id_map"].items())[::6]:
-        p = synth(text, out / f"mls_{name}.wav", "de_DE-mls-medium", sid)
-        a, sr = read_wav(p); rows.append((median_f0(a, sr), f"mls:{name}:{sid}"))
-    for m in ["de_DE-thorsten-high", "de_DE-kerstin-low"]:
-        p = synth(text, out / f"{m}.wav", m); a, sr = read_wav(p); rows.append((median_f0(a, sr), m))
+    for cfg_path in sorted(VOICE_DIR.glob("*.onnx.json")):
+        m = cfg_path.name[: -len(".onnx.json")]
+        speakers = list(json.load(open(cfg_path)).get("speaker_id_map", {}).items())[::6] or [(None, None)]
+        for name, sid in speakers:
+            p = synth(text, out / f"{m}_{name}.wav", m, sid)
+            a, sr = read_wav(p); rows.append((median_f0(a, sr), f"{m}" + (f":{name}:{sid}" if name else "")))
     for f0, n in sorted(rows): print(f"{f0:6.1f} Hz  {n}")

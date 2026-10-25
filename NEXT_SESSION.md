@@ -11,7 +11,7 @@ Phase 8/9 abgeschlossen bis zur menschlichen Freigabe: Fundament, Security, Pipe
 - Strategie, TikTok-Strategie, Policy, Agentenorganisation, Qualitätsschleusen, Kosten.
 - Story: 3 Konzepte bewertet, Echo-Archiv gewählt, Staffel 1 + Serienende geplant (`docs/STORY_BIBLE.md`, `docs/STORY_TRACKER.md`).
 - Pipeline TESTED; Pilot E001 **v2** gerendert (nach Agent-Review: 3 Blocker behoben), QC 14/14 PASS, Launch-Entwurf (`series/echo-archiv/episodes/E001/LAUNCH.md`).
-- Agenten TESTED: `story-reviewer` (REVISE → v2), `trend-scout` (Daily Screen im Log). Kaltstart-Test `scripts/setup_tools.sh`: 41 s, 17/17 Repos am auditierten Commit.
+- Agenten TESTED: `story-reviewer` (v1 REVISE → v2 PASS), `trend-scout` (Daily Screen im Log). Bordmittel `/code-review` TESTED: 4 Pipeline-Bugs gefunden und behoben (fehlendes Pflichtfeld `series`, Absturz bei dialogfreien Folgen, `tts.py probe` ohne MLS-Modell, Validierungsabsturz bei Zeile ohne `who`). Kaltstart-Test `scripts/setup_tools.sh`: 41 s, 17/17 Repos am auditierten Commit.
 - Drive: Ordner „AI-Studio – Freigaben (Kopien aus GitHub)" (https://drive.google.com/drive/folders/1sV7w5ucmWRobBkaE2c2tCfabOwOZzahP) mit Freigabepaket E001 (https://docs.google.com/document/d/1zbGT4I41Fq4oboMMVPD6keyVMbaXpU2DzfktFuDvKQw). Kopie; Quelle bleibt GitHub.
 
 ## Installiert & getestet (flüchtig! nach Neustart: `scripts/setup_tools.sh`)

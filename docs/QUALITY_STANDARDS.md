@@ -5,7 +5,7 @@ dort steht ein menschliches Urteil oder „offen".
 
 | # | Schleuse | Prüfart | Kriterium | E001 v2 (2026-10-25) |
 |---|---|---|---|---|
-| 1 | Story Logic | `story-reviewer` + Hauptsitzung | Ursache-Wirkung lückenlos, Twist vorbereitet | Agent-Review v1: REVISE (3 Blocker) → in v2 behoben; Nachprüfung s. `STORY_TRACKER.md` |
+| 1 | Story Logic | `story-reviewer` + Hauptsitzung | Ursache-Wirkung lückenlos, Twist vorbereitet | Agent-Review: v1 REVISE (3 Blocker) → v2 **PASS** (Nachprüfung, keine neuen Blocker) |
 | 2 | Narrative Closure | Register | Micro-Loop gelöst, Macro geplant aufgelöst, Serienende dokumentiert | bestanden |
 | 3 | Hook | automatisch + Urteil | erstes Wort ≤ 0,5 s; offene Frage ≤ ~1,5 s | Wort 0,12 s ✔; „acht" bei ~1,2 s ✔; visuelle Frage (bloße Hand, 7 leuchtende Kerben + dunkler 8. Slot) ab Frame 0 ✔ |
 | 4 | Dramaturgy | Urteil | Entscheidung, Twist, Cliffhanger vorhanden | vorhanden |
