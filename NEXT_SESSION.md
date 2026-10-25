@@ -48,12 +48,14 @@ Arbeitsplan (Status hier fortschreiben):
 6. [x] Vergleich v2/v3 + Freigabepaket v3 (LAUNCH.md); E001 v3 fertig bis auf menschliches Anhören/Freigabe
 
 ## Genaue nächste Aktion
-1. Falls Feedback zu E001 v3 vorliegt: einarbeiten (Hook-Satz zuerst; Werkzeuge: `tts2.py` Takes, `plates.py` fix/clone, `fx_at`).
-2. **E02 „Der Brief"** mit Skill `produce-episode`, v3-Ablauf (`docs/VIDEO_PIPELINE.md`): Skript (episode.json v3 mit `kf`/`fx`/`fx_at`)
-   → `story-reviewer` → Stimmen (`build.py --skip-render`, ASR) → **ein** Bild-Batch (`keyframes.py`, Platte liest ~15 MB/s: ~20 min Kaltstart)
-   → jedes Keyframe prüfen (Figur ohne Referenz = fremdes Gesicht! Requisiten als Overlay) → `plates.py` → Vorschau-Kontaktbogen → `build.py` → QC/ASR.
-   Plant P7 (Fotoecke Mira) in E02/E03 nachholen.
-3. Danach E03 „Miras Lüge"; Launch, wenn E01–E03 freigegeben.
+**E02 „Der Brief" in Produktion** (Skript v1.2, Story-Review: REVISE → REVISE(2) → behoben; Stimmen fertig 14/14 ASR, 60,8 s):
+1. [~] Keyframes laufen/liefen: `python3 pipeline/keyframes.py series/echo-archiv/episodes/E002` (27 Jobs, `kf/S04p.png` = Kopie E001 S16p, nicht generieren).
+   Jedes Bild prüfen (Identität, Ort, Requisiten, Policy); Overlays kalibrieren (Keyframe-Pixel):
+   `texts` (fx_txt): S01 + S11 Adresse „Für Nox" (Kinderschrift), S04 „Lina lebt." auf der Fotorückseite? (S04 zeigt die Vorderseite → `photo`),
+   S07 Schild „ZUSTELLUNG", S14 Brieftext „Nox, ich warte am Bahnhof. / Jeden Tag um sieben. / Deine Lina" (write), S16 Stempel „ANNAHME VERWEIGERT" (stamp, rot) + „N. Veyr" (write);
+   `pin` S02/S06/S15 (+S11b über plate_of S02); `photo` S04; Mund-`at` S04m S05m S06m S07m S15m S17m.
+2. `plates.py` → Vorschau-Kontaktbogen → `build.py` → QC + `asr_check.py` → LAUNCH.md (E02) → Tracker/NEXT_SESSION.
+3. Danach E03 „Miras Lüge" (Bible §6; N4: Woher weiß Mira von Lina, warum bricht sie das Siegel; P7 Notizen in ihrer Tasche).
 
 ## Relevante Pfade & Befehle
 ```bash
