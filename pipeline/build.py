@@ -64,7 +64,7 @@ def voice_spec(line, ep, epdir, cache):
     """Voice config + cache paths for one line. The raw take is keyed by text, settings and reference audio bytes;
     the processed file also by the FX chain, so FX tweaks never re-run the TTS."""
     c = dict(ep["cast"][line.get("voice", line["who"])])  # per-line voice (e.g. whisper) and tempo overrides
-    for k in ("length_scale", "takes"):
+    for k in ("length_scale", "takes", "pace"):
         if k in line:
             c[k] = line[k]
     if "ref" in c:
@@ -83,7 +83,8 @@ def prerender_chatterbox(ep, epdir, cache):
             c, raw, out = voice_spec(s["line"], ep, epdir, cache)
             if c.get("engine") == "chatterbox" and not out.exists() and not raw.exists():
                 jobs.append({"text": s["line"]["text"], "ref": c["ref"], "out": str(raw), "exaggeration": c.get("exaggeration", 0.5),
-                             "cfg_weight": c.get("cfg_weight", 0.5), "seed": c.get("seed", 0), "takes": c.get("takes", 4)})
+                             "cfg_weight": c.get("cfg_weight", 0.5), "seed": c.get("seed", 0), "takes": c.get("takes", 4),
+                         "pace": c.get("pace", 3.8)})  # a hook line may ask for a brisker pace
     if jobs:
         (cache / "chatterbox_jobs.json").write_text(json.dumps(jobs, ensure_ascii=False))
         subprocess.run([TTS2_PY, str(HERE / "tts2.py"), "batch", str(cache / "chatterbox_jobs.json")], check=True)

@@ -54,9 +54,9 @@ def best_take(j):
         sim, start, end = asr_check.match(j["text"], asr_check.hear(path))
         takes.append({"k": k, "sim": sim, "start": start, "end": end, "rate": syl / max(end - start, 0.1), "path": path})
         print(f"  take {k}: similarity {sim:.2f}, {takes[-1]['rate']:.1f} syl/s, speech {start:.2f}-{end:.2f}s", flush=True)
-        if sim >= 0.95 and abs(takes[-1]["rate"] - PACE) <= 1.0:
+        if sim >= 0.95 and abs(takes[-1]["rate"] - j.get("pace", PACE)) <= 1.0:
             break
-    best = max(takes, key=lambda t: (round(t["sim"], 1), -abs(t["rate"] - PACE)))  # clarity first (0.1 steps = ASR noise), then pace
+    best = max(takes, key=lambda t: (round(t["sim"], 1), -abs(t["rate"] - j.get("pace", PACE))))  # clarity first (0.1 steps = ASR noise), then pace
     a, sr = sf.read(best["path"], dtype="float32")
     a = a[: int((best["end"] + 0.25) * sr)]  # leading silence is trimmed later by build.py's FX chain
     fade = min(len(a), int(0.08 * sr))
