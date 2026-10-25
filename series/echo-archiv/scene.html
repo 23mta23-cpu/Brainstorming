@@ -12,6 +12,7 @@
   #brand, #title { position: absolute; left: 0; right: 0; top: 230px; text-align: center; font: 600 34px Cinzel, serif; letter-spacing: 10px;
            color: #f2c86b; text-shadow: 0 0 18px #000; }
   #title { top: 320px; font-size: 44px; color: #efe6cf; text-transform: uppercase; }
+  #title.hook { font-size: 64px; font-weight: 700; letter-spacing: 6px; color: #f6efdc; padding: 0 110px; line-height: 1.15; }  /* wraps inside the safe area */
 </style></head>
 <body><svg id="stage" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg"></svg><div id="brand"></div><div id="title"></div><div id="cap"></div>
 <script>
@@ -194,6 +195,7 @@ window.renderAt = (t) => {
   cap.style.top = `${(ls && ls.cap_y) || 1250}px`;   // a shot can move the caption off a key image (S16: below the photo)
   const ti = document.getElementById("title"), showTitle = shot.text && !(shot.fx || []).includes("handwriting");  // e.g. time jumps
   ti.textContent = showTitle ? shot.text : "";
+  ti.classList.toggle("hook", shot === TL.shots[0]);  // on-screen hook text: larger than a time-jump label
   ti.style.opacity = showTitle ? Math.min(seq(u, 0.1, 0.5), 1 - seq(u, 2.0, 2.5)) : 0;
   const b = document.getElementById("brand");
   b.textContent = t < 2.6 ? `DAS ECHO-ARCHIV · ${String(TL.ep.num).padStart(2, "0")}` : "";

@@ -13,7 +13,7 @@ FX = {  # ffmpeg filters per voice effect; every voice ends trimmed, 48 kHz mono
     None: TRIM + "aresample=48000",
     "narrator": TRIM + "asetrate={sr}*0.92,aresample=48000,atempo=1.087,aecho=0.8:0.5:45|90:0.18|0.1",
     "child_echo": TRIM + "asetrate={sr}*1.26,aresample=48000,atempo=0.794,aecho=0.8:0.6:70|160:0.3|0.15",
-    "echo": TRIM + "aresample=48000,atempo=0.88,aecho=0.8:0.6:70|160:0.3|0.15",  # memory voice: slowed (pitch kept) + echo
+    "echo": TRIM + "aresample=48000,atempo=0.88,aecho=0.8:0.7:240:0.15",  # memory voice: slowed (pitch kept) + one slapback; 70/160 ms echoes smeared words (Whisper 0.65)
 }
 QWEN_PY = "/home/user/tools/qwen-venv/bin/python"  # voice venv: Qwen3-TTS (run sandboxed) + faster-whisper for take picking
 SCENE_FX = {"motes", "alarm", "notches", "notches_red", "pin", "photo", "texts", "rays", "echo_pulse", "engraving", "glint", "flash", "snow", "dream", "memory_flow", "handwriting", "endcard"}
