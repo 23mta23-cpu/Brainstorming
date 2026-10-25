@@ -57,7 +57,7 @@ A) **Stimmen v3 (Co-CEO-Wahl: Nox B, Mira C, Lina A, Erzähler C)** — Engine I
    S01 hat noch `tempo` 1.2/`pace` 5.2 aus Chatterbox-Zeit → neu prüfen), dann E001 neu vertonen + neu rendern (Hook!, LAUNCH-Credits auf Qwen ändern).
 B) **E02 Keyframes**: Batch läuft (Log scratchpad `e002-kf.log`). Geprüft+ok: S01, S04–S11, S13, S14 (Brieftext kalibriert). Abgelehnt → Nachlauf nötig (Prompts schon geändert):
    **S02, S03** (v1-Dateien noch in `kf/` → vor dem Nachlauf löschen), **S11c** (Pseudo-Schriftzeichen), **S12** (Finger berührt Siegel; v1 in `kf_rejected/` als Reserve).
-   **S15** (nackte Hände nach S13, Mantel ganz navy, Buchstaben im Hintergrund) — **S15m** wird vom laufenden Batch noch aus dem alten S15 erzeugt → vor dem Nachlauf löschen.
+   **S15** (nackte Hände nach S13, Mantel ganz navy, Buchstaben im Hintergrund) — `kf/S15.png` (= abgelehnte v1, nur für den laufenden S15m-Job zurückgelegt) und **S15m** vor dem Nachlauf löschen.
    Nachlauf = `python3 pipeline/keyframes.py series/echo-archiv/episodes/E002` (resumable; ~17 min Kaltstart + ~4 min/Bild). Hinweis S13: beide Ärmel navy (Lock: links ocker) — akzeptiert.
    Danach Overlays kalibrieren (Keyframe-Pixel): `texts` S14 Brieftext „Nox, ich warte am Bahnhof. / Jeden Tag um sieben. / Deine Lina" (write),
    S16 Stempel „ANNAHME VERWEIGERT" (stamp, rot) + „N. Veyr" (write); `pin` S11b (plate_of S02 → nach S02-Neubild neu kalibrieren)/S15; Mund-`at` S15m S17m; S18 Tasche.
