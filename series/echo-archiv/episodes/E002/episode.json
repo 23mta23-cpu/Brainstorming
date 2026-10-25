@@ -343,7 +343,12 @@
      "seed": 205,
      "prompt": "Same image, identical in every detail, except the young woman's mouth is slightly open as if speaking.",
      "edit_of": "S05",
-     "patch": "mouth"
+     "patch": "mouth",
+     "at": [
+      378,
+      372
+     ],
+     "r": 55
     }
    ],
    "talk": {
