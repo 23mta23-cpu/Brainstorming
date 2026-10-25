@@ -2,7 +2,7 @@
 A voice = a short reference clip. References come from CC0 Piper voices (pipeline/tts.py) or, later, consented own recordings.
 Batch mode records up to TAKES takes per line and keeps the one Whisper hears best (asr_check.match), trimmed to the spoken words:
 Chatterbox sometimes appends invented words or seconds of noise after the line.
-Usage: tts2.py say REF.wav "Text" OUT.wav [exaggeration] [cfg_weight]   |   tts2.py batch jobs.json (used by build.py)"""
+Usage: tts2.py say REF.wav "Text" OUT.wav [exaggeration] [cfg_weight]   |   tts2.py batch jobs.json   |   tts2.py pick jobs.json (build.py)"""
 import json, os, re, sys, time
 from pathlib import Path
 
@@ -46,16 +46,15 @@ TAKES = 4   # takes per line at most (a line may ask for more: "takes")
 PACE = 3.8  # target syllables/s (calm, dramatic German); a take within +-1 of it that Whisper hears clearly ends the search
 
 
-def best_take(j):
-    takes, syl = [], len(re.findall(r"[aeiouäöüy]+", j["text"].lower()))  # vowel groups ~ German syllables
-    for k in range(j.get("takes", TAKES)):
-        path = f"{j['out']}.take{k}.wav"
-        say(j["text"], j["ref"], path, j["exaggeration"], j["cfg_weight"], j["seed"] + k)
-        sim, start, end = asr_check.match(j["text"], asr_check.hear(path))
-        takes.append({"k": k, "sim": sim, "start": start, "end": end, "rate": syl / max(end - start, 0.1), "path": path})
-        print(f"  take {k}: similarity {sim:.2f}, {takes[-1]['rate']:.1f} syl/s, speech {start:.2f}-{end:.2f}s", flush=True)
-        if sim >= 0.95 and abs(takes[-1]["rate"] - j.get("pace", PACE)) <= 1.0:
-            break
+def score(j, path, k):
+    syl = len(re.findall(r"[aeiouäöüy]+", j["text"].lower()))  # vowel groups ~ German syllables
+    sim, start, end = asr_check.match(j["text"], asr_check.hear(path))
+    t = {"k": k, "sim": sim, "start": start, "end": end, "rate": syl / max(end - start, 0.1), "path": str(path)}
+    print(f"  take {k}: similarity {sim:.2f}, {t['rate']:.1f} syl/s, speech {start:.2f}-{end:.2f}s", flush=True)
+    return t
+
+
+def keep(j, takes):
     best = max(takes, key=lambda t: (round(t["sim"], 1), -abs(t["rate"] - j.get("pace", PACE))))  # clarity first (0.1 steps = ASR noise), then pace
     a, sr = sf.read(best["path"], dtype="float32")
     a = a[: int((best["end"] + 0.25) * sr)]  # leading silence is trimmed later by build.py's FX chain
@@ -65,6 +64,26 @@ def best_take(j):
     for t in takes:
         os.remove(t["path"])
     return best
+
+
+def best_take(j):
+    takes = []
+    for k in range(j.get("takes", TAKES)):
+        path = f"{j['out']}.take{k}.wav"
+        say(j["text"], j["ref"], path, j["exaggeration"], j["cfg_weight"], j["seed"] + k)
+        takes.append(score(j, path, k))
+        if takes[-1]["sim"] >= 0.95 and abs(takes[-1]["rate"] - j.get("pace", PACE)) <= 1.0:
+            break
+    return keep(j, takes)
+
+
+if __name__ == "__main__" and sys.argv[1] == "pick":  # takes made elsewhere (tts_qwen.py): score all, keep the best
+    for j in json.loads(Path(sys.argv[2]).read_text()):
+        out = Path(j["out"])
+        takes = [] if out.exists() else [score(j, p, k) for k, p in enumerate(sorted(out.parent.glob(out.name + ".take*.wav")))]
+        if takes:
+            b = keep(j, takes)
+            print(f"pick take {b['k']} (similarity {b['sim']:.2f}, {b['rate']:.1f} syl/s)  {j['text']}", flush=True)
 
 
 if __name__ == "__main__" and sys.argv[1] == "batch":

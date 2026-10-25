@@ -1,14 +1,15 @@
-{"candidates": [
+{"decision": "2026-10-25 Co-CEO: Nox B, Mira C, Lina A, Erzähler C",
+ "candidates": [
  {"id": "nox_a", "role": "nox", "seed": 1, "instruct": "A 17-year-old German boy, clear young male voice with a slight huskiness, introspective and determined, soft-spoken, natural and unpolished, not a radio announcer.", "text": "Es ruft mich. Ich muss wissen, warum."},
- {"id": "nox_b", "role": "nox", "seed": 2, "instruct": "A 17-year-old boy with a light youthful tenor, earnest and a little breathless, emotionally vulnerable but brave, natural conversational German.", "text": "Es ruft mich. Ich muss wissen, warum."},
+ {"id": "nox_b", "role": "nox", "seed": 2, "instruct": "A 17-year-old boy with a light youthful tenor, earnest and a little breathless, emotionally vulnerable but brave, natural conversational German.", "text": "Es ruft mich. Ich muss wissen, warum.", "chosen": true},
  {"id": "nox_c", "role": "nox", "seed": 3, "instruct": "A 17-year-old boy with a calm, low young voice, quiet intensity, slightly rough texture, speaks slowly and thoughtfully.", "text": "Es ruft mich. Ich muss wissen, warum."},
  {"id": "mira_a", "role": "mira", "seed": 4, "instruct": "An 18-year-old young woman, clear mid-pitched voice, firm and controlled, tired but caring, slightly cool and serious.", "text": "Weil du sie … schon wieder vergessen hast."},
  {"id": "mira_b", "role": "mira", "seed": 5, "instruct": "An 18-year-old girl with a bright but serious voice, precise articulation, protective, holding back tears.", "text": "Weil du sie … schon wieder vergessen hast."},
- {"id": "mira_c", "role": "mira", "seed": 6, "instruct": "An 18-year-old young woman with a warm, low, slightly smoky voice, composed and quietly sad, speaks softly.", "text": "Weil du sie … schon wieder vergessen hast."},
- {"id": "lina_a", "role": "lina", "seed": 7, "instruct": "A 10-year-old girl, sweet clear child voice, hopeful and gentle, natural child speech, not cartoonish.", "text": "Du hast es versprochen."},
+ {"id": "mira_c", "role": "mira", "seed": 6, "instruct": "An 18-year-old young woman with a warm, low, slightly smoky voice, composed and quietly sad, speaks softly.", "text": "Weil du sie … schon wieder vergessen hast.", "chosen": true},
+ {"id": "lina_a", "role": "lina", "seed": 7, "instruct": "A 10-year-old girl, sweet clear child voice, hopeful and gentle, natural child speech, not cartoonish.", "text": "Du hast es versprochen.", "chosen": true},
  {"id": "lina_b", "role": "lina", "seed": 8, "instruct": "An 11-year-old girl with a soft, airy child voice, wistful and a little sad, like a distant memory.", "text": "Du hast es versprochen."},
  {"id": "lina_c", "role": "lina", "seed": 9, "instruct": "A 10-year-old girl with a bright, lively child voice, warm and trusting, slightly reproachful.", "text": "Du hast es versprochen."},
  {"id": "erz_a", "role": "erzaehler", "seed": 10, "instruct": "A mature male narrator around 50, deep warm baritone, calm and mysterious fairy-tale storytelling, slow measured pace, intimate close microphone.", "text": "Nox brach Regel acht. Offiziell gibt es nur sieben."},
  {"id": "erz_b", "role": "erzaehler", "seed": 11, "instruct": "A female narrator around 40 with a low warm alto, calm and mysterious storyteller, gentle and intimate, unhurried.", "text": "Nox brach Regel acht. Offiziell gibt es nur sieben."},
- {"id": "erz_c", "role": "erzaehler", "seed": 12, "instruct": "An elderly male narrator around 65, slightly husky, soft-spoken and wise, like an old archivist telling a secret.", "text": "Nox brach Regel acht. Offiziell gibt es nur sieben."}
+ {"id": "erz_c", "role": "erzaehler", "seed": 12, "instruct": "An elderly male narrator around 65, slightly husky, soft-spoken and wise, like an old archivist telling a secret.", "text": "Nox brach Regel acht. Offiziell gibt es nur sieben.", "chosen": true}
 ]}

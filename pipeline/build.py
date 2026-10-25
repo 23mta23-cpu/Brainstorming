@@ -15,7 +15,8 @@ FX = {  # ffmpeg filters per voice effect; every voice ends trimmed, 48 kHz mono
     "child_echo": TRIM + "asetrate={sr}*1.26,aresample=48000,atempo=0.794,aecho=0.8:0.6:70|160:0.3|0.15",
     "echo": TRIM + "aresample=48000,atempo=0.88,aecho=0.8:0.6:70|160:0.3|0.15",  # memory voice: slowed (pitch kept) + echo
 }
-TTS2_PY = "/home/user/tools/tts2-venv/bin/python"  # Chatterbox lives in its own venv (pinned deps)
+TTS2_PY = "/home/user/tools/tts2-venv/bin/python"  # Chatterbox + Whisper live in their own venv (pinned deps)
+QWEN_PY = "/home/user/tools/qwen-venv/bin/python"
 SCENE_FX = {"motes", "alarm", "notches", "notches_red", "pin", "photo", "texts", "rays", "echo_pulse", "engraving", "glint", "flash", "snow", "dream", "memory_flow", "handwriting", "endcard"}
 
 
@@ -85,25 +86,31 @@ def voice_spec(line, ep, epdir, cache):
     return c, cache / f"{raw}.raw.wav", cache / f"{out}.wav"
 
 
-def prerender_chatterbox(ep, epdir, cache):
-    """All missing Chatterbox lines in one subprocess (the model loads once)."""
-    jobs = []
+def prerender(ep, epdir, cache):
+    """All missing Chatterbox/Qwen lines, one subprocess per engine (each model loads once). Qwen samples all takes in the
+    sandbox (third-party code), then Whisper picks the clearest take (tts2.py pick)."""
+    jobs = {"chatterbox": [], "qwen": []}
     for s in ep["shots"]:
         if "line" in s:
             c, raw, out = voice_spec(s["line"], ep, epdir, cache)
-            if c.get("engine") == "chatterbox" and not out.exists() and not raw.exists():
-                jobs.append({"text": say(s["line"]), "ref": c["ref"], "out": str(raw), "exaggeration": c.get("exaggeration", 0.5),
-                             "cfg_weight": c.get("cfg_weight", 0.5), "seed": c.get("seed", 0), "takes": c.get("takes", 4),
-                         "pace": c.get("pace", 3.8)})  # a hook line may ask for a brisker pace
-    if jobs:
-        (cache / "chatterbox_jobs.json").write_text(json.dumps(jobs, ensure_ascii=False))
-        subprocess.run([TTS2_PY, str(HERE / "tts2.py"), "batch", str(cache / "chatterbox_jobs.json")], check=True)
+            if c.get("engine") in jobs and not out.exists() and not raw.exists():
+                jobs[c["engine"]].append({"text": say(s["line"]), "ref": c["ref"], "ref_text": c.get("ref_text"), "out": str(raw),
+                                          "exaggeration": c.get("exaggeration", 0.5), "cfg_weight": c.get("cfg_weight", 0.5),
+                                          "seed": c.get("seed", 0), "takes": c.get("takes", 4), "pace": c.get("pace", 3.8)})
+    for engine, js in jobs.items():
+        if not js:
+            continue
+        spec = cache / f"{engine}_jobs.json"
+        spec.write_text(json.dumps(js, ensure_ascii=False))
+        if engine == "qwen":
+            subprocess.run([str(HERE.parent / "scripts" / "sandbox-run.sh"), QWEN_PY, str(HERE / "tts_qwen.py"), str(spec)], check=True)
+        subprocess.run([TTS2_PY, str(HERE / "tts2.py"), "batch" if engine == "chatterbox" else "pick", str(spec)], check=True)
 
 
 def voice_line(line, ep, epdir, cache):
     c, raw, out = voice_spec(line, ep, epdir, cache)
     if not out.exists():
-        if c.get("engine") != "chatterbox" and not raw.exists():  # Piper samples noise: keep the take once made
+        if c.get("engine") not in ("chatterbox", "qwen") and not raw.exists():  # Piper samples noise: keep the take once made
             tts.synth(say(line), raw, c["model"], c.get("speaker"), c.get("length_scale", 1.0))
         run("ffmpeg", "-y", "-loglevel", "error", "-i", str(raw), "-af", fx_chain(c).format(sr=tts.read_wav(raw)[1]), "-ac", "1", str(out))
     return load48(out)
@@ -212,7 +219,7 @@ def main(epdir, skip_render=False, reuse_video=False):
     ep = json.load(open(epdir / "episode.json"))
     validate(ep)
     work = epdir / "build"; cache = work / "tts"; cache.mkdir(parents=True, exist_ok=True)
-    prerender_chatterbox(ep, epdir, cache)
+    prerender(ep, epdir, cache)
     tl, voices = build_timeline(ep, epdir, cache, strict=not skip_render)  # audio-only runs may precede the plates
     lo, hi = ep["format"]["target_seconds"]
     print(f"duration {tl['duration']:.2f}s (target {lo}-{hi}), {len(tl['shots'])} shots, {len(tl['lines'])} lines")

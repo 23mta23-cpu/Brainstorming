@@ -86,33 +86,29 @@
  "ai_disclosure": true,
  "cast": {
   "erzaehler": {
-   "engine": "chatterbox",
-   "ref": "../../voices/erzaehler_ref.wav",
-   "exaggeration": 0.45,
-   "cfg_weight": 0.5
+   "engine": "qwen",
+   "ref": "../../voices/casting/erz_c.wav",
+   "ref_text": "Nox brach Regel acht. Offiziell gibt es nur sieben."
   },
   "nox": {
-   "engine": "chatterbox",
-   "ref": "../../voices/nox_ref.wav",
-   "exaggeration": 0.5,
-   "cfg_weight": 0.5
+   "engine": "qwen",
+   "ref": "../../voices/casting/nox_b.wav",
+   "ref_text": "Es ruft mich. Ich muss wissen, warum."
   },
   "nox_whisper": {
-   "model": "de_DE-thorsten_emotional-medium",
-   "speaker": 7,
-   "length_scale": 1.1
+   "engine": "qwen",
+   "ref": "../../voices/casting/nox_b.wav",
+   "ref_text": "Es ruft mich. Ich muss wissen, warum."
   },
   "mira": {
-   "engine": "chatterbox",
-   "ref": "../../voices/mira_ref.wav",
-   "exaggeration": 0.6,
-   "cfg_weight": 0.3
+   "engine": "qwen",
+   "ref": "../../voices/casting/mira_c.wav",
+   "ref_text": "Weil du sie … schon wieder vergessen hast."
   },
   "lina": {
-   "engine": "chatterbox",
-   "ref": "../../voices/lina_ref.wav",
-   "exaggeration": 0.5,
-   "cfg_weight": 0.3,
+   "engine": "qwen",
+   "ref": "../../voices/casting/lina_a.wav",
+   "ref_text": "Du hast es versprochen.",
    "fx": "echo"
   }
  },

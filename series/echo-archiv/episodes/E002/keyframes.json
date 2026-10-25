@@ -12,22 +12,22 @@
   },
   {
    "id": "S02",
-   "prompt": "Close-up: the young man from the reference image looks down at a small glowing glass display case on the desk in front of him, faint warm golden light from the case on his face, puzzled and drawn in, dark walls of letter compartments behind him.",
+   "prompt": "Close-up: the young man from the reference image sits at a desk and looks down at a small glass display case in front of him; inside the case lies an old cream envelope with a round red wax seal that glows faintly warm gold; his hands in dark leather gloves rest beside the case; his coat exactly like the reference: his right half navy blue, his left half ochre, with the brass toggle; faint golden light on his face, puzzled and drawn in; dark walls of letter drawers behind him.",
    "out": "kf/S02.png",
    "w": 720,
    "h": 1280,
-   "seed": 202,
+   "seed": 2021,
    "refs": [
     "../../look/refs/nox.png"
    ]
   },
   {
    "id": "S03",
-   "prompt": "Wide shot of a vast underground post room of the archive: towering dark wooden walls of small drawers and compartments, loose stacks of old letters on long sorting desks, some letters glow faintly gold, brass pneumatic mail tubes running up into darkness, warm lamps; the young man from the first reference image sits at a desk, the brass compass creature from the second reference image on his shoulder.",
+   "prompt": "Wide shot of a vast underground post room of the archive: towering dark wooden walls of small drawers and compartments, loose stacks of old letters on long sorting desks, some letters glow faintly gold, brass pneumatic mail tubes running up into darkness, warm lamps; the young man from the first reference image sits at a desk, the small palm-sized brass compass creature from the second reference image sits on his shoulder, much smaller than his head; he wears dark leather gloves.",
    "out": "kf/S03.png",
    "w": 720,
    "h": 1280,
-   "seed": 203,
+   "seed": 2031,
    "refs": [
     "../../look/refs/nox.png",
     "../../look/refs/pip.png"
