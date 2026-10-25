@@ -54,6 +54,10 @@ Animationen mit Handlung (Referenz: TikTok „AI Fruit Drama": Bild-KI → Bild-
 ohne Zusatzkosten (laut Übersichten 1.000 Credits/Monat + 50/Tag; Veo 3.1 Lite 10, Fast 20 Credits/Clip). Flow ist nicht fernsteuerbar → Handoff:
 ich liefere Startbild (unser Keyframe) + Prompt je Shot, Team generiert in Flow, lädt Clips per GitHub-Web-Upload hoch, ich baue (Stimmen, Untertitel, Overlays, QC).
 1. **Wartet auf Co-CEO:** Flow-Pilot `series/echo-archiv/flow_pilot/README.md` (P1 Handlung, P2 Sprechgesicht, P3 Pip) → Clips in `flow_pilot/clips/`.
+   Stand 25.10. ~18:00: Gemini-App lehnte P1 v1 ab (Filter) → P1 entschärft. Co-CEO fragte „warum 3D statt Anime?" → **Anime-Stiltest** gebaut
+   (`look/anime/`: eigener Stil-Text ohne Studionamen, Nox/Mira/Pip + Pilotbilder `flow_pilot/P*_start_anime.jpg`, Vergleich `flow_pilot/Vergleich_3D_vs_Anime.jpg`).
+   Alle 3 Pilot-Prompts jetzt mit Dialog (P3 „Hat sie mir je geschrieben?", P2 „Enn Feyr … das bin ich.", P1 Mira off „Nicht! Sonst vergisst du sie wieder.").
+   Befund Anime: Mira-Hautton zu hell (Lock: warm-braun) → bei Anime-Entscheidung korrigieren; Figuren etwas schlicht. Clips kommen per Chat-Upload.
 2. Danach: Clips prüfen (Figurentreue, Lippen, Wasserzeichen, Artefakte), Testschnitt mit unseren Stimmen, Vergleich zur jetzigen Fassung; Nutzungsbedingungen Flow (kommerziell, Wasserzeichen) prüfen.
 3. Dann Produktionsweise festlegen: Shot-Liste „bewegungsorientiert" (jede Einstellung = Handlung), Flow-Prompts pro Shot generieren (Skript), E01/E02 neu animieren, E03 v1.1 schreiben (Review-Befunde E03-R1 im Tracker).
 Alternativen, falls Flow nicht reicht: Kaggle-Gratis-GPU + Wan 2.2 (Apache-2.0; OpenMontage hat `_wan_engine.py`), oder Veo-API mit Budget (Lite 0,05 $/s, Fast 0,10 $/s; Freigabe nötig).
