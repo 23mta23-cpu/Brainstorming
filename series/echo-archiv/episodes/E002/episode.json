@@ -146,7 +146,24 @@
      0.2
     ]
    ],
-   "cut": "hart"
+   "cut": "hart",
+   "fx_txt": [
+    {
+     "at": [
+      372,
+      838,
+      1,
+      1,
+      -4
+     ],
+     "text": "Für Nox",
+     "font": "Caveat",
+     "size": 66,
+     "color": "#2b2433",
+     "anim": "static",
+     "width": 320
+    }
+   ]
   },
   {
    "id": "S02",
