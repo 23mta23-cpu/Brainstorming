@@ -133,7 +133,7 @@ def build_timeline(ep, epdir, cache, strict=True):
             dur = max(dur, ln.get("pre", 0.2) + ld + ln.get("post", 0.25))
             start = t + ln.get("pre", 0.2)
             lines.append({"shot": s["id"], "who": ln["who"], "text": ln["text"], "start": round(start, 3),
-                          "end": round(start + ld, 3), "env": envelope(a, fps)})
+                          "end": round(start + ld, 3), "env": envelope(a, fps), "wav": str(voice_spec(ln, ep, epdir, cache)[2])})
             audio[len(lines) - 1] = a
         shots.append({"id": s["id"], "start": round(t, 3), "end": round(t + dur, 3), "sfx": s.get("sfx", []),
                       "text": s.get("onscreen_text"), **visuals(s, epdir, strict)})

@@ -22,7 +22,19 @@ Befehle: siehe Skill `.claude/skills/produce-episode/SKILL.md`. Hier: Stufen, St
 | 19 | Finales Rendern | `final/*.mp4`, H.264 CRF 21, AAC 192k | TESTED |
 | 20 | Menschliche Freigabe | `LAUNCH.md` | ausstehend |
 
-## Was das Verfahren ist — und was nicht
+## v3 (ab 25.10.2026) — Ablauf
+1. `pipeline/keyframes.py <ep>` — Skript → Bild-Jobs (Figuren über gesperrte Referenzen, Editierketten), ein Batch in `gen.py` (FLUX.2-klein-4B)
+2. `pipeline/plates.py <ep>` — Hochskalierung auf 1188×2112 (10 % Kamera-Reserve), Mund-Patches aus Basis/Variante (Diff-Maske, Drift-Schutz)
+3. `pipeline/build.py <ep>` — Chatterbox-Stimmen (Batch), Timeline aus realen Sprechdauern, Mix, Render der generischen Szene
+   `series/echo-archiv/scene.html` (Plates + Kamera + Effekte + Untertitel), Master, QC (`qc.py`, inkl. Hook ≤ 1,8 s)
+4. `tts2-venv/bin/python pipeline/asr_check.py <ep>` — Verständlichkeit jeder Zeile per Spracherkennung (Ersatz für fehlendes Gehör)
+
+## Was das Verfahren ist — und was nicht (v3)
+Ist: **„Animated Illustration"** — hochwertige KI-Stills im stilisierten 3D-Animationsfilm-Look mit Kamerafahrten, In-Shot-Verwandlungen,
+Mund-Patches, Partikel/Licht-Effekten und ausdrucksstarken lokalen Stimmen. Ist nicht: durchgehende Figurenanimation (Gehen, Gestik) — das
+bräuchte generatives Video, auf dieser CPU nicht realistisch und ohne Budget nicht per API.
+
+## Was das Verfahren war (v2, archiviert)
 Ist: deterministische **2D-Vektor-/Puppet-Animation mit Motion-Graphics**, Kamera-Moves, Partikeln, Lip-Sync aus Audiohüllkurve, synthetischen Stimmen.
 Ist nicht: generatives Video, 3D-Animation, Motion-Capture, professionelle Sprecher. Ein Vergleich mit Top-KI-Microdramen wäre unfair zu unseren Gunsten formuliert, wenn wir das verschweigen.
 
