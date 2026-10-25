@@ -642,7 +642,11 @@
      "seed": 110,
      "edit_of": "S10",
      "patch": "mouth",
-     "prompt": "Same image, identical in every detail, except the young man's mouth is slightly open as if speaking."
+     "prompt": "Same image, identical in every detail, except the young man's mouth is slightly open as if speaking.",
+     "at": [
+      398,
+      598
+     ]
     }
    ],
    "motion": {
