@@ -60,18 +60,28 @@ def load48(path):
     return a
 
 
+def say(line):
+    """What the voice speaks: "say" spells names for TTS (caption "N. Veyr", spoken "Enn Feyr"); default = caption text."""
+    return line.get("say", line["text"])
+
+
+def fx_chain(c):
+    """Voice FX + optional per-line tempo (pitch kept), e.g. a hook line that must end by 1.8 s."""
+    return FX[c.get("fx")] + (f",atempo={c['tempo']}" if c.get("tempo") else "")
+
+
 def voice_spec(line, ep, epdir, cache):
     """Voice config + cache paths for one line. The raw take is keyed by text, settings and reference audio bytes;
     the processed file also by the FX chain, so FX tweaks never re-run the TTS."""
     c = dict(ep["cast"][line.get("voice", line["who"])])  # per-line voice (e.g. whisper) and tempo overrides
-    for k in ("length_scale", "takes", "pace"):
+    for k in ("length_scale", "takes", "pace", "tempo"):
         if k in line:
             c[k] = line[k]
     if "ref" in c:
         c["ref"] = str((epdir / c["ref"]).resolve())
         c["ref_sha"] = hashlib.sha1(Path(c["ref"]).read_bytes()).hexdigest()
-    raw = hashlib.sha1(json.dumps([line["text"], {k: v for k, v in c.items() if k != "fx"}], sort_keys=True).encode()).hexdigest()[:12]
-    out = hashlib.sha1(json.dumps([raw, FX[c.get("fx")]]).encode()).hexdigest()[:12]
+    raw = hashlib.sha1(json.dumps([say(line), {k: v for k, v in c.items() if k not in ("fx", "tempo")}], sort_keys=True).encode()).hexdigest()[:12]
+    out = hashlib.sha1(json.dumps([raw, fx_chain(c)]).encode()).hexdigest()[:12]
     return c, cache / f"{raw}.raw.wav", cache / f"{out}.wav"
 
 
@@ -82,7 +92,7 @@ def prerender_chatterbox(ep, epdir, cache):
         if "line" in s:
             c, raw, out = voice_spec(s["line"], ep, epdir, cache)
             if c.get("engine") == "chatterbox" and not out.exists() and not raw.exists():
-                jobs.append({"text": s["line"]["text"], "ref": c["ref"], "out": str(raw), "exaggeration": c.get("exaggeration", 0.5),
+                jobs.append({"text": say(s["line"]), "ref": c["ref"], "out": str(raw), "exaggeration": c.get("exaggeration", 0.5),
                              "cfg_weight": c.get("cfg_weight", 0.5), "seed": c.get("seed", 0), "takes": c.get("takes", 4),
                          "pace": c.get("pace", 3.8)})  # a hook line may ask for a brisker pace
     if jobs:
@@ -94,8 +104,8 @@ def voice_line(line, ep, epdir, cache):
     c, raw, out = voice_spec(line, ep, epdir, cache)
     if not out.exists():
         if c.get("engine") != "chatterbox" and not raw.exists():  # Piper samples noise: keep the take once made
-            tts.synth(line["text"], raw, c["model"], c.get("speaker"), c.get("length_scale", 1.0))
-        run("ffmpeg", "-y", "-loglevel", "error", "-i", str(raw), "-af", FX[c.get("fx")].format(sr=tts.read_wav(raw)[1]), "-ac", "1", str(out))
+            tts.synth(say(line), raw, c["model"], c.get("speaker"), c.get("length_scale", 1.0))
+        run("ffmpeg", "-y", "-loglevel", "error", "-i", str(raw), "-af", fx_chain(c).format(sr=tts.read_wav(raw)[1]), "-ac", "1", str(out))
     return load48(out)
 
 
@@ -134,12 +144,12 @@ def build_timeline(ep, epdir, cache, strict=True):
             ln = s["line"]
             a = voice_line(ln, ep, epdir, cache)
             ld = len(a) / SR
-            sps = len(re.findall(r"[aeiouäöüy]+", ln["text"].lower())) / ld  # vowel groups ~ German syllables
+            sps = len(re.findall(r"[aeiouäöüy]+", say(ln).lower())) / ld  # vowel groups ~ German syllables
             if sps > 5.5:  # calm dramatic delivery; conversational German is ~5-6
                 print(f"  warn {s['id']}: {sps:.1f} syllables/s ('{ln['text']}') - raise length_scale")
             dur = max(dur, ln.get("pre", 0.2) + ld + ln.get("post", 0.25))
             start = t + ln.get("pre", 0.2)
-            lines.append({"shot": s["id"], "who": ln["who"], "text": ln["text"], "start": round(start, 3),
+            lines.append({"shot": s["id"], "who": ln["who"], "text": ln["text"], "say": say(ln), "start": round(start, 3),
                           "end": round(start + ld, 3), "env": envelope(a, fps), "wav": str(voice_spec(ln, ep, epdir, cache)[2])})
             audio[len(lines) - 1] = a
         shots.append({"id": s["id"], "start": round(t, 3), "end": round(t + dur, 3), "sfx": s.get("sfx", []),

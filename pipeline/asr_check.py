@@ -49,13 +49,13 @@ def main(epdir):
     for l in tl["lines"]:
         words = hear(l["wav"])
         heard = "".join(w.word for w in words).strip()
-        sim, start, end = match(l["text"], words)
+        sim, start, end = match(l.get("say", l["text"]), words)
         tail = sf.info(l["wav"]).duration - end
         fail = sim < MIN_SIMILARITY or tail > MAX_TAIL
         bad += fail
-        rows.append({"shot": l["shot"], "who": l["who"], "expected": l["text"], "heard": heard, "similarity": round(sim, 2),
+        rows.append({"shot": l["shot"], "who": l["who"], "expected": l.get("say", l["text"]), "heard": heard, "similarity": round(sim, 2),
                      "speech": [round(start, 2), round(end, 2)], "tail": round(tail, 2)})
-        print(f"{'FAIL' if fail else 'OK  '} {sim:.2f} tail {tail:4.2f}s {l['shot']:4} {l['who']:9} „{l['text']}“ → „{heard}“", flush=True)
+        print(f"{'FAIL' if fail else 'OK  '} {sim:.2f} tail {tail:4.2f}s {l['shot']:4} {l['who']:9} „{l.get('say', l['text'])}“ → „{heard}“", flush=True)
     (Path(epdir) / "build" / "asr.json").write_text(json.dumps(rows, ensure_ascii=False, indent=1))
     print(f"{len(rows) - bad}/{len(rows)} lines ok (similarity >= {MIN_SIMILARITY}, tail <= {MAX_TAIL}s)")
     return 1 if bad else 0

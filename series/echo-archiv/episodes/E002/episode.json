@@ -114,9 +114,10 @@
    "line": {
     "who": "erzaehler",
     "text": "Nox las diesen Brief nie.",
-    "pre": 0.1,
+    "pre": 0.05,
     "takes": 8,
-    "pace": 5.2
+    "pace": 5.2,
+    "tempo": 1.2
    },
    "kf": [
     {
@@ -597,8 +598,9 @@
    "camera": "Nah",
    "line": {
     "who": "erzaehler",
-    "text": "Regel sechs: Was versiegelt ist, bleibt versiegelt.",
-    "pre": 0.2
+    "text": "Regel sechs. Was versiegelt ist, bleibt versiegelt.",
+    "pre": 0.2,
+    "takes": 8
    },
    "kf": [
     {
@@ -826,7 +828,9 @@
    "line": {
     "who": "nox",
     "text": "N. Veyr … das bin ich.",
-    "pre": 0.2
+    "pre": 0.2,
+    "say": "Enn Feyr … das bin ich.",
+    "takes": 8
    },
    "kf": [
     {
