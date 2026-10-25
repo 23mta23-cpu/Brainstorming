@@ -215,12 +215,12 @@
    "kf": [
     {
      "id": "S03",
-     "seed": 203,
+     "seed": 2031,
      "refs": [
       "nox",
       "pip"
      ],
-     "prompt": "Wide shot of a vast underground post room of the archive: towering dark wooden walls of small drawers and compartments, loose stacks of old letters on long sorting desks, some letters glow faintly gold, brass pneumatic mail tubes running up into darkness, warm lamps; the young man from the first reference image sits at a desk, the brass compass creature from the second reference image on his shoulder."
+     "prompt": "Wide shot of a vast underground post room of the archive: towering dark wooden walls of small drawers and compartments, loose stacks of old letters on long sorting desks, some letters glow faintly gold, brass pneumatic mail tubes running up into darkness, warm lamps; the young man from the first reference image sits at a desk, the small palm-sized brass compass creature from the second reference image sits on his shoulder, much smaller than his head; he wears dark leather gloves."
     }
    ],
    "onscreen_text": "Am Morgen",
