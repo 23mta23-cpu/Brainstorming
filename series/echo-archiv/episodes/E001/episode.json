@@ -705,7 +705,14 @@
     "glint"
    ],
    "sfx": [],
-   "cut": "hart"
+   "cut": "hart",
+   "fx_at": {
+    "engraving": [
+     370,
+     655,
+     1.1
+    ]
+   }
   },
   {
    "id": "S12",
