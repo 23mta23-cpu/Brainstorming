@@ -180,11 +180,11 @@
    "kf": [
     {
      "id": "S02",
-     "seed": 202,
+     "seed": 2021,
      "refs": [
       "nox"
      ],
-     "prompt": "Close-up: the young man from the reference image looks down at a small glowing glass display case on the desk in front of him, faint warm golden light from the case on his face, puzzled and drawn in, dark walls of letter compartments behind him."
+     "prompt": "Close-up: the young man from the reference image sits at a desk and looks down at a small glass display case in front of him; inside the case lies an old cream envelope with a round red wax seal that glows faintly warm gold; his hands in dark leather gloves rest beside the case; his coat exactly like the reference: his right half navy blue, his left half ochre, with the brass toggle; faint golden light on his face, puzzled and drawn in; dark walls of letter drawers behind him."
     }
    ],
    "motion": {
