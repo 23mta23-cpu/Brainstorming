@@ -415,24 +415,6 @@
       238,
       468
      ]
-    },
-    {
-     "id": "S06f",
-     "seed": 106,
-     "edit_of": "S06",
-     "patch": "fix",
-     "at": [
-      [
-       533,
-       597
-      ],
-      [
-       212,
-       800
-      ]
-     ],
-     "r": 62,
-     "prompt": "Same image, identical in every detail, except: there is no photograph on the young man's coat, only plain ochre fabric; and the small corner of an old photograph, showing its plain white back side, sticks out of the pocket at the hip of the young woman's coat."
     }
    ],
    "motion": {
@@ -460,7 +442,20 @@
      452,
      0.75
     ]
-   }
+   },
+   "clone": [
+    {
+     "at": [
+      535,
+      597
+     ],
+     "r": 70,
+     "from": [
+      -20,
+      140
+     ]
+    }
+   ]
   },
   {
    "id": "S07",

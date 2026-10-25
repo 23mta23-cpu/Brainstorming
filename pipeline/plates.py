@@ -60,6 +60,19 @@ def change_mask(base, var, at=None, r=WINDOW):
     return alpha, area
 
 
+def clone(im, c):
+    """Classic clone stamp (no AI): copy texture from c["from"] offset over the spot c["at"] - removes small stray objects."""
+    (x, y), r, (dx, dy) = c["at"], c["r"], c["from"]
+    box = (x - r, y - r, x + r, y + r)
+    patch = np.asarray(im.crop((box[0] + dx, box[1] + dy, box[2] + dx, box[3] + dy)), np.float32)
+    yy, xx = np.mgrid[:2 * r, :2 * r]
+    ring = np.abs(np.hypot(xx - r, yy - r) - 0.9 * r) < 0.1 * r  # the seam: match the copied texture's tone to it
+    patch += (np.asarray(im.crop(box), np.float32)[ring].mean(axis=0) - patch[ring].mean(axis=0))
+    im = im.copy()
+    im.paste(Image.fromarray(np.clip(patch, 0, 255).astype(np.uint8)), box[:2], disk((2 * r, 2 * r), [r, r], r))
+    return im
+
+
 def main(epdir):
     epdir = Path(epdir)
     ep = json.loads((epdir / "episode.json").read_text())
@@ -92,7 +105,10 @@ def main(epdir):
                 rgba.save(epdir / "plates" / f"{k['id']}.png")
                 report[k["id"]] = f"patch {area:.1%}"
             else:
-                upscale(Image.open(src), epdir / "plates" / f"{k['id']}.jpg")
+                im = Image.open(src).convert("RGB")
+                for c in s.get("clone", []) if k is s["kf"][0] else []:
+                    im = clone(im, c)
+                upscale(im, epdir / "plates" / f"{k['id']}.jpg")
                 report[k["id"]] = "plate"
     (epdir / "plates" / "report.json").write_text(json.dumps(report, indent=1))
     for k, v in report.items():
