@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Rebuild the studio toolchain in a fresh (ephemeral) container. Idempotent. Base ~5 min/~1 GB; v3 models ~22 GB on top.
+# Rebuild the studio toolchain in a fresh (ephemeral) container. Idempotent. Base ~5 min/~1 GB; v3 models ~22 GB on top; RTK build ~10 min.
 # Needs: uv, node + global playwright/chromium, ffmpeg (all preinstalled in Claude Code cloud).
 set -euo pipefail
 T="${TOOLS_DIR:-/home/user/tools}"; V="${VENDOR_DIR:-/home/user/vendor}"; R="$(cd "$(dirname "$0")/.." && pwd)"; mkdir -p "$T"
@@ -30,6 +30,7 @@ d(sys.argv[1], local_dir=sys.argv[2], allow_patterns=sys.argv[3].split(',') if s
 dl black-forest-labs/FLUX.2-klein-4B flux2-klein-4b "model_index.json,scheduler/*,text_encoder/*,tokenizer/*,transformer/*,vae/*,LICENSE.md,README.md"
 dl Systran/faster-whisper-small whisper-small
 dl Qwen/Qwen3-TTS-12Hz-1.7B-Base qwen3-tts-base   # new character voices: also Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign -> qwen3-tts-voicedesign
-# 4) optional: RTK output compressor (tested, not hooked in): ./scripts/setup_tools.sh --rtk
-if [[ "${1:-}" == "--rtk" ]]; then (cd "$V/rtk" && SANDBOX_HOME="$T/rtk-home" "$R/scripts/sandbox-run.sh" --net cargo build --release -q); fi
+# 4) RTK output compressor for the PreToolUse hook (scripts/rtk-hook.sh): Apache-2.0 edition only (no BUSL engine), ~10 min build
+[ -x "$T/bin/rtk" ] || { (cd "$V/rtk" && SANDBOX_HOME="$T/rtk-home" "$S" --net cargo build --release -q --no-default-features) \
+  && mkdir -p "$T/bin" && cp "$V/rtk/target/release/rtk" "$T/bin/rtk" && rm -rf "$V/rtk/target"; }
 echo "tools ready: $(ls "$T")"
