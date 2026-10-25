@@ -11,7 +11,7 @@ Regel: Keine neue große Serie, solange begonnene Kernhandlungen offen sind. Jed
 | Folge | Skript | Story-Review | Render | QC tech | Freigabe | Veröffentlicht |
 |---|---|---|---|---|---|---|
 | E01 Regel Acht | v2 PASS (Commit `006911a`); **v3.2** (59,3 s, Bildstil v3) | v3 REVISE → v3.1 **PASS** | **v3 gerendert** (25.10.) | 15/15 PASS, Whisper 15/15 | ausstehend (Anhören!) | – |
-| E02 Der Brief | v1.1 (Mindestdauern 59,7 s) | v1.0 REVISE (7 Blocker) → v1.1 Nachprüfung | geplant | – | – | – |
+| E02 Der Brief | v1.2 (Mindestdauern 60,5 s) | v1.0 REVISE (7) → v1.1 REVISE (2, ohne neues Bild) → v1.2 behoben | in Produktion | – | – | – |
 | E02–E10 | PLANNED (Outline) | – | – | – | – | – |
 
 ## Offene Handlungsstränge
@@ -34,7 +34,7 @@ Regel: Keine neue große Serie, solange begonnene Kernhandlungen offen sind. Jed
 | L1 | Erinnerungen fließen in die Uhr | E01 | S3 (gelöschte Erinnerungen werden zu Echos) | offen |
 | P9 | „ANNAHME VERWEIGERT — N. Veyr": Nox lehnte Linas Brief ungeöffnet ab (wenige Tage vor dem Rückkehrtag, Prüfung) | E02 | E10 | offen |
 | P10 | „Jeden Tag um sieben" am Bahnhof | E02 | E10 (Abend, Regen) | offen |
-| N3 | Wie kam Linas Brief ins Archiv? | E02 | Bible §6: Echo der Verweigerung, Archiv nahm es in der Poststelle auf; gezeigt E09/E10 | geplant |
+| N3 | Wie kam Linas Brief ins Archiv? | E02 | Bible §6: zur Abreise geschrieben → kurz vor dem Rückkehrtag geschickt → von Nox verweigert → zurück zu Lina → am Bahnsteig liegen gelassen → Nachhall/Poststelle; gezeigt E10 | geplant |
 | N4 | Woher weiß Mira, dass der Brief von „ihr" ist, warum bricht sie das Siegel? | E02 | E03 (sie kennt die Schleife, versteckt seine Notizen) | offen |
 | L2 | Poststelle/Zustellung (nicht leuchtende Post darf zugestellt werden) | E02 | Kanon, Bible §2 | Lore |
 | N1 | Woran erinnert sich Nox, damit sein Echo ruft? | E01 v3 | geklärt in Bible §6: an das Versprechen (eigene Notiz vor E01); gezeigt E09 | geplant |

@@ -2,7 +2,7 @@
  "episode_id": "E002",
  "series": "Das Echo-Archiv",
  "title": "Der Brief",
- "version": "1.1",
+ "version": "1.2",
  "format": {
   "width": 1080,
   "height": 1920,
@@ -31,7 +31,7 @@
  "character_decision": "Nox zieht den Handschuh wieder an: Er liest Linas Brief, statt ihn mit bloßer Hand zu berühren — um sie diesmal nicht zu vergessen. Mira bricht aus Gewissen das Siegel (Regel 6).",
  "micro_loop": {
   "question": "Wohin mit einem Brief, der nie ankam?",
-  "resolution": "Ein verlorener Brief ohne Echo geht per Rückpost zurück; eine alte Frau erhält ihn nach Jahren."
+  "resolution": "Ein verlorener Brief ohne Echo wird über die Zustellung zugestellt; eine alte Frau erhält ihn nach Jahren."
  },
  "macro_loop": {
   "question": "Wer ist Lina, und warum vergisst Nox sie immer wieder?",
@@ -380,7 +380,7 @@
    "camera": "Halbnah",
    "line": {
     "who": "mira",
-    "text": "Dann ist er kein Echo. Ab in die Zustellung.",
+    "text": "Kein Echo. Ab in die Zustellung.",
     "pre": 0.15
    },
    "kf": [
@@ -520,7 +520,7 @@
    ],
    "sfx": [
     [
-     "tick",
+     "shimmer",
      0.6
     ]
    ],
