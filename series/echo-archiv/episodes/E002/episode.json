@@ -115,7 +115,8 @@
     "who": "erzaehler",
     "text": "Nox las diesen Brief nie.",
     "pre": 0.1,
-    "takes": 8
+    "takes": 8,
+    "pace": 5.2
    },
    "kf": [
     {
