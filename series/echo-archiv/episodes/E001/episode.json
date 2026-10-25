@@ -388,7 +388,7 @@
    "min": 2.4,
    "fn": "Warnung + Plant für den Twist",
    "emotion": "Angst um ihn, Müdigkeit",
-   "visual": "Zweier: Mira greift mit Handschuh nach Nox' Ärmel; eine Fotoecke ragt aus ihrer Manteltasche.",
+   "visual": "Zweier: Mira greift mit Handschuh nach Nox' Ärmel. (v3: Fotoecke in ihrer Tasche nicht umgesetzt, siehe STORY_TRACKER P7.)",
    "camera": "Halbnah, statisch",
    "line": {
     "who": "mira",

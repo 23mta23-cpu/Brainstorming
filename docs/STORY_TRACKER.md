@@ -10,7 +10,7 @@ Regel: Keine neue große Serie, solange begonnene Kernhandlungen offen sind. Jed
 ## Episoden
 | Folge | Skript | Story-Review | Render | QC tech | Freigabe | Veröffentlicht |
 |---|---|---|---|---|---|---|
-| E01 Regel Acht | v2 PASS (Commit `006911a`); **v3.1** (~60 s, Bildstil v3) | v3: REVISE (5 Blocker) → v3.1 überarbeitet, Nachprüfung läuft | TESTED (v2) | 14/14 PASS | ausstehend | – |
+| E01 Regel Acht | v2 PASS (Commit `006911a`); **v3.2** (59,3 s, Bildstil v3) | v3 REVISE → v3.1 **PASS** | **v3 gerendert** (25.10.) | 15/15 PASS, Whisper 15/15 | ausstehend (Anhören!) | – |
 | E02–E10 | PLANNED (Outline) | – | – | – | – | – |
 
 ## Offene Handlungsstränge

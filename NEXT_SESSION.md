@@ -1,7 +1,7 @@
 # NEXT_SESSION
 
 ## Aktuelle Phase
-Phase 8/9 abgeschlossen bis zur menschlichen Freigabe: Fundament, Security, Pipeline und Pilot E001 stehen. Nächstes Ziel: **E02 + E03 produzieren**, dann Launch.
+**E001 v3 fertig** (59,3 s, QC 15/15, Whisper 15/15, 3D-Animationsfilm-Look, 0 €) — wartet auf Anhören/Freigabe durch den Co-CEO (`series/echo-archiv/episodes/E001/LAUNCH.md`). Nächstes Ziel: **E02 „Der Brief" + E03** mit der v3-Pipeline, dann Launch.
 
 ## Abgeschlossen (2026-10-25)
 - Discovery: Umgebung (4 vCPU, 15 GiB, keine GPU), GitHub (nur `23mta23-cpu/brainstorming`), Google Drive (Lesen/Schreiben ok; Ordner „MiracTT" existiert), Deep-Research-PDF vollständig ausgewertet (`docs/RESEARCH_FINDINGS.md`).
@@ -26,7 +26,7 @@ SkillSpector 2.12.0 · Piper 1.8.0 + 3 CC0-Stimmen · RTK (Binary, nicht gehookt
 - Budget 0 € → kein generatives Video (CPU zu langsam), Stimmen nur Open Source (Chatterbox).
 
 ## Erforderliche Freigaben / Rückfragen an den Co-CEO
-1. **E001 v2 ansehen/anhören** und freigeben oder Korrekturen nennen.
+1. **E001 v3 ansehen/anhören** (`final/E001_Regel_Acht.mp4`, Vergleich `final/E001_v2_vs_v3.jpg`) — v. a. Hook-Satz und Miras Twist-Satz; freigeben oder Korrekturen nennen.
 1b. **Halloween-Fenster (Sa 31.10.)**: Empfehlung: *nicht* E01 allein posten. Launch mit E01–E03 Anfang November. Ausnahme: E01-Freigabe bis 27.10. + E02/E03 bis 30.10. → dann E01 am 30.10.
 2. **Musik-Policy**: nur Sounddesign / Vokal-Percussion / lizenzierte Instrumentalmusik? (`docs/CONTENT_POLICY.md`)
 3. Hausregel Körperkontakt/Romantik bestätigen.
@@ -42,26 +42,18 @@ Automatische Fortsetzung: geplante Aufgabe „Echo-Archiv: automatische Fortsetz
 Arbeitsplan (Status hier fortschreiben):
 1. [x] Recherche: FLUX.2-klein-4B (Apache-2.0, Multi-Referenz-Editing), Chatterbox Multilingual (MIT, Deutsch); Video auf CPU nicht machbar
 2. [x] Machbarkeit: CPU hat AMX → bf16 ~860 GFLOPS; **65 s/Bild** (576×1024), 127 s mit Referenz, Peak-RAM 9,9 GB (`pipeline/gen.py`)
-3. [~] Character Lock v3: `series/echo-archiv/look/refs/` — nox.png, mira.png, lina.png (v2, ohne Ohren) OK; **pip.png wird im Keyframe-Batch neu erzeugt** (Augen über Rand, kein Ring)
-4. [~] Pipeline v3: `pipeline/keyframes.py` (Skript → Jobs), `gen.py`, `plates.py` (Upscale + Mund-Patches), Szene v3 (`series/echo-archiv/scene.html`), build.py-Integration geschrieben. **Stimmen TESTED**: `tts2.py` nimmt bis zu 4 Takes (Hook 8), `asr_check.py` (Whisper) wählt Verständlichkeit vor Tempo und schneidet nach dem letzten Skriptwort; Referenzen reproduzierbar mit `pipeline/voice_refs.py`. Ergebnis E001: 15/15 Zeilen ASR-ok, Dauer 59,3 s (vorher 82,5 s durch Kauderwelsch/Stille). Bilder/Plates/Render: noch nicht gelaufen
-5. [~] E01 Skript **v3.2** (21 Shots, 24 Keyframes, Summe Mindestdauern 58,4 s) — Story-Review: v3 REVISE (5 Blocker) → v3.1 **PASS**; Asset-Gates G1 Lina/Pip, G2 Stimmen (erledigt: `series/echo-archiv/voices/` + SOURCES.md), G3 Ring in S05/S07 bei Keyframe-Prüfung. ACHTUNG: E001 ist WIP — v2-Szene passt nicht mehr zum v3-Skript; v2 bleibt über Commit `006911a` reproduzierbar (Tag-Push vom Git-Proxy verweigert)
-6. [ ] Ehrlicher Vergleich v2 vs. v3 (Kontaktbogen) → Freigabepaket
+3. [x] Character Lock v3: `series/echo-archiv/look/refs/` — nox.png, mira.png, lina.png (v2, ohne Ohren) OK, pip.png (Augen über Rand, kein Ring) OK
+4. [x] Pipeline v3: `pipeline/keyframes.py` (Skript → Jobs), `gen.py`, `plates.py` (Upscale + Mund-Patches), Szene v3 (`series/echo-archiv/scene.html`), build.py-Integration geschrieben. **Stimmen TESTED**: `tts2.py` nimmt bis zu 4 Takes (Hook 8), `asr_check.py` (Whisper) wählt Verständlichkeit vor Tempo und schneidet nach dem letzten Skriptwort; Referenzen reproduzierbar mit `pipeline/voice_refs.py`. Ergebnis E001: 15/15 Zeilen ASR-ok, Dauer 59,3 s (vorher 82,5 s durch Kauderwelsch/Stille). Bilder, Overlays (notches, pin, photo, engraving, handwriting …), Retusche (fix/clone), Render: TESTED
+5. [x] E01 Skript **v3.2** (21 Shots, 24 Keyframes, Summe Mindestdauern 58,4 s) — Story-Review: v3 REVISE (5 Blocker) → v3.1 **PASS**; Asset-Gates G1 Lina/Pip, G2 Stimmen (erledigt: `series/echo-archiv/voices/` + SOURCES.md), G3 Ring in S05/S07 bei Keyframe-Prüfung. v2 bleibt über Commit `006911a` reproduzierbar (Tag-Push vom Git-Proxy verweigert)
+6. [x] Vergleich v2/v3 + Freigabepaket v3 (LAUNCH.md); E001 v3 fertig bis auf menschliches Anhören/Freigabe
 
 ## Genaue nächste Aktion
-**Qualitätsoffensive E01 v3** (Reihenfolge wegen RAM, nie parallel; Stand 25.10. 06:05 UTC):
-1. [x] Stimmen fertig (15/15 ASR-ok, 59,3 s). Cache `E001/build/tts/` ist flüchtig → nach Neustart `build.py --skip-render` (~15 min, gleiche Seeds)
-2. [~] Keyframes: `python3 pipeline/keyframes.py series/echo-archiv/episodes/E001` (resumable, überspringt vorhandene `kf/*.png`).
-   Geprüft & ok: S03 S04 S05 S07 S07m S08 S08b S09 S10 S10m S11 S13 S14 S14b S15. **Nachlauf (läuft seit 25.10. ~07:00 UTC, nach Maschinen-Neustart):**
-   S01 + S12 (mit Nox-Referenz), S06 + S06m (Prompt präzisiert), S07f/S08f (Fix-Patches: Tränenlinien, Miras Ausdruck),
-   S16 + S16m + S16p (Komposit: Mira-Plate + separat generiertes Foto Nox-Kind/Lina als FX `photo`), S17, S18.
-   Jedes neue Keyframe ansehen: Identität vs. `look/refs`, Ort, Requisiten, Policy; Overlay-Positionen (`fx_at`, Keyframe-Pixel) eintragen:
-   `pin` S06 (Nox' linker Kragen; S05 S07 S10 S14 erledigt) · `notches` S01 (+S07b/S07c gleiche Werte) · `photo` S16 (Bildfläche des Fotos, ggf. Drehwinkel) ·
-   `handwriting` S17 (Fotorückseite) · Mund-`at` für S06m S16m. Erledigt: echo_pulse S09, engraving S11, memory_flow S14
-3. `gen-venv/bin/python pipeline/plates.py series/echo-archiv/episodes/E001` → Bericht prüfen (Patches „skipped"?)
-4. Vorschau-Stills: `node pipeline/render.mjs series/echo-archiv/scene.html <ep>/build/timeline.json x.mp4 30 1080 1920 --times … --png <dir>` (vorher `build.py --skip-render` für frische Timeline) → Kontaktbogen ansehen
-5. `piper-venv/bin/python pipeline/build.py series/echo-archiv/episodes/E001` (voller Render + QC) → `tts2-venv/bin/python pipeline/asr_check.py …`
-6. Vergleich v2/v3 (v2: `git show 006911a:series/echo-archiv/episodes/E001/final/E001_Regel_Acht.mp4`), LAUNCH.md v3, SHOTLIST, QUALITY_STANDARDS, Drive-Kopie
-Danach erst E02.
+1. Falls Feedback zu E001 v3 vorliegt: einarbeiten (Hook-Satz zuerst; Werkzeuge: `tts2.py` Takes, `plates.py` fix/clone, `fx_at`).
+2. **E02 „Der Brief"** mit Skill `produce-episode`, v3-Ablauf (`docs/VIDEO_PIPELINE.md`): Skript (episode.json v3 mit `kf`/`fx`/`fx_at`)
+   → `story-reviewer` → Stimmen (`build.py --skip-render`, ASR) → **ein** Bild-Batch (`keyframes.py`, Platte liest ~15 MB/s: ~20 min Kaltstart)
+   → jedes Keyframe prüfen (Figur ohne Referenz = fremdes Gesicht! Requisiten als Overlay) → `plates.py` → Vorschau-Kontaktbogen → `build.py` → QC/ASR.
+   Plant P7 (Fotoecke Mira) in E02/E03 nachholen.
+3. Danach E03 „Miras Lüge"; Launch, wenn E01–E03 freigegeben.
 
 ## Relevante Pfade & Befehle
 ```bash
