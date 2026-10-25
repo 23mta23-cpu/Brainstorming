@@ -69,6 +69,17 @@
    ]
   },
   {
+   "id": "S06f",
+   "prompt": "Same image, identical in every detail, except: there is no photograph on the young man's coat, only plain ochre fabric; and the small corner of an old photograph, showing its plain white back side, sticks out of the pocket at the hip of the young woman's coat.",
+   "out": "kf/S06f.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 106,
+   "refs": [
+    "kf/S06.png"
+   ]
+  },
+  {
    "id": "S07",
    "prompt": "Close-up portrait of the young man from the reference image, warm golden light leaking through the seams of a closed vault door falls across his face, longing and determined expression, eyes glistening, a small broken golden ring pin clearly visible on his left collar, dark archive background with soft bokeh.",
    "out": "kf/S07.png",
@@ -83,17 +94,6 @@
    "id": "S07m",
    "prompt": "Same image, identical in every detail, except the young man's mouth is slightly open as if speaking.",
    "out": "kf/S07m.png",
-   "w": 720,
-   "h": 1280,
-   "seed": 107,
-   "refs": [
-    "kf/S07.png"
-   ]
-  },
-  {
-   "id": "S07f",
-   "prompt": "Same image, identical in every detail, but without the white lines under his eyes: natural clean skin, his eyes glistening with unshed tears.",
-   "out": "kf/S07f.png",
    "w": 720,
    "h": 1280,
    "seed": 107,

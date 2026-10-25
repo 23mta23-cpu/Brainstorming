@@ -176,7 +176,9 @@ window.renderAt = (t) => {
   const line = TL.lines.find((l) => t >= l.start - 0.05 && t <= l.end + 0.35);
   const cap = document.getElementById("cap");
   cap.textContent = line ? line.text : "";
-  cap.className = line && !(TL.shots.find((x) => x.id === line.shot).talk || {})[line.who] ? "off" : "";
+  const ls = line && TL.shots.find((x) => x.id === line.shot);
+  cap.className = line && !(ls.talk || {})[line.who] ? "off" : "";
+  cap.style.top = `${(ls && ls.cap_y) || 1250}px`;   // a shot can move the caption off a key image (S16: below the photo)
   const ti = document.getElementById("title"), showTitle = shot.text && !(shot.fx || []).includes("handwriting");  // e.g. time jumps
   ti.textContent = showTitle ? shot.text : "";
   ti.style.opacity = showTitle ? Math.min(seq(u, 0.1, 0.5), 1 - seq(u, 2.0, 2.5)) : 0;
