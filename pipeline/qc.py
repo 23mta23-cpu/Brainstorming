@@ -48,7 +48,7 @@ def main(video, tlpath):
     ok("codec h264/yuv420p", v["codec_name"] == "h264" and v["pix_fmt"] == "yuv420p", f"{v['codec_name']}/{v['pix_fmt']}")
     ok("audio aac 48k", a and a["codec_name"] == "aac" and a["sample_rate"] == "48000", a and f"{a['codec_name']}/{a['sample_rate']}")
     ok("duration matches timeline", abs(dur - tl["duration"]) < 0.25, f"{dur:.2f}s vs {tl['duration']:.2f}s")
-    ok("duration 25-60s (discovery)", 25 <= dur <= 60, f"{dur:.2f}s")
+    ok("duration 61-90s (> 1 min: Creator Rewards)", 61 <= dur <= 90, f"{dur:.2f}s")  # v3 format; the 30 s v1/v2 limit was 25-60
     i, tp = loudness(video)
     ok("loudness -14 LUFS ±1.5", abs(i + 14) <= 1.5, f"{i} LUFS")
     ok("true peak <= -1 dBTP", tp <= -1.0, f"{tp} dBFS")

@@ -42,7 +42,7 @@ Eine Variable pro Woche; Hooks über *verschiedene* Folgen testen, nicht dieselb
 | 1 | Hook-Typ | E01 unmögliche Regel · E02 mysteriöses Objekt · E03 Konsequenz zuerst |
 | 2 | Erzähler vs. Dialog | Folgen mit/ohne Erzähler-Cold-Open |
 | 3 | Lore-Dichte | episodisch vs. stark serialisiert |
-| 4 | Länge | 30 s vs. 60–90 s (Creator-Rewards-fähig) |
+| 4 | Länge | 30 s vs. 60–90 s (Creator-Rewards-fähig) — **v3-Standard seit 25.10.: 61–90 s** (Co-CEO „zu kurz?", Creator Rewards nur > 1 min; QC prüft es) |
 
 ## Messung (sobald Daten existieren)
 Pro Video in `analytics/posts.csv`: Views, Ø Watchtime, Completion, Early Hold (3 s), Shares/1k, Kommentare/1k, Saves/1k, Follows/1k,

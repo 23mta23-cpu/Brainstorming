@@ -1,0 +1,81 @@
+{
+ "video": "series/echo-archiv/episodes/E002/final/E002_Der_Brief.mp4",
+ "pass": true,
+ "checks": [
+  {
+   "check": "resolution 1080x1920",
+   "pass": true,
+   "detail": "1080x1920"
+  },
+  {
+   "check": "fps 30",
+   "pass": true,
+   "detail": "30.00"
+  },
+  {
+   "check": "codec h264/yuv420p",
+   "pass": true,
+   "detail": "h264/yuv420p"
+  },
+  {
+   "check": "audio aac 48k",
+   "pass": true,
+   "detail": "aac/48000"
+  },
+  {
+   "check": "duration matches timeline",
+   "pass": true,
+   "detail": "62.83s vs 62.84s"
+  },
+  {
+   "check": "duration 61-90s (> 1 min: Creator Rewards)",
+   "pass": true,
+   "detail": "62.83s"
+  },
+  {
+   "check": "loudness -14 LUFS ±1.5",
+   "pass": true,
+   "detail": "-14.1 LUFS"
+  },
+  {
+   "check": "true peak <= -1 dBTP",
+   "pass": true,
+   "detail": "-1.7 dBFS"
+  },
+  {
+   "check": "no unplanned black >0.4s",
+   "pass": true,
+   "detail": "[]"
+  },
+  {
+   "check": "hook: first spoken word <= 0.5s",
+   "pass": true,
+   "detail": "0.05s"
+  },
+  {
+   "check": "hook: first line complete <= 1.8s",
+   "pass": true,
+   "detail": "1.72s"
+  },
+  {
+   "check": "no dead air >0.6s (outside planned cut)",
+   "pass": true,
+   "detail": "[]"
+  },
+  {
+   "check": "file size < 287MB (TikTok upload)",
+   "pass": true,
+   "detail": "23.3 MB"
+  },
+  {
+   "check": "AI disclosure metadata",
+   "pass": true,
+   "detail": "AI-generated fictional series (KI-generierte fiktionale Serie)"
+  },
+  {
+   "check": "captions present for every line",
+   "pass": true,
+   "detail": "14 lines"
+  }
+ ]
+}
