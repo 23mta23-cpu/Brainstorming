@@ -26,8 +26,10 @@ def upscale(im, dst):
 
 
 def disk(size, at, r):
+    """Feathered disk(s): "at" is one [x, y] or a list of them (one edit can fix several spots)."""
     m = Image.new("L", size, 0)
-    ImageDraw.Draw(m).ellipse([at[0] - r * 0.8, at[1] - r * 0.8, at[0] + r * 0.8, at[1] + r * 0.8], fill=255)
+    for x, y in (at if isinstance(at[0], list) else [at]):
+        ImageDraw.Draw(m).ellipse([x - r * 0.8, y - r * 0.8, x + r * 0.8, y + r * 0.8], fill=255)
     return m.filter(ImageFilter.GaussianBlur(r * 0.2))
 
 

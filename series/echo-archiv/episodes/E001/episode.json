@@ -410,7 +410,29 @@
      "seed": 106,
      "edit_of": "S06",
      "patch": "mouth",
-     "prompt": "Same image, identical in every detail, except the young woman's mouth is slightly open as if speaking."
+     "prompt": "Same image, identical in every detail, except the young woman's mouth is slightly open as if speaking.",
+     "at": [
+      238,
+      468
+     ]
+    },
+    {
+     "id": "S06f",
+     "seed": 106,
+     "edit_of": "S06",
+     "patch": "fix",
+     "at": [
+      [
+       533,
+       597
+      ],
+      [
+       212,
+       800
+      ]
+     ],
+     "r": 62,
+     "prompt": "Same image, identical in every detail, except: there is no photograph on the young man's coat, only plain ochre fabric; and the small corner of an old photograph, showing its plain white back side, sticks out of the pocket at the hip of the young woman's coat."
     }
    ],
    "motion": {
@@ -428,7 +450,17 @@
      0
     ]
    ],
-   "cut": "hart"
+   "cut": "hart",
+   "fx": [
+    "pin"
+   ],
+   "fx_at": {
+    "pin": [
+     500,
+     452,
+     0.75
+    ]
+   }
   },
   {
    "id": "S07",
