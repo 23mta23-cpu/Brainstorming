@@ -725,7 +725,10 @@
     {
      "id": "S12",
      "seed": 112,
-     "prompt": "Extreme close-up: a young man's bare fingertip, with a deep navy coat sleeve, touching an antique gold pocket watch floating in a beam of light, a burst of golden light at the point of contact."
+     "refs": [
+      "nox"
+     ],
+     "prompt": "Extreme close-up of the young man from the reference image: his bare right index fingertip, coming out of the navy blue sleeve of his coat, touches the back of an antique gold pocket watch floating in a beam of light; a burst of golden light flares at the point of contact; only the edge of his face is visible at the side of the frame, soft and out of focus; dark background."
     }
    ],
    "motion": {

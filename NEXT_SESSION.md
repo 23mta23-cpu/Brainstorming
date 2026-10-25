@@ -52,7 +52,7 @@ Arbeitsplan (Status hier fortschreiben):
 1. [x] Stimmen fertig (15/15 ASR-ok, 59,3 s). Cache `E001/build/tts/` ist flüchtig → nach Neustart `build.py --skip-render` (~15 min, gleiche Seeds)
 2. [~] Keyframes: `python3 pipeline/keyframes.py series/echo-archiv/episodes/E001` (resumable, überspringt vorhandene `kf/*.png`).
    Geprüft & ok: S03 S04 S05 S07 S07m S08 S08b S09 S10. **Nachlauf nötig** (Datei löschen → Skript erneut starten):
-   S01 (jetzt mit Nox-Referenz), S06 + S06m (Prompt präzisiert); neue Fix-Patches S07f (Tränenlinien), S08f (Miras Ausdruck) laufen automatisch mit.
+   S01 + S12 (jetzt mit Nox-Referenz; ohne Referenz erfindet das Modell einen bärtigen Fremden), S06 + S06m (Prompt präzisiert); neue Fix-Patches S07f (Tränenlinien), S08f (Miras Ausdruck) laufen automatisch mit.
    Jedes neue Keyframe ansehen: Identität vs. `look/refs`, Ort, Requisiten, Policy; Overlay-Positionen (`fx_at`, Keyframe-Pixel) eintragen:
    `pin` (Nox' gebrochener Kreis, linker Kragen) bei S05 S06 S07 S10 S14 · `notches` S01 (Siegelmitte/Radius, ggf. x-Stauchung) ·
    `engraving`/`glint` S11 (Deckelmitte) · `handwriting` S17 (Fotorückseite) · `memory_flow` S14 (Kopf) · `echo_pulse` S09 (erledigt) · Mund-`at` für S06m S10m S16m
@@ -79,6 +79,8 @@ Branch: `claude/ai-studio-foundation` (kein PR erstellt).
 - AAC erzeugt ~0,6 dB True-Peak-Overshoot → Master auf −2 dBTP.
 - Vorschau-Kontaktbogen vor dem Vollrender spart Iterationen (fand Tür-Rotationsbug, Blitzposition, Haar-Clipping, Untertitel über Mund).
 - Story-Review **vor** dem Render ist Pflicht, nicht Kür: der Agent fand 3 echte Blocker, die ich im Selbstreview übersehen hatte. Kosten ~160 k Tokens/Lauf.
+- Jede Einstellung, in der Hand/Gesicht einer Figur ins Bild kommen kann, braucht die Figurenreferenz (S01/S12: sonst bärtiger Fremder).
+- Kleine Story-Requisiten (Kerben, Ringnadel, Gravur, Handschrift) als Overlay statt generiert: Bildmodelle zählen/zeichnen sie unzuverlässig.
 - Sprechtempo in Silben/s messen, nicht Wörter/s (einsilbige Wörter verfälschen).
 - Chatterbox hängt bei kurzen Sätzen oft Kauderwelsch oder Sekunden Stille an → nie ungeprüft übernehmen: ASR-Takeauswahl + Schnitt am letzten Skriptwort. Tempo kommt aus der Referenz (Piper `length_scale`), `exaggeration`↑ beschleunigt, `cfg_weight` 0.3 bremst nur wenig.
 - faster-whisper: Audio als Array übergeben (Datei-Decoder bricht mit installiertem PyAV).
