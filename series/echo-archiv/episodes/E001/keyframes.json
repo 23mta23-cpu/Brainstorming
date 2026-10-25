@@ -1,0 +1,266 @@
+{
+ "style": "Stylized 3D animated feature film still, hand-painted textures, soft global illumination, volumetric light with floating golden dust, rich palette of deep teal, navy blue and warm gold, cinematic shallow depth of field, expressive face with large readable eyes, strong clean silhouette, highly detailed, vertical 9:16 frame.",
+ "jobs": [
+  {
+   "id": "pip",
+   "out": "../../look/refs/pip.png",
+   "w": 576,
+   "h": 1024,
+   "seed": 24,
+   "prompt": "Character design of Pip, a small living brass compass creature about the size of a hand: a round polished brass body with no ring or loop on top, a glass face showing a red-and-white compass needle, two large round glossy black eyes sitting on top of the brass rim above the glass (not inside it), tiny brass legs and feet, cute and curious expression. Sitting on a dark wooden shelf, plain dark background, soft rim light.",
+   "refs": []
+  },
+  {
+   "id": "S01",
+   "prompt": "Extreme close-up: a young man's bare pale hand emerging from a deep navy blue coat sleeve reaches toward a large circular bronze vault seal engraved with eight notches around its rim, seven notches glow warm gold and one notch is dark and empty, his fingertips stop a few centimeters before the metal, floating golden dust, dramatic warm rim light, dark background.",
+   "out": "kf/S01.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 101,
+   "refs": []
+  },
+  {
+   "id": "S02",
+   "prompt": "Same image, identical composition and details, but the single dark notch on the bronze seal now glows bright red and a red warning light washes over the whole scene.",
+   "out": "kf/S02.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 102,
+   "refs": [
+    "kf/S01.png"
+   ]
+  },
+  {
+   "id": "S03",
+   "prompt": "Wide shot of an endless underground archive hall with towering dark wooden shelves holding rows of sealed glass display cases; inside each case rests one ordinary old object — a key, a glove, a letter, a child's toy, a ring — glowing faintly gold or teal; brass ladders, warm hanging lanterns, light mist. The young man from the first reference image walks away from the camera down the hall toward a monumental round bronze vault door, seen from behind so his split navy and ochre coat is visible; the small brass compass creature from the second reference image sits on his shoulder.",
+   "out": "kf/S03.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 103,
+   "refs": [
+    "../../look/refs/nox.png",
+    "../../look/refs/pip.png"
+   ]
+  },
+  {
+   "id": "S04",
+   "prompt": "Macro shot of one sealed glass display case on a dark wooden archive shelf; inside rests an old brass key that glows faintly gold from within, a red wax seal on the glass lid, warm lantern reflections on the glass, golden dust, shallow depth of field. Nothing else inside the case.",
+   "out": "kf/S04.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 104,
+   "refs": []
+  },
+  {
+   "id": "S05",
+   "prompt": "Medium shot of the young man from the first reference image in the archive hall, pulling a dark leather glove off his right hand, determined and slightly sad, a small broken golden ring pin on his left collar, his split navy and ochre coat clearly visible; the brass compass creature from the second reference image sits on his shoulder, its red needle pointing toward warm golden light that leaks through the seams of a closed round vault door off-screen.",
+   "out": "kf/S05.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 105,
+   "refs": [
+    "../../look/refs/nox.png",
+    "../../look/refs/pip.png"
+   ]
+  },
+  {
+   "id": "S06",
+   "prompt": "Medium two-shot in the archive hall: the young woman from the second reference image grabs the coat sleeve of the young man from the first reference image with her gloved hand, she looks at him worried and tired, he looks toward golden light leaking from a closed door off-screen; the corner of an old photograph sticks out of her coat pocket. Both faces clearly visible.",
+   "out": "kf/S06.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 106,
+   "refs": [
+    "../../look/refs/nox.png",
+    "../../look/refs/mira.png"
+   ]
+  },
+  {
+   "id": "S06m",
+   "prompt": "Same image, identical in every detail, except the young woman's mouth is slightly open as if speaking.",
+   "out": "kf/S06m.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 106,
+   "refs": [
+    "kf/S06.png"
+   ]
+  },
+  {
+   "id": "S07",
+   "prompt": "Close-up portrait of the young man from the reference image, warm golden light leaking through the seams of a closed vault door falls across his face, longing and determined expression, eyes glistening, a small broken golden ring pin clearly visible on his left collar, dark archive background with soft bokeh.",
+   "out": "kf/S07.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 107,
+   "refs": [
+    "../../look/refs/nox.png"
+   ]
+  },
+  {
+   "id": "S07m",
+   "prompt": "Same image, identical in every detail, except the young man's mouth is slightly open as if speaking.",
+   "out": "kf/S07m.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 107,
+   "refs": [
+    "kf/S07.png"
+   ]
+  },
+  {
+   "id": "S08",
+   "prompt": "Medium side shot: the young woman from the reference image presses both gloved hands flat against a large round bronze vault seal, glowing golden sealing glyphs flare under her palms, she strains with all her focus, red warning light washes over the scene, golden light leaks from the seams of the door.",
+   "out": "kf/S08.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 108,
+   "refs": [
+    "../../look/refs/mira.png"
+   ]
+  },
+  {
+   "id": "S08b",
+   "prompt": "The monumental round bronze vault door in the archive hall swings wide open by itself, brilliant warm golden light floods out toward the camera, dust and light rays, a young man's silhouette in a long coat stands before it.",
+   "out": "kf/S08b.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 109,
+   "refs": []
+  },
+  {
+   "id": "S09",
+   "prompt": "A small dark stone vestibule: an antique gold pocket watch floats in mid-air inside a single beam of warm light, its chain drifting, golden dust in the beam; behind it in the darkness a second, smaller sealed round door is barely visible. Mysterious, quiet.",
+   "out": "kf/S09.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 110,
+   "refs": []
+  },
+  {
+   "id": "S10",
+   "prompt": "Close-up of the young man from the reference image looking up in confusion, lit from below by a warm golden glow, dark stone background, gentle bokeh, a small broken golden ring pin visible on his left collar.",
+   "out": "kf/S10.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 110,
+   "refs": [
+    "../../look/refs/nox.png"
+   ]
+  },
+  {
+   "id": "S10m",
+   "prompt": "Same image, identical in every detail, except the young man's mouth is slightly open as if speaking.",
+   "out": "kf/S10m.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 110,
+   "refs": [
+    "kf/S10.png"
+   ]
+  },
+  {
+   "id": "S11",
+   "prompt": "Extreme macro shot of the closed lid of an antique polished gold pocket watch filling the frame, smooth flat center area without any engraving, fine scratches, warm glints; a dark grey gloved hand reaches into the frame from the bottom left, dark background.",
+   "out": "kf/S11.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 111,
+   "refs": []
+  },
+  {
+   "id": "S12",
+   "prompt": "Extreme close-up: a young man's bare fingertip, with a deep navy coat sleeve, touching an antique gold pocket watch floating in a beam of light, a burst of golden light at the point of contact.",
+   "out": "kf/S12.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 112,
+   "refs": []
+  },
+  {
+   "id": "S13",
+   "prompt": "View through the open door of an arriving train onto a snowy old railway platform at dusk, warm platform lamps, falling snow; the 11-year-old girl from the reference image in her cream wool coat and long red scarf stands on the platform holding a sealed letter, looking up at the camera with a hopeful smile. Soft dreamy overexposed glow at the edges.",
+   "out": "kf/S13.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 113,
+   "refs": [
+    "../../look/refs/lina.png"
+   ]
+  },
+  {
+   "id": "S14",
+   "prompt": "Medium close-up of the young man from the reference image in a dark vestibule, glowing golden particles of light streaming out of his head and drifting toward a floating gold pocket watch in the upper corner, his face lit gold, sorrowful expression, a small broken golden ring pin visible on his left collar.",
+   "out": "kf/S14.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 114,
+   "refs": [
+    "../../look/refs/nox.png"
+   ]
+  },
+  {
+   "id": "S14b",
+   "prompt": "Same image, but the young man's eyes are now pale and empty, staring blankly, the expression gone still.",
+   "out": "kf/S14b.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 114,
+   "refs": [
+    "kf/S14.png"
+   ]
+  },
+  {
+   "id": "S15",
+   "prompt": "Close-up portrait of the young woman from the reference image, a single tear running down her cheek, eyes glossy, restrained grief, soft teal and gold light, dark background.",
+   "out": "kf/S15.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 115,
+   "refs": [
+    "../../look/refs/mira.png"
+   ]
+  },
+  {
+   "id": "S16",
+   "prompt": "Medium shot of the young woman from the first reference image holding up an old faded photograph with her gloved hand toward the camera, tears on her face but a resolute look; the photograph shows a smiling black-haired boy in a navy sweater with an ochre scarf next to the girl from the second reference image in her red scarf holding a sealed letter, standing together in the snow.",
+   "out": "kf/S16.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 116,
+   "refs": [
+    "../../look/refs/mira.png",
+    "../../look/refs/lina.png"
+   ]
+  },
+  {
+   "id": "S16m",
+   "prompt": "Same image, identical in every detail, except the young woman's mouth is slightly open as if speaking.",
+   "out": "kf/S16m.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 116,
+   "refs": [
+    "kf/S16.png"
+   ]
+  },
+  {
+   "id": "S17",
+   "prompt": "Close-up of the blank back side of an old aged photograph made of cream paper, held by a dark grey gloved hand, completely empty paper with soft creases and a coffee-colored age stain at one corner, dark background, warm light.",
+   "out": "kf/S17.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 117,
+   "refs": []
+  },
+  {
+   "id": "S18",
+   "prompt": "Very dark, out-of-focus view of the endless underground archive hall with towering dark wooden shelves holding rows of sealed glass display cases; inside each case rests one ordinary old object — a key, a glove, a letter, a child's toy, a ring — glowing faintly gold or teal; brass ladders, warm hanging lanterns, light mist, the glowing objects only as faint soft bokeh, deep shadows, lots of empty dark space in the center.",
+   "out": "kf/S18.png",
+   "w": 720,
+   "h": 1280,
+   "seed": 118,
+   "refs": []
+  }
+ ]
+}
