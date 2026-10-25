@@ -1,0 +1,777 @@
+{
+ "episode_id": "E003",
+ "series": "Das Echo-Archiv",
+ "title": "Miras Lüge",
+ "version": "1.0",
+ "format": {
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "target_seconds": [
+   61,
+   75
+  ]
+ },
+ "look": {
+  "w": 720,
+  "h": 1280,
+  "refs": {
+   "nox": "../../look/refs/nox.png",
+   "mira": "../../look/refs/mira.png",
+   "lina": "../../look/refs/lina.png",
+   "pip": "../../look/refs/pip.png"
+  }
+ },
+ "hook": {
+  "type": "rivalen_geheimnis",
+  "spoken": "Mira hat nie gelogen. Heute zweimal.",
+  "onscreen": "VOR DEM KURATOR",
+  "visual_question": "Mira steht ruhig vor jemandem, den wir nicht sehen — welche zwei Lügen?"
+ },
+ "emotional_core": "Pflicht gegen Gewissen",
+ "character_decision": "Mira belügt den Kurator (Regel 7) und verwahrt Nox' Notizen, statt sie zu verbrennen — damit er Lina diesmal behält.",
+ "micro_loop": {
+  "question": "Erreichen Nox und Mira das neue Echo vor dem Kind?",
+  "resolution": "Nox greift es mit dem Handschuh, Mira versiegelt es; das Mädchen bekommt einen gewöhnlichen Papierflieger."
+ },
+ "macro_loop": {
+  "question": "Wer ist Lina, und warum vergisst Nox sie immer wieder?",
+  "planned_resolution": "E10",
+  "progress": "Mira muss dem Kurator berichten (Q5), lügt für Nox und sammelt seit Langem seine Notizen und Fotos (Q1, P7); sie entsiegelte den Brief, damit er Lina behält (N4)."
+ },
+ "twist": "Mira hat Nox' Notizen nie verbrannt — sie bewahrt sie heimlich auf.",
+ "cliffhanger": "Eine der Notizen, in Nox' eigener Handschrift mit gebrochenem Kreis: „Mira weiß es.“",
+ "loop_point": "Das Ende (Mira weiß etwas, das Nox einst wusste) führt zurück zu S01: Mira vor dem Kurator — jetzt versteht man die zwei Lügen.",
+ "recap": "S01 Vorgriff auf S13; S18: die gefaltete Notiz aus ihrer Manteltasche (E02 S18).",
+ "plants": [
+  {
+   "id": "Q1",
+   "what": "Herkunft des Fotos: Mira verwahrt Nox' Spuren (Notizen, Fotos).",
+   "payoff": "E03"
+  },
+  {
+   "id": "Q5",
+   "what": "Warnlicht/Siegel meldet an den Kurator; Mira muss berichten.",
+   "payoff": "E03"
+  },
+  {
+   "id": "N4",
+   "what": "Mira entsiegelte den Brief aus Gewissen, damit Nox Lina behält.",
+   "payoff": "E03"
+  },
+  {
+   "id": "P7",
+   "what": "Notizen + Fotoecke aus Miras Tasche landen im Versteck.",
+   "payoff": "E03"
+  },
+  {
+   "id": "P11",
+   "what": "„Mira weiß es.“ — Nox' Notiz aus einer früheren Schleife.",
+   "payoff": "E09 (Nox findet seine früheren Notizen)"
+  },
+  {
+   "id": "K1",
+   "what": "Der Kurator spricht in Staffel 1 nie, er schreibt Karten (Emblem: Kreis im Quadrat).",
+   "payoff": "Kanon; Stimme erst ab S2/E09 offen"
+  }
+ ],
+ "content_flags": [],
+ "historical_claims": [],
+ "ai_disclosure": true,
+ "cast": {
+  "erzaehler": {
+   "engine": "qwen",
+   "ref": "../../voices/casting/erz_c.wav",
+   "ref_text": "Nox brach Regel acht. Offiziell gibt es nur sieben."
+  },
+  "nox": {
+   "engine": "qwen",
+   "ref": "../../voices/casting/nox_b.wav",
+   "ref_text": "Es ruft mich. Ich muss wissen, warum."
+  },
+  "nox_whisper": {
+   "engine": "qwen",
+   "ref": "../../voices/casting/nox_b.wav",
+   "ref_text": "Es ruft mich. Ich muss wissen, warum."
+  },
+  "mira": {
+   "engine": "qwen",
+   "ref": "../../voices/casting/mira_c.wav",
+   "ref_text": "Weil du sie … schon wieder vergessen hast."
+  },
+  "lina": {
+   "engine": "qwen",
+   "ref": "../../voices/casting/lina_a.wav",
+   "ref_text": "Du hast es versprochen.",
+   "fx": "echo"
+  }
+ },
+ "shots": [
+  {
+   "id": "S01",
+   "min": 2.3,
+   "fn": "Hook: Mira vor dem Kurator (Vorgriff auf S13)",
+   "emotion": "Spannung",
+   "visual": "Mira, nah, kaltes Licht von oben; Bildtext „VOR DEM KURATOR“.",
+   "camera": "Nah, Push-in",
+   "line": {
+    "who": "erzaehler",
+    "text": "Mira hat nie gelogen. Heute zweimal.",
+    "pre": 0.05,
+    "takes": 8
+   },
+   "plate_of": "S13",
+   "onscreen_text": "VOR DEM KURATOR",
+   "motion": {
+    "zoom": [
+     1.0,
+     1.08
+    ]
+   },
+   "fx": [
+    "motes"
+   ],
+   "sfx": [
+    [
+     "drone",
+     0
+    ],
+    [
+     "heart",
+     0.4
+    ]
+   ],
+   "cut": "hart"
+  },
+  {
+   "id": "S02",
+   "min": 3.4,
+   "fn": "Zeitsprung + Micro-Frage: ein neues Echo in der Stadt",
+   "emotion": "Staunen",
+   "visual": "Gewöhnlicher Stadtplatz am Morgen; auf dem Pflaster ein türkis glimmender Papierflieger.",
+   "camera": "Totale, langsamer Push-in",
+   "line": {
+    "who": "erzaehler",
+    "text": "Ein neues Echo. Mitten in der Stadt.",
+    "pre": 0.2
+   },
+   "kf": [
+    {
+     "id": "S02",
+     "seed": 302,
+     "prompt": "Wide shot of an ordinary small European old town square in soft morning light, cobblestones, a fountain, closed shop fronts with plain blank signs; in the middle of the cobblestones lies a small white paper airplane that glows faintly turquoise from within, floating golden dust around it; no letters, no writing, no symbols anywhere."
+    }
+   ],
+   "onscreen_text": "Eine Stunde vorher",
+   "motion": {
+    "zoom": [
+     1.0,
+     1.08
+    ]
+   },
+   "fx": [
+    "motes"
+   ],
+   "sfx": [
+    [
+     "shimmer",
+     0.3
+    ]
+   ],
+   "cut": "hart"
+  },
+  {
+   "id": "S03",
+   "min": 3.2,
+   "fn": "Gefahr (Einsatz)",
+   "emotion": "Angst",
+   "visual": "Ein kleines Mädchen im gelben Mantel läuft mit ausgestreckter bloßer Hand auf den Flieger zu.",
+   "camera": "Halbnah, tief",
+   "line": {
+    "who": "erzaehler",
+    "text": "Berührt sie es, schreibt es ihr Leben um.",
+    "pre": 0.15
+   },
+   "kf": [
+    {
+     "id": "S03",
+     "seed": 303,
+     "prompt": "Low angle medium shot on a cobblestone town square in morning light: a happy little girl of about seven in a simple yellow coat runs toward a small glowing turquoise paper airplane lying on the ground, reaching out with her bare hand; no letters, no writing, no symbols anywhere."
+    }
+   ],
+   "motion": {
+    "zoom": [
+     1.0,
+     1.06
+    ]
+   },
+   "sfx": [
+    [
+     "tick",
+     0
+    ]
+   ],
+   "cut": "hart"
+  },
+  {
+   "id": "S04",
+   "min": 2.6,
+   "fn": "Team-Plan",
+   "emotion": "Entschlossenheit",
+   "visual": "Nox und Mira rennen über den Platz, Mira ruft.",
+   "camera": "Halbtotale, Kamera mitlaufend",
+   "line": {
+    "who": "mira",
+    "text": "Du nimmst es. Ich versiegle.",
+    "pre": 0.1
+   },
+   "kf": [
+    {
+     "id": "S04",
+     "seed": 304,
+     "refs": [
+      "nox",
+      "mira"
+     ],
+     "prompt": "Medium wide shot on a cobblestone town square in morning light: the young man from the first reference image and the young woman from the second reference image run side by side toward the camera, determined; he wears dark leather gloves, his coat exactly like the reference: his right half navy blue, his left half ochre, with the brass toggle; she exactly like the reference: black bob with bangs, a small silver hair clip on one side, teal coat with cream shoulder plates, dark grey gloves; slight motion blur; no letters, no writing, no symbols anywhere."
+    }
+   ],
+   "motion": {
+    "zoom": [
+     1.0,
+     1.05
+    ],
+    "shake": 2
+   },
+   "sfx": [
+    [
+     "whoosh_short",
+     0.1
+    ]
+   ],
+   "cut": "hart"
+  },
+  {
+   "id": "S05",
+   "min": 2.0,
+   "fn": "Aktion: Nox ist schneller",
+   "emotion": "Anspannung",
+   "visual": "ECU: Nox' Lederhandschuh greift den Flieger, Zentimeter vor den kleinen bloßen Fingern des Mädchens.",
+   "camera": "Makro",
+   "kf": [
+    {
+     "id": "S05",
+     "seed": 305,
+     "refs": [
+      "nox"
+     ],
+     "prompt": "Extreme close-up at ground level on cobblestones: a dark leather gloved hand of the young man from the reference image, with a navy blue sleeve, snatches a small glowing turquoise paper airplane just a few centimeters before the small bare fingers of a child's hand reach it; motion blur, golden dust; no letters, no writing, no symbols anywhere."
+    }
+   ],
+   "motion": {
+    "zoom": [
+     1.0,
+     1.12
+    ],
+    "shake": 3
+   },
+   "sfx": [
+    [
+     "whoosh_short",
+     0
+    ]
+   ],
+   "cut": "hart"
+  },
+  {
+   "id": "S06",
+   "min": 3.0,
+   "fn": "Micro gelöst: Mira versiegelt",
+   "emotion": "Erleichterung",
+   "visual": "Miras graue Handschuhe um den Flieger; goldene Ringe schließen sich zu einem kleinen Glaskasten.",
+   "camera": "Nah",
+   "kf": [
+    {
+     "id": "S06",
+     "seed": 306,
+     "refs": [
+      "mira"
+     ],
+     "prompt": "Close-up: the dark grey gloved hands of the young woman from the reference image hold a small glowing turquoise paper airplane while thin glowing golden rings and simple straight golden lines close around it into a small transparent glass display case; only circles and straight lines of light, no letters, no writing, no symbols anywhere; her teal sleeves with cream cuffs; town square softly blurred behind."
+    }
+   ],
+   "motion": {
+    "zoom": [
+     1.0,
+     1.05
+    ]
+   },
+   "fx": [
+    "motes"
+   ],
+   "sfx": [
+    [
+     "metal",
+     0.5
+    ],
+    [
+     "shimmer",
+     0.3
+    ]
+   ],
+   "cut": "hart"
+  },
+  {
+   "id": "S07",
+   "min": 3.4,
+   "fn": "Wärme: Ersatz für das Kind",
+   "emotion": "Wärme",
+   "visual": "Nox kniet und gibt dem Mädchen einen gewöhnlichen weißen Papierflieger; sie strahlt.",
+   "camera": "Halbnah",
+   "line": {
+    "who": "nox",
+    "text": "Der hier fliegt besser.",
+    "pre": 0.3
+   },
+   "kf": [
+    {
+     "id": "S07",
+     "seed": 307,
+     "refs": [
+      "nox"
+     ],
+     "prompt": "Medium shot on a cobblestone town square in morning light: the young man from the reference image kneels down to eye level with a little girl of about seven in a simple yellow coat and kindly hands her an ordinary plain white folded paper airplane that does not glow; she beams; he wears dark leather gloves, his coat exactly like the reference: his right half navy blue, his left half ochre, with the brass toggle; his face in three-quarter view, gentle smile; no letters, no writing, no symbols anywhere."
+    },
+    {
+     "id": "S07m",
+     "seed": 307,
+     "prompt": "Same image, identical in every detail, except the young man's mouth is slightly open as if speaking.",
+     "edit_of": "S07",
+     "patch": "mouth"
+    }
+   ],
+   "talk": {
+    "nox": "S07m"
+   },
+   "motion": {
+    "zoom": [
+     1.0,
+     1.04
+    ]
+   },
+   "cut": "hart"
+  },
+  {
+   "id": "S08",
+   "min": 2.6,
+   "fn": "Beziehung: Partner, nicht Paar",
+   "emotion": "Zurückhaltung",
+   "visual": "Mira sieht Nox zu, fast ein Lächeln; dann blickt sie weg.",
+   "camera": "Nah",
+   "line": {
+    "who": "nox",
+    "text": "Gutes Team.",
+    "pre": 0.2
+   },
+   "kf": [
+    {
+     "id": "S08",
+     "seed": 308,
+     "refs": [
+      "mira"
+     ],
+     "prompt": "Close-up of the young woman from the reference image standing on a town square in morning light, watching someone off-screen with an almost-smile, then her eyes turning away, guarded; exactly like the reference: black bob with bangs, a small silver hair clip on one side, teal coat with cream shoulder plates, dark grey gloves; no letters, no writing, no symbols anywhere."
+    }
+   ],
+   "motion": {
+    "zoom": [
+     1.0,
+     1.05
+    ]
+   },
+   "cut": "hart"
+  },
+  {
+   "id": "S09",
+   "min": 3.6,
+   "fn": "Macro: Der Kurator ruft (Q5)",
+   "emotion": "Unruhe",
+   "visual": "Im Archiv: Aus einem Messing-Rohrpostrohr schießt eine cremefarbene Karte mit goldenem geometrischem Emblem.",
+   "camera": "Nah",
+   "line": {
+    "who": "erzaehler",
+    "text": "Der Kurator schreibt nur, wenn er schon alles weiß.",
+    "pre": 0.2
+   },
+   "kf": [
+    {
+     "id": "S09",
+     "seed": 309,
+     "prompt": "Close-up inside a dark archive hall: a plain cream card shoots out of the open round brass mouth of a pneumatic mail tube; the card is blank except for one small embossed gold emblem at the top, a circle inside a square; warm lamp light, golden dust; no letters, no writing, no symbols anywhere."
+    }
+   ],
+   "motion": {
+    "zoom": [
+     1.0,
+     1.06
+    ]
+   },
+   "fx": [
+    "motes"
+   ],
+   "sfx": [
+    [
+     "metal",
+     0.1
+    ]
+   ],
+   "cut": "hart"
+  },
+  {
+   "id": "S10",
+   "min": 3.0,
+   "fn": "Weg zum Kurator",
+   "emotion": "Beklemmung",
+   "visual": "Mira allein im langen dunklen Gang, vor ihr eine hohe Tür mit goldener geometrischer Einlage.",
+   "camera": "Totale von hinten",
+   "kf": [
+    {
+     "id": "S10",
+     "seed": 310,
+     "refs": [
+      "mira"
+     ],
+     "prompt": "Wide shot from behind: the young woman from the reference image walks alone down a very long dark stone corridor toward a tall dark door with a large geometric gold inlay of a circle inside a square; cold light from above, long shadow; exactly like the reference: black bob with bangs, a small silver hair clip on one side, teal coat with cream shoulder plates, dark grey gloves; no letters, no writing, no symbols anywhere."
+    }
+   ],
+   "motion": {
+    "zoom": [
+     1.0,
+     1.1
+    ]
+   },
+   "sfx": [
+    [
+     "heart",
+     0.2
+    ]
+   ],
+   "cut": "hart"
+  },
+  {
+   "id": "S11",
+   "min": 3.2,
+   "fn": "Der Kurator (Gesicht nie sichtbar, Kanon 5)",
+   "emotion": "Ehrfurcht",
+   "visual": "Große Silhouette im grauen Gewand mit goldenen geometrischen Mustern, von hinten, vor einem Fenster aus weißem Licht; Mira klein im Vordergrund.",
+   "camera": "Totale",
+   "kf": [
+    {
+     "id": "S11",
+     "seed": 311,
+     "refs": [
+      "mira"
+     ],
+     "prompt": "Wide shot in a vast high chamber: a very tall figure in a long grey robe with geometric gold patterns stands with its back to the camera before an enormous window of bright white light, seen only as a dark silhouette, its head hidden under a high geometric hood, no face visible at all; in the foreground, small and seen from behind, the young woman from the reference image stands waiting; no letters, no writing, no symbols anywhere."
+    }
+   ],
+   "motion": {
+    "zoom": [
+     1.0,
+     1.06
+    ]
+   },
+   "sfx": [
+    [
+     "silence",
+     0
+    ]
+   ],
+   "cut": "hart"
+  },
+  {
+   "id": "S12",
+   "min": 3.0,
+   "fn": "Frage 1 (schriftlich)",
+   "emotion": "Druck",
+   "visual": "Karte auf dunklem Pult unter Miras Fingerspitzen; Text „HAT ER DEN BRIEF GELESEN?“ (Overlay).",
+   "camera": "Makro, Draufsicht",
+   "kf": [
+    {
+     "id": "S12",
+     "seed": 312,
+     "refs": [
+      "mira"
+     ],
+     "prompt": "Top-down close-up: a plain cream card lies on a dark polished desk, the dark grey gloved fingertips of the young woman from the reference image rest at its lower edge; the card shows only a small embossed gold emblem at the top, a circle inside a square, and a large completely empty area below; cold light; no letters, no writing, no symbols anywhere."
+    }
+   ],
+   "motion": {
+    "zoom": [
+     1.0,
+     1.05
+    ]
+   },
+   "fx": [
+    "texts"
+   ],
+   "sfx": [
+    [
+     "tick",
+     0
+    ]
+   ],
+   "cut": "hart"
+  },
+  {
+   "id": "S13",
+   "min": 2.0,
+   "fn": "Lüge 1",
+   "emotion": "Kontrolle",
+   "visual": "Mira, nah, ruhiger Blick nach oben.",
+   "camera": "Nah",
+   "line": {
+    "who": "mira",
+    "text": "Nein.",
+    "pre": 0.5
+   },
+   "kf": [
+    {
+     "id": "S13",
+     "seed": 313,
+     "refs": [
+      "mira"
+     ],
+     "prompt": "Close-up portrait of the young woman from the reference image looking calmly up at someone tall off-screen, perfectly composed, cold light from above, dark background; exactly like the reference: black bob with bangs, a small silver hair clip on one side, teal coat with cream shoulder plates, dark grey gloves; no letters, no writing, no symbols anywhere."
+    },
+    {
+     "id": "S13m",
+     "seed": 313,
+     "prompt": "Same image, identical in every detail, except the young woman's mouth is slightly open as if speaking.",
+     "edit_of": "S13",
+     "patch": "mouth"
+    }
+   ],
+   "talk": {
+    "mira": "S13m"
+   },
+   "motion": {
+    "zoom": [
+     1.02,
+     1.06
+    ]
+   },
+   "cut": "hart"
+  },
+  {
+   "id": "S14",
+   "min": 2.8,
+   "fn": "Frage 2",
+   "emotion": "Druck",
+   "visual": "Neue Karte, gleiche Einstellung: „UND SEINE NOTIZEN?“ (Overlay).",
+   "camera": "Makro, Draufsicht",
+   "plate_of": "S12",
+   "motion": {
+    "zoom": [
+     1.05,
+     1.1
+    ]
+   },
+   "fx": [
+    "texts"
+   ],
+   "sfx": [
+    [
+     "tick",
+     0
+    ]
+   ],
+   "cut": "hart"
+  },
+  {
+   "id": "S15",
+   "min": 2.0,
+   "fn": "Lüge 2",
+   "emotion": "Kontrolle",
+   "visual": "Mira, nah (wie S13).",
+   "camera": "Nah",
+   "line": {
+    "who": "mira",
+    "text": "Verbrannt.",
+    "pre": 0.4
+   },
+   "plate_of": "S13",
+   "talk": {
+    "mira": "S13m"
+   },
+   "motion": {
+    "zoom": [
+     1.06,
+     1.1
+    ]
+   },
+   "cut": "hart"
+  },
+  {
+   "id": "S16",
+   "min": 3.0,
+   "fn": "Ironie: Regel sieben",
+   "emotion": "Kälte",
+   "visual": "Der Kurator bleibt abgewandt (wie S11, enger).",
+   "camera": "Totale, enger",
+   "line": {
+    "who": "erzaehler",
+    "text": "Regel sieben: Vertraue dem Kurator.",
+    "pre": 0.3
+   },
+   "plate_of": "S11",
+   "motion": {
+    "zoom": [
+     1.12,
+     1.2
+    ]
+   },
+   "cut": "hart"
+  },
+  {
+   "id": "S17",
+   "min": 3.4,
+   "fn": "Twist-Vorbereitung",
+   "emotion": "Heimlichkeit",
+   "visual": "Nachts in Miras kleinem Zimmer: Sie kniet und hebt ein Dielenbrett an.",
+   "camera": "Halbnah",
+   "line": {
+    "who": "erzaehler",
+    "text": "Nichts ist verbrannt.",
+    "pre": 0.4
+   },
+   "kf": [
+    {
+     "id": "S17",
+     "seed": 317,
+     "refs": [
+      "mira"
+     ],
+     "prompt": "Medium shot at night in a small sparse room inside an old archive: a narrow bed, a desk with a small warm lamp, old wooden floorboards; the young woman from the reference image kneels on the floor and lifts one loose floorboard with her dark grey gloved hands, glancing over her shoulder; exactly like the reference: black bob with bangs, a small silver hair clip on one side, teal coat with cream shoulder plates, dark grey gloves; no letters, no writing, no symbols anywhere."
+    }
+   ],
+   "motion": {
+    "zoom": [
+     1.0,
+     1.06
+    ]
+   },
+   "sfx": [
+    [
+     "heart",
+     0.3
+    ]
+   ],
+   "cut": "hart"
+  },
+  {
+   "id": "S18",
+   "min": 4.2,
+   "fn": "Twist: sie sammelt seine Spuren (Q1, P7, N4)",
+   "emotion": "Zärtlichkeit/Schuld",
+   "visual": "Draufsicht: Versteck voller gefalteter Notizen und zweier umgedrehter alter Fotos; ihr Handschuh legt die Notiz aus der Manteltasche dazu.",
+   "camera": "Draufsicht",
+   "line": {
+    "who": "erzaehler",
+    "text": "Sie ließ ihn den Brief lesen. Damit er Lina diesmal behält.",
+    "pre": 0.3
+   },
+   "kf": [
+    {
+     "id": "S18",
+     "seed": 318,
+     "refs": [
+      "mira"
+     ],
+     "prompt": "Top-down close-up: a hidden compartment under a lifted wooden floorboard, filled with dozens of small folded cream paper notes and two old photographs lying face down showing only their blank backs; the dark grey gloved hand of the young woman from the reference image places one more folded note on top; warm lamp light; no letters, no writing, no symbols anywhere."
+    }
+   ],
+   "motion": {
+    "zoom": [
+     1.0,
+     1.08
+    ]
+   },
+   "fx": [
+    "motes"
+   ],
+   "cut": "hart"
+  },
+  {
+   "id": "S19",
+   "min": 4.2,
+   "fn": "Cliffhanger: Nox' eigene Notiz",
+   "emotion": "Schock",
+   "visual": "ECU: aufgefaltete Notiz in Miras Handschuh; Nox' Handschrift „Mira weiß es.“ + gebrochener Kreis (Overlay).",
+   "camera": "Makro",
+   "kf": [
+    {
+     "id": "S19",
+     "seed": 319,
+     "refs": [
+      "mira"
+     ],
+     "prompt": "Extreme close-up: a small unfolded cream paper note with soft creases, completely blank, held by the dark grey gloved fingers of the young woman from the reference image at its edges; warm lamp light from the side, dark background; no letters, no writing, no symbols anywhere."
+    }
+   ],
+   "hand_text": "Mira weiß es.",
+   "motion": {
+    "zoom": [
+     1.0,
+     1.1
+    ]
+   },
+   "fx": [
+    "handwriting"
+   ],
+   "sfx": [
+    [
+     "silence",
+     0
+    ]
+   ],
+   "cut": "hart"
+  },
+  {
+   "id": "S20",
+   "min": 3.4,
+   "fn": "Endkarte",
+   "emotion": "Sog",
+   "visual": "Dunkler Archivgang, Logo, Folgentitel.",
+   "camera": "Statisch",
+   "kf": [
+    {
+     "id": "S20",
+     "seed": 0,
+     "prompt": "(copy of E002 kf/S19.png: dark archive corridor, endcard background)",
+     "copy_of": "../E002/kf/S19.png"
+    }
+   ],
+   "motion": {
+    "zoom": [
+     1.0,
+     1.03
+    ]
+   },
+   "fx": [
+    "endcard"
+   ],
+   "sfx": [
+    [
+     "logo",
+     0.05
+    ],
+    [
+     "tick",
+     0.6
+    ]
+   ],
+   "cut": "hart"
+  }
+ ]
+}

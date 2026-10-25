@@ -145,9 +145,10 @@ const FX = {   // (u, d, t, shot, X): u = time in shot, d = shot length, X = cam
       s += `<circle cx="${x}" cy="${y}" r="${1.6 + 2.6 * (1 - k)}" fill="#ffd77a" opacity="${0.85 * (1 - k) * f}" style="mix-blend-mode:screen"/>`; }
     return anchor(X, at(sh, "memory_flow"), s); },
   handwriting: (u, d, t, sh, X) => { const w = clamp((u - 1.3) / 1.1), sig = clamp((u - 2.6) / 0.6), c = 2 * Math.PI * 29; // writes after Nox' question
-    return anchor(X, at(sh, "handwriting"), `<clipPath id="wr"><rect x="-260" y="-140" width="${520 * w}" height="215"/></clipPath>
-      <text y="45" text-anchor="middle" font-family="Caveat" font-weight="700" font-size="133" fill="#1f1d27" opacity="0.92" clip-path="url(#wr)" style="mix-blend-mode:multiply">Lina lebt.</text>
-      ${sig > 0 ? `<circle cx="167" cy="165" r="29" fill="none" stroke="#1f1d27" stroke-width="6" stroke-linecap="round" stroke-dasharray="${c * 0.78 * sig} ${c}" transform="rotate(-40 167 165)" opacity="0.9"/>` : ""}`)
+    const txt = sh.hand_text || "Lina lebt.", hw = 26 * txt.length;   // Nox' handwriting + his broken-circle signature
+    return anchor(X, at(sh, "handwriting"), `<clipPath id="wr"><rect x="${-hw}" y="-140" width="${2 * hw * w}" height="215"/></clipPath>
+      <text y="45" text-anchor="middle" font-family="Caveat" font-weight="700" font-size="133" fill="#1f1d27" opacity="0.92" clip-path="url(#wr)" style="mix-blend-mode:multiply">${txt}</text>
+      ${sig > 0 ? `<circle cx="${hw - 93}" cy="165" r="29" fill="none" stroke="#1f1d27" stroke-width="6" stroke-linecap="round" stroke-dasharray="${c * 0.78 * sig} ${c}" transform="rotate(-40 ${hw - 93} 165)" opacity="0.9"/>` : ""}`)
       + `<rect width="${W}" height="${H}" fill="#000" opacity="${seq(u, d - 0.45, d)}"/>`; },
   endcard: (u, d, t) => { let s = `<rect width="${W}" height="${H}" fill="#000" opacity="0.55"/>`;
     for (let k = 0; k < 4; k++) { const e = u - (0.95 + k * 0.38);
