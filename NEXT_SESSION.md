@@ -51,11 +51,12 @@ Arbeitsplan (Status hier fortschreiben):
 **Qualitätsoffensive E01 v3** (Reihenfolge wegen RAM, nie parallel; Stand 25.10. 06:05 UTC):
 1. [x] Stimmen fertig (15/15 ASR-ok, 59,3 s). Cache `E001/build/tts/` ist flüchtig → nach Neustart `build.py --skip-render` (~15 min, gleiche Seeds)
 2. [~] Keyframes: `python3 pipeline/keyframes.py series/echo-archiv/episodes/E001` (resumable, überspringt vorhandene `kf/*.png`).
-   Geprüft & ok: S03 S04 S05 S07 S07m S08 S08b S09 S10. **Nachlauf nötig** (Datei löschen → Skript erneut starten):
-   S01 + S12 (jetzt mit Nox-Referenz; ohne Referenz erfindet das Modell einen bärtigen Fremden), S06 + S06m (Prompt präzisiert); neue Fix-Patches S07f (Tränenlinien), S08f (Miras Ausdruck) laufen automatisch mit.
+   Geprüft & ok: S03 S04 S05 S07 S07m S08 S08b S09 S10 S10m S11 S13 S14 S14b S15. **Nachlauf (läuft seit 25.10. ~07:00 UTC, nach Maschinen-Neustart):**
+   S01 + S12 (mit Nox-Referenz), S06 + S06m (Prompt präzisiert), S07f/S08f (Fix-Patches: Tränenlinien, Miras Ausdruck),
+   S16 + S16m + S16p (Komposit: Mira-Plate + separat generiertes Foto Nox-Kind/Lina als FX `photo`), S17, S18.
    Jedes neue Keyframe ansehen: Identität vs. `look/refs`, Ort, Requisiten, Policy; Overlay-Positionen (`fx_at`, Keyframe-Pixel) eintragen:
-   `pin` (Nox' gebrochener Kreis, linker Kragen) bei S05 S06 S07 S10 S14 · `notches` S01 (Siegelmitte/Radius, ggf. x-Stauchung) ·
-   `engraving`/`glint` S11 (Deckelmitte) · `handwriting` S17 (Fotorückseite) · `memory_flow` S14 (Kopf) · `echo_pulse` S09 (erledigt) · Mund-`at` für S06m S10m S16m
+   `pin` S06 (Nox' linker Kragen; S05 S07 S10 S14 erledigt) · `notches` S01 (+S07b/S07c gleiche Werte) · `photo` S16 (Bildfläche des Fotos, ggf. Drehwinkel) ·
+   `handwriting` S17 (Fotorückseite) · Mund-`at` für S06m S16m. Erledigt: echo_pulse S09, engraving S11, memory_flow S14
 3. `gen-venv/bin/python pipeline/plates.py series/echo-archiv/episodes/E001` → Bericht prüfen (Patches „skipped"?)
 4. Vorschau-Stills: `node pipeline/render.mjs series/echo-archiv/scene.html <ep>/build/timeline.json x.mp4 30 1080 1920 --times … --png <dir>` (vorher `build.py --skip-render` für frische Timeline) → Kontaktbogen ansehen
 5. `piper-venv/bin/python pipeline/build.py series/echo-archiv/episodes/E001` (voller Render + QC) → `tts2-venv/bin/python pipeline/asr_check.py …`
