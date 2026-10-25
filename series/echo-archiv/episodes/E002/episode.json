@@ -1060,7 +1060,12 @@
      "seed": 218,
      "prompt": "Same image, identical in every detail, except the young man's lips are almost closed, nearly touching, as if in the middle of a word.",
      "edit_of": "S17",
-     "patch": "mouth"
+     "patch": "mouth",
+     "at": [
+      373,
+      740
+     ],
+     "r": 95
     }
    ],
    "talk": {
