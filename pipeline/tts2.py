@@ -42,13 +42,13 @@ if __name__ == "__main__" and sys.argv[1] == "say":
     print(f"{sys.argv[4]}: {sf.info(sys.argv[4]).duration:.2f}s audio in {time.time() - t:.0f}s")
 
 
-TAKES = 4   # takes per line at most
+TAKES = 4   # takes per line at most (a line may ask for more: "takes")
 PACE = 3.8  # target syllables/s (calm, dramatic German); a take within +-1 of it that Whisper hears clearly ends the search
 
 
 def best_take(j):
     takes, syl = [], len(re.findall(r"[aeiouäöüy]+", j["text"].lower()))  # vowel groups ~ German syllables
-    for k in range(TAKES):
+    for k in range(j.get("takes", TAKES)):
         path = f"{j['out']}.take{k}.wav"
         say(j["text"], j["ref"], path, j["exaggeration"], j["cfg_weight"], j["seed"] + k)
         sim, start, end = asr_check.match(j["text"], asr_check.hear(path))
@@ -56,8 +56,7 @@ def best_take(j):
         print(f"  take {k}: similarity {sim:.2f}, {takes[-1]['rate']:.1f} syl/s, speech {start:.2f}-{end:.2f}s", flush=True)
         if sim >= 0.95 and abs(takes[-1]["rate"] - PACE) <= 1.0:
             break
-    clear = [t for t in takes if t["sim"] >= asr_check.MIN_SIMILARITY]
-    best = min(clear, key=lambda t: abs(t["rate"] - PACE)) if clear else max(takes, key=lambda t: t["sim"])
+    best = max(takes, key=lambda t: (round(t["sim"], 1), -abs(t["rate"] - PACE)))  # clarity first (0.1 steps = ASR noise), then pace
     a, sr = sf.read(best["path"], dtype="float32")
     a = a[: int((best["end"] + 0.25) * sr)]  # leading silence is trimmed later by build.py's FX chain
     fade = min(len(a), int(0.08 * sr))

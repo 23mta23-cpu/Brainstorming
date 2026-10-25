@@ -127,7 +127,8 @@
    "line": {
     "who": "erzaehler",
     "text": "Nox brach Regel acht.",
-    "pre": 0.1
+    "pre": 0.1,
+    "takes": 8
    },
    "kf": [
     {

@@ -23,7 +23,7 @@ SkillSpector 2.12.0 · Piper 1.8.0 + 3 CC0-Stimmen · RTK (Binary, nicht gehookt
 
 ## Blocker
 - Keine Hörprüfung durch mich möglich → Stimmen-Freigabe durch Menschen.
-- Kein generatives Video/keine Profi-Stimmen ohne Budgetfreigabe.
+- Budget 0 € → kein generatives Video (CPU zu langsam), Stimmen nur Open Source (Chatterbox).
 
 ## Erforderliche Freigaben / Rückfragen an den Co-CEO
 1. **E001 v2 ansehen/anhören** und freigeben oder Korrekturen nennen.
@@ -31,7 +31,7 @@ SkillSpector 2.12.0 · Piper 1.8.0 + 3 CC0-Stimmen · RTK (Binary, nicht gehookt
 2. **Musik-Policy**: nur Sounddesign / Vokal-Percussion / lizenzierte Instrumentalmusik? (`docs/CONTENT_POLICY.md`)
 3. Hausregel Körperkontakt/Romantik bestätigen.
 4. TikTok-Account: neuer Serien-Account oder bestehender (MiracTT?).
-5. Budget für Stimmen (Priorität 1) — ja/nein, Obergrenze.
+5. ~~Budget~~ entschieden: **0 €**, auch keine Lizenzkosten (25.10.).
 6. Rollen der vier Teammitglieder (`docs/COMPANY_STRATEGY.md`).
 7. Optional: nicht benötigte account-synchronisierte Plugins deaktivieren (Token-/Hook-Overhead).
 
@@ -43,13 +43,13 @@ Arbeitsplan (Status hier fortschreiben):
 1. [x] Recherche: FLUX.2-klein-4B (Apache-2.0, Multi-Referenz-Editing), Chatterbox Multilingual (MIT, Deutsch); Video auf CPU nicht machbar
 2. [x] Machbarkeit: CPU hat AMX → bf16 ~860 GFLOPS; **65 s/Bild** (576×1024), 127 s mit Referenz, Peak-RAM 9,9 GB (`pipeline/gen.py`)
 3. [~] Character Lock v3: `series/echo-archiv/look/refs/` — nox.png, mira.png, lina.png (v2, ohne Ohren) OK; **pip.png wird im Keyframe-Batch neu erzeugt** (Augen über Rand, kein Ring)
-4. [~] Pipeline v3: `pipeline/keyframes.py` (Skript → Jobs), `pipeline/gen.py`, `pipeline/plates.py` (Upscale + Mund-Patches), `pipeline/tts2.py` (Chatterbox) geschrieben; **offen**: Stimm-Referenzen, Szene v3 (`series/echo-archiv/scene.html`), build.py-Integration
+4. [~] Pipeline v3: `pipeline/keyframes.py` (Skript → Jobs), `gen.py`, `plates.py` (Upscale + Mund-Patches), Szene v3 (`series/echo-archiv/scene.html`), build.py-Integration geschrieben. **Stimmen TESTED**: `tts2.py` nimmt bis zu 4 Takes (Hook 8), `asr_check.py` (Whisper) wählt Verständlichkeit vor Tempo und schneidet nach dem letzten Skriptwort; Referenzen reproduzierbar mit `pipeline/voice_refs.py`. Ergebnis E001: 15/15 Zeilen ASR-ok, Dauer 59,3 s (vorher 82,5 s durch Kauderwelsch/Stille). Bilder/Plates/Render: noch nicht gelaufen
 5. [~] E01 Skript **v3.2** (21 Shots, 24 Keyframes, Summe Mindestdauern 58,4 s) — Story-Review: v3 REVISE (5 Blocker) → v3.1 **PASS**; Asset-Gates G1 Lina/Pip, G2 Stimmen (erledigt: `series/echo-archiv/voices/` + SOURCES.md), G3 Ring in S05/S07 bei Keyframe-Prüfung. ACHTUNG: E001 ist WIP — v2-Szene passt nicht mehr zum v3-Skript; v2 bleibt über Commit `006911a` reproduzierbar (Tag-Push vom Git-Proxy verweigert)
 6. [ ] Ehrlicher Vergleich v2 vs. v3 (Kontaktbogen) → Freigabepaket
 
 ## Genaue nächste Aktion
 **Qualitätsoffensive zuerst** (Reihenfolge wegen RAM, nie parallel):
-1. Stimmen: `piper-venv/bin/python pipeline/build.py series/echo-archiv/episodes/E001 --skip-render` (Chatterbox-Batch, prüft Dauer/Hook)
+1. [x] Stimmen (fertig, Cache in `E001/build/tts/` — nach Container-Neustart weg: dann ~15 min neu, gleiche Seeds)
 2. Bilder (ein Lauf, ~17 min Laden + ~25 × 70–130 s): `python3 pipeline/keyframes.py series/echo-archiv/episodes/E001` — danach jedes Keyframe ansehen (Ring S05/S07, Konsistenz)
 3. `gen-venv/bin/python pipeline/plates.py series/echo-archiv/episodes/E001` → Vorschau-Stills → `build.py` (voller Render) → QC → Vergleich v2/v3
 Danach erst E02.
@@ -77,6 +77,8 @@ Branch: `claude/ai-studio-foundation` (kein PR erstellt).
 - Vorschau-Kontaktbogen vor dem Vollrender spart Iterationen (fand Tür-Rotationsbug, Blitzposition, Haar-Clipping, Untertitel über Mund).
 - Story-Review **vor** dem Render ist Pflicht, nicht Kür: der Agent fand 3 echte Blocker, die ich im Selbstreview übersehen hatte. Kosten ~160 k Tokens/Lauf.
 - Sprechtempo in Silben/s messen, nicht Wörter/s (einsilbige Wörter verfälschen).
+- Chatterbox hängt bei kurzen Sätzen oft Kauderwelsch oder Sekunden Stille an → nie ungeprüft übernehmen: ASR-Takeauswahl + Schnitt am letzten Skriptwort. Tempo kommt aus der Referenz (Piper `length_scale`), `exaggeration`↑ beschleunigt, `cfg_weight` 0.3 bremst nur wenig.
+- faster-whisper: Audio als Array übergeben (Datei-Decoder bricht mit installiertem PyAV).
 - Subagent-Behauptungen mit strategischer Wirkung an der Primärquelle verifizieren (Anti-Spam-Meldung: bestätigt, aber anders als zuvor angenommen).
 - Drive-Markdown-Import zerstört 4-Byte-Emojis → in Drive-Kopien Emojis ausschreiben.
 - Fremdcode nie mit voller Umgebung starten (Tokens!) → `sandbox-run.sh`; `env -i` entfernt auch `VIRTUAL_ENV` → `uv pip --python` nutzen.
