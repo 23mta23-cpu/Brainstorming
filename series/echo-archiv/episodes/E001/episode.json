@@ -806,7 +806,7 @@
    "camera": "Halbnah",
    "line": {
     "who": "mira",
-    "text": "Weil du sie schon wieder vergessen hast.",
+    "text": "Weil du sie … schon wieder vergessen hast.",
     "pre": 0.2,
     "post": 0.5
    },

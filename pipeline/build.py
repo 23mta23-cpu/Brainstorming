@@ -13,7 +13,7 @@ FX = {  # ffmpeg filters per voice effect; every voice ends trimmed, 48 kHz mono
     None: TRIM + "aresample=48000",
     "narrator": TRIM + "asetrate={sr}*0.92,aresample=48000,atempo=1.087,aecho=0.8:0.5:45|90:0.18|0.1",
     "child_echo": TRIM + "asetrate={sr}*1.26,aresample=48000,atempo=0.794,aecho=0.8:0.6:70|160:0.3|0.15",
-    "echo": TRIM + "aresample=48000,aecho=0.8:0.6:70|160:0.3|0.15",
+    "echo": TRIM + "aresample=48000,atempo=0.88,aecho=0.8:0.6:70|160:0.3|0.15",  # memory voice: slowed (pitch kept) + echo
 }
 TTS2_PY = "/home/user/tools/tts2-venv/bin/python"  # Chatterbox lives in its own venv (pinned deps)
 SCENE_FX = {"motes", "alarm", "rays", "echo_pulse", "engraving", "glint", "flash", "snow", "dream", "memory_flow", "handwriting", "endcard"}
@@ -61,15 +61,17 @@ def load48(path):
 
 
 def voice_spec(line, ep, epdir, cache):
-    """Voice config + cache paths for one line. The key covers text, settings, FX chain and the reference audio bytes."""
+    """Voice config + cache paths for one line. The raw take is keyed by text, settings and reference audio bytes;
+    the processed file also by the FX chain, so FX tweaks never re-run the TTS."""
     c = dict(ep["cast"][line.get("voice", line["who"])])  # per-line voice (e.g. whisper) and tempo overrides
     if "length_scale" in line:
         c["length_scale"] = line["length_scale"]
     if "ref" in c:
         c["ref"] = str((epdir / c["ref"]).resolve())
         c["ref_sha"] = hashlib.sha1(Path(c["ref"]).read_bytes()).hexdigest()
-    key = hashlib.sha1(json.dumps([line["text"], c, FX[c.get("fx")]], sort_keys=True).encode()).hexdigest()[:12]
-    return c, cache / f"{key}.raw.wav", cache / f"{key}.wav"
+    raw = hashlib.sha1(json.dumps([line["text"], {k: v for k, v in c.items() if k != "fx"}], sort_keys=True).encode()).hexdigest()[:12]
+    out = hashlib.sha1(json.dumps([raw, FX[c.get("fx")]]).encode()).hexdigest()[:12]
+    return c, cache / f"{raw}.raw.wav", cache / f"{out}.wav"
 
 
 def prerender_chatterbox(ep, epdir, cache):
@@ -89,7 +91,7 @@ def prerender_chatterbox(ep, epdir, cache):
 def voice_line(line, ep, epdir, cache):
     c, raw, out = voice_spec(line, ep, epdir, cache)
     if not out.exists():
-        if c.get("engine") != "chatterbox":
+        if c.get("engine") != "chatterbox" and not raw.exists():  # Piper samples noise: keep the take once made
             tts.synth(line["text"], raw, c["model"], c.get("speaker"), c.get("length_scale", 1.0))
         run("ffmpeg", "-y", "-loglevel", "error", "-i", str(raw), "-af", FX[c.get("fx")].format(sr=tts.read_wav(raw)[1]), "-ac", "1", str(out))
     return load48(out)
