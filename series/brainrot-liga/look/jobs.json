@@ -1,0 +1,13 @@
+{
+ "style": "Hyperrealistic glossy 3D render of an absurd surreal creature, viral meme character design, centered full body, dramatic studio lighting, soft gradient background, highly detailed textures, funny expressive face, no letters, no text, no logos, vertical 9:16 frame.",
+ "jobs": [
+  {"id": "spargolino", "out": "spargolino.png", "seed": 501, "w": 720, "h": 1280,
+   "prompt": "A giant white asparagus stalk that is also a small steam locomotive: iron wheels and pistons on its sides, steam puffing from its green tip, a tiny conductor cap, a grumpy impatient face with a big moustache, standing on railway tracks."},
+  {"id": "brezelina", "out": "brezelina.png", "seed": 502, "w": 720, "h": 1280,
+   "prompt": "A giant golden-brown salted pretzel with big coarse salt crystals that walks on six crab legs and has two huge crab claws, determined confident female face with long eyelashes, battle pose."},
+  {"id": "doeneradler", "out": "doeneradler.png", "seed": 503, "w": 720, "h": 1280,
+   "prompt": "A rotating vertical kebab meat spit with the head, beak and mighty spread wings of a golden eagle, small lightning bolts crackling around it, proud heroic face, dark stormy sky background."},
+  {"id": "knoedelina", "out": "knoedelina.png", "seed": 504, "w": 720, "h": 1280,
+   "prompt": "A big round potato dumpling with tiny arms and short legs, wearing racing goggles and a small red racing scarf, rolling at high speed with motion blur and dust clouds behind, cheerful fearless female face."}
+ ]
+}
