@@ -70,3 +70,16 @@ Dauerbetrieb außerhalb von Sitzungen: nicht eingerichtet (bräuchte Scheduler-F
     - Hook-Idee B (aus „Answer in One Word") „Pip zeigt die andere Richtung": 10-s-Bonus-Short ohne Kanon-Auswirkung: Nox geht links – Pips Nadel zeigt rechts; er geht rechts – Nadel zeigt links; er bleibt stehen – Nadel zeigt zur Tür, Ton bricht ab (Kanon 4 + P3: Pip zeigt auf den nicht gewählten Weg, lügt und spricht nie). Keine Engagement-Bitte, nur vorhandene Assets.
     - SCHLUSSFOLGERUNG: Fenster endet in 6 Tagen; E02/E03 sind laut NEXT_SESSION noch nicht produziert (Launch-Empfehlung: E01 erst mit E02+E03). Beide Hooks nur nach Story-Review + Freigabe und mit minimalem Posting-Volumen (Anti-Spam-Linie).
   - Offen für Mensch / nächster Lauf: Creative Center (Region DE) in-app prüfen — dieser Lauf hat keine DACH-Daten; Entscheidung, ob vor 31.10. etwas gepostet wird. Nicht abrufbar (HTTP 403), daher nicht ausgewertet: [Fieldfisher „AI & Microdrama"](https://www.fieldfisher.com/de-de/locations/germany/insights/ai-microdrama-die-zukunft-oder-kapitulation) (DACH-Rechtsblick) — manuell lesen.
+
+## Update 27.10.2026 — Was auf TikTok bei KI-Serien tatsächlich läuft (Anlass: Co-CEO verwirft Echo-Archiv)
+Grenze: TikTok-Feeds/Trendseiten sind von hier nicht lesbar (App-Sperre) → Quellen = Presse + Bildschirmaufnahmen des Co-CEO.
+- FAKT: „Fruit Love Island" (ai.cinema021): ~2,5 Mio. Follower, 22 Folgen à 1–3 min in ~2 Wochen (März 2026), jede Folge > 10 Mio. Aufrufe, Top ~40 Mio. (WSJ via the-decoder/netzpiloten).
+  Kritik wegen Sexismus/Gewalt; Original-Account nach Meldungen entfernt (basicthinking). Nachahmer in vielen Ländern (FR „Skibidi Tentafruit" ~160 Mio., SRF).
+- FAKT: KI-Microdramen: Q3 2026 ~2/3 der Neuerscheinungen außerhalb Chinas KI-generiert; Geschichten mit synthetischen Darstellern führen bei Sehminuten;
+  TikToks PineDrama-App > 50 % der Aufrufe (Owl & Co. via Hollywood Reporter/Yahoo). Trefferquote niedrig: 0,117 % von 127.800 KI-Dramen > 100 Mio. (China).
+- FAKT (Referenz des Co-CEO, „KI Früchte Milliardär Teil 6", DE): 73 s, 27 Sätze, ~15 Einstellungen, Statuswechsel alle ~10 s, Vermögens-Leuchtanzeige über jeder Figur,
+  Loop zum ersten Satz; ~19 Tsd. Likes, 2,7 Tsd. Speicherungen, 603 Shares (Bildschirm-Zahlen).
+- SCHLUSSFOLGERUNG — Erfolgsmuster: (1) sofort lesbare vermenschlichte Figuren im 3D-Kinofilm-Look, (2) Reality-/Soap-Struktur, Dialog ohne Pause, Konflikt alle paar Sekunden,
+  (3) Teile-Serie mit Cliffhanger, hohe Taktung (täglich), (4) Kommentar-Streit um Figuren („Team X"), (5) sichtbarer Status (Zahl/Etikett im Bild).
+- RISIKO: Sexismus/Gewalt → Meldungen → Account-Sperre; „Slop"-Kritik; reine Klone sind austauschbar.
+

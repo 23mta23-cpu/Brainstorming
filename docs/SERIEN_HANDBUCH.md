@@ -1,5 +1,8 @@
 # Serienhandbuch (Welt, Figuren, Staffelplan, Kanon)
 
+> **ARCHIVIERT (Co-CEO, 27.10.2026):** „Die Geschichte ist gar nicht ansprechend — verwerfen." Nur noch Referenz (Pipeline, Lessons). Neue Richtung: siehe `docs/MARKET_INTELLIGENCE.md` (Abschnitt Oktober 2026) und `NEXT_SESSION.md`.
+
+
 ## 1. Konzeptauswahl (2026-10-25)
 
 Drei originelle Konzepte, bewertet gegen Marktanalyse, Policy und **heutige** Produktionsmittel (Code-Animation, lokale TTS, kein Budget).

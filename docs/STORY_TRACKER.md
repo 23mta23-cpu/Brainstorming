@@ -1,5 +1,8 @@
 # Story- & Continuity-Register
 
+> **ARCHIVIERT (Co-CEO, 27.10.2026):** „Die Geschichte ist gar nicht ansprechend — verwerfen." Nur noch Referenz (Pipeline, Lessons). Neue Richtung: siehe `docs/MARKET_INTELLIGENCE.md` (Abschnitt Oktober 2026) und `NEXT_SESSION.md`.
+
+
 Regel: Keine neue große Serie, solange begonnene Kernhandlungen offen sind. Jede Folge braucht Teilabschluss + Fortschritt.
 
 ## Serien
