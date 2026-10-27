@@ -5,7 +5,12 @@
 `docs/RESEARCH_TIKTOK_AI_SERIES_2026-10.md` (Notizen `research_notes/KI Serien auf TikTok 2026/`). Kern: Mechanik schlägt Motiv —
 sichtbarer Status + Status-Umkehr + benannte Figuren + Loop; Früchte-Motiv in DACH verbrannt; Engpass = Flow-Credits.
 Empfehlung: 3 Piloten à 45 s gegeneinander testen — Rang 1 **„Kontostand"**, Rang 2 **„Probezeit"**, Rang 3 **„Straßenküche"**.
-**Wartet auf Co-CEO:** Konzeptwahl (oder alle 3 als Test) + Freigaben (Konto, Cross-Post, Halal-Ergänzung Glücksspiel/Schwein).
+**27.10. Co-CEO verwirft auch „Kontostand"** (Konsens-Idee: jede KI landet nach derselben Analyse dort; Markt voll). Gefordert: Idee mit Sinn,
+die mitnimmt/verändert, außerhalb des KI-Mainstreams (Anime erwünscht). Neue Kandidaten (Neuheit nur per Stichprobe geprüft):
+A **„Eine Minute"** (jeder hat 60 s Sprechzeit/Tag; Folge = Minute einer Person in Echtzeit, Zähler) · B **„Ein Satz"** (ein Satz zu einem Kind,
+Zeitraffer 25 Jahre, Ende: anderer Satz → anderes Leben) · C **„Der Koffer"** (Gastarbeiter-Generationensaga 1964→2026) ·
+D **„Ehrenmann-Arc"** (kleine gute Taten als epischer Kampf-Anime). Empfehlung: A als Hauptserie, Pilot A vs. D.
+**Wartet auf Co-CEO:** Wahl + Freigaben (Konto, Cross-Post, Halal-Ergänzung Glücksspiel/Schwein).
 
 ## Abgeschlossen (2026-10-25)
 - Discovery: Umgebung (4 vCPU, 15 GiB, keine GPU), GitHub (nur `23mta23-cpu/brainstorming`), Google Drive (Lesen/Schreiben ok; Ordner „MiracTT" existiert), Deep-Research-PDF vollständig ausgewertet (`docs/RESEARCH_FINDINGS.md`).
