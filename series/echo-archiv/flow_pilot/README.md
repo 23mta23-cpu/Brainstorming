@@ -50,3 +50,9 @@ Close-up: a small brass compass creature with two round eyes sits on the shoulde
 Kein sichtbares Wasserzeichen in den Ecken gefunden. Testschnitt mit Cast-Stimmen: `Testschnitt_A_eure_Stimmen.mp4` (Veo-Stimme entfernt, Cast-Take an der Pause geteilt und auf Veos Mundbewegung gelegt).
 Runde 2: Format 9:16 prüfen; Startbild wirklich anhängen (bzw. Flow „Frames to Video" = Startbild als exaktes erstes Bild); P1-Prompt: Hand stoppt sichtbar in der Luft; Dialog-Prompts verwenden.
 
+## Vergleichstest Hailuo AI (MiniMax H3, „Omni Reference", 27.10., vom Co-CEO ins Spiel gebracht)
+Neuer Dienst (MiniMax, CN): nur Test mit eigenen Serienbildern; vor Veröffentlichung Nutzungsbedingungen (kommerziell, Wasserzeichen, Gratis-Credits) prüfen.
+Omni Reference: bis 12 Referenzen (Bild/Video/Audio), im Prompt per @Image1… → Image1 = `P3_start.jpg`, Image2 = `look/refs/nox.png`, Image3 = `look/refs/pip.png`.
+Prompt = P3 mit Dialog „Hat sie mir je geschrieben?" (siehe Chat 27.10.). Ziel: Figurentreue/Bewegung/Lippen vs. Gemini-Clip A.
+Idee falls gut: Audio-Referenz mit unserer Cast-Stimme (`voices/casting/nox_b.wav`) testen → konsistente Stimme ohne Nachvertonung.
+

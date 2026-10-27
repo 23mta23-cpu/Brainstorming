@@ -59,6 +59,10 @@ ich liefere Startbild (unser Keyframe) + Prompt je Shot, Team generiert in Flow,
    Alle 3 Pilot-Prompts jetzt mit Dialog (P3 „Hat sie mir je geschrieben?", P2 „Enn Feyr … das bin ich.", P1 Mira off „Nicht! Sonst vergisst du sie wieder.").
    Befund Anime: Mira-Hautton zu hell (Lock: warm-braun) → bei Anime-Entscheidung korrigieren; Figuren etwas schlicht. Clips kommen per Chat-Upload.
 2. Danach: Clips prüfen (Figurentreue, Lippen, Wasserzeichen, Artefakte), Testschnitt mit unseren Stimmen, Vergleich zur jetzigen Fassung; Nutzungsbedingungen Flow (kommerziell, Wasserzeichen) prüfen.
+2b. **27.10.:** Pilot-Runde 1 ausgewertet (echte Bewegung ✓, Veo spricht Deutsch ✓; Drift, 16:9, Kanon-Berührung ✗) + Testschnitt mit Cast-Stimmen. Referenzvideo des Co-CEO
+   („KI Früchte Milliardär Teil 6", 73 s) analysiert: 27 Sätze/73 s, ~15 Einstellungen, Statuswechsel alle ~10 s, Vermögens-Leuchtanzeige als sichtbarer Einsatz,
+   Loop zum ersten Satz → **Format-Lehre:** Figuren spielen selbst (Dialog-dicht), 9 Clips × 8 s pro Teil, sichtbarer „Erinnerungen"-Zähler für Nox.
+   Vorschlag an Co-CEO: Teil 1 „Regel Acht" in diesem Format neu (3D), Prompt-Paket-Generator + Auto-Schnitt-Skript. Co-CEO testet zusätzlich **Hailuo AI** (Omni Reference) — Ergebnis abwarten.
 3. Dann Produktionsweise festlegen: Shot-Liste „bewegungsorientiert" (jede Einstellung = Handlung), Flow-Prompts pro Shot generieren (Skript), E01/E02 neu animieren, E03 v1.1 schreiben (Review-Befunde E03-R1 im Tracker).
 Alternativen, falls Flow nicht reicht: Kaggle-Gratis-GPU + Wan 2.2 (Apache-2.0; OpenMontage hat `_wan_engine.py`), oder Veo-API mit Budget (Lite 0,05 $/s, Fast 0,10 $/s; Freigabe nötig).
 OpenMontage (AGPL, nur als separates Werkzeug) enthält Veo/Kling/Wan/LTX-Tools + Veo-Prompt-Skill (`skills/creative/prompting/veo-prompting.md`).
