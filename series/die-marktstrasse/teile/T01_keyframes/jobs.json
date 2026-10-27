@@ -1,0 +1,32 @@
+{
+ "style": "Photorealistic cinematic film still, everyone has a human body in real clothes and an oversized realistic fruit as a head with an expressive face grown into the fruit skin, warm natural light, shallow depth of field, 35mm film look, no letters, no text, no logos, no watermark, vertical 9:16 frame.",
+ "jobs": [
+  {"id": "K1", "out": "K1.png", "seed": 701, "w": 720, "h": 1280,
+   "refs": ["../../look/refs/konrad_kokosnuss.png", "../../look/refs/opa_dattel.png", "../../look/refs/kai_kiwi.png"],
+   "prompt": "Inside a small cosy old German bakery with wooden shelves full of bread and an old stone oven in the back. The businessman with the coconut head from the first reference image stands at the wooden counter, laughing, slapping a thick bundle of banknotes onto a lump of dough. Behind the counter the old baker with the date head from the second reference image keeps kneading calmly. One step behind the businessman stands the assistant with the kiwi head from the third reference image holding a tablet. Medium shot at eye level."},
+  {"id": "K2", "out": "K2.png", "seed": 702, "w": 720, "h": 1280,
+   "refs": ["../../look/refs/konrad_kokosnuss.png", "../../look/refs/kai_kiwi.png", "../../look/refs/opa_dattel.png"],
+   "prompt": "Inside the small old bakery. The businessman with the coconut head from the first reference image is half turned toward the nervous assistant with the kiwi head from the second reference image, gesturing mockingly around the shop. In the foreground his left hand rests on the wooden counter. In the background behind the counter the old baker with the date head from the third reference image watches quietly."},
+  {"id": "K3", "out": "K3.png", "seed": 703, "w": 720, "h": 1280,
+   "refs": ["../../look/refs/konrad_kokosnuss.png", "../../look/refs/opa_dattel.png"],
+   "prompt": "Close medium shot across a flour-dusted wooden bakery counter: the businessman with the coconut head from the first reference image slides a plain black business card across the counter with one finger. The old baker with the date head from the second reference image looks up at him for the first time, calm, with a faint smile."},
+  {"id": "K4", "out": "K4.png", "seed": 704, "w": 720, "h": 1280,
+   "refs": ["../../look/refs/kai_kiwi.png", "../../look/refs/konrad_kokosnuss.png"],
+   "prompt": "Early morning on a cobblestone old-town street with old German facades, right in front of the open door of a small bakery. The assistant with the kiwi head from the first reference image stares at his tablet, shocked. The businessman with the coconut head from the second reference image has stopped abruptly and turns to him. Through the open bakery door behind them a warm lit interior is visible."},
+  {"id": "K5", "out": "K5.png", "seed": 705, "w": 720, "h": 1280,
+   "refs": ["../../look/refs/konrad_kokosnuss.png"],
+   "prompt": "Wide high shot of an empty cobblestone old-town street at dawn: every shop has its metal roller shutter pulled down, empty dark shop windows. Only one small shop window glows warm and golden: a bakery. In the middle of the street stands the businessman with the coconut head from the reference image, small in the frame, looking around."},
+  {"id": "K6", "out": "K6.png", "seed": 706, "w": 720, "h": 1280,
+   "refs": ["../../look/refs/opa_dattel.png", "../../look/refs/konrad_kokosnuss.png"],
+   "prompt": "Inside the small old bakery, medium shot over the wooden counter: the old baker with the date head from the first reference image holds out two full paper bags of warm fresh bread. In front of the counter the businessman with the coconut head from the second reference image stands quieter now, avoiding eye contact."},
+  {"id": "K7", "out": "K7.png", "seed": 707, "w": 720, "h": 1280,
+   "refs": ["../../look/refs/konrad_kokosnuss.png", "../../look/refs/kai_kiwi.png"],
+   "prompt": "A modern glass office with a view of an old-town street. A glass table with a bread basket, teapot and coffee cups only. Three elegantly but modestly dressed investors with exotic fruit heads sit at the table; in front an elegant woman whose head is a pink dragon fruit, wearing a high-necked dark dress, bites into a crusty bread roll with wide surprised eyes. The businessman with the coconut head from the first reference image smiles forcedly; the assistant with the kiwi head from the second reference image stands behind him."},
+  {"id": "K8", "out": "K8.png", "seed": 708, "w": 720, "h": 1280,
+   "refs": ["../../look/refs/lilli_limette.png"],
+   "prompt": "The small old bakery in the evening, dim warm light, chairs turned up on the tables. The teenage girl with the lime head from the reference image sweeps the floor with a broom next to the wooden counter. On the counter lie a plain black business card and an old small photograph face down."},
+  {"id": "K9", "out": "K9.png", "seed": 709, "w": 720, "h": 1280,
+   "refs": ["../../look/refs/lilli_limette.png", "../../look/refs/opa_dattel.png"],
+   "prompt": "The small old bakery in the evening, dim warm light. In the foreground the teenage girl with the lime head from the first reference image holds an old small photograph and a black card side by side, looking worried toward the back. In the background the old baker with the date head from the second reference image stands with his back to her, closing the iron door of the old stone oven."}
+ ]
+}

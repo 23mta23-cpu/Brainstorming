@@ -1,17 +1,53 @@
 {
  "style": "Photorealistic cinematic character design photo, a person with a human body in real clothes whose whole head is an oversized realistic fruit with an expressive human face (eyes, eyebrows, mouth) grown naturally into the fruit skin, full body standing, facing the camera at a slight angle, soft natural daylight, plain light grey studio background, sharp detail, no letters, no text, no logos, vertical 9:16 frame.",
  "jobs": [
-  {"id": "opa_dattel", "out": "refs/opa_dattel.png", "seed": 601, "w": 720, "h": 1280,
-   "prompt": "Old baker, about 74: his head is a big deeply wrinkled dark brown date fruit with kind warm eyes, bushy white eyebrows and a short white beard; white baker's cap, cream linen apron dusted with flour over a knitted brown cardigan with rolled-up sleeves, strong old hands, calm gentle smile."},
-  {"id": "lilli_limette", "out": "refs/lilli_limette.png", "seed": 602, "w": 720, "h": 1280,
-   "prompt": "Teenage girl, about 17: her head is a bright green lime with a small green leaf on top, lively sharp eyes, confident half-smile; oversized dark green hoodie with long sleeves, dark baker's apron over it, loose dark trousers, white sneakers."},
-  {"id": "konrad_kokosnuss", "out": "refs/konrad_kokosnuss.png", "seed": 603, "w": 720, "h": 1280,
-   "prompt": "Rich arrogant businessman, about 38: his head is a hairy brown coconut with the fibres combed back like slick hair, cold proud eyes, one raised eyebrow; perfectly tailored charcoal three-piece suit, white shirt, no tie, silver cufflinks, plain silver watch, a small pale old burn scar on the back of his left hand."},
-  {"id": "kai_kiwi", "out": "refs/kai_kiwi.png", "seed": 604, "w": 720, "h": 1280,
-   "prompt": "Nervous young assistant, about 25: his head is a fuzzy brown kiwi fruit, round thin glasses, worried eyebrows, awkward smile; slightly too big light grey suit, holding a tablet against his chest."},
-  {"id": "frau_paprika", "out": "refs/frau_paprika.png", "seed": 605, "w": 720, "h": 1280,
-   "prompt": "Strict city inspector woman, about 50: her head is a glossy red bell pepper with its green stem like a neat bun, sharp serious eyes, thin straight mouth; dark navy blazer buttoned up, long dark skirt, lanyard with a blank ID card, clipboard in hand."},
-  {"id": "mama_kokosnuss", "out": "refs/mama_kokosnuss.png", "seed": 606, "w": 720, "h": 1280,
-   "prompt": "Elderly modest woman, about 68: her head is an older pale brown coconut with gentle tired kind eyes, wrapped in a soft beige headscarf; long modest camel coat, simple cloth shopping bag on her arm."}
+  {
+   "id": "opa_dattel",
+   "out": "refs/opa_dattel.png",
+   "seed": 601,
+   "w": 720,
+   "h": 1280,
+   "prompt": "Old baker, about 74: his head is a big deeply wrinkled dark brown date fruit with kind warm eyes, bushy white eyebrows and a short white beard; white baker's cap, cream linen apron dusted with flour over a knitted brown cardigan with rolled-up sleeves, strong old hands, calm gentle smile."
+  },
+  {
+   "id": "lilli_limette",
+   "out": "refs/lilli_limette.png",
+   "seed": 612,
+   "w": 720,
+   "h": 1280,
+   "prompt": "Slim teenage girl, 17 years old with adult proportions: her entire head is a large oval green lime with dimpled glossy citrus peel and small pointed nubs at the top and bottom, not an apple, no leaves; lively sharp eyes, confident half-smile; oversized dark green hoodie with long sleeves, dark baker's apron over it, loose dark trousers, white sneakers."
+  },
+  {
+   "id": "konrad_kokosnuss",
+   "out": "refs/konrad_kokosnuss.png",
+   "seed": 613,
+   "w": 720,
+   "h": 1280,
+   "prompt": "Rich arrogant businessman, about 38: his entire head is a whole round brown coconut with rough fibrous hairy husk texture, no human hair, no human skin, the face is formed on the coconut surface: cold proud eyes, one raised eyebrow, thin smirk; perfectly tailored charcoal three-piece suit, white shirt, no tie, silver cufflinks, plain silver watch."
+  },
+  {
+   "id": "kai_kiwi",
+   "out": "refs/kai_kiwi.png",
+   "seed": 604,
+   "w": 720,
+   "h": 1280,
+   "prompt": "Nervous young assistant, about 25: his head is a fuzzy brown kiwi fruit, round thin glasses, worried eyebrows, awkward smile; slightly too big light grey suit, holding a tablet against his chest."
+  },
+  {
+   "id": "frau_paprika",
+   "out": "refs/frau_paprika.png",
+   "seed": 605,
+   "w": 720,
+   "h": 1280,
+   "prompt": "Strict city inspector woman, about 50: her head is a glossy red bell pepper with its green stem like a neat bun, sharp serious eyes, thin straight mouth; dark navy blazer buttoned up, long dark skirt, lanyard with a blank ID card, clipboard in hand."
+  },
+  {
+   "id": "mama_kokosnuss",
+   "out": "refs/mama_kokosnuss.png",
+   "seed": 616,
+   "w": 720,
+   "h": 1280,
+   "prompt": "Elderly modest woman, about 68: her entire head is an old round pale brown coconut with rough fibrous husk texture, no human skin, the gentle tired kind face is formed on the coconut surface, wrapped in a soft beige headscarf; long modest camel coat, simple cloth shopping bag on her arm."
+  }
  ]
 }
