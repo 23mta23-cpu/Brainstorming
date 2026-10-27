@@ -17,7 +17,7 @@
   {
    "id": "K2",
    "out": "K2.png",
-   "seed": 702,
+   "seed": 712,
    "w": 720,
    "h": 1280,
    "refs": [
@@ -25,7 +25,7 @@
     "../../look/refs/kai_kiwi.png",
     "../../look/refs/opa_dattel.png"
    ],
-   "prompt": "Inside the small old bakery. The businessman with the coconut head from the first reference image is half turned toward the nervous assistant with the kiwi head from the second reference image, gesturing mockingly around the shop. In the foreground his left hand rests on the wooden counter. In the background behind the counter the old baker with the date head from the third reference image watches quietly."
+   "prompt": "Inside the small old bakery, exactly three characters. In the foreground the businessman with the coconut head from the first reference image is half turned toward the nervous assistant with the fuzzy brown kiwi head and round glasses from the second reference image, gesturing mockingly around the shop with his right hand, his left hand resting on the wooden counter close to the camera. Behind the counter, small in the background, only one old baker: the one with the dark-brown date head and white baker's cap from the third reference image, watching quietly."
   },
   {
    "id": "K3",
