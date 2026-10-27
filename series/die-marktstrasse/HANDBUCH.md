@@ -96,6 +96,7 @@ Akt 2 (T6–T8): Mama-Enthüllung, Opa bricht zusammen, 7-Tage-Frist, Lilli am T
 | Q4 | Paprikas Zusage „Auch die über Sie." | T3 | T6 Baustellenkontrolle |
 
 ## 8. Produktion (Kurzfassung)
+- **Look A (Co-CEO 27.10.):** stilisierter 3D-Animationsfilm (Referenz-Genre SzenarioX/Ai Kino Lab), Frucht-Menschen: Kopf = ganze Frucht mit großen Cartoon-Augen, Hände in Fruchthaut, Kleidung menschlich (zeigt Status). Keine menschliche Haut. Referenzen `look/refs/`.
 - Pro Teil 9 Veo-Clips à 8 s (Gemini „Videos" / Flow, 9:16), Dialog im Prompt (Deutsch), Geräusche im Prompt, keine Musik.
 - Figuren-Treue: Referenzbilder `look/refs/` als Startbild bzw. „Zutaten". Bildtexte, Visitenkarte, Foto, Buchseiten, Dokument als
   Overlay/Standbild im Schnitt (lokal erzeugt, 0 Credits; Video-KI schreibt unzuverlässig).
