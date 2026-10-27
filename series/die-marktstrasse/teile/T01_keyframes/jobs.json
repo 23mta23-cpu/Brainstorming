@@ -4,15 +4,14 @@
   {
    "id": "K1",
    "out": "K1.png",
-   "seed": 701,
+   "seed": 731,
    "w": 720,
    "h": 1280,
    "refs": [
     "../../look/refs/konrad_kokosnuss.png",
-    "../../look/refs/opa_dattel.png",
-    "../../look/refs/kai_kiwi.png"
+    "../../look/refs/opa_dattel.png"
    ],
-   "prompt": "Inside a small cosy old German bakery with wooden shelves full of bread and an old stone oven in the back. The businessman with the coconut head from the first reference image stands at the wooden counter, laughing, slapping a thick bundle of banknotes onto a lump of dough. Behind the counter the old baker with the date head from the second reference image keeps kneading calmly. One step behind the businessman stands the assistant with the kiwi head from the third reference image holding a tablet. Medium shot at eye level."
+   "prompt": "Medium shot over a flour-dusted wooden bakery counter inside a small cosy old German bakery with bread shelves and a stone oven. Exactly two characters. On the left the businessman with the coconut head and charcoal suit from the first reference image laughs and presses a thick bundle of euro banknotes onto a big lump of dough. On the right behind the counter, large in the frame and clearly visible, the old baker from the second reference image: his whole head is a glossy wrinkled dark-brown date fruit with big cartoon eyes, white eyebrows, white beard and white baker's cap, his hands are dark-brown date skin, kneading the dough calmly."
   },
   {
    "id": "K2",
