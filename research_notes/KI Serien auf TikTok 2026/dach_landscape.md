@@ -27,8 +27,7 @@ Es gibt keine belegte, namentlich bekannte **deutschsprachige** KI-Serie mit ges
 - FAKT: Die Beratung „AI Century“ bietet ein kostenloses ChatGPT-Modell „Object Talk“ an, das solche Formate automatisch erzeugt. Hersteller-Tools senken also die Einstiegshürde (Stand 31.03.2026) — [blue News](https://www.bluewin.ch/de/digital/ki-fruechte-li.3166688)
 - FAKT (Kontext, keine Serie): CeMAS fand mindestens 72 deutschsprachige TikTok-Accounts mit KI-generierter Desinformation zur deutschen Politik. Sie haben rund 1,1 Mio. Follower, posteten zwischen 15.11.2024 und 27.01.2026 mindestens 5.265 Videos und kamen auf 162 Mio. Aufrufe, 2,7 Mio. Likes und ca. 386.000 Kommentare. KI-Moderatoren und Deepfakes werden genutzt. Fehler in KI-Voiceover und Untertiteln deuten auf nicht-deutsche Produzenten hin (veröffentlicht am 18.02.2026) — [CeMAS](https://cemas.io/blog/ki-slop-auf-tiktok)
 
-**Gesucht, nicht gefunden:**
-- „KI Früchte Milliardär“ und „SzenarioX“/„Szenario X“ ergaben in zwei Suchen keinen einzigen Treffer (Stand 27.10.2026) — [Suche 1 ohne Treffer, Ergebnisse u. a. CIO.de](https://www.cio.de/article/4163597/ki-fruechte-kapern-tiktok-so-gefaehrlich-ist-der-bizarre-genai-hype.html)
+**Gesucht, nicht gefunden** (zu „KI Früchte Milliardär“ und SzenarioX siehe Gaps):
 - Zu deutschsprachigen KI-Anime-Serien auf TikTok lieferte die Suche nur klassische Anime-Creator ohne KI-Bezug, z. B. den Berliner YouTube-Kanal Kaizen! mit 173.000 Abonnenten (Stand 04/2025) — [vidIQ](https://vidiq.com/youtube-stats/channel/UC3ktc3EsJWpfEer21cJmRig)
 
 ### Inferences
