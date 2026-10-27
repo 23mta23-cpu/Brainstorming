@@ -1,0 +1,13 @@
+{
+ "style": "Stylized 3D animated feature film character render, original design, soft subsurface shading, big expressive cartoon eyes, glossy saturated colors, warm cinematic lighting, simple soft warm background, full body, no human skin anywhere, no letters, no text, no logos, vertical 9:16 frame.",
+ "jobs": [
+  {"id": "A_opa", "out": "A_opa_dattel.png", "seed": 801, "w": 720, "h": 1280,
+   "prompt": "Variant fruit-person: an old baker whose entire head is a big wrinkled glossy dark-brown date fruit; the kind face with big gentle cartoon eyes, bushy white eyebrows, a short white beard and a warm smile is sculpted into the date skin; his hands are also wrinkled dark-brown date skin; white baker's cap, flour-dusted cream apron over a brown knitted cardigan."},
+  {"id": "A_konrad", "out": "A_konrad_kokosnuss.png", "seed": 802, "w": 720, "h": 1280,
+   "prompt": "Variant fruit-person: an arrogant rich businessman whose entire head is a round brown coconut with rough hairy fibres; the smug face with narrow cartoon eyes, one raised eyebrow and a thin smirk is sculpted into the coconut shell; his hands are also brown coconut shell texture; tailored charcoal three-piece suit, white shirt, no tie."},
+  {"id": "B_opa", "out": "B_opa_dattel.png", "seed": 803, "w": 720, "h": 1280,
+   "prompt": "Variant whole fruit: an anthropomorphic date fruit character, the whole body is one big wrinkled glossy dark-brown date with a kind old face, big gentle cartoon eyes, bushy white eyebrows and a little white beard, thin dark-brown arms and short legs, wearing only a small white baker's cap and a tiny flour-dusted apron, holding a bread roll."},
+  {"id": "B_konrad", "out": "B_konrad_kokosnuss.png", "seed": 804, "w": 720, "h": 1280,
+   "prompt": "Variant whole fruit: an anthropomorphic coconut character, the whole body is one big round hairy brown coconut with a smug arrogant face, narrow cartoon eyes and a raised eyebrow, thin brown arms and short legs, wearing only a small charcoal suit jacket, a white shirt collar and a silver watch."}
+ ]
+}
