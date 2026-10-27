@@ -74,3 +74,12 @@ Vertical 9:16, stylized 3D animated feature film look, glossy saturated colors, 
 ---
 Prüfliste nach dem Generieren: Fruchtköpfe stabil · keine Schrift/Logos im Bild · kein Alkohol/Fleisch (C7) · Mund passt grob zum Text ·
 9:16 · Narbe in C2 sichtbar (sonst Insert-Standbild im Schnitt).
+
+---
+## Vergleichstest Hailuo (MiniMax H3, „Omni Reference") — Clip 1
+Refs in dieser Reihenfolge hochladen: @Image1 = `T01_keyframes/K1.png` · @Image2 = `look/refs/konrad_kokosnuss.png` ·
+@Image3 = `look/refs/opa_dattel.png` · @Image4 = `look/refs/kai_kiwi.png` · Einstellungen: 9:16 · 768p · 8 s.
+Nur Gratis-Credits, nichts kaufen. Vor Veröffentlichung: Nutzungsbedingungen (kommerziell) und Wasserzeichen prüfen.
+```
+@Image1 is the first frame and the scene: a small cosy old German bakery. The coconut-headed businessman from @Image2 stands at the wooden counter, laughs and slaps a thick bundle of banknotes onto a lump of dough. Behind the counter the old date-headed baker from @Image3 keeps kneading calmly around the money without looking up. The kiwi-headed assistant with glasses from @Image4 stands behind the businessman holding a tablet. The businessman says in German with a mocking laugh: "Fünfzigtausend. Bar. Für diese Bruchbude." The baker answers calmly in German: "Nicht verkäuflich." Stylized 3D animated feature film look, glossy saturated colors, warm cinematic light, fruit heads and fruit-skin hands exactly as in the references. Camera: slow push-in at eye level. Sound: money slapping on dough, a short laugh, quiet street ambience. No music, no subtitles, no text, no watermark.
+```
