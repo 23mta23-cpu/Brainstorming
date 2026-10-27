@@ -9,7 +9,11 @@ Empfehlung: 3 Piloten à 45 s gegeneinander testen — Rang 1 **„Kontostand"**
 die mitnimmt/verändert, außerhalb des KI-Mainstreams (Anime erwünscht). Neue Kandidaten (Neuheit nur per Stichprobe geprüft):
 A **„Eine Minute"** (jeder hat 60 s Sprechzeit/Tag; Folge = Minute einer Person in Echtzeit, Zähler) · B **„Ein Satz"** (ein Satz zu einem Kind,
 Zeitraffer 25 Jahre, Ende: anderer Satz → anderes Leben) · C **„Der Koffer"** (Gastarbeiter-Generationensaga 1964→2026) ·
-D **„Ehrenmann-Arc"** (kleine gute Taten als epischer Kampf-Anime). Empfehlung: A als Hauptserie, Pilot A vs. D.
+D **„Ehrenmann-Arc"** (kleine gute Taten als epischer Kampf-Anime; Co-CEO: auch Ehrenfrauen → „Ehren-Arc", Aylin/Jonas/Oma Hilde,
+Leitsatz „Ehre zählt nur ohne Kamera"). Co-CEO unsicher, will Forecast + evtl. Früchte/Gemüse → neu E **„Mindestens haltbar"**
+(WG-Kühlschrank, MHD-Anzeige über jedem Lebensmittel; Twist: sie WOLLEN gegessen werden, Angst = Biotonne; Ende jeder Folge = Verwandlung
+z. B. Bananenbrot; Bogen: WG fährt in 10 Tagen weg → Finale Fairteiler). Forecast (Schätzung, 8 Wochen, neues Konto):
+Hit-Chance E 5 % / D 3 % / A 3 %; Flop E 35 % / D 40 % / A 45 %. Empfehlung jetzt: Pilot E vs. D.
 **Wartet auf Co-CEO:** Wahl + Freigaben (Konto, Cross-Post, Halal-Ergänzung Glücksspiel/Schwein).
 
 ## Abgeschlossen (2026-10-25)
