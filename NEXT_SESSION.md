@@ -18,7 +18,13 @@ Hit-Chance E 5 % / D 3 % / A 3 %; Flop E 35 % / D 40 % / A 45 %. Danach „Brain
 4.302 Likes / 755 Saves / 65 Komm. / 60 Shares) + Kurs-Werbekarussell ⚠ (Pets Dancing 285 Tsd. Follower/21 Mio. Peak, Brainrot-Mukbang, PS1-Streets,
 POV Cartoon Worlds, Rainy Cartoon Nights — 2/5 mit fremder IP). Lehre: im bewährten Genre besser sein statt neues Genre erfinden.
 Vorschlag „Die Marktstraße" (Früchte-Köpfe, Menschenkörper, dt. Straße; Opa Dattel/Bäckerei, Lilli Limette, Konrad Kokosnuss, Frau Paprika)
-mit 2 Spuren: Story-Teile 61–75 s + Daily-Clips 8–15 s mit derselben Besetzung. Wartet auf Go.
+mit 2 Spuren: Story-Teile 61–75 s + Daily-Clips 8–15 s mit derselben Besetzung. **Go vom Co-CEO (27.10.).**
+**Stand Die Marktstraße (27.10. abends):** `series/die-marktstrasse/HANDBUCH.md` v2.2 (S1 T1–T10 bis Finale, Plants-Register) ·
+Drehbücher `teile/T01–T03.md` (3 Story-Reviews, alle Blocker behoben; formales PASS vor erstem Veo-Clip einholen) ·
+**Look A** gewählt (3D-Cartoon Frucht-Menschen, keine menschliche Haut; photoreale v2 verworfen: „zu menschlich") · Figuren `look/refs/` ·
+Startbilder `teile/T01_keyframes/K1–K9.png` · Prompt-Paket `teile/T01_PROMPTS.md` (9 Veo-Clips, ~180 Credits).
+Nächste Schritte: Co-CEO generiert Clips in Gemini → Upload im Chat → Schnitt (Overlays, Inserts Karte/Foto/Türschild, Endkarte), Stimmen-Route testen
+(Veo-Stimme vs. Cast-Stimmen), dann Prompt-Pakete T2/T3 (Konrads Handschuhe in Kurzbeschreibung), Drehbücher T4–T10.
 **Wartet auf Co-CEO:** Wahl + Freigaben (Konto, Cross-Post, Halal-Ergänzung Glücksspiel/Schwein).
 
 ## Abgeschlossen (2026-10-25)
