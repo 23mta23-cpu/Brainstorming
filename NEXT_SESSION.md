@@ -1,7 +1,11 @@
 # NEXT_SESSION
 
 ## Aktuelle Phase
-**E001 v3 fertig** (59,3 s, QC 15/15, Whisper 15/15, 3D-Animationsfilm-Look, 0 €) — wartet auf Anhören/Freigabe durch den Co-CEO (`series/echo-archiv/episodes/E001/LAUNCH.md`). Nächstes Ziel: **E02 „Der Brief" + E03** mit der v3-Pipeline, dann Launch.
+**Neuausrichtung (27.10.):** Echo-Archiv vom Co-CEO **verworfen** („nicht ansprechend"). Tiefenrecherche fertig:
+`docs/RESEARCH_TIKTOK_AI_SERIES_2026-10.md` (Notizen `research_notes/KI Serien auf TikTok 2026/`). Kern: Mechanik schlägt Motiv —
+sichtbarer Status + Status-Umkehr + benannte Figuren + Loop; Früchte-Motiv in DACH verbrannt; Engpass = Flow-Credits.
+Empfehlung: 3 Piloten à 45 s gegeneinander testen — Rang 1 **„Kontostand"**, Rang 2 **„Probezeit"**, Rang 3 **„Straßenküche"**.
+**Wartet auf Co-CEO:** Konzeptwahl (oder alle 3 als Test) + Freigaben (Konto, Cross-Post, Halal-Ergänzung Glücksspiel/Schwein).
 
 ## Abgeschlossen (2026-10-25)
 - Discovery: Umgebung (4 vCPU, 15 GiB, keine GPU), GitHub (nur `23mta23-cpu/brainstorming`), Google Drive (Lesen/Schreiben ok; Ordner „MiracTT" existiert), Deep-Research-PDF vollständig ausgewertet (`docs/RESEARCH_FINDINGS.md`).
@@ -49,6 +53,11 @@ Arbeitsplan (Status hier fortschreiben):
 6. [x] Vergleich v2/v3 + Freigabepaket v3 (LAUNCH.md); E001 v3 fertig bis auf menschliches Anhören/Freigabe
 
 ## Genaue nächste Aktion
+**Ab 27.10. gilt:** Nach Konzeptwahl → Pilot(e) + vollständiger Bogen bis zum Ende (Regel 4) → story-reviewer → 3-Sekunden-Verständnistest (≥7/10)
+→ Tech-Spike (3 Clips, ~75–100 Credits: deutscher Dialog, Lippen, Anzeige auf Handy lesbar) → Prompt-Paket (9:16, mit Dialog + Geräuschen)
+→ Auto-Schnitt-Skript. Validierungsplan + Go/Stopp-Schwellen: Report Abschnitt „Validierung". Vor Posting: Flow/Hailuo-Bedingungen + Creator-Rewards-Regeln prüfen.
+Hailuo-Testergebnis des Co-CEO steht noch aus. Alles darunter = Historie Echo-Archiv.
+
 **KURSWECHSEL 25.10. ~16:30 UTC (Co-CEO):** Standbilder + Stimmen („Animated Illustration") erfüllen die Erwartung **nicht** — gefordert sind echte
 Animationen mit Handlung (Referenz: TikTok „AI Fruit Drama": Bild-KI → Bild-zu-Video, z. B. Veo 3.1). Co-CEO hat **Google AI Pro** → Veo 3.1 in **Google Flow**
 ohne Zusatzkosten (laut Übersichten 1.000 Credits/Monat + 50/Tag; Veo 3.1 Lite 10, Fast 20 Credits/Clip). Flow ist nicht fernsteuerbar → Handoff:
