@@ -61,7 +61,7 @@ Vertical 9:16, photorealistic cinematic live-action look. A modern glass office 
 
 ### C8 (Startbild K8)
 ```
-Vertical 9:16, photorealistic cinematic live-action look. The small old bakery in the evening, dim warm light, chairs on the tables. A 17-year-old girl whose head is an oval green lime with a lively face, in a dark green hoodie and dark apron, sweeps the floor, then notices an old small photograph lying face down next to a black business card on the counter. She picks it up and turns it over, puzzled, and murmurs in German: "Konni … neunzehnhundertsechsundneunzig?" Audio: broom on tiles, a ticking clock, paper. No music. Keep her face exactly as in the image. No subtitles, no text, no writing visible, no watermark.
+Vertical 9:16, photorealistic cinematic live-action look. The small old bakery in the evening, dim warm light, chairs on the tables. A 17-year-old girl whose head is an oval green lime with a lively face, in a dark green hoodie and dark apron, sweeps the floor in the foreground. Behind the counter the date-headed old baker stands at the open cash drawer looking at an old small photograph; when he notices her, he lays it face down next to a black business card on the counter and walks to the oven. She picks it up and turns it over, puzzled, and murmurs in German: "Konni … neunzehnhundertsechsundneunzig?" Audio: broom on tiles, a ticking clock, paper. No music. Keep her face exactly as in the image. No subtitles, no text, no writing visible, no watermark.
 ```
 
 ### C9 (Startbild K9)
