@@ -17,15 +17,14 @@
   {
    "id": "K2",
    "out": "K2.png",
-   "seed": 712,
+   "seed": 722,
    "w": 720,
    "h": 1280,
    "refs": [
     "../../look/refs/konrad_kokosnuss.png",
-    "../../look/refs/kai_kiwi.png",
-    "../../look/refs/opa_dattel.png"
+    "../../look/refs/kai_kiwi.png"
    ],
-   "prompt": "Inside the small old bakery, exactly three characters. In the foreground the businessman with the coconut head from the first reference image is half turned toward the nervous assistant with the fuzzy brown kiwi head and round glasses from the second reference image, gesturing mockingly around the shop with his right hand, his left hand resting on the wooden counter close to the camera. Behind the counter, small in the background, only one old baker: the one with the dark-brown date head and white baker's cap from the third reference image, watching quietly."
+   "prompt": "Inside the small old bakery. In the foreground the businessman with the coconut head and charcoal suit from the first reference image is half turned toward the nervous assistant from the second reference image, who has a fuzzy brown kiwi head, round glasses, a light grey suit and holds a tablet; the businessman gestures mockingly around the shop with his right hand, his left hand resting on the wooden counter close to the camera. Far in the background behind the counter stands a small old baker with a dark-brown date head, white beard and white baker's cap."
   },
   {
    "id": "K3",
