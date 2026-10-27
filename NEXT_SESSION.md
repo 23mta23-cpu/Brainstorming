@@ -13,7 +13,12 @@ D **„Ehrenmann-Arc"** (kleine gute Taten als epischer Kampf-Anime; Co-CEO: auc
 Leitsatz „Ehre zählt nur ohne Kamera"). Co-CEO unsicher, will Forecast + evtl. Früchte/Gemüse → neu E **„Mindestens haltbar"**
 (WG-Kühlschrank, MHD-Anzeige über jedem Lebensmittel; Twist: sie WOLLEN gegessen werden, Angst = Biotonne; Ende jeder Folge = Verwandlung
 z. B. Bananenbrot; Bogen: WG fährt in 10 Tagen weg → Finale Fairteiler). Forecast (Schätzung, 8 Wochen, neues Konto):
-Hit-Chance E 5 % / D 3 % / A 3 %; Flop E 35 % / D 40 % / A 45 %. Empfehlung jetzt: Pilot E vs. D.
+Hit-Chance E 5 % / D 3 % / A 3 %; Flop E 35 % / D 40 % / A 45 %. Danach „Brainrot-Liga" (Figurenrender vom Co-CEO gestoppt).
+**27.10. Co-CEO: „Du driftest zu weit raus"** + Screenshots: Ai Kino Lab (DE, Früchte-Kopf-Menschen, Status-Spott am Schuhstand, „Teil 3",
+4.302 Likes / 755 Saves / 65 Komm. / 60 Shares) + Kurs-Werbekarussell ⚠ (Pets Dancing 285 Tsd. Follower/21 Mio. Peak, Brainrot-Mukbang, PS1-Streets,
+POV Cartoon Worlds, Rainy Cartoon Nights — 2/5 mit fremder IP). Lehre: im bewährten Genre besser sein statt neues Genre erfinden.
+Vorschlag „Die Marktstraße" (Früchte-Köpfe, Menschenkörper, dt. Straße; Opa Dattel/Bäckerei, Lilli Limette, Konrad Kokosnuss, Frau Paprika)
+mit 2 Spuren: Story-Teile 61–75 s + Daily-Clips 8–15 s mit derselben Besetzung. Wartet auf Go.
 **Wartet auf Co-CEO:** Wahl + Freigaben (Konto, Cross-Post, Halal-Ergänzung Glücksspiel/Schwein).
 
 ## Abgeschlossen (2026-10-25)
