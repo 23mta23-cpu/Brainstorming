@@ -342,3 +342,23 @@ Alle weiteren Quellen mit Abrufzeit stehen in `research/A–G`.
 4. Die Rangfolge im Consumentenbond-Update ist unbekannt.
 5. Die Wannenhöhe bei Stokke fehlt.
 6. Es gibt keine Preisarchive. Die Preisgrenzen beruhen deshalb auf wenigen Datenpunkten und sind entsprechend unsicher.
+
+---
+
+## Live-Update 27.11.2026, ca. 10:05 MEZ (Hauptinstanz selbst geprüft)
+
+Quellen: Original-Händlerseiten (V) und eingebetteter idealo-Preisvergleich auf mydealz (Händler dort nicht sichtbar, daher U).
+
+| Produkt | Live heute | Preisverlauf (mydealz-Deal-Historie, datiert) | Einordnung |
+|---|---|---|---|
+| Philips Avent SCD713 | **Coolblue 100,90 €** (V, vorher 107 €, Lieferung morgen, 30 Tage Umtausch); MediaMarkt-Marktplatz 110,61 € + Versand (V); idealo ab 89 € (U) | 77,99 € Amazon (bis 28.07.2026); Schwestermodell SCD733 79,89–79,99 € Amazon (03/09 2026) | guter BF-Preis, aber nicht Tiefstpreis; Grenze ≤ 90 € bleibt |
+| Hauck Alpha+ 4-tlg. Walnut/Stretch Beige | babyartikel 159,90 € → 135,92 € mit `blackdeal15`, Lieferung 28.11. (V); idealo „4-tlg.“ ab 127,42 € (U, Händler und Variante unklar) | Alpha+ + Bouncer Premium 116,79 € babymarkt (abgelaufen ~25.11.2026); 4-tlg. 139,90 € Amazon (17.11.2025); Stuhl allein 59,89–75,92 € (03–06/2026); Bouncer allein 53,93 € (08/2026) | gut, nicht Tiefstpreis |
+| Hauck Alternative | BabyOne „Hochstuhl mit Newborn Set Alpha Premium Nature Grey“ 119,99 € + ggf. Versand (V) | – | **nicht gleichwertig**: nur Stuhl + Newborn-Aufsatz, kein Wippengestell, kein Sitzkissen, grau |
+| Emma Kindermatratze 60×120 | 149,25 € (V), idealo: 3 Angebote, keins günstiger | 149,25 € schon 10/2024 | Dauerpreis |
+| Stokke Flexi Bath Bundle | 109,00 € (V, „Originalpreis“ 142 €), Versand frei ab 39 € | Wanne einzeln idealo ab 41,40 € | unverändert |
+| Chicco Odour Off weiß | BabyOne 46,99 € (V, online verfügbar); idealo ab 40,94 € (U); babyartikel ausverkauft (V) | keine Deals gefunden | Grenze ≤ 30 € bleibt |
+| Alecto DVM2043 | Coolblue 159 € (V); idealo ab 134,26 € (U) | – | unverändert |
+
+Neu blockiert (Bot-Schutz, nicht umgangen): PriceRunner/Klarna, guenstiger.de, camelcamelcamel, Saturn, Alza, Proshop, Cyberport, Euronics, Otto (HTTP 400), baby-walz (429).
+
+**Strategie Hochstuhl angepasst:** Jetzt bei babyartikel kaufen, das sichert Preis und Bestand („begrenzte Stückzahl“). Taucht bis Cyber Monday ein gleichwertiges Angebot ≤ 125 € auf, innerhalb der Widerrufsfrist zurückgeben.
