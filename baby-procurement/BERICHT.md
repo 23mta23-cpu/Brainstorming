@@ -372,3 +372,10 @@ Neu blockiert (Bot-Schutz, nicht umgangen): PriceRunner/Klarna, guenstiger.de, c
   - Highchair Baby Seat White: 24,90 € (kein Black-Deal-Label)
   - Alpha Click Tray Speckle Beige: 34,90 € (kein Black-Deal-Label)
   - **Summe 195,72 €, versandfrei** (Code im Warenkorb ungetestet). Gegenüber dem ausverkauften Originalset (183,85 € inkl. Versand) 11,87 € mehr, dafür zusätzlich Sitzkissen Deluxe.
+
+### Nachtrag 27.11.2026 ~11:00 MEZ: Babyphone MIT Kamera gewünscht
+
+SCD713 ist reines Audio und entfällt damit. Neue Empfehlung (ohne WLAN):
+- **Alecto DVM2043**: einziges Video-Modell mit unabhängiger Messung (test.de 07/2026, Video-Sieger; Ø 49 m, ~21 h Akku). Coolblue 159 € (V, 11:00), MediaMarkt/Commaxx 144,29 € (V, 04:30), idealo ab 134,26 € (U). Grenze ≤ 140 €, Kauf Jan–Feb, Reichweitentest zuhause in der Umtauschfrist.
+- **Plan B Philips Avent SCD871/26**: 4,5"-Display, laut Hersteller bis 60 h Akku und DEKRA-zertifizierte Cybersicherheit, kein motorisierter Schwenk, **ungetestet**. Amazon 129,99 € (mydealz-Deal vom 19.11.2026, U), idealo ab 134,99 € (U), Philips.de 179,99 €. Grenze ≤ 130 €.
+- Historie: SCD891 119,99 € (06.10.2026), SCD892 97 € (Joybuy, bis 27.10.2026), SCD881 refurbished 67,50 € (bis 18.03.2026).
