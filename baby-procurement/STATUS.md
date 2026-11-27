@@ -2,7 +2,7 @@
 
 Start: 27.11.2026 ~04:00 MEZ.
 
-- [ ] A Matratze → research/A-matratze.md
+- [x] A Matratze → research/A-matratze.md
 - [x] B Hochstuhl → research/B-hochstuhl.md
 - [x] C Windeleimer → research/C-windeleimer.md
 - [x] D Babyphone → research/D-babyphone.md
