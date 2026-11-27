@@ -362,3 +362,13 @@ Quellen: Original-Händlerseiten (V) und eingebetteter idealo-Preisvergleich auf
 Neu blockiert (Bot-Schutz, nicht umgangen): PriceRunner/Klarna, guenstiger.de, camelcamelcamel, Saturn, Alza, Proshop, Cyberport, Euronics, Otto (HTTP 400), baby-walz (429).
 
 **Strategie Hochstuhl angepasst:** Jetzt bei babyartikel kaufen, das sichert Preis und Bestand („begrenzte Stückzahl“). Taucht bis Cyber Monday ein gleichwertiges Angebot ≤ 125 € auf, innerhalb der Widerrufsfrist zurückgeben.
+
+### Nachtrag 27.11.2026 ~10:40 MEZ: 5-teiliges Hauck-Set gewünscht
+
+- Alle 5-tlg. Alpha+-Sets bei babyartikel (Stretch Beige, Sand, Dark Grey/Premium) und das 3-tlg. Sparset (Stuhl + Baby Seat + Essbrett): **ausverkauft** (V).
+- BabyOne „Set Alpha+ Pro mit Newborn-Set“ (199,90 €) = nur Stuhl + Newborn-Aufsatz, nicht gleichwertig (V).
+- **Zusammenstellung des vollständigen 5-tlg. Lieferumfangs bei babyartikel, alles lieferbar 28.11. (V):**
+  - Alpha+ 4-tlg. Newborn Set Walnut/Stretch Beige (Stuhl, Bouncer 2in1, Wippengestell, Sitzkissen Deluxe): 159,90 € − 15 % `blackdeal15` = 135,92 €
+  - Highchair Baby Seat White: 24,90 € (kein Black-Deal-Label)
+  - Alpha Click Tray Speckle Beige: 34,90 € (kein Black-Deal-Label)
+  - **Summe 195,72 €, versandfrei** (Code im Warenkorb ungetestet). Gegenüber dem ausverkauften Originalset (183,85 € inkl. Versand) 11,87 € mehr, dafür zusätzlich Sitzkissen Deluxe.
