@@ -1,0 +1,14 @@
+# Status (für automatische Fortsetzung)
+
+Start: 27.11.2026 ~04:00 MEZ.
+
+- [ ] A Matratze → research/A-matratze.md
+- [ ] B Hochstuhl → research/B-hochstuhl.md
+- [ ] C Windeleimer → research/C-windeleimer.md
+- [ ] D Babyphone → research/D-babyphone.md
+- [ ] E Badewanne → research/E-badewanne.md
+- [ ] F Preise/Aktionen/Cashback → research/F-preise-aktionen.md
+- [ ] G Gegenprüfung (unabhängiger Agent) → research/G-gegenpruefung.md
+- [ ] Endbericht → BERICHT.md
+
+Fortsetzung: fehlende Dateien = Recherche neu anstoßen; vorhandene nicht wiederholen.
