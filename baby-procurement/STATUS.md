@@ -8,7 +8,7 @@ Start: 27.11.2026 ~04:00 MEZ.
 - [x] D Babyphone → research/D-babyphone.md
 - [x] E Badewanne → research/E-badewanne.md
 - [x] F Preise/Aktionen/Cashback → research/F-preise-aktionen.md
-- [~] G Gegenprüfung (läuft) → research/G-gegenpruefung.md
-- [ ] Endbericht → BERICHT.md
+- [x] G Gegenprüfung → research/G-gegenpruefung.md
+- [x] Endbericht → BERICHT.md
 
 Fortsetzung: fehlende Dateien = Recherche neu anstoßen; vorhandene nicht wiederholen.
